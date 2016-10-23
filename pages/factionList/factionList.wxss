@@ -1,5 +1,19 @@
 /*topics.wxss*/
-.topics-main{
-	background: #f60;
+.factionList-main{
 	height: 100%;
+}
+.factionList-main .content{
+	padding: 20px 10px;
+}
+.factionList-main .content .factions-item{
+	display: inline-block;
+	width: 33.333%;
+	height: 150px;
+}
+.factionList-main .factions-item .factions-image image{
+	width: 100%;
+	height: 150px;
+}
+.factionList-main .factions-item .factions-name{
+	text-align: center;
 }

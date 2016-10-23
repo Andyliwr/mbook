@@ -50,5 +50,14 @@ Page({
   			console.log("获取小说列表失败！！"+err);
   		}
   	})
+  },
+  redictDetail: function(e){
+    console.log('我要看详情');
+    var id = e.currentTarget.id,
+        url = '../detail/detail?id=' + id;
+        // 这里的detail是需要创建对应的文件，以及页面注册的
+    wx.navigateTo({
+      url: url
+    })
   }
 });
