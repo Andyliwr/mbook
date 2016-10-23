@@ -1,12 +1,11 @@
 {
   "pages":[
-    "pages/topics/topics",
-    "pages/index/index",
+    "pages/factionList/factionList",
     "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#353535",
+    "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "免费小说",
     "navigationBarTextStyle":"#fff",
     "enablePullDownRefresh":"true"
@@ -17,13 +16,13 @@
     "backgroundColor":"#fff",
     "borderStyle":"white",
     "list": [{
-      "pagePath": "pages/topics/topics",
-      "text": "首页",
+      "pagePath": "pages/factionList/factionList",
+      "text": "书架",
       "iconPath":"images/tabBar/index-icon.png",
       "selectedIconPath":"images/tabBar/index-icon-selected.png"
     }, {
       "pagePath": "pages/logs/logs",
-      "text": "我的",
+      "text": "设置",
       "iconPath":"images/tabBar/my-icon.png",
       "selectedIconPath":"images/tabBar/my-icon-selected.png"
     }]
