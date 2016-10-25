@@ -1,6 +1,7 @@
 {
   "pages":[
     "pages/factionList/factionList",
+    "pages/factionDetail/factionDetail",
     "pages/logs/logs"
   ],
   "window":{

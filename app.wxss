@@ -43,8 +43,8 @@ page{
 .top-toolbar{
   width: 100%;
   height: 30px;
-  background-color: #444;
-  color: #09BB07;
+  background-color: #fff;
+  color: #459AE9;
   font-weight: bold;
 }
 .top-toolbar .main{
@@ -68,7 +68,7 @@ page{
 .top-toolbar .left icon{
   height: 30px;
   font-size: 18px;
-  color: #09BB07;
+  color: #459AE9;
 }
 .top-toolbar .right{
   width: 40px;

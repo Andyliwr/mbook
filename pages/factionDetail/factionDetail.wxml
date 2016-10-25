@@ -1,0 +1,22 @@
+<view class="factionDetail-main section">
+  <view class="content">
+    <view class="factions-info">
+        <image class="author-avatar" src="{{factionDetailInfo.headerImage}}"></image>
+        <text>{{factionDetailInfo.factionName}}</text>
+        <text>{{factionDetailInfo.author}}</text>
+    </view>
+    <view class="reading-people">
+        <text>当前有2个用户在读</text>
+    </view>
+    <view class="des">
+        <text>{{factionDetailInfo.des}}</text>
+    </view>
+    <view class="operation">
+        <view class="operation-left"><icon class="weui-icon-list "/>目录.已更新</view>
+        <view class="operation-right"><icon class="weui-icon-copyright "/>版权</view>
+    </view>
+  </view>
+  <view class="comment">
+    这里是评论区
+  </view>
+</view>

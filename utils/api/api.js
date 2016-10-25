@@ -3,6 +3,7 @@
 
 var HOST_URL = 'http://120.27.161.199:3000/api';
 var GET_FACTION_LIST = '/factionlists';
+var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
 
 function obj2url(obj){
@@ -20,6 +21,9 @@ module.exports = {
 	//获取列表数据
 	getFactionList: function(){
 		return HOST_URL + GET_FACTION_LIST;
+	},
+	getFactionDetailById: function(id){
+		return HOST_URL + GET_FACTION_DETAIL_BY_ID + id;
 	},
 	//获取页面数据内容
 	// getTopicByID: function(id, obj){

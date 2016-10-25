@@ -10,7 +10,7 @@
   </view>
   <view class="content">
      <block wx:for="{{factionListData}}">
-      <view class="factions-item" wx:for-index="idx" wx:for-item="item" bindtap="redictDetail">
+      <view id="{{item.id}}" class="factions-item" wx:for-index="idx" wx:for-item="item" bindtap="redictDetail">
         <view class="factions-image">
           <image class="author-avatar" src="{{item.headerImage}}"></image>
         </view>

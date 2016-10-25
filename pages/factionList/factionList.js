@@ -52,12 +52,17 @@ Page({
   	})
   },
   redictDetail: function(e){
-    console.log('我要看详情');
-    var id = e.currentTarget.id,
-        url = '../detail/detail?id=' + id;
-        // 这里的detail是需要创建对应的文件，以及页面注册的
+    var id = e.currentTarget.id;
+    var url = '../factionDetail/factionDetail?id=' + id;
+    // 这里的detail是需要创建对应的文件，以及页面注册的
     wx.navigateTo({
-      url: url
+      url: url,
+      success: function(res){
+        console.log("基于当前页面导航成功，"+res);
+      },
+      fail: function(err){
+        console.log("基于当前页面导航失败，"+err);
+      }
     })
   }
 });
