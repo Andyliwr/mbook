@@ -2,6 +2,7 @@
 'use strict';
 
 var HOST_URL = 'http://api.andylistudio.com/api';
+var LOGIN = '/Users/login';
 var GET_FACTION_LIST = '/factionlists';
 var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
@@ -31,5 +32,8 @@ module.exports = {
 	// }
 	getContentByID: function(id){
 		return HOST_URL + GET_CONTENT_BY_ID + id;
+	},
+	login: function(umt, password){
+		return HOST_URL + LOGIN;
 	}
 }

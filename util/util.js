@@ -15,6 +15,20 @@ function formatTime(time) {
   }).join(':')
 }
 
+//判断用户填写的是username还是email
+function judgeTelOrName(str){
+  var phoneRegExp = new RegExp('^1[3|4|5|8][0-9]\d{4,8}$', 'g');
+  var usernameRegExp = new RegExp('^(?![^a-zA-Z_]+$)(?!\D+$).{6,18}$', 'g');
+  if(usernameRegExp.test(str)){
+    return 'using_name';
+  }else if(phoneRegExp.test(str)){
+    return 'using_email';
+  }else{
+    return 'error';
+  }
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  judgeTelOrName: judgeTelOrName
 }

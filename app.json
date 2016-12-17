@@ -66,13 +66,14 @@
     "page/API/get-location/get-location",
     "page/API/open-location/open-location",
 
-    "page/API/storage/storage"
+    "page/API/storage/storage",
+    "page/login/login"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "演示",
-    "navigationBarBackgroundColor": "#fbf9fe",
-    "backgroundColor": "#fbf9fe"
+    "navigationBarBackgroundColor": "#FD9941",
+    "backgroundColor": "#ffffff"
   },
   "tabBar": {
     "color": "#dddddd",
@@ -85,7 +86,7 @@
       "selectedIconPath": "image/icon_API_HL.png",
       "text": "WIKI"
     },{
-      "pagePath": "page/component/index",
+      "pagePath": "page/login/login",
       "iconPath": "image/icon_component.png",
       "selectedIconPath": "image/icon_component_HL.png",
       "text": "组件"
