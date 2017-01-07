@@ -67,10 +67,12 @@
     "page/API/open-location/open-location",
 
     "page/API/storage/storage",
-    "page/login/login"
+    "page/login/login",
+    "page/booklist/booklist",
+    "page/today/today"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
+    "navigationBarTextStyle": "white",
     "navigationBarTitleText": "演示",
     "navigationBarBackgroundColor": "#FD9941",
     "backgroundColor": "#ffffff"
@@ -89,12 +91,12 @@
       "pagePath": "page/login/login",
       "iconPath": "image/icon_component.png",
       "selectedIconPath": "image/icon_component_HL.png",
-      "text": "组件"
+      "text": "登录"
     }, {
-      "pagePath": "page/API/index/index",
+      "pagePath": "page/today/today",
       "iconPath": "image/icon_API.png",
       "selectedIconPath": "image/icon_API_HL.png",
-      "text": "接口"
+      "text": "今日"
     }]
   },
   "networkTimeout": {

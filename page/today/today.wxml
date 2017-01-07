@@ -1,0 +1,18 @@
+<view class='login-container'>
+    <view class="headimg">
+        <image src="http://qiniu.andylistudio.com/myApp/unknown_headimg.png" model="center" binderror="headimgError"/>
+        <text class="username">andyliwr</text>
+    </view>
+    <view class="more-info">
+        <view><text class="time-info">2</text>  </view>
+        <view></view>
+        <view></view>
+    </view>
+    
+    <!-- 出错打印 -->
+    <import src="../component/own/err_tips/err_tips.wxml"/>
+    <template is="err_tips" data="{{err_tips_data}}" />
+    <!-- 成功的提示 -->
+    <import src="../component/own/toast/toast.wxml"/>
+    <template is="toast" data="{{toast_data}}" />
+</view>

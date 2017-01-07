@@ -56,7 +56,7 @@ Page({
             self.setData({toast_data: {toast_show: false, toast_text: '', toast_icon_type:'success-toast-icon'}});
             // 存储token
             wx.setStorage({
-              key:"token"
+              key:"token",
               data: res.data
             })
             //去到index页
