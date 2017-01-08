@@ -8,7 +8,7 @@
         <view class="username-icon"></view><input type="text" name="umt" value="{{umt}}" placeholder="用户名/邮箱" bindinput="changeUmt" /><icon class='clear' type="clear" bindtap="clearUmt" />
       </view>
       <view class="section section_password">
-        <view class="password-icon"></view><input type="{{password_input_type}}" value="{{password}}" name="password" placeholder="请输入密码" /><view class="{{see_password_class}}" bindtap="seePassword"></view>
+        <view class="password-icon"></view><input type="{{password_input_type}}" value="{{password}}" name="password" placeholder="请输入密码" bindinput="changePwd" /><view class="{{see_password_class}}" bindtap="seePassword"></view>
       </view>
       <view class="section btn-area">
         <button class="submit" formType="submit">登录</button>

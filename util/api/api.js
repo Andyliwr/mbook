@@ -2,7 +2,7 @@
 'use strict';
 
 var HOST_URL = 'http://api.andylistudio.com/api';
-var LOGIN = '/Users/login';
+var LOGIN = '/as_users/login';
 var GET_FACTION_LIST = '/factionlists';
 var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
