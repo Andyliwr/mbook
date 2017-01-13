@@ -1,34 +1,3 @@
-/**/
-/*rem*/
-html {
-    font-size : 20px;
-}
-@media only screen and (min-width: 401px){
-    html {
-        font-size: 25px !important;
-    }
-}
-@media only screen and (min-width: 428px){
-    html {
-        font-size: 26.75px !important;
-    }
-}
-@media only screen and (min-width: 481px){
-    html {
-        font-size: 30px !important; 
-    }
-}
-@media only screen and (min-width: 569px){
-    html {
-        font-size: 35px !important; 
-    }
-}
-@media only screen and (min-width: 641px){
-    html {
-        font-size: 40px !important; 
-    }
-}
-
 page {
   background-color: #ffffff;
   height: 100%;
@@ -502,4 +471,14 @@ checkbox, radio{
   right: 0;
   left: 0;
   bottom: 0;
+}
+
+/*常用样式*/
+.text-underline{
+  text-decoration: underline;
+}
+
+/*所有的雪碧图icon*/
+.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon{
+  background: url(http://qiniu.andylistudio.com/myApp/iconset&20170113.png) no-repeat;
 }

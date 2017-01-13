@@ -160,28 +160,30 @@
 .other-login .iconset .iconset-item:last-child{
     margin-right: 0;
 }
+
+/*all icon css sprite*/
 .wechat-gray-icon{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: -8rem -2.6rem !important;
 }
 .wechat-gray-icon:active{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: -5.3rem -2.6rem !important;
 }
 .qq-gray-icon{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: -2.6rem -2.6rem !important;
 }
 .qq-gray-icon:active{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: 0 -2.6rem !important;
 }
 .weibo-gray-icon{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: 0 -5.4rem !important;
 }
 .weibo-gray-icon:active{
-	background-size: 13rem !important;
+    background-size: 13rem !important;
     background-position: -10.6rem -2.6rem !important;
 }
 .success-toast-icon{
@@ -194,8 +196,4 @@
     top: 1rem;
     left: 50%;
     transform: translateX(-50%);
-}
-/*css sprite*/
-.username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon{
-	background: url(http://qiniu.andylistudio.com/myApp/iconset&20161218.png) no-repeat;
 }

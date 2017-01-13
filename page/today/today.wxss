@@ -1,38 +1,64 @@
-.today-container view{
-	margin-top: -1px;
+.today-container{
+	background-color: #F2F2F2;
 }
 .today-container .headimg{
 	background-color: #FD9941;
 	text-align: center;
 	color: #ffffff;
+	padding-top: 20rpx;
 }
 .today-container .headimg image{
-	width: 3rem;
-	height: 3rem;
+	width: 100rpx;
+	height: 100rpx;
 }
 .today-container .headimg .username{
 	display: block;
-	font-size: .8rem;
+	font-size: 28rpx;
 }
 .today-container .more-info{
 	background-color: #FD9941;
 	color: #ffffff;
-	font-size: .6rem;
+	font-size: 22rpx;
 }
 .today-container .more-info view{
-	width: 33%;
-	display: inline-block;
-	text-align: center;
-	border-right: 1px solid #ffffff;
-	padding: .5rem .8rem .8rem .8rem;
-	box-sizing: border-box;
+	width:33%;
+	display:inline-block;
+	text-align:center;
+	border-right:1px solid #ffffff;
+	padding:-0 24rpx 0 24rpx;
+	box-sizing:border-box;
+	margin-top:26rpx;
+	margin-bottom:32rpx;
 }
 .today-container .more-info view:last-child{
 	border-right: 0;
 }
 .today-container .more-info view text .num{
-	font-size: 1.2rem;
+	font-size: 40rpx;
 }
 .today-container .more-info view text.des{
 	display: block;
+}
+
+/*所有邮件的css*/
+.today-container .email{
+	margin-top: 20rpx;
+	background-color: #fff;
+}
+.today-container .title{
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #494949;
+	position: relative;
+	padding: 15rpx 20rpx;
+}
+.today-container .title .email-icon{
+	display:inline-block;
+	position:absolute;
+	background-size:300rpx 300rpx;
+	background-position:20rpx 1rpx;
+	width:50rpx;
+	height:35rpx;
+	right:20rpx;
+	top:10rpx;
 }
