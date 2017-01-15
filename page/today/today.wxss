@@ -52,13 +52,60 @@
 	position: relative;
 	padding: 15rpx 20rpx;
 }
+.today-container .title .text-underline{
+	line-height: 30rpx;
+}
 .today-container .title .email-icon{
 	display:inline-block;
 	position:absolute;
-	background-size:300rpx 300rpx;
-	background-position:20rpx 1rpx;
+	background-size:240rpx 240rpx;
+	background-position:4rpx -154rpx;
 	width:50rpx;
 	height:35rpx;
 	right:20rpx;
-	top:10rpx;
+	top:15rpx;
+}
+.today-container .title .email-icon .num-bg{
+	display:inline-block;
+	position:absolute;
+	width: 23rpx;
+	height: 23rpx;
+	right: -5rpx;
+	top: -5rpx;
+	border-radius: 10rpx;
+	background-color: #FD9941;
+}
+.today-container .title .email-icon .num-value{
+	display:inline-block;
+	position:absolute;
+	width:23rpx;
+	height:23rpx;
+	right:-4rpx;
+	top:-3rpx;
+	font-size:16rpx;
+	color:#fff;
+	text-align: center;
+}
+.today-container swiper-item{
+	width:80% !important;
+	position:relative;
+	left:10%;
+	text-align: center;
+	height: 250rpx;
+}
+.today-container swiper-item > image{
+	opacity: .5;
+	height: 100%;
+	width:93%;
+	z-index: 1;
+	border-radius: 15rpx;
+}
+.today-container swiper-item > view{
+	position: absolute;
+	height: 100%;
+	width:95%;
+	left: 3%;
+	z-index: 2;
+	background-color: rgba(0, 0, 0, .5);
+	border-radius: 15rpx;
 }

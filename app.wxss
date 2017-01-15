@@ -475,7 +475,10 @@ checkbox, radio{
 
 /*常用样式*/
 .text-underline{
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  display: inline-block;
+  padding-bottom: 6rpx;
+  border-bottom: 2rpx solid #494949;
 }
 
 /*所有的雪碧图icon*/

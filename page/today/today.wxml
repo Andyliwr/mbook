@@ -1,3 +1,4 @@
+<import src="../component/own/email_digest/email_digest.wxml" />
 <view class='today-container'>
   <view class="headimg">
     <image src="http://qiniu.andylistudio.com/myapp/personal.png" model="center" binderror="headimgError" />
@@ -27,12 +28,34 @@
     </view>
   </view>
   <view class="email">
-    <view class="title"><text><text class="text-underline">所有</text>邮件</text><icon class="email-icon"><icon class="num"></icon></icon></view>
-    <view class="swipe">
-      <view class="swipe-item">1</view>
-      <view class="swipe-item">2</view>
-      <view class="swipe-item">3</view>
+    <view class="title">
+      <text>
+        <text class="text-underline">所有</text>邮件</text>
+      <icon class="email-icon">
+        <icon class="num-bg"></icon>
+        <text class="num-value">12</text>
+      </icon>
     </view>
+
+    <!--滑块-->
+    <swiper class="swipe" duration="1000" bindchange="changeEmail">
+      <block wx:for="{{emails}}">
+        <swiper-item class="{{currentEmail}}">
+          <view>
+            <view class="author">
+              <!--<image src="{{item.digest.author_img}}"></image>-->
+              <text>
+                <text class="name">{{item.digest.author_name}}</text>
+                <text class="des">{{item.digest.author_des}}</text>
+              </text>
+            </view>
+            <view class="title">{{item.digest.title}}</view>
+            <view class="content"><button wx:if="{{item.digest.button}}" bindtap="wx.navigateTo({{item.digest.button.url}})">{{tem.digest.button}}</button></view>
+          </view>
+          <image src="{{item.bgImgUrl}}" class="slide-image" width="100%" height="100%" />
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
 
   <!-- 出错打印 -->
