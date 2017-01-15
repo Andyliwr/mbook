@@ -86,17 +86,26 @@
 	color:#fff;
 	text-align: center;
 }
+.today-container swipe{
+	height: 250rpx !important;
+}
 .today-container swiper-item{
 	width:80% !important;
 	position:relative;
 	left:10%;
 	text-align: center;
-	height: 250rpx;
+	height: 200rpx !important;
+	top: 25rpx;
+}
+.today-container swiper-item.active{
+	height: 250rpx !important;
+	top: 0rpx;
+	animation: gotoNextpage 1s;
 }
 .today-container swiper-item > image{
 	opacity: .5;
 	height: 100%;
-	width:93%;
+	width:95%;
 	z-index: 1;
 	border-radius: 15rpx;
 }
@@ -108,4 +117,55 @@
 	z-index: 2;
 	background-color: rgba(0, 0, 0, .5);
 	border-radius: 15rpx;
+	color: #ffffff;
+}
+.today-container swiper-item .author{
+	text-align: left;
+	padding:4% 4% 0 4%;
+}
+.today-container swiper-item .author > image{
+	display: inline-block;
+	height: 60rpx;
+	width: 60rpx;
+}
+.today-container swiper-item .author > view{
+	display:inline-block;
+	margin-left:15rpx;
+	position:relative;
+	top:-10rpx;
+}
+.today-container swiper-item .name{
+	font-size: 24rpx;
+	font-weight: bold;
+	display: block;
+}
+.today-container swiper-item .des{
+	font-size: 22rpx;
+	display: block;
+	margin-top: 3rpx;
+}
+.today-container swiper-item .title{
+	color: #ffffff;
+	font-size: 24rpx;
+}
+.today-container swiper-item .content{
+	font-size: 22rpx;
+}
+.today-container swiper-item .content > button{
+	width:34%;
+	height:40rpx;
+	border-radius:20rpx;
+	border:1px solid #ffffff;
+	font-size:22rpx;
+	color:#ffffff;
+	background:transparent;
+	line-height:40rpx;
+}
+.today-container swiper-item .content .other{
+	line-height: 50rpx
+}
+/*email翻页的动画*/
+@keyframes gotoNextpage{
+	from{top: 25rpx;}
+	to{top: 0;}
 }

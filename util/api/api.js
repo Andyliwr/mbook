@@ -1,11 +1,12 @@
 // 处理数据的请求
 'use strict';
 
-var HOST_URL = 'http://api.andylistudio.com/api';
+var HOST_URL = 'https://api.andylistudio.com/api';
 var LOGIN = '/as_users/login';
 var GET_FACTION_LIST = '/factionlists';
 var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
+var GET_EMAILS_PAGEID = '/emails';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -35,5 +36,8 @@ module.exports = {
 	},
 	login: function(umt, password){
 		return HOST_URL + LOGIN;
+	},
+	getEmailsByPageid: function(pageid){
+		return HOST_URL + GET_FACTION_DETAIL_BY_ID + '?pageid=' + pageid;
 	}
 }
