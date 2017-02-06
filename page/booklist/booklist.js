@@ -1,13 +1,28 @@
 //login.js
 var Api = require('../../util/api/api.js');
-var util = require('../../util/util.js');
+var Util = require('../../util/util.js');
 
 Page({
   data: {
-    welcome_text: "Hello, here is FlowerHeart."
+    headerText: '',
+    showMonths: []
   },
   onReady: function() {
     var self = this;
-    console.log("booklist is onready");
+    var timeResult = self.allMonths();
+    self.setData({showMonths: timeResult.showMonths, headerText: timeResult.headerText});
+  },
+  allMonths: function(){
+  	var resultArray = [];
+  	var today = new Date();
+  	var month = today.getMonth();
+  	resultArray.push(Util.eNumToCNum(Math.abs(month))+'月');
+  	for(var i=1; i<=6; i++){
+  		resultArray.push(Util.eNumToCNum(Math.abs(month-i<0? month+12-i: month-i))+'月');
+  	}
+  	return {
+  		headerText: today.getFullYear()+'年'+resultArray[0],
+  		showMonths: resultArray.reverse()
+  	}
   }
 });

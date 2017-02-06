@@ -1,5 +1,24 @@
 <view class="booklist-container">
-	
+	<view class="header">
+		<view class="headerLine"></view>
+		<text class="headerTime">{{headerText}}</text>
+		<view class="timeTab">
+			<block wx:for="{{showMonths}}">
+				<text>{{item}}</text>
+			</block>
+		</view>
+	</view>
+	<view class="list">
+		<block class="bookitem" wx:for="{{array}}">
+			<view class="bookInfo">
+				<text class="bookName">或者</text>
+				<text class="author">{{'作者：愈发'}}</text>
+				<text class="bookDes">爱上的空间阿斯达说的哈阿克苏大声的那啊SD卡拉升大劫案说的打瞌睡</text>
+				<icon class="isRead"></icon>
+			</view>
+			<image src="{{bookItem.img}}" mode="scaleToFill"/>
+		</block>
+	</view>
 	<!-- 出错打印 -->
     <import src="../component/own/err_tips/err_tips.wxml"/>
     <template is="err_tips" data="{{err_tips_data}}" />
