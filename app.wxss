@@ -1,3 +1,11 @@
+/*字体自定义*/
+@font-face {font-family: 'webfont';
+  src: url('//at.alicdn.com/t/hcx47qtqgubzw7b9.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/hcx47qtqgubzw7b9.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/hcx47qtqgubzw7b9.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/hcx47qtqgubzw7b9.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/hcx47qtqgubzw7b9.svg#思源黑体-极细') format('svg'); /* iOS 4.1- */
+}
 page {
   background-color: #ffffff;
   height: 100%;
@@ -482,6 +490,6 @@ checkbox, radio{
 }
 
 /*所有的雪碧图icon*/
-.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon{
-  background: url(http://qiniu.andylistudio.com/myApp/iconset&20170113.png) no-repeat;
+.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon{
+  background: url(../../image/iconset&20170206.png) no-repeat;
 }

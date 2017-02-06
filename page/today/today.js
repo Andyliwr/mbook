@@ -1,17 +1,17 @@
-//today.js
+  //today.js
 var Api = require('../../util/api/api.js');
 var util = require('../../util/util.js');
 
 Page({
     data: {
-        currentEmailPageid: 0,
-        totalEmailsNum: 4,
+        currentEmailPageid: 1,
+        totalEmailsNum: 5,
         emails: [
             {
-                index: 0,
-                bgImgUrl: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+                id: '12312312311231',
+                bgImgUrl: '../../image/today/email_bg01.jpg',
                 digest: {
-                    author_img: 'http://qiniu.andylistudio.com/myapp/personal.png',
+                    author_img: '../../image/personal.png',
                     author_name: '熊猫老师',
                     author_des: '宣传部',
                     title: "“阅读推行赠书计划”已经开始",
@@ -27,10 +27,10 @@ Page({
                 }
             },
             {
-                index: 1,
-                bgImgUrl: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+                id: '1231221331231',
+                bgImgUrl: '../../image/today/email_bg01.jpg',
                 digest: {
-                    author_img: 'http://qiniu.andylistudio.com/myapp/personal.png',
+                    author_img: '../../image/personal.png',
                     author_name: '熊猫老师',
                     author_des: '宣传部',
                     title: "“阅读推行赠书计划”已经开始",
@@ -45,10 +45,10 @@ Page({
                 }
             },
             {
-                index: 2,
-                bgImgUrl: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+                id: '12312312123131',
+                bgImgUrl: '../../image/today/email_bg01.jpg',
                 digest: {
-                    author_img: 'http://qiniu.andylistudio.com/myapp/personal.png',
+                    author_img: '../../image/personal.png',
                     author_name: '熊猫老师',
                     author_des: '宣传部',
                     title: "“阅读推行赠书计划”已经开始",
@@ -63,10 +63,28 @@ Page({
                 }
             },
             {
-                index: 3,
-                bgImgUrl: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+                id: '12312312123131',
+                bgImgUrl: '../../image/today/email_bg01.jpg',
                 digest: {
-                    author_img: 'http://qiniu.andylistudio.com/myapp/personal.png',
+                    author_img: '../../image/personal.png',
+                    author_name: '熊猫老师',
+                    author_des: '宣传部',
+                    title: "“阅读推行赠书计划”已经开始",
+                    content: {
+                        button: {
+                            text: '加入计划',
+                            url: '../index/index',
+                            eventHandler: 'goToUrl'
+                        },
+                        other: '或者到【我的--邀请好友加入】查看'
+                    }
+                }
+            },
+            {
+                id: '12312312123131',
+                bgImgUrl: '../../image/today/email_bg01.jpg',
+                digest: {
+                    author_img: '../../image/personal.png',
                     author_name: '熊猫老师',
                     author_des: '宣传部',
                     title: "“阅读推行赠书计划”已经开始",
@@ -81,11 +99,32 @@ Page({
                 }
             }
         ],
+        tasks: {
+            isSigned: false,
+            allTasks: [
+                {
+                    bookId: '123123121231231',
+                    img: '../../image/today/dazhuzai.jpg',
+                    bookName: '大主宰',
+                    bookDes: '大千世界,位面交汇,万族林立,群雄荟萃,一位位来自下位面的天之至尊,在这无尽世界,演绎着令人向往的传奇,追求着那主宰之',
+                    bookHot: 4,
+                    progressRate: 5
+                },
+                {
+                    bookId: '1231231231',
+                    img: '../../image/today/chenyuan.jpg',
+                    bookName: '尘缘',
+                    bookDes: '那一天，我摇动所有的经桶，不为超度，只为触摸你的指尖；那一年，在山路匍匐，不为觐见',
+                    bookHot: 2,
+                    progressRate: 2
+                }
+            ]
+        },
         indicatorDots: false,
         autoplay: false,
         interval: 5000,
         duration: 1000,
-        currentEmail: 0
+        currentEmail: 1
     },
     onLoad: function () {
         var self = this;
@@ -93,19 +132,19 @@ Page({
         self.getEmailsByPageid(self.data.currentEmailPageid);
     },
     getEmailsByPageid: function(pageid){
-        wx.request({
-            url: Api.getEmailsByPageid(pageid),
-            method: 'GET',
-            success: function (res) {
-                self.setData({totalEmailsNum: res.totalNum, emails: res.data});
-                //将邮件数据存入缓存
-                wx.setStorageSync(emails, res.data);
-            },
-            fail: function () {
-                // 尝试读取缓存中的值
-                try {this.setData({emails: wx.getStorageSync('emails')});} catch (err) { console.log(err) }
-            }
-        });
+        // wx.request({
+        //     url: Api.getEmailsByPageid(pageid),
+        //     method: 'GET',
+        //     success: function (res) {
+        //         self.setData({totalEmailsNum: res.totalNum, emails: res.data});
+        //         //将邮件数据存入缓存
+        //         wx.setStorageSync(emails, res.data);
+        //     },
+        //     fail: function () {
+        //         // 尝试读取缓存中的值
+        //         // try {self.setData({emails: wx.getStorageSync('emails')});} catch (err) { console.log(err) }
+        //     }
+        // });
     },
     changeEmail: function (event) {
         var self = this;
@@ -125,9 +164,11 @@ Page({
             }, 3000);
         }
         //当加载到第五篇，就为下面的数据做准备
-        if(currentIndex%5 != 4){
-            self.setData({currentEmailPageid: ++self.data.currentEmailPageid});
-            self.getEmailsByPageid(self.data.currentEmailPageid);
+        if((currentIndex+1)%5 != 0){
+            self.setData({currentEmailPageid: currentIndex});
+            // self.getEmailsByPageid(self.data.currentEmailPageid);
+        }else{
+            //请求后面的邮件数据
         }
     },
     //email中按钮的处理事件

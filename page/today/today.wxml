@@ -33,14 +33,14 @@
         <text class="text-underline">所有</text>邮件</text>
       <icon class="email-icon">
         <icon class="num-bg"></icon>
-        <text class="num-value">12</text>
+        <text class="num-value">{{totalEmailsNum}}</text>
       </icon>
     </view>
 
     <!--滑块-->
-    <swiper class="swipe" duration="600" bindchange="changeEmail">
-      <block wx:for="{{emails}}">
-        <swiper-item class="{{item.index == currentEmail? 'active': ''}}">
+    <swiper class="swipe" duration="600" bindchange="changeEmail" current="{{currentEmail}}">
+      <block wx:for="{{emails}}" wx:key="id">
+        <swiper-item class="{{index == currentEmail? 'active': ''}}">
           <view>
             <view class="author">
               <image src="{{item.digest.author_img}}"></image>
@@ -60,6 +60,28 @@
         </swiper-item>
       </block>
     </swiper>
+  </view>
+  <view class="dailyTask">
+    <view class="title">
+      <text>
+        <text class="text-underline">今日</text>任务
+      </text>
+      <text class="isSigned">{{tasks.isSigned == true? '已签到': '未签到'}}</text>
+    </view>
+    <view class="task-item" wx:for="{{tasks.allTasks}}" wx:for-item="bookItem" wx:key="bookId">
+      <view class="bookDetail">
+        <text class="name">{{bookItem.bookName}}</text>
+        <text class="des">{{bookItem.bookDes}}</text>
+        <view class="hot">
+          热度：
+          <icon class="{{(index+1) <= bookItem.bookHot? 'yellow-star-icon': 'gray-star-icon'}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this"></icon>
+        </view>
+        <view class="progress">
+          <text class="progressRate">{{bookItem.progressRate}}</text><text class="totalProgress">{{'/5\n学习进度'}}</text>
+        </view>
+      </view>
+      <image src="{{bookItem.img}}" mode="scaleToFill"/>
+    </view>
   </view>
 
   <!-- 出错打印 -->
