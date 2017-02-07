@@ -1,3 +1,92 @@
 .booklist-container{
 	background-color: #F2F2F2;
 }
+.booklist-container .header{
+	text-align: center;
+	position: relative;
+	background-color: #ffffff;
+}
+.booklist-container .header .headerLine{
+	display: inline-block;
+	height:3rpx;
+	width:76%;
+	background-color:red;
+}
+.booklist-container .header .headerTime{
+	background-color:#ffffff;
+	display:block;
+	height:20rpx;
+	line-height:20rpx;
+	width:240rpx;
+	font-size:32rpx;
+	font-weight: bold;
+	position:absolute;
+	left:50%;
+	top:22rpx;
+	transform:translateX(-50%);
+}
+.booklist-container .header .timeTab .everyTime{
+	position: relative;
+	display:inline-block;
+	height:100rpx;
+	width:100rpx;
+	text-align: center;
+}
+.booklist-container .header .timeTab .everyTime > text{
+	
+	font-size:24rpx;
+	color: #888;
+	vertical-align:middle;
+	margin-right:10rpx;
+	line-height: 90rpx;
+}
+.booklist-container .header .timeTab .everyTime.last{
+	margin-right:0rpx;
+}
+.booklist-container .header .timeTab .everyTime.active{
+	border: none;
+	background-color: #fd9941;
+	border-radius: 10rpx;
+	box-shadow: 2rpx 2rpx 2rpx #cccccc;
+}
+.booklist-container .header .timeTab .everyTime.active > text{
+	color: #fff;
+}
+.booklist-container .header .timeTab .everyTime > icon{
+	position: absolute;
+	left: 50%;
+	top: 80%;
+	transform: translateX(-50%);
+	display:block;
+	height:10rpx;
+	width:10rpx;
+	border: none;
+	border-radius: 5rpx;
+	background-color: transparent;
+}
+.booklist-container .header .timeTab .everyTime > icon.hasRecord{
+	background-color: #888;
+}
+.booklist-container .list{
+	margin-top: 20rpx;
+}
+.booklist-container .list > image{
+	height: 180rpx;
+	width: 120rpx;
+	box-shadow:4rpx 4rpx 2rpx #888;
+	float: left;
+	display: inline-block;
+	margin-left: -100%;
+}
+.booklist-container .list .bookInfo{
+	float: left;
+	width: 100%;
+	padding:10rpx 10rpx 10rpx 160rpx;
+	font-size: 22rpx;
+	box-sizing:border-box;
+}
+.booklist-container .list .bookInfo::after{
+	content: "";
+	display: none;
+	clear: both;
+}

@@ -4,7 +4,10 @@
 		<text class="headerTime">{{headerText}}</text>
 		<view class="timeTab">
 			<block wx:for="{{showMonths}}">
-				<text>{{item}}</text>
+				<view class="{{(index == showMonths.length-1)? 'active last everyTime': 'everyTime'}}">
+					<text>{{item.monthCname}}</text>
+					<icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
+				</view>
 			</block>
 		</view>
 	</view>
