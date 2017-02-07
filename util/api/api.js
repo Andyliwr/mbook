@@ -7,6 +7,7 @@ var GET_FACTION_LIST = '/factionlists';
 var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
 var GET_EMAILS_PAGEID = '/emails';
+var GET_BOOKS_SORTBY_TIME = '/xxxx'
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -39,5 +40,13 @@ module.exports = {
 	},
 	getEmailsByPageid: function(pageid){
 		return HOST_URL + GET_FACTION_DETAIL_BY_ID + '?pageid=' + pageid;
+	},
+	//根据时间分类用户的书籍
+	getBooksSortByTime: function(timeObj){
+		if(timeObj.timeType && timeObj.timeValue){
+			return HOST_URL + GET_BOOKS_SORTBY_TIME + '?timeType=' + timeObj.timeType + '&timeValue=' + timeObj.timeValue;
+		}else{
+			console.log('根据时间分类用户的书籍 传入参数错误');
+		}
 	}
 }

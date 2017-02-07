@@ -1,7 +1,7 @@
 <import src="../component/own/email_digest/email_digest.wxml" />
 <view class='today-container'>
   <view class="headimg">
-    <image src="http://qiniu.andylistudio.com/myapp/personal.png" model="center" binderror="headimgError" />
+    <image src="../../image/personal.png" model="center" binderror="headimgError" />
     <text class="username">andyliwr</text>
   </view>
   <view class="more-info">
@@ -19,7 +19,7 @@
       </text>
       <text class="des">坚持阅读天数</text>
     </view>
-    <view class="info-book">
+    <view class="info-book" bindtap="goToBookList">
       <text class="book">
         <text class="num">17</text>
         <text class="danwei">本</text>

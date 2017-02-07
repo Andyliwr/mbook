@@ -179,5 +179,10 @@ Page({
         wx.navigateTo({
             url: gotoUrl,
         });
+    },
+    goToBookList: function(){
+        wx.navigateTo({
+            url: '../booklist/booklist',
+        });
     }
 })
