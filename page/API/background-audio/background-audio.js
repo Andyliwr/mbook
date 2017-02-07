@@ -65,7 +65,7 @@ Page({
         that.setData({
           playing: false,
           playTime: 0,
-          formatedPlayTime: util.formatTime(0)
+          formatedPlayTime: util.formatTime2(0)
         })
       }
     })
@@ -80,7 +80,7 @@ Page({
         success: function (res) {
           that.setData({
             playTime: res.currentPosition,
-            formatedPlayTime: util.formatTime(res.currentPosition + 1)
+            formatedPlayTime: util.formatTime2(res.currentPosition + 1)
           })
         }
       })
