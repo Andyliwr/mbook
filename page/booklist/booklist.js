@@ -5,7 +5,25 @@ var Util = require('../../util/util.js');
 Page({
   data: {
     headerText: '',
-    showMonths: []
+    showMonths: [],
+    books: [
+    	{
+            bookId: '123123121231231',
+            img: '../../image/today/dazhuzai.jpg',
+            bookName: '大主宰',
+            author: '烟雨江南',
+            bookDes: '大千世界,位面交汇,万族林立,群雄荟萃,一位位来自下位面的天之至尊,在这无尽世界,演绎着令人向往的传奇,追求着那主宰之',
+            isRead: true
+        },
+        {
+            bookId: '1231231231',
+            img: '../../image/today/chenyuan.jpg',
+            bookName: '尘缘',
+            author: '烟雨江南',
+            bookDes: '那一天，我摇动所有的经桶，不为超度，只为触摸你的指尖；那一年，在山路匍匐，不为觐见',
+            isRead: false
+        }
+    ]
   },
   onReady: function() {
     var self = this;

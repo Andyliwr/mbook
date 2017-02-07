@@ -490,6 +490,6 @@ checkbox, radio{
 }
 
 /*所有的雪碧图icon*/
-.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon{
+.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon, .read-icon{
   background: url(../../image/iconset&20170206.png) no-repeat;
 }

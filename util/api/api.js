@@ -44,7 +44,7 @@ module.exports = {
 	//根据时间分类用户的书籍
 	getBooksSortByTime: function(timeObj){
 		if(timeObj.timeType && timeObj.timeValue){
-			//switch
+			return HOST_URL + GET_BOOKS_SORTBY_TIME + '?timeType=' + timeObj.timeType + '&timeValue=' + timeObj.timeValue;
 		}else{
 			console.log('根据时间分类用户的书籍 传入参数错误');
 		}
