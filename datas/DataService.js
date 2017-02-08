@@ -1,5 +1,5 @@
 import DataRepository from 'DataRepository';
-import {promiseHandle} from '../utils/util';
+import {promiseHandle} from '../util/util';
 
 /**
  * 数据业务类

@@ -1,6 +1,6 @@
 import DataService from  '../../datas/DataService';
 import {LEVEL} from '../../datas/Config';
-import {promiseHandle, log, formatNumber} from '../../utils/util';
+import {promiseHandle, log, formatNumber} from '../../util/util';
 
 Page({
   data: {
@@ -299,6 +299,32 @@ function resetItemListDataCheck() {
   this.setData({ itemList: data });
 }
 
+function getWeek(year, month, day){
+  var date = new Date(year, month, day);
+  switch(date.getDay()){
+    case 0:
+      return '周日';
+      break;
+    case 1:
+      return '周一';
+      break;
+    case 2:
+      return '周二';
+      break;
+    case 3:
+      return '周三';
+      break;
+    case 4:
+      return '周四';
+      break;
+    case 5:
+      return '周五';
+      break;
+    case 6:
+      return '周六';
+      break;
+  }
+}
 /**
  * 变更日期数据
  * @param {Date} targetDate 当前日期对象
@@ -373,6 +399,7 @@ function changeDate(targetDate) {
     showMonth: showMonth, //当前显示月份
     showDate: showDate, //当前显示月份的第几天 
     showYear: showYear, //当前显示月份的年份
+    showWeek: getWeek(showYear, showMonth, showDate),
     beforeYear: beforeYear, //当前页上一页的年份
     beforMonth: beforMonth, //当前页上一页的月份
     afterYear: afterYear, //当前页下一页的年份

@@ -1,4 +1,4 @@
-@import "../../calendar/calendar.wxss";
+@import "calendar.wxss";
 
 .wrapper {
     padding-bottom: 160rpx;

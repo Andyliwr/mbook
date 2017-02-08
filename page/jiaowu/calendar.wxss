@@ -1,22 +1,22 @@
 .og-calendar {
-    background-color: #1D1D26;
     color: #FFF;
     padding: 0 0 40rpx 0;
 }
 .og-calendar .header {
     position: relative;
-    height: 120rpx;
-    line-height: 120rpx;
+    height: 80rpx;
+    line-height: 80rpx;
     font-size: 35rpx;
     text-align: center;
-    background: #E14848
+    background: #fff;
+    color: #fd9941;
 }
 .og-calendar .header .month-pre,
 .og-calendar .header .month-next {
     position: absolute;
     top: 0;
-    width: 120rpx;
-    height: 120rpx
+    width: 80rpx;
+    height: 100rpx
 }
 .og-calendar .header .btn:active {
     background: #D64343
@@ -27,18 +27,49 @@
 .og-calendar .header .month-next {
     right: 0;
 }
-.og-calendar .header .month-pre image,
-.og-calendar .header .month-next image {
+.og-calendar .header .month-pre icon,
+.og-calendar .header .month-next icon {
     margin-top: 30rpx;
-    width: 60rpx;
-    height: 60rpx;
+    width: 40rpx;
+    height: 40rpx;
+    display: inline-block;
 }
-
-.og-calendar .week {
-    border-top: 2rpx solid #333;
-    border-bottom: 2rpx solid #333;
+.og-calendar .header .month-pre .cleft-icon{
+    background-size:210rpx 210rpx;
+    background-position:0rpx 0rpx;
 }
-
+.og-calendar .header .month-next .cright-icon{
+    background-size:210rpx 210rpx;
+    background-position:-40rpx 0rpx;
+}
+.og-calendar .signNote{
+    background-color: #fff;
+    font-size: 30rpx;
+    padding: 15rpx 0 15rpx 30rpx;
+}
+.og-calendar .signNote .yellow-circle, .og-calendar .signNote .gray-circle{
+    display: inline-block;
+    width: 20rpx;
+    height: 20rpx;
+    vertical-align: middle;
+    border: none;
+    border-radius: 10rpx;
+    margin-right: 10rpx;
+}
+.og-calendar .signNote .yellow-circle{
+    background-color: #fd9941;
+}
+.og-calendar .signNote .gray-circle{
+    background-color: #888888;
+}
+.og-calendar .signNote .yellow-text{
+    color: #fd9941;
+    margin-right: 30rpx;
+}
+.og-calendar .signNote .gray-text{
+    color: #888888;
+    margin-right: 30rpx;
+}
 .og-calendar .col {
     width: 14.28571428571429%;
     display: inline-flex;
@@ -50,18 +81,24 @@
     display: block;
     width: 60rpx;
     height: 60rpx;
-    font-size: 32rpx;
+    font-size: 28rpx;
+    font-weight: 600;
     line-height: 60rpx;
     border: 2rpx solid transparent;
+    color: #888888;
+}
+.og-calendar .col text.black-text{
+    color: #000000;
 }
 .og-calendar .body .col text {
     border-radius: 50%;
+    color: #333333;
 }
 .og-calendar .body .col.active text {
     border-color: #E04343;
 }
-.og-calendar .body .col.old {
-    color: #7A7A7F
+.og-calendar .body .col.old text{
+    color: #888888 !important;
 } 
 .og-calendar .body .col.current text,
 .og-calendar .body .col text:active {

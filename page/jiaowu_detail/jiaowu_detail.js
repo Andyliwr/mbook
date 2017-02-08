@@ -1,5 +1,5 @@
 import DataService from '../../datas/DataService';
-import {getDateStr} from '../../utils/util';
+import {getDateStr} from '../../util/util';
 import {LEVEL} from '../../datas/Config';
 
 Page({
