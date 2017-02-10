@@ -1,35 +1,28 @@
+import {log, promiseHandle} from 'util/util';
+
 App({
-  onLaunch: function () {
-    console.log('App Launch')
-  },
-  onShow: function () {
-    console.log('App Show')
-  },
-  onHide: function () {
-    console.log('App Hide')
-  },
-  getUserInfo:function(cb){
-    var that = this
-    if(this.globalData.userInfo){
-      typeof cb == "function" && cb(this.globalData.userInfo)
-    }else{
-      //调用登录接口
-      wx.login({
-        success: function () {
-          wx.getUserInfo({
-            success: function (res) {
-              console.log(res)
-              that.globalData.userInfo = res.userInfo
-              typeof cb == "function" && cb(that.globalData.userInfo)
-            }
-          })
-        }
-      })
+  getUserInfo(cb) {
+    if (typeof cb !== "function") return;
+    let that = this;
+    if (that.globalData.userInfo) {
+      cb(that.globalData.userInfo);
+    } else {
+      promiseHandle(wx.login).then(() => promiseHandle(wx.getUserInfo)).then(res => {
+        that.globalData.userInfo = res.userInfo;
+        cb(that.globalData.userInfo);
+      }).catch(err => {
+        log(err);
+      });
     }
   },
+
   globalData: {
-    hasLogin: false,
-    userInfo:null,
-    wikiId:null,
+    userInfo: null
+  },
+
+  //自定义配置
+  settings: {
+    debug: true, //是否调试模式
+    moreLink: 'http://github.com/oopsguy'
   }
-})
+});

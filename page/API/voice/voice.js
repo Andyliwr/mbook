@@ -18,7 +18,7 @@ Page({
     var interval = setInterval(function () {
       that.data.recordTime += 1
       that.setData({
-        formatedRecordTime: util.formatTime(that.data.recordTime)
+        formatedRecordTime: util.formatTime2(that.data.recordTime)
       })
     }, 1000)
     wx.startRecord({
@@ -26,7 +26,7 @@ Page({
         that.setData({
           hasRecord: true,
           tempFilePath: res.tempFilePath,
-          formatedPlayTime: util.formatTime(that.data.playTime)
+          formatedPlayTime: util.formatTime2(that.data.playTime)
         })
       },
       complete: function () {
@@ -44,7 +44,7 @@ Page({
       that.data.playTime += 1
       that.setData({
         playing: true,
-        formatedPlayTime: util.formatTime(that.data.playTime)
+        formatedPlayTime: util.formatTime2(that.data.playTime)
       })
     }, 1000)
     wx.playVoice({
@@ -54,7 +54,7 @@ Page({
         that.data.playTime = 0
         that.setData({
           playing: false,
-          formatedPlayTime: util.formatTime(that.data.playTime)
+          formatedPlayTime: util.formatTime2(that.data.playTime)
         })
       }
     })
@@ -71,7 +71,7 @@ Page({
     this.data.playTime = 0
     this.setData({
       playing: false,
-      formatedPlayTime: util.formatTime(this.data.playTime)
+      formatedPlayTime: util.formatTime2(this.data.playTime)
     })
     wx.stopVoice()
   },
@@ -84,7 +84,7 @@ Page({
       playing: false,
       hasRecord: false,
       tempFilePath: '',
-      formatedRecordTime: util.formatTime(0)
+      formatedRecordTime: util.formatTime2(0)
     })
   }
 })

@@ -493,3 +493,82 @@ checkbox, radio{
 .email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon, .read-icon{
   background: url(../../image/iconset&20170206.png) no-repeat;
 }
+.cleft-icon, .cright-icon, .findXuefen-icon, .learnPlan-icon, .learnBook-icon, .chuFaRecord-icon, .add-icon, .edit-icon, .remove-icon, .cancel-icon{
+  background: url(../../image/jiaowu_iconset&20170210.png) no-repeat;
+}
+/* 教务的公共样式 */
+/*float action*/
+.float-container {
+  position: fixed;
+  bottom: 20rpx;
+  right: 40rpx;
+  overflow: hidden;
+}
+.float-action {
+  width: 60rpx;
+  height: 60rpx;
+  z-index: 100;
+  text-align: center;
+  opacity: .5;
+  margin-left: 40rpx;
+  float: right;
+  border: 1px solid #888;
+  border-radius: 50%;
+}
+
+.float-action:active {
+  opacity: 1
+}
+.float-action icon {
+    width: 60rpx;
+    height: 60rpx;
+}
+.add-icon{
+  background-size:300rpx 300rpx;
+  background-position:-58rpx -60rpx;
+}
+.edit-icon{
+  background-size:300rpx 300rpx;
+  background-position:-181rpx -60rpx;
+}
+.remove-icon{
+  background-size:300rpx 300rpx;
+  background-position:-245rpx -60rpx
+}
+.cancel-icon{
+  background-size:300rpx 300rpx;
+  background-position:-122rpx -60rpx;
+}
+.bg-normal {
+  background: #46BC62 !important;
+}
+.bg-warning {
+  background: #ECAA5B !important;
+}
+.bg-danger {
+  background: #E14848 !important;
+}
+
+.color-primary {
+  color: #46BC62 !important;
+}
+.color-warning {
+  color: #ECAA5B !important;
+}
+.color-danger {
+  color: #E14848 !important;
+}
+
+.border-normal {
+  border: 2rpx solid #46BC62 !important;
+}
+.border-warning {
+  border: 2rpx solid #ECAA5B !important;
+}
+.border-danger {
+  border: 2rpx solid #E14848 !important;
+}
+
+.text-center {
+  text-align: center !important;
+}

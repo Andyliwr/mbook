@@ -1,10 +1,12 @@
 {
   "pages": [
-     "page/booklist/booklist",
+    "page/jiaowu/jiaowu",
     "page/today/today",
     "page/welcome/welcome",
     "page/index/index",
-    "page/login/login"
+    "page/login/login",
+    "page/booklist/booklist",
+    "page/jiaowu_detail/jiaowu_detail"
   ],
   "window": {
     "navigationBarTextStyle": "white",
