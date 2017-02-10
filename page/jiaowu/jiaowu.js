@@ -34,13 +34,11 @@ Page({
 
   onLoad() {
     let _this = this;
-    
     promiseHandle(wx.getSystemInfo).then((data) => {
       _this.setData({
         updatePanelTop: data.windowHeight
       });
     });
-    
     changeDate.call(this);
   },
 
@@ -66,7 +64,6 @@ Page({
     data['selected']['year'] = year;
     data['selected']['month'] = month;
     data['selected']['date'] = date;
-    
     this.setData({ data: data });
 
     changeDate.call(this, new Date(year, parseInt(month) - 1, date));
@@ -157,7 +154,7 @@ Page({
           todoInputValue: ''
         });
         loadItemListData.call(this);
-      })
+      });
       
       closeUpdatePanel.call(this);
     } else {

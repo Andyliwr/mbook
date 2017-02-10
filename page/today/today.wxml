@@ -43,7 +43,7 @@
         <swiper-item class="{{index == currentEmail? 'active': ''}}">
           <view>
             <view class="author">
-              <image src="{{item.digest.author_img}}"></image>
+              <image src="{{item.digest.author_img}}" mode="scaleToFill"></image>
               <view>
                 <text class="name">{{item.digest.author_name}}</text>
                 <br />
@@ -56,7 +56,7 @@
               <text class="other">{{item.digest.content.other}}</text>
             </view>
           </view>
-          <image src="{{item.bgImgUrl}}" class="slide-image" width="100%" height="100%" />
+          <image src="{{item.bgImgUrl}}" class="slide-image" mode="scaleToFill" />
         </swiper-item>
       </block>
     </swiper>

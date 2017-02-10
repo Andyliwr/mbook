@@ -40,17 +40,24 @@
     </view>
     <view class="body row">  
       <block wx:for="{{data.dates}}" wx:key="_id">
-        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ? 'active' : ''}}">
+        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ?'active' : ''}}">
           <text>{{item.date}}</text>
         </view> 
       </block>
     </view>
+    view.
   </view>
 
-  <view class="show-date">
+  <!-- <view class="show-date">
     <text>{{data.selectDateText}}</text>
+  </view> -->
+  <view class="gray-rect"></view>
+  <view class="more-options">
+    <view class="option-item"><icon class="findXuefen-icon"></icon><text>学分查询</text></view>
+    <view class="option-item"><icon class="learnPlan-icon"></icon><text>学习计划</text></view>
+    <view class="option-item"><icon class="learnBook-icon"></icon><text>学习手册</text></view>
+    <view class="option-item last"><icon class="chuFaRecord-icon"></icon><text>处罚记录</text></view>
   </view>
-
   <view class="common-list">
     <view class="header" wx:if="{{itemList.length > 0}}">
       <text>事项信息</text>
@@ -61,20 +68,22 @@
         <view class="inner {{isEditMode ? 'with-check' : ''}}">
           <view class="checker" wx:if="{{isEditMode}}">
             <icon type="circle" wx:if="{{!item.checked}}" color="#FFF" size="20" />
-            <icon type="success" wx:else color="#E14848" size="20" />
+            <icon type="success" wx:else color="#09BB07" size="20" />
           </view>
-          <image wx:if="{{item.level == 1}}" class="icon" src="../../image/jiaowu/success.png" />
-          <image wx:if="{{item.level == 2}}" class="icon" src="../../image/jiaowu/notice.png" />
-          <image wx:if="{{item.level == 3}}" class="icon" src="../../image/jiaowu/fav-round.png" />
+          <text wx:if="{{item.level == 1}}" class="color-icon important"></text>
+          <text wx:if="{{item.level == 2}}" class="color-icon notSoImportant"></text>
+          <text wx:if="{{item.level == 3}}" class="color-icon nomarl"></text>
           <view class="content">
             <text class="title">{{item.title}}</text>
           </view>
         </view>
       </view>
-    </block> 
+    </block>
 
     <view class="header text-center" wx:if="{{!itemList || itemList.length <= 0}}">
-      <text>当前日期没有事项记录</text>
+      <view class="loadmore_line">
+            <text class="loadmore_tips">当前没有事项记录</text>
+      </view>
     </view>
   </view>
 
@@ -82,22 +91,21 @@
   <!--float actions-->
   <view class="float-container">
     <view class="float-action" bindtap="showUpdatePanelEvent" wx:if="{{!isEditMode}}">
-      <image src="../../image/jiaowu/plus.png" />
+      <icon class="add-icon"></icon>
     </view>
 
     <view class="float-action operate" bindtap="editClickEvent" wx:if="{{!isEditMode && itemList.length > 0}}">
-      <image src="../../image/jiaowu/edit.png" />
+      <icon class="edit-icon"></icon>
     </view>
 
     <view class="float-action operate" wx:if="{{isEditMode && editItemList.length > 0}}" bindtap="removeRangeTapEvent">
-      <image src="../../image/jiaowu/remove.png" />
+      <icon class="remove-icon"></icon>
     </view>
 
     <view class="float-action cancel" bindtap="cancelEditClickEvent" wx:if="{{isEditMode}}">
-      <image src="../../image/jiaowu/cancel.png" />
+      <icon class="cancel-icon"></icon>
     </view>
   </view>
-
 </view>
 
 <view class="mask" hidden="{{!isMaskShow}}"></view>
@@ -112,8 +120,8 @@
   </view>
 </view>
 
-<view class="updatePanel" style="top: {{updatePanelTop}}px;height:{{updatePanelTop}}px" animation="{{updatePanelAnimationData}}">
-  <!--<view class="title"><text>添加事项</text></view>-->
+<view class="updatePanel" style="top: {{updatePanelTop}}px;height:{{updatePanelTop*0.6}}px" animation="{{updatePanelAnimationData}}">
+  <view class="title"><text>添加事项</text></view>
   <input placeholder="请输入事项标题" value="{{todoInputValue}}" bindchange="todoInputChangeEvent" />
   <textarea placeholder="请输入事项内容" value="{{todoTextAreaValue}}" bindblur="todoTextAreaChangeEvent"></textarea>
   <view class="level">
