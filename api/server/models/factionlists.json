@@ -1,0 +1,40 @@
+{
+  "name": "factionlists",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "headerImage": {
+      "type": "string"
+    },
+    "updateTime": {
+      "type": "date"
+    },
+    "author": {
+      "type": "string"
+    },
+    "des": {
+      "type": "string"
+    },
+    "factionName": {
+      "type": "string",
+      "required": true,
+      "default": "未知小说"
+    },
+    "sectionArray": {
+      "type": [
+        "string"
+      ],
+      "required": true,
+      "default": [
+        "[]"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
