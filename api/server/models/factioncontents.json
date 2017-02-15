@@ -1,0 +1,33 @@
+{
+  "name": "factioncontents",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "sectionNum": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "sectionTitle": {
+      "type": "string",
+      "required": true,
+      "default": "未知张章节"
+    },
+    "sectionContent": {
+      "type": "string"
+    },
+    "sectionResource": {
+      "type": "string"
+    },
+    "recentUpdateTime": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
