@@ -25,12 +25,12 @@ var app = express();
 var QI_DIAN_WEB = 'http://r.qidian.com/';
 var ZONG_HENG_WEB = 'http://book.zongheng.com/rank.html';
 var ALL_TYPES = [
-    {standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '全本'},
-    {standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻·玄幻'},
-    {standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '都市·娱乐'},
-    {standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠·仙侠'},
-    {standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史·军事'},
-    {standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻·游戏'}
+    {standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '百度小说月票榜'},
+    {standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻玄幻点击榜'},
+    {standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '言情小说点击榜'},
+    {standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠仙侠点击榜'},
+    {standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史军事点击榜'},
+    {standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻游戏点击榜'}
 ];
 //最终数据
 var finalData = [];
@@ -62,34 +62,38 @@ var init = function(){
     //     getFactionRankList();
     // });
     logger.info('今天是 '+myAppTools.getToDayStr()+'，排行版每天18:00点更新.......');
-    //更新数据库factionList
-    getFactionRankList();
+    getQdFactionRankList();
 };
 
-function getFactionRankList(){
+function getQdFactionRankList(){
     //爬取起点小说网的排行榜
     var QzEp = new eventproxy();
     QzEp.all('hasFinishedQidian', function(qiDianData){
-        //爬取纵横小说网的排行榜
-        superagent.get(ZONG_HENG_WEB)
-            .end(function (err, res) {
-                if (err) {
-                    next(err);
-                }
-                var $ = cheerio.load(res.text);
-                console.log($('.rank-header .type-list').html());
-            });
+        // logger.info('即将开始爬取纵横网的排行榜....')
+        getZhFactionRankList();
     });
     superagent.get(QI_DIAN_WEB)
         .end(function (err, res) {
             if (err) {
-                next(err);
+                console.log(err);
+                return;
             }
             var $ = cheerio.load(res.text);
             var QdEp = eventproxy();
             QdEp.after('getQdRank', ALL_TYPES.length, function(allQdRankData){
-                console.log(ALL_TYPES);
-                console.log('所有事件均已返回');
+                //使用计时器来判断起点小说排行榜是否爬取完毕
+                qdTimmer = setInterval(function(){
+                    var isQdReady = ALL_TYPES.every(function(item, index, array){
+                        return item.qdRank.every(function(item2, index2, array2){
+                            return item2.author && item2.headImg;
+                        });
+                    });
+                    if(isQdReady){
+                        logger.info('起点小说排行榜爬取完毕.....');
+                        clearInterval(qdTimmer);
+                        QzEp.emit('hasFinishedQidian', 'qd');
+                    }
+                }, 100);
             });
             ALL_TYPES.forEach(function(item, index, array){
                 $('.rank-header .type-list p a').each(function(index, element){
@@ -98,7 +102,7 @@ function getFactionRankList(){
                         item.qd_url = 'http://r.qidian.com/?chn=' + $element.data('chanid');
                         superagent.get(item.qd_url)
                             .end(function(err, res){
-                                if(err) next(err);
+                                if(err) console.log(err);
                                 var $ = cheerio.load(res.text);
                                 $('h3.wrap-title').each(function(index , element){
                                     var $element = $(element);
@@ -124,22 +128,92 @@ function getFactionRankList(){
                                                 });
                                             }
                                             //继续爬取作者名称、des和headImg
-                                            superagent.get(item.qdRank[index].url)
+                                            superagent.get('http:'+item.qdRank[index].url)
                                                 .end(function(err, res){
-                                                    if(err){}
+                                                    if(err){
+                                                        console.log(err);
+                                                        return;
+                                                    }
+                                                    var $ = cheerio.load(res.text);
+                                                    item.qdRank[index].headImg = $('.book-information .book-img a img').attr('src');
+                                                    item.qdRank[index].author = $('.book-information .book-info .writer').text();
                                                 });
                                         });
                                     }
                                 });
-                                QdEp.emit('getQdRank', $('h3.wrap-title').text());
+                                //此处使用emit并没有什么卵用，superagent是异步的
+                                QdEp.emit('getQdRank', 'qd');
                             });
                     }
                 });
             });
         });
 };
-// getFactionSectionList();
 
+function getZhFactionRankList(){
+    var finalEp = new eventproxy();
+    finalEp.all('hasFinishedZongheng', function(zongHengData){
+
+    });
+    
+    //爬取纵横小说网的排行榜
+    superagent.get(ZONG_HENG_WEB)
+        .end(function (err, res) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            var $ = cheerio.load(res.text);
+            var ZhEp = new eventproxy();
+            ZhEp.after('getZhRank', ALL_TYPES.length, function(allZhRankData){
+                //使用计时器来判断纵横小说排行榜是否爬取完毕
+                zhTimmer = setInterval(function(){
+                    var isZhReady = ALL_TYPES.every(function(item, index, array){
+                        return item.zhRank.every(function(item2, index2, array2){
+                            return item2.author && item2.headImg;
+                        });
+                    });
+                    if(isZhReady){
+                        logger.info('纵横小说排行榜爬取完毕.....');
+                        clearInterval(zhTimmer);
+                        QzEp.emit('hasFinishedZongheng', 'zh');
+                    }
+                }, 100);
+            });
+            ALL_TYPES.forEach(function(item, index, array){
+                item.zhRank = [];
+                if(index == 0){
+                    $('.ph_list:first-child .book_list ul li a').each(function(idx, ele){
+                        $ele = $(ele);
+                        item.zhRank.push({
+                            num: index+1,
+                            factionName: $ele.text(),
+                            author: '',
+                            headImg: '',
+                            url: $ele.attr('href')
+                        });
+                    });
+                    
+                }else{
+                    $('.tab .head span:last-child').each(function(idx, ele){
+                        $ele = $(ele);
+                        if(item.zongheng == $ele.text()){
+                            console.log($ele.parent().next().next().children('ul').children('li').children('a').text());
+                            item.zhRank.push({
+                                num: index+1,
+                                factionName: $ele.parent().next().next().children('ul').children('li').children('a').text(),
+                                author: '',
+                                headImg: '',
+                                url: $ele.parent().next().next().children('ul').children('li').children('a').attr('href')
+                            });
+                        }
+                    });
+                }
+                console.log(item);
+            });
+            
+        });
+}
 var getFactionContent = function(){
 
     ep.after('getFactionContentEvent', firstSignUrls.length, function(allEvents){
