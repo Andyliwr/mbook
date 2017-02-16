@@ -6,7 +6,8 @@
     "page/index/index",
     "page/login/login",
     "page/booklist/booklist",
-    "page/jiaowu_detail/jiaowu_detail"
+    "page/jiaowu_detail/jiaowu_detail",
+    "page/user/user"
   ],
   "window": {
     "navigationBarTextStyle": "white",

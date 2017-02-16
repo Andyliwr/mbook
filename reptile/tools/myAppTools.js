@@ -89,7 +89,7 @@ var getElementArray = function(jsonArray, element){
 
 //去掉第和章之间的非数字
 var removeNaN = function(str){
-  var standardNum = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '千', '百', '万', '亿'];
+  var standardNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '千', '百', '万', '亿'];
   if(typeof str == 'string'){
     var strArray = str.split("");
     for(var i=0; i<strArray.length; i++){
@@ -104,8 +104,47 @@ var removeNaN = function(str){
   }
 };
 
+//获取今天的日期
+var getToDayStr = function(){
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth();
+    month = month>9? month: '0'+month;
+    var day = today.getDate();
+    day = day>9? day: '0'+day;
+    var week = today.getDay();
+    switch(week){
+        case 1:
+            week = '星期一';
+            break;
+        case 2:
+            week = '星期二';
+            break;
+        case 3:
+            week = '星期三';
+            break;
+        case 4:
+            week = '星期四';
+            break;
+        case 5:
+            week = '星期五';
+            break;
+        case 6:
+            week = '星期六';
+            break;
+        case 0:
+            week = '星期天';
+            break;
+        default:
+            week = '';
+            break;
+    }
+    return year+'年'+month+'月'+day+'日 '+week;
+};
+
 exports.isInArray = isInArray;
 exports.selectCorrect = selectCorrect;
 exports.concatJSON = concatJSON;
 exports.getElementArray = getElementArray;
 exports.removeNaN = removeNaN;
+exports.getToDayStr = getToDayStr;

@@ -49,4 +49,6 @@ var j = schedule.scheduleJob('42 * * * *', function(){
 
 3. mongo菜鸟笔记
 + 怎更新文档：
+```javascript
 db.factionlistmodels.update({factionName: '大主宰'}, {$set: {sectionArray:  [....]}});
+```
