@@ -26,7 +26,7 @@ db.on('error', function (err) {
 });
 db.once('open', function () {
   // we're connected!
-  logger.info('连接数据成功.....');
+  logger.info('连接数据库成功.....');
 });
 
 //定义存储小说内容的schema
