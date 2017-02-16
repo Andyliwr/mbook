@@ -222,13 +222,61 @@ function getZhFactionRankList(){
                             logger.warn('调用获取纵横网小说排行前十的接口失败，暂不更新汇总的前十排名...\n....');
                             return;
                         }else{
-                            console.log(res.rawResponse);
-                            var jsonFormatExp = new RegExp('\[.*\]');
-                            var rankArray = jsonFormatExp.exec(res.rawResponse)[0];
-                            //没办法
-                            // console.log(rankArray);
-                            rankArray.forEach(function(rankItem, rankIndex, rankarray){
-                                console.log(rankItem);
+                            //没办法，只能使用正则一个个提取了，typeof rankArray == 'string'
+                            //name
+                            var bookNameExp = new RegExp('"bookName":"[\u4e00-\u9fffa-zA-Z]*"', 'g');
+                            var rankNameArr = res.rawResponse.match(bookNameExp).map(function(nameItem, nameIndex, nameArr){
+                                var tempStr = nameItem.replace(/"bookName":"/, "");
+                                return tempStr.substring(0, tempStr.length-1);
+                            });
+                            //如果数量不足10，补全
+                            if(rankNameArr.length != 10){
+                                for(var i=0; i<(10-rankNameArr.length); i++){
+                                    rankNameArr.push('未知名小说');
+                                }
+                            }
+                            //url
+                            var bookIdExp = new RegExp('"bookId":[0-9]*', 'g');
+                            var rankUrlArr = res.rawResponse.match(bookIdExp).map(function(urlItem, urlIndex, urlArr){
+                                return 'http://book.zongheng.com/book/'+urlItem.replace(/"bookId":/, "")+'.html';
+                            });
+                            //如果数量不足10，补全
+                            if(rankUrlArr.length != 10){
+                                for(var i=0; i<(10-rankUrlArr.length); i++){
+                                    rankUrlArr.push('noneUrl');
+                                }
+                            }
+                            //获取详细信息
+                            rankUrlArr.forEach(function(urlItem, urlIndex, urlArr){
+                                item.zhRank.push({
+                                        num: urlIndex+1,
+                                        factionName: rankNameArr[urlIndex],
+                                        author: '',
+                                        headImg: '',
+                                        des: '',
+                                        url: urlItem
+                                });
+                                // if(urlItem != 'noneUrl'){
+                                //    superagent.get(urlItem)
+                                //     .end(function(err, res){
+                                //         if(err){
+                                //             logger.warn('爬取起点《'+item.zhRank[index].factionName+'》的图片和作者失败');
+                                //             item.zhRank[urlIndex].headImg = 'http://chuantu.biz/t5/47/1487230810x1699162616.png';//默认图片
+                                //             item.zhRank[urlIndex].des = '这是一本很长很长很长很长很长的书';
+                                //             item.zhRank[urlIndex].author = '未知名作者';
+                                //         }
+                                //         var $ = cheerio.load(res.text);
+                                //         item.zhRank[urlIndex].headImg = $('.main .book_cover p a img').attr('src');
+                                //         item.zhRank[urlIndex].des = $('.main .status .booksub .info_con').text().trim();
+                                //         console.log(item.zhRank[urlIndex].des);
+                                //         item.zhRank[urlIndex].author = $('.main .status .booksub a:first-child').text().trim();
+                                //         console.log(item.zhRank[urlIndex].author);
+                                //     });
+                                // }else{
+                                //     item.zhRank[urlIndex].headImg = 'http://chuantu.biz/t5/47/1487230810x1699162616.png';//默认图片
+                                //     item.zhRank[urlIndex].des = '这是一本很长很长很长很长很长的书';
+                                //     item.zhRank[urlIndex].author = '未知名作者';
+                                // }
                             });
                         }
                       });
