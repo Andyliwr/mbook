@@ -1,0 +1,50 @@
+{
+  "name": "factionranks",
+  "plural": "xs_rank",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "standard": {
+      "type": "string",
+      "required": true
+    },
+    "engName": {
+      "type": "string",
+      "required": true
+    },
+    "qidian": {
+      "type": "string",
+      "required": true
+    },
+    "zongheng": {
+      "type": "string",
+      "required": true
+    },
+    "qd_url": {
+      "type": "string"
+    },
+    "updateTime": {
+      "type": "date",
+      "required": true
+    },
+    "zhRank": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    },
+    "qdRank": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
