@@ -490,11 +490,11 @@ checkbox, radio{
 }
 
 /*所有的雪碧图icon*/
-.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon, .read-icon{
+.email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon, .read-icon, .search-icon{
   background: url(../../image/iconset&20170206.png) no-repeat;
 }
-.cleft-icon, .cright-icon, .findXuefen-icon, .learnPlan-icon, .learnBook-icon, .chuFaRecord-icon, .add-icon, .edit-icon, .remove-icon, .cancel-icon{
-  background: url(../../image/jiaowu_iconset&20170210.png) no-repeat;
+.cleft-icon, .cright-icon, .findXuefen-icon, .learnPlan-icon, .learnBook-icon, .chuFaRecord-icon, .add-icon, .edit-icon, .remove-icon, .cancel-icon, .shop-icon{
+  background: url(../../image/jiaowu_iconset&20170218.png) no-repeat;
 }
 /* 教务的公共样式 */
 /*float action*/
