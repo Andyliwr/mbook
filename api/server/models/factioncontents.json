@@ -1,6 +1,6 @@
 {
   "name": "factioncontents",
-  "plural": "xs_list",
+  "plural": "xs_content",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
