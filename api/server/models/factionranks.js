@@ -1,8 +1,8 @@
 'use strict';
 //在模型脚本中可以直接require ／server/server 获得app对象，一旦你获得了app对象，你可以通过app的models属性轻易得到你想要的模型对象。
-var loopback = require('loopback');
+// var loopback = require('loopback');
 var app = require('../server.js');
-var LoopBackContext = require('loopback-context');
+// var LoopBackContext = require('loopback-context');
 
 module.exports = function (Factionrank) {
   //定义一个简单的远程方法
@@ -40,27 +40,42 @@ module.exports = function (Factionrank) {
   );
 
   //单独获取起点小说排行榜
-  Factionrank.getQdRank = function (msg, cb) {
-    cb(null, 'Greetings... ' + msg);
+  Factionrank.getRank = function (rankType, cb) {
+    var app = Factionrank.app;
+    var resultArr = []
+    app.models.factionranks.find(function (err, sourceData) {
+      if(err){
+        console.log('访问排行榜数据库失败...'+err);
+        return;
+      }
+      if(rankType == 'qd'){
+        sourceData.forEach(function(item){
+          resultArr.push({standard: item.standard, engName: item.engName, qdRank: item.qdRank});
+        });
+      }else if(rankType == 'zh'){
+        sourceData.forEach(function(item){
+          resultArr.push({standard: item.standard, engName: item.engName, zhRank: item.zhRank});
+        });
+      }else{
+        console.log('The param of getRank is error!....');
+      }
+      cb(null, resultArr);
+    });
   };
 
   //使用remoteMethod去注册远程方法
   Factionrank.remoteMethod(
-    'greet', {
-      accepts: { //定义远程方法接受的参数。这些参数对应你model对应静态方法的参数，arg也可以是JSON数组，以此来定义多个参数
-        arg: 'msg', //参数名
-        type: 'string',//参数类型
-        description: '需要输入的名字'
-      },
-      returns: { //描述远程方法callback的参数, 默认returns是一个空数组[]
-        arg: 'greeting',
+    'getRank', {
+      accepts: {
+        arg: 'rankType',
         type: 'string',
-        description: '返回的参数是一句问候语句' //一段描述参数的文本
+        description: 'qd,zh'
       },
-      http: {path: '/sayhi', verb: 'get'}, //path是暴露的url，verb是什么请求类型---get,post,put,del,all
-      description: [
-        "description：这是一个远程方法的范本,",
-        "范本，哈哈，哈哈."], // 方法的描述, 可以把一个长的描述分割成数段放到一个字符串数组中去
-    }
-  );
+      returns: {
+        arg: 'data',
+        type: 'array',
+        description: '返回的结果数组'
+      },
+      http: {path: '/getRank', verb: 'get'}
+    });
 };
