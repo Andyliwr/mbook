@@ -20,7 +20,10 @@
 	display: inline-block;
 	border-radius: 6rpx;
 	padding-left: 20rpx;
-	font-size: 36rpx;
+	font-size: 28rpx;
+}
+.booklist-container .placeholder{
+	padding-left: 70rpx;
 }
 .booklist-container .search .section > icon.search-icon{
 	position:absolute;

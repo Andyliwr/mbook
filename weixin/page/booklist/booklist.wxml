@@ -1,7 +1,7 @@
 <view class="booklist-container">
   <view class="search">
     <view class="section">
-      <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" />
+      <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" placeholder="请输入搜索内容" />
       <icon class="search-icon" color="#fff" style="display:{{isSearching? 'none': 'inline-block'}}"></icon>
       <icon class="shop-icon" bindtap="goToShop"></icon>
     </view>

@@ -1,2 +1,9 @@
-<!--page/shop/shop.wxml-->
-<text>page/shop/shop.wxml</text>
+<view class="shop-container">
+  <view class="search">
+    <view class="section">
+      <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" placeholder="请输入搜索内容" placeholder-class="placeholder" />
+      <icon class="search-icon" color="#fff" style="display:{{isSearching? 'none': 'inline-block'}}"></icon>
+      <icon class="shop-icon" bindtap="goToShop"></icon>
+    </view>
+  </view>
+</view>

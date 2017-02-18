@@ -1,1 +1,48 @@
-/* page/shop/shop.wxss */
+.shop-container{
+	background-color: #F2F2F2;
+}
+.shop-container .search{
+	background-color:#fd9941;
+	height:85rpx;
+}
+.shop-container .search .section{
+	width:96%;
+	margin:0 auto;
+	height:70rpx;
+	position:relative;
+}
+.shop-container .search .section > input{
+	background-color:#fbb16f;
+	width:86%;
+	height:100%;
+	line-height:100%;
+	color: #fff;
+	display: inline-block;
+	border-radius: 6rpx;
+	padding-left: 20rpx;
+	font-size: 30rpx;
+}
+.shop-container .placeholder{
+    padding-left: 70rpx
+}
+.shop-container .search .section > icon.search-icon{
+	position:absolute;
+	top:10rpx;
+	left:20rpx;
+	width:50rpx;
+	display:inline-block;
+	height:50rpx;
+	background-size:230rpx 230rpx;
+	background-position:-90rpx -90rpx;
+	z-index: 999;
+}
+.shop-container .search .section > icon.shop-icon{
+	display:inline-block;
+	width:40rpx;
+	height:40rpx;
+	background-size:230rpx 230rpx;
+	background-position:0rpx -100rpx;
+	position:absolute;
+	right:10rpx;
+	top:15rpx;
+}
