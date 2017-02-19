@@ -1,8 +1,8 @@
 {
   "pages": [
     "page/shop/shop",
-    "page/jiaowu/jiaowu",
     "page/booklist/booklist",
+    "page/jiaowu/jiaowu",
     "page/today/today",
     "page/index/index",
     "page/login/login",

@@ -26,7 +26,8 @@ Page({
         isShow: true //判断是不是搜索结果
       }
     ],
-    isSearching: false
+    isSearching: false,
+    searchValue: ''
   },
   onReady: function () {
     var self = this;
@@ -85,7 +86,7 @@ Page({
           isNeedtoChage = false;
         }
         //查询小说作者名称
-        if(item.author.indexOf(searchStr) >=0){
+        if(item.author.indexOf(searchStr) >=0){ 
           // item.author = self.findAndSigned(searchStr, item.author);
           item.isShow = true;
           isNeedtoChage = false;
@@ -128,5 +129,13 @@ Page({
       console.log('The param of findAndSigned is error!....')
       return '';
     }
+  },
+  clearSearchContent: function(){
+    //将不显示的书籍设置显示
+    var allBooks = this.data.books;
+    allBooks.forEach(function(item){
+      item.isShow = true;
+    });
+    this.setData({searchValue: '', books: allBooks});
   }
 });

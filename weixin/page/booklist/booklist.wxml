@@ -1,9 +1,19 @@
 <view class="booklist-container">
   <view class="search">
     <view class="section">
-      <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" placeholder="请输入搜索内容" />
-      <icon class="search-icon" color="#fff" style="display:{{isSearching? 'none': 'inline-block'}}"></icon>
-      <icon class="shop-icon" bindtap="goToShop"></icon>
+      <view class="form">
+        <view class="input-block">
+          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}"/>
+          <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
+        </view>
+        <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
+          <icon class="search-icon" color="#fff"></icon>
+          <text>请输入搜索内容</text>
+        </view>
+      </view>
+      <view class="toShop" bindtap="goToShop">
+        <icon class="shop-icon"></icon>
+      </view>
     </view>
   </view>
   <view class="header">
