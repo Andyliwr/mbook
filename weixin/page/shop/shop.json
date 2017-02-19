@@ -2,6 +2,6 @@
     "backgroundTextStyle":"light",
     "backgroundColor":"#fff",
     "navigationBarBackgroundColor": "#FD9941",
-    "navigationBarTitleText": "我的书单",
+    "navigationBarTitleText": "书城",
     "navigationBarTextStyle":"white"
 }

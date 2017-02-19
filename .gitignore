@@ -1,1 +1,8 @@
+# 忽略idea
+.idea
+
+# reptile下的node_modules
 reptile/node_modules/
+
+# api下的node_modules
+api/node_modules/

@@ -142,9 +142,27 @@ var getToDayStr = function(){
     return year+'年'+month+'月'+day+'日 '+week;
 };
 
+var isTwoJSONArrSame = function(jsonArr1, jsonArr2){
+    if(jsonArr1 instanceof Array && jsonArr2 instanceof Array){
+        if(jsonArr1.length == jsonArr2.length){
+            return jsonArr1.every(function (item, index) {
+                var str1 = JSON.stringify(item);
+                var str2 = JSON.stringify(jsonArr2[index]);
+                return str1 == str2;
+            });
+        }else{
+            return false;
+        }
+    }else{
+        console.log('传给isTwoJSONArrSame的参数格式错误....');
+        return false;
+    }
+}
+
 exports.isInArray = isInArray;
 exports.selectCorrect = selectCorrect;
 exports.concatJSON = concatJSON;
 exports.getElementArray = getElementArray;
 exports.removeNaN = removeNaN;
 exports.getToDayStr = getToDayStr;
+exports.isTwoJSONArrSame = isTwoJSONArrSame;

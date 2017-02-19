@@ -1,6 +1,78 @@
 .booklist-container{
 	background-color: #F2F2F2;
 }
+.booklist-container .search{
+	background-color:#fd9941;
+	height:85rpx;
+}
+.booklist-container .search .section{
+	width:96%;
+	margin:0 auto;
+	height:70rpx;
+	position:relative;
+}
+.booklist-container .section .form{
+	background-color:#fbb16f;
+	width:86%;
+	height:100%;
+}
+.booklist-container .search .input-block{
+	width: 100%;
+	height: 100%;
+	line-height:100%;
+	color:#fff;
+	display:inline-block;
+	border-radius:6rpx;
+	font-size:28rpx;
+	position:relative;
+}
+.booklist-container .search .input-block > input{
+	width:100%;
+	padding-left:20rpx;
+	height:100%;
+	box-sizing: border-box;
+}
+.booklist-container .search .input-block > icon{
+	height:70%;
+	position:absolute;
+	right:17rpx;
+	top:17rpx;
+	z-index: 999;
+}
+.booklist-container .search .search-block{
+	position:absolute;
+	top:14rpx;
+	left:20rpx;
+	height:50rpx;
+	line-height:100%;
+	font-size:32rpx;
+	color:#ddd;
+}
+.booklist-container icon.search-icon{
+	width:50rpx;
+	display:inline-block;
+	height:100%;
+	background-size:230rpx 230rpx;
+	background-position:-90rpx -90rpx;
+	vertical-align: middle;
+}
+.booklist-container .toShop{
+	width: 80rpx;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.booklist-container icon.shop-icon{
+	display:inline-block;
+	width:40rpx;
+	height:40rpx;
+	background-size:230rpx 230rpx;
+	background-position:0rpx -100rpx;
+	position:absolute;
+	right:10rpx;
+	top:15rpx;
+}
 .booklist-container .header{
 	text-align: center;
 	position: relative;
@@ -84,6 +156,7 @@
 	float: left;
 	display: inline-block;
 	margin-left: -100%;
+	margin-bottom: 20rpx;
 }
 .booklist-container .list .bookInfo{
 	float: left;
@@ -92,6 +165,7 @@
 	font-size: 22rpx;
 	box-sizing:border-box;
 	position: relative;
+	margin-bottom: 20rpx;
 }
 .booklist-container .list .bookInfo::after{
 	content: "";

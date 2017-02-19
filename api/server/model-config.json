@@ -43,5 +43,9 @@
   "factionlists": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "factionranks": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }

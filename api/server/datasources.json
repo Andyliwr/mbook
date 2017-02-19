@@ -4,11 +4,11 @@
     "connector": "memory"
   },
   "mongodb": {
-    "host": "ds021326.mlab.com",
-    "port": 21326,
-    "url": "mongodb://lidikang:121960425mongo@ds021326.mlab.com:21326/myapp",
+    "host": "172.0.0.1",
+    "port": 27017,
+    "url": "mongodb://lidikang:123456@localhost:27017/myapp",
     "database": "myapp",
-    "password": "121960425mongo",
+    "password": "123456",
     "name": "mongodb",
     "user": "lidikang",
     "connector": "mongodb"

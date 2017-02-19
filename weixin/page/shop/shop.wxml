@@ -1,0 +1,103 @@
+<view class="shop-container">
+  <view class="search">
+    <view class="section">
+      <view class="form">
+        <view class="input-block">
+          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}" />
+          <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
+        </view>
+        <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
+          <icon class="search-icon" color="#fff"></icon>
+          <text>请输入搜索内容</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="search-content {{isSearching? 'pt-page-moveToLeft': ''}}" style="display: {{isSearching? 'block': 'none'}}">
+    <view class="search-tips">
+      <view class="tips-item">猜你喜欢</view>
+    </view>
+    <view class="history">
+      <view class="history-item">
+        <icon type="search" color="#99a0aa" size="13"></icon>
+        <view><text>烟雨江南</text></view>
+      </view>
+      <view class="history-item">
+        <icon type="search" color="#99a0aa" size="13"></icon>
+        <view><text>大主宰</text></view>
+      </view>
+    </view>
+    <view class="clearBtn"><text>清除历史记录</text></view>
+  </view>
+  <view class="shop-content">
+    <view class="" topic>
+      <view class="header">
+        <text class="text-underline">推荐</text>专题
+      </view>
+      <view class="topic-container">
+        <view class="topic-item" wx:for="{{topic}}" wx:key="id">
+          <image src="{{item.headImg}}" mode="scaleToFill" bindtap="goRecommendDetai"></image>
+        </view>
+      </view>
+    </view>
+    <view class="rank">
+      <view class="qdRank">起点小说榜</view>
+      <view class="zhRank">纵横小说榜</view>
+    </view>
+    <view class="recommend">
+      <view class="header">
+        <text class="text-underline">热门</text>推荐
+        <view class="recommend-container">
+          <view class="recommend-item" wx:for="{{recommend}}" wx:key="bookId" data-bookid="{{item.bookId}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}">
+            <image src="{{item.headImg}}" mode="scaleToFill"></image>
+            <view class="bookName">{{item.name}}</view>
+            <view class="author">{{item.author}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="sort">
+      <view class="header">
+        <text class="text-underline">分类</text>
+      </view>
+      <view class="sort-container">
+        <view class="sort-item" data-engName="total">
+          <icon class="all-icon"></icon>
+          <view>全部</view>
+        </view>
+        <view class="sort-item" data-engName="xuanhuan">
+          <icon class="xuanhuan-icon"></icon>
+          <view>玄幻</view>
+        </view>
+        <view class="sort-item" data-engName="yanqing">
+          <icon class="yanqing-icon"></icon>
+          <view>言情</view>
+        </view>
+        <view class="sort-item" data-engName="wuxia">
+          <icon class="wuxia-icon"></icon>
+          <view>武侠</view>
+        </view>
+        <view class="sort-item" data-engName="lishi">
+          <icon class="lishi-icon"></icon>
+          <view>历史</view>
+        </view>
+        <view class="sort-item" data-engName="kehuan">
+          <icon class="kehuan-icon"></icon>
+          <view>科幻</view>
+        </view>
+      </view>
+    </view>
+    <view class="new">
+      <view class="header">
+        <text class="text-underline">新书</text>推荐
+      </view>
+      <view class="new-container">
+        <view class="new-item" wx:for="{{recommend}}" wx:key="bookId" data-bookid="{{item.bookId}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}">
+          <image src="{{item.headImg}}" mode="scaleToFill"></image>
+          <view class="bookName">{{item.name}}</view>
+          <view class="author">{{item.author}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
