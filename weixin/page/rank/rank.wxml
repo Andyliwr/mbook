@@ -7,7 +7,18 @@
     </view>
     <view class="tab-content">
     	<view class="content-item" wx:for="{{rankData}}" wx:for-index="contentIndex" wx:for-item="contentItem" wx:key="engName" data-type="{{item.engName}}">
+    		<view class="book-item" wx:for="{{contentItem.qdRank || contentItem.zhRank}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="num" data-type="{{item.engName}}">
+    			
+    		</view>
     		<text class="num">{{(contentIndex+1)+'. '}}</text>
+    		<view class="bookInfo">
+		        <text class="bookName">{{item.bookName}}</text>
+		        <text class="author">
+		          <text class="text-underline">作者：</text>{{item.author}}</text>
+		        <text class="bookDes">{{item.bookDes}}</text>
+		        <icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
+	      	</view>
+	      	<image src="{{contentItem.img}}" mode="scaleToFill" />
     	</view>
     </view>
 </view>
