@@ -1,13 +1,14 @@
 // 处理数据的请求
 'use strict';
 
-var HOST_URL = 'https://api.andylistudio.com/api';
+var HOST_URL = 'http://localhost:3000/api';
 var LOGIN = '/as_users/login';
 var GET_FACTION_LIST = '/factionlists';
 var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
 var GET_CONTENT_BY_ID = '/factioncontents/';
 var GET_EMAILS_PAGEID = '/emails';
-var GET_BOOKS_SORTBY_TIME = '/xxxx'
+var GET_BOOKS_SORTBY_TIME = '/xxxx';
+var GET_RANK = '/xs_rank/getRank';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -48,5 +49,8 @@ module.exports = {
 		}else{
 			console.log('根据时间分类用户的书籍 传入参数错误');
 		}
+	},
+	getRank: function(rankType){
+		return HOST_URL + GET_RANK + '?rankType='+rankType;
 	}
 }

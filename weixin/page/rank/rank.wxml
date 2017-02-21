@@ -1,0 +1,13 @@
+<view class="rank-container">
+    <view class="tab">
+    	<view class="tab-item" wx:for="{{rankData}}" wx:for-index="tabIndex" wx:for-item="tabItem" wx:key="engName" data-type="{{item.engName}}" bindtap="showRank">
+    		<text>{{tabIndex == 0? '全部': tabItem.standard}}</text>
+    		<view class="tabLine"></view>
+    	</view>
+    </view>
+    <view class="tab-content">
+    	<view class="content-item" wx:for="{{rankData}}" wx:for-index="contentIndex" wx:for-item="contentItem" wx:key="engName" data-type="{{item.engName}}">
+    		<text class="num">{{(contentIndex+1)+'. '}}</text>
+    	</view>
+    </view>
+</view>

@@ -1,13 +1,14 @@
 {
   "pages": [
-    "page/shop/shop",
     "page/booklist/booklist",
+    "page/shop/shop",
     "page/jiaowu/jiaowu",
     "page/today/today",
     "page/index/index",
     "page/login/login",
     "page/jiaowu_detail/jiaowu_detail",
-    "page/user/user"
+    "page/user/user",
+    "page/rank/rank"
   ],
   "window": {
     "navigationBarTextStyle": "white",

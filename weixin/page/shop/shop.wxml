@@ -41,8 +41,8 @@
       </view>
     </view>
     <view class="rank">
-      <view class="qdRank">起点小说榜</view>
-      <view class="zhRank">纵横小说榜</view>
+      <view class="qdRank" data-rankType="qd" bindtap="gotoRank">起点小说榜</view>
+      <view class="zhRank" data-rankType="qd" bindtap="gotoRank">纵横小说榜</view>
     </view>
     <view class="recommend">
       <view class="header">

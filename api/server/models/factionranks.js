@@ -42,7 +42,7 @@ module.exports = function (Factionrank) {
   //单独获取起点小说排行榜
   Factionrank.getRank = function (rankType, cb) {
     var app = Factionrank.app;
-    var resultArr = []
+    var resultArr = [];
     app.models.factionranks.find(function (err, sourceData) {
       if(err){
         console.log('访问排行榜数据库失败...'+err);
@@ -50,7 +50,22 @@ module.exports = function (Factionrank) {
       }
       if(rankType == 'qd'){
         sourceData.forEach(function(item){
+          app.models.factionlists.find({}, '_id factionName author', function(err, res){
+            if(err){
+              console.log('getRank中查询factionlists失败....');
+              return;
+            }
+            item.qdRank.forEach(function(bookItem, bookIndex){
+              var isBookExist = res.some(function(allBooksItem, allBooksIndex){
+                return allBooksItem.factionName == bookItem.factionName && allBooksItem.author == bookItem.author;
+              });
+            });
+          });
           resultArr.push({standard: item.standard, engName: item.engName, qdRank: item.qdRank});
+
+          item.qdRank.forEach(function(bookItem, bookIndex){
+            isBookExist(bookItem.factionName. bookItem)
+          });
         });
       }else if(rankType == 'zh'){
         sourceData.forEach(function(item){
@@ -61,6 +76,17 @@ module.exports = function (Factionrank) {
       }
       cb(null, resultArr);
     });
+
+    // 判断书籍是否存在，不存在的话就创建一本
+    function isBookExist(factionName, author){
+      app.models.factionlists.find({factionName: factionName, author: author}, '_id', function(err, res){
+        if(err){
+          console.log('getRank中查询factionlists失败....');
+          return;
+        }
+        console.log(res);
+      });
+    }
   };
 
   //使用remoteMethod去注册远程方法

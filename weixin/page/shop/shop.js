@@ -125,5 +125,11 @@ Page({
   // 跳转到详情页
   goRecommendDetai: function (event) {
 
+  },
+  gotoRank: function(event){
+    var rankType = event.target.dataset.ranktype;
+    wx.navigateTo({
+      url: '../rank/rank?rankType='+rankType
+    });
   }
 })

@@ -419,7 +419,7 @@ function updateRank(jsonArr){
                     var successCount = 0;
                     var callback = function(){
                         ++successCount;
-                        if(successCount == 6){
+                        if(successCount == 7){
                             logger.info('排行榜已经更新至数据库....');
                         }
                     };
