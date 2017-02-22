@@ -4,7 +4,8 @@ var Util = require('../../util/util.js');
 
 Page({
     data: {
-    	rankData: []
+    	rankData: [],
+        currentIndex: 0
     },
     onLoad: function(options) {
         var self = this;
@@ -20,5 +21,8 @@ Page({
             }
 		  }
 		});
+    },
+    showRank: function(event){
+        this.setData({currentIndex: event.currentTarget.dataset.index});
     }
 });

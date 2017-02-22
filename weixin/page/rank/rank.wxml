@@ -1,24 +1,22 @@
 <view class="rank-container">
     <view class="tab">
-    	<view class="tab-item" wx:for="{{rankData}}" wx:for-index="tabIndex" wx:for-item="tabItem" wx:key="engName" data-type="{{item.engName}}" bindtap="showRank">
+    	<view class="tab-item {{currentIndex == tabIndex? 'active': ''}}" wx:for="{{rankData}}" wx:for-index="tabIndex" wx:for-item="tabItem" wx:key="engName" data-index="{{tabIndex}}" bindtap="showRank">
     		<text>{{tabIndex == 0? '全部': tabItem.standard}}</text>
-    		<view class="tabLine"></view>
+    		<view wx:if="{{currentIndex == tabIndex}}" class="tabLine"></view>
     	</view>
     </view>
     <view class="tab-content">
-    	<view class="content-item" wx:for="{{rankData}}" wx:for-index="contentIndex" wx:for-item="contentItem" wx:key="engName" data-type="{{item.engName}}">
-    		<view class="book-item" wx:for="{{contentItem.qdRank || contentItem.zhRank}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="num" data-type="{{item.engName}}">
-    			
+    	<view class="content-item" wx:for="{{rankData}}" wx:for-index="contentIndex" wx:for-item="contentItem" wx:key="engName" data-type="{{item.engName}}" hidden="{{currentIndex != contentIndex}}">
+    		<view class="book-item" wx:for="{{contentItem.qdRank || contentItem.zhRank}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="bookId" data-bookId="{{bookItem.bookId}}">
+                <view class="bookInfo">
+                    <text class="bookName">{{bookItem.factionName}}\n</text>
+                    <text class="author">{{bookItem.author}}\n</text>
+                    <text class="bookDes">{{bookItem.des}}</text>
+                    <icon hidden="{{bookIndex == 0}}" class="first-icon"></icon>
+                </view>
+                <image src="{{bookItem.headImg}}" mode="scaleToFill" />
     		</view>
-    		<text class="num">{{(contentIndex+1)+'. '}}</text>
-    		<view class="bookInfo">
-		        <text class="bookName">{{item.bookName}}</text>
-		        <text class="author">
-		          <text class="text-underline">作者：</text>{{item.author}}</text>
-		        <text class="bookDes">{{item.bookDes}}</text>
-		        <icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
-	      	</view>
-	      	<image src="{{contentItem.img}}" mode="scaleToFill" />
+    		
     	</view>
     </view>
 </view>

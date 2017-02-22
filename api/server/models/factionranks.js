@@ -6,6 +6,24 @@ var Eventproxy = require('eventproxy');
 var timmer = null;
 // var LoopBackContext = require('loopback-context');
 
+//对字符串做省略处理，超过50字省略
+function overflowDeal(str){
+  var returnStr = '';
+  if(typeof str == 'string'){
+    //先去除没有用的空格和换行
+    var reg = new RegExp('[　　| |\n|\t]', 'igm');
+    str = str.replace(reg, '');
+    if(str.length > 60){
+      returnStr = str.substring(0, 50)+'....';
+    }else{
+      returnStr = str;
+    }
+  }else{
+    console.log('传给overflowDeal的参数错误....');
+  }
+  return returnStr;
+}
+
 module.exports = function (Factionrank) {
   //定义一个简单的远程方法
   Factionrank.greet = function (msg, cb) {
@@ -52,11 +70,21 @@ module.exports = function (Factionrank) {
       }
       if(rankType == 'qd'){
         sourceData.forEach(function(item){
+          //对des做些省略
+          item.qdRank.forEach(function(bookItem){
+            bookItem.des = overflowDeal(bookItem.des);
+            //攻破起点网小说图片防盗链的小关卡
+            bookItem.headImg = 'http:'+bookItem.headImg.substring(0, bookItem.headImg.length-2);
+          });
           resultArr.push({standard: item.standard, engName: item.engName, qdRank: item.qdRank});
         });
       }else if(rankType == 'zh'){
         sourceData.forEach(function(item){
-          resultArr.push({standard: item.standard, engName: item.engName, qdRank: item.zhRank});
+          //对des做些省略
+          item.zhRank.forEach(function(bookItem){
+            bookItem.des = overflowDeal(bookItem.des);
+          });
+          resultArr.push({standard: item.standard, engName: item.engName, zhRank: item.zhRank});
         });
       }else{
         console.log('The param of getRank is error!....');
