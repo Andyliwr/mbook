@@ -8,6 +8,7 @@
     "mongoose": "^4.5.10",
     "node-schedule": "^1.1.1",
     "progress": "^1.1.8",
+    "qiniu": "^6.1.13",
     "superagent": "^2.2.0",
     "superagent-jsonapify": "^1.4.4"
   }

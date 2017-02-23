@@ -473,6 +473,10 @@ function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady){
     });
 }
 
+/**
+ * @param jsonArr 6类排行榜的数据
+ * @function 存储并更新排行榜，同时对于排行榜中出现的小说在booklist中找不到bookid的情况，新建一个booklist，并存入测试章节
+ */
 function updateRank(jsonArr) {
     if (jsonArr instanceof Array && jsonArr.length == 6) {
         var finalEp = new eventproxy();

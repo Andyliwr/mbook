@@ -39,8 +39,17 @@ var mongoConfig = {
   dbName: 'myapp',
   username: 'lidikang',
   password: '121960425mongo'
-}
+};
+
+//七牛配置
+var qiniuConfig = {
+  accessKey: 'pz1XaE-7IPSWuJjLTrjH3Rv9O5v0hj510O1ttMm6', //七牛账号的key值，https://portal.qiniu.com/user/key
+  secretKey: 'HB_zxxzxJ3YpKFAD3PC7egJvgx4yOp3t6Fg7xdYP',
+  bucket: 'andyliwr-server', //空间名称
+  isUseHttps: true, //配置使用https，并且对应到正确的区域，详情请查考https://github.com/gpake/qiniu-wxapp-sdk/blob/master/README.md
+};
 //暴露websiteConfig
 exports.websiteConfig = websiteConfig;
 exports.mongoConfig = mongoConfig;
 exports.localMongoJson = localMongoJson;
+exports.qiniuConfig = qiniuConfig;

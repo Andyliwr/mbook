@@ -52,3 +52,9 @@ var j = schedule.scheduleJob('42 * * * *', function(){
 ```javascript
 db.factionlistmodels.update({factionName: '大主宰'}, {$set: {sectionArray:  [....]}});
 ```
+var config = require('../config');
+//需要填写你的 Access Key 和 Secret Key
+qiniu.conf.ACCESS_KEY = config.qiniuConfig.accessKey;
+qiniu.conf.SECRET_KEY = config.qiniuConfig.secretKey;
+//要上传的空间
+bucket = 'andyliwr-server';
