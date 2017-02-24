@@ -2,27 +2,7 @@
 //在模型脚本中可以直接require ／server/server 获得app对象，一旦你获得了app对象，你可以通过app的models属性轻易得到你想要的模型对象。
 // var loopback = require('loopback');
 var app = require('../server.js');
-var Eventproxy = require('eventproxy');
-var timmer = null;
-// var LoopBackContext = require('loopback-context');
-
-//对字符串做省略处理，超过50字省略
-function overflowDeal(str){
-  var returnStr = '';
-  if(typeof str == 'string'){
-    //先去除没有用的空格和换行
-    var reg = new RegExp('[　　| |\n|\t]', 'igm');
-    str = str.replace(reg, '');
-    if(str.length > 60){
-      returnStr = str.substring(0, 50)+'....';
-    }else{
-      returnStr = str;
-    }
-  }else{
-    console.log('传给overflowDeal的参数错误....');
-  }
-  return returnStr;
-}
+var Tools = require('../tools/tool');
 
 module.exports = function (Factionrank) {
   //定义一个简单的远程方法
@@ -62,19 +42,21 @@ module.exports = function (Factionrank) {
   //单独获取起点小说排行榜
   Factionrank.getRank = function (rankType, cb) {
     var app = Factionrank.app;
-    var resultArr = []
+    var returnData = {};
+    var resultArr = [];
     app.models.factionranks.find(function (err, sourceData) {
       if(err){
         console.log('访问排行榜数据库失败...'+err);
+        cb(null, {code: -1, errMsg: '访问排行榜数据库失败'});
         return;
       }
       if(rankType == 'qd'){
         sourceData.forEach(function(item){
           //对des做些省略
           item.qdRank.forEach(function(bookItem){
-            bookItem.des = overflowDeal(bookItem.des);
+            bookItem.des = Tools.overflowDeal(bookItem.des);
             //攻破起点网小说图片防盗链的小关卡
-            bookItem.headImg = 'http:'+bookItem.headImg.substring(0, bookItem.headImg.length-2);
+            bookItem.headImg = Tools.getQdTrueImgUrl(bookItem.headImg);
           });
           resultArr.push({standard: item.standard, engName: item.engName, qdRank: item.qdRank});
         });
@@ -82,14 +64,15 @@ module.exports = function (Factionrank) {
         sourceData.forEach(function(item){
           //对des做些省略
           item.zhRank.forEach(function(bookItem){
-            bookItem.des = overflowDeal(bookItem.des);
+            bookItem.des = Tools.overflowDeal(bookItem.des);
           });
           resultArr.push({standard: item.standard, engName: item.engName, zhRank: item.zhRank});
         });
       }else{
         console.log('The param of getRank is error!....');
       }
-      cb(null, resultArr);
+      returnData = {code: 0, ranks: resultArr};
+      cb(null, returnData);
     });
   };
 
@@ -103,8 +86,8 @@ module.exports = function (Factionrank) {
       },
       returns: {
         arg: 'data',
-        type: 'array',
-        description: '返回的结果数组'
+        type: 'object',
+        description: '返回的结果对象'
       },
       http: {path: '/getRank', verb: 'get'}
     });

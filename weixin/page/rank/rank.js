@@ -15,7 +15,7 @@ Page({
 		  header: {'content-type': 'application/json'},
 		  success: function(res) {
             if(res.data.data){
-                self.setData({rankData: res.data.data});
+                self.setData({rankData: res.data.data.ranks});
             }else{
                 console.log('请求排行榜数据失败....')
             }
