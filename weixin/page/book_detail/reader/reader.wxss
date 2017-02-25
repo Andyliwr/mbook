@@ -1,0 +1,16 @@
+.reader-container{
+	height: 100%;
+	overflow: hidden;
+}
+.reader-container .content{
+	overflow-x:hidden;
+	height:100%;
+	box-sizing:border-box;
+	-webkit-column-rule:4px solid #a3cfff;
+	-moz-column-rule:1px solid #a3cfff;
+	column-rule:1px solid #a3cfff;
+	column-gap:50rpx;
+	padding:20rpx 30rpx 20rpx 30rpx;
+	position:relative;
+	left:-320rpx;
+}

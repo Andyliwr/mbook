@@ -1,5 +1,6 @@
 {
   "pages": [
+    "page/book_detail/reader/reader",
     "page/shop/shop",
     "page/booklist/booklist",
     "page/rank/rank",
@@ -9,8 +10,7 @@
     "page/login/login",
     "page/jiaowu_detail/jiaowu_detail",
     "page/user/user",
-    "page/book_detail/book_detail",
-    "page/book_detail/reader/reader"
+    "page/book_detail/book_detail"
   ],
   "window": {
     "navigationBarTextStyle": "white",
