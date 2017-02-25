@@ -3,12 +3,14 @@
     "page/shop/shop",
     "page/booklist/booklist",
     "page/rank/rank",
-    "page/jiaowu/jiaowu",
     "page/today/today",
+    "page/jiaowu/jiaowu",
     "page/index/index",
     "page/login/login",
     "page/jiaowu_detail/jiaowu_detail",
-    "page/user/user"
+    "page/user/user",
+    "page/book_detail/book_detail",
+    "page/book_detail/reader/reader"
   ],
   "window": {
     "navigationBarTextStyle": "white",
