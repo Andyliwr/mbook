@@ -3,6 +3,7 @@
 	overflow: hidden;
 }
 .reader-container .content{
+	display: block;
 	overflow-x:hidden;
 	height:100%;
 	box-sizing:border-box;
