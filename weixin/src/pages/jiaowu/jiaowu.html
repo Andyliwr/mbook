@@ -1,0 +1,136 @@
+<view class="wrapper">
+  <view class="og-calendar">
+    <view class="header">
+      <view class="btn month-pre" bindtap="changeDateEvent" data-year="{{data.beforeYear}}" data-month="{{data.beforMonth}}"> 
+        <icon class="cleft-icon"></icon>
+      </view>
+      <view class="date-info">
+        <picker mode="date" fields="month" value="{{pickerDateValue}}" bindchange="datePickerChangeEvent">
+          <text wx:if="{{data.showYear}}">{{data.showYear}}年{{data.showMonth > 9 ? data.showMonth : ('0' + data.showMonth)}}月</text>
+          <text wx:if="{{!data.showYear}}">请选择日期</text>
+        </picker>
+      </view>
+      <view class="btn month-next" bindtap="changeDateEvent" data-year="{{data.afterYear}}" data-month="{{data.afterMonth}}">
+        <icon class="cright-icon"></icon>
+      </view>
+    </view>
+    <view class="signNote"><icon class="yellow-circle"></icon><text class="yellow-text">阅读签到</text><icon class="gray-circle"></icon><text class="gray-text">补课</text><icon class="gray-circle"></icon><text class="gray-text">大事件</text></view>
+    <view class="week row">
+      <view class="col">
+        <text class="{{data.showWeek == '周一'? 'black-text': ''}}">周一</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周二'? 'black-text': ''}}">周二</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周三'? 'black-text': ''}}">周三</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周四'? 'black-text': ''}}">周四</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周五'? 'black-text': ''}}">周五</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周六'? 'black-text': ''}}">周六</text>
+      </view>
+      <view class="col">
+        <text class="{{data.showWeek == '周日'? 'black-text': ''}}">周日</text>
+      </view>
+    </view>
+    <view class="body row">  
+      <block wx:for="{{data.dates}}" wx:key="_id">
+        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ?'active' : ''}}">
+          <text>{{item.date}}</text>
+        </view> 
+      </block>
+    </view>
+    view.
+  </view>
+
+  <!-- <view class="show-date">
+    <text>{{data.selectDateText}}</text>
+  </view> -->
+  <view class="gray-rect"></view>
+  <view class="more-options">
+    <view class="option-item"><icon class="findXuefen-icon"></icon><text>学分查询</text></view>
+    <view class="option-item"><icon class="learnPlan-icon"></icon><text>学习计划</text></view>
+    <view class="option-item"><icon class="learnBook-icon"></icon><text>学习手册</text></view>
+    <view class="option-item last"><icon class="chuFaRecord-icon"></icon><text>处罚记录</text></view>
+  </view>
+  <view class="common-list">
+    <view class="header" wx:if="{{itemList.length > 0}}">
+      <text>事项信息</text>
+    </view>
+
+    <block wx:for="{{itemList}}" wx:key="id">
+      <view class="item" bindtap="listItemClickEvent" data-id="{{item._id}}" bindlongtap="listItemLongTapEvent">
+        <view class="inner {{isEditMode ? 'with-check' : ''}}">
+          <view class="checker" wx:if="{{isEditMode}}">
+            <icon type="circle" wx:if="{{!item.checked}}" color="#FFF" size="20" />
+            <icon type="success" wx:else color="#09BB07" size="20" />
+          </view>
+          <text wx:if="{{item.level == 1}}" class="color-icon important"></text>
+          <text wx:if="{{item.level == 2}}" class="color-icon notSoImportant"></text>
+          <text wx:if="{{item.level == 3}}" class="color-icon nomarl"></text>
+          <view class="content">
+            <text class="title">{{item.title}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="header text-center" wx:if="{{!itemList || itemList.length <= 0}}">
+      <view class="loadmore_line">
+            <text class="loadmore_tips">当前没有事项记录</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!--float actions-->
+  <view class="float-container">
+    <view class="float-action" bindtap="showUpdatePanelEvent" wx:if="{{!isEditMode}}">
+      <icon class="add-icon"></icon>
+    </view>
+
+    <view class="float-action operate" bindtap="editClickEvent" wx:if="{{!isEditMode && itemList.length > 0}}">
+      <icon class="edit-icon"></icon>
+    </view>
+
+    <view class="float-action operate" wx:if="{{isEditMode && editItemList.length > 0}}" bindtap="removeRangeTapEvent">
+      <icon class="remove-icon"></icon>
+    </view>
+
+    <view class="float-action cancel" bindtap="cancelEditClickEvent" wx:if="{{isEditMode}}">
+      <icon class="cancel-icon"></icon>
+    </view>
+  </view>
+</view>
+
+<view class="mask" hidden="{{!isMaskShow}}"></view>
+
+<view class="modal" hidden="{{!isModalShow}}">
+  <view class="content">
+    {{modalMsg}}
+  </view>
+  <view class="footer">
+    <!--<view class="btn cancel" bindtap="closeAddModalEvent"><text>取消</text></view>-->
+    <view class="btn" bindtap="closeModalEvent"><text>确认</text></view>
+  </view>
+</view>
+
+<view class="updatePanel" style="top: {{updatePanelTop}}px;height:{{updatePanelTop*0.6}}px" animation="{{updatePanelAnimationData}}">
+  <view class="title"><text>添加事项</text></view>
+  <input placeholder="请输入事项标题" value="{{todoInputValue}}" bindchange="todoInputChangeEvent" />
+  <textarea placeholder="请输入事项内容" value="{{todoTextAreaValue}}" bindblur="todoTextAreaChangeEvent"></textarea>
+  <view class="level">
+    <block wx:for="{{levelSelectData}}" wx:key="*this">
+      <view bindtap="levelClickEvent" data-level="{{item}}" class="item {{item == 1 ? 'border-normal' : ''}} {{item == 2 ? 'border-warning' : '' }} {{item == 3 ? 'border-danger' : ''}} {{item == levelSelectedValue && item == 1 ? 'bg-normal' : ''}} {{item == levelSelectedValue && item == 2 ? 'bg-warning' : ''}} {{item == levelSelectedValue && item == 3 ? 'bg-danger' : ''}}"></view>
+    </block>
+  </view> 
+  <view class="footer" wx:if="{{isEditMode}}">
+    <view class="btn" bindtap="closeUpdatePanelEvent">取消</view>
+    <view class="btn primary" bindtap="saveDataEvent">保存</view>
+  </view>
+</view>

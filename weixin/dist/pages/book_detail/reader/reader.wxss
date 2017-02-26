@@ -1,0 +1,16 @@
+.reader-container {
+  height: 100%;
+  overflow: hidden; }
+
+.reader-container .content {
+  display: block;
+  overflow-x: hidden;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-column-rule: 1px solid #a3cfff;
+  /* -moz-column-rule:1px solid #a3cfff; */
+  /* column-rule:1px solid #a3cfff; */
+  column-gap: 40rpx;
+  padding: 20rpx 30rpx 0 40rpx;
+  position: relative;
+  left: -320rpx; }

@@ -1,0 +1,31 @@
+<view class="booklist-container">
+	<view class="header">
+		<view class="headerLine"></view>
+		<text class="headerTime">{{headerText}}</text>
+		<view class="timeTab">
+			<block wx:for="{{showMonths}}">
+				<view class="{{(index == showMonths.length-1)? 'active last everyTime': 'everyTime'}}">
+					<text>{{item.monthCname}}</text>
+					<icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
+				</view>
+			</block>
+		</view>
+	</view>
+	<view class="list">
+		<block class="bookitem" wx:for="{{books}}" wx:key="bookId">
+			<view class="bookInfo">
+				<text class="bookName">{{item.bookName}}</text>
+				<text class="author"><text class="text-underline">作者：</text>{{item.author}}</text>
+				<text class="bookDes">{{item.bookDes}}</text>
+				<icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
+			</view>
+			<image src="{{item.img}}" mode="scaleToFill"/>
+		</block>
+	</view>
+	<!-- 出错打印 -->
+    <import src="../component/err_tips/err_tips.wxml"/>
+    <template is="err_tips" data="{{err_tips_data}}" />
+    <!-- 成功的提示 -->
+    <import src="../component/toast/toast.wxml"/>
+    <template is="toast" data="{{toast_data}}" />
+</view>
