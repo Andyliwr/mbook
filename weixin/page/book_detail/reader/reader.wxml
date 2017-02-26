@@ -2,5 +2,5 @@
 	<!-- <scroll-view scroll-x="true" class="content" style="width: {{column.num*100+'%'}}; column-width:{{windows.windows_width+'px'}}; -webkit-column-width: {{windows.windows_width+'px'}};">
 		{{content}}
 	</scroll-view> -->
-	<view class="content" style="width: {{column.num*100+'%'}}; -webkit-column-count:{{column.num}}; -moz-column-count: {{column.num}}; column-count: {{column.num}}; left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchend="handletouchend">{{content}}</view>
+	<view class="content" style="width: {{column.num*100+'%'}}; -webkit-column-count:{{column.num}}; -moz-column-count: {{column.num}}; column-count: {{column.num}}; left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">{{content}}</view>
 </view>

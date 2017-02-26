@@ -1,6 +1,8 @@
 //login.js
 var Api = require('../../../util/api/api.js');
 var Util = require('../../../util/util.js');
+var currentGesture  = 0; //控制当一个手势进行的时候屏蔽其他的手势
+var moveTime = null; //控制左滑右滑的动画
 
 Page({
     data: {
@@ -8,7 +10,7 @@ Page({
       windows: {windows_height: 0, windows_width: 0},
       touchs: {lastX: 0, lastY: 0},
       move_direction: 0, //0代表左滑动，1代表右滑动
-      column: {num: 3},
+      column: {num:  3},
       leftValue: 0,
       pageIndex: 1,
       maxPageNum: 6
@@ -33,7 +35,12 @@ Page({
           }
         });
     },
-    handletouchend: function(event){
+    handletouchmove: function(event){
+      console.log('move');
+      if (currentGesture != 0){
+        return
+      }
+      console.log('yes============');
       var currentX = event.touches[0].pageX
       var currentY = event.touches[0].pageY
       var direction = 0;
@@ -42,21 +49,65 @@ Page({
       }else if (((currentX - this.data.touches.lastX) > 0)){
         direction = 1;
       }
+      //需要减少或者增加的值
+      var moreOrLessValue = Math.abs(currentX - this.data.touches.lastX);
       //将当前坐标进行保存以进行下一次计算
       this.setData({touches: {lastX: currentX, lastY: currentY}, move_direction: direction});
-      //左滑动和有滑动的操作
       var currentIndex = this.data.pageIndex;
       if(direction == 0){
         if(currentIndex < this.data.maxPageNum){
-          this.setData({leftValue: ((-1)*this.data.windows.windows_width*currentIndex), pageIndex: ++currentIndex});
+          this.setData({leftValue: this.data.leftValue - moreOrLessValue});
         }
       }else{
         if(currentIndex > 1){
-          this.setData({leftValue: ((-1)*this.data.windows.windows_width*(currentIndex-1)), pageIndex: --currentIndex});
+          this.setData({leftValue: this.data.leftValue + moreOrLessValue});
         }
       }
+      
     },
     handletouchtart: function(event){
+      console.log('start');
       this.setData({touches: {lastX: event.touches[0].pageX, lastY: event.touches[0].pageY}});
+    },
+    handletouchend: function(){
+      var self = this;
+      console.log('end');
+      currentGesture = 0;
+      //左滑动和有滑动的操作
+      var currentIndex = self.data.pageIndex; //当前页数
+      var targetLeftValue = null; //移动之后content的目标左值
+      var pingjunValue = null; //500ms内平均每100ms移动的值
+      if(self.data.move_direction == 0){
+        if(currentIndex < self.data.maxPageNum){
+          targetLeftValue = (-1)*self.data.windows.windows_width*currentIndex;
+          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue)/4;//500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
+          //使用计时器实现动画效果
+          moveTime = setInterval(function(){
+            var currentLeftValue = self.data.leftValue;
+            //如果达到了目标值，立即停止计时器
+            if(currentLeftValue == targetLeftValue){
+              clearInterval(moveTime);
+              return;
+            }
+            self.setData({leftValue: currentLeftValue-pingjunValue});
+          },100);
+          self.setData({pageIndex: ++currentIndex});
+        }
+      }else{
+        //前一页和后一页相差其实是2个-320px
+        if(currentIndex > 1){
+          targetLeftValue = (-1)*self.data.windows.windows_width*(currentIndex-2);
+          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue)/4;
+          moveTime = setInterval(function(){
+            var currentLeftValue = self.data.leftValue;
+            if(currentLeftValue == targetLeftValue){
+              clearInterval(moveTime);
+              return;
+            }
+            self.setData({leftValue: currentLeftValue + pingjunValue});
+          },100);
+          self.setData({pageIndex: --currentIndex});
+        }
+      }
     }
 });
