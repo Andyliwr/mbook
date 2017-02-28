@@ -1,5 +1,6 @@
 <view class="reader-container">
-	<view class="content" style="width: {{column.num*100+'%'}}; -webkit-column-width: {{windows.windows_width*windows.pixelRatio+'rpx'}}; column-width: {{windows.windows_width*windows.pixelRatio+'rpx'}};left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
+	<view class="content" style="width: {{column.num*100+'%'}}; -webkit-column-count: {{column.num}}; column-count: {{column.num}};left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
 		<text>{{content}}</text>
 	</view>
+	<view class="test" style="width:{{windows.windows_width+'px'}};height: 20rpx; background-color: red; position: absolute;left:0;bottom:0;border:1px solid black;box-sizing: border-box;"></view>
 </view>

@@ -1,0 +1,39 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'D:\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\Andyliwr\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   '--userconfig=C:\\Users\\Andyliwr\\.cnpmrc',
+1 verbose cli   '--disturl=https://npm.taobao.org/mirrors/node',
+1 verbose cli   '--registry=https://registry.npm.taobao.org',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@3.10.10
+3 info using node@v6.2.0
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle graduationDesign@1.0.3~predev: graduationDesign@1.0.3
+6 silly lifecycle graduationDesign@1.0.3~predev: no script for predev, continuing
+7 info lifecycle graduationDesign@1.0.3~dev: graduationDesign@1.0.3
+8 verbose lifecycle graduationDesign@1.0.3~dev: unsafe-perm in lifecycle true
+9 verbose lifecycle graduationDesign@1.0.3~dev: PATH: C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\bin\node-gyp-bin;C:\Users\Andyliwr\Documents\graduationDesign\weixin\node_modules\.bin;C:\Program Files (x86)\MacType\;D:\Komodo\;D:\python\;D:\python\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;D:\nodejs\;D:\WinSCP\;D:\sqlite;D:\Ruby\bin;D:\devkit;D:\mysql\bin;D:\nvmw;D:\nodejs\node_modules\node_global;D:\qshell;D:\mongo\bin;D:\Ruby\bin;C:\Users\Andyliwr\AppData\Roaming\npm;D:\nodejs\node_modules\node_global\node_modules;C:\Program Files (x86)\MacType
+10 verbose lifecycle graduationDesign@1.0.3~dev: CWD: C:\Users\Andyliwr\Documents\graduationDesign\weixin
+11 silly lifecycle graduationDesign@1.0.3~dev: Args: [ '/d /s /c', 'cross-env NODE_ENV=dev gulp dev' ]
+12 verbose stack Error: kill ENOSYS
+12 verbose stack     at exports._errnoException (util.js:953:11)
+12 verbose stack     at process.kill (internal/process.js:173:13)
+12 verbose stack     at process.listener (C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+12 verbose stack     at emitNone (events.js:91:20)
+12 verbose stack     at process.emit (events.js:185:7)
+12 verbose stack     at processEmit (C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at processEmit (C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at Signal.wrap.onsignal (internal/process.js:201:44)
+13 verbose cwd C:\Users\Andyliwr\Documents\graduationDesign\weixin
+14 error Windows_NT 10.0.10586
+15 error argv "D:\\nodejs\\node.exe" "C:\\Users\\Andyliwr\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js" "--userconfig=C:\\Users\\Andyliwr\\.cnpmrc" "--disturl=https://npm.taobao.org/mirrors/node" "--registry=https://registry.npm.taobao.org" "run" "dev"
+16 error node v6.2.0
+17 error npm  v3.10.10
+18 error code ENOSYS
+19 error errno ENOSYS
+20 error syscall kill
+21 error kill ENOSYS
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]

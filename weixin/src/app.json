@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/book_detail/reader/reader",
     "pages/shop/shop",
     "pages/today/today",
-    "pages/book_detail/reader/reader",
     "pages/booklist/booklist",
     "pages/rank/rank",
     "pages/jiaowu/jiaowu",
