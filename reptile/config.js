@@ -31,11 +31,11 @@ var localMongoJson = {
   port: '27017',
   dbName: 'myapp',
   username: 'lidikang',
-  password: '123456'
+  password: '121960425mongo'
 };
 var mongoConfig = {
-  url: 'ds021326.mlab.com',
-  port: '21326',
+  url: '123.206.216.202',
+  port: '27017',
   dbName: 'myapp',
   username: 'lidikang',
   password: '121960425mongo'
