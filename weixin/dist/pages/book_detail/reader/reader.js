@@ -2044,8 +2044,10 @@
 	var rightTimmerCount = 0;
 
 	//计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
-	function countPageNum(str, fontSize, lineHeight) {
+	function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio) {
 	  var returnNum = 0;
+	  fontSize = fontSize / pixelRatio;
+	  lineHeight = lineHeight / pixelRatio;
 	  //将str根据’\n‘截成数组
 	  var strArray = str.split(/\n+/);
 	  var splitArray = [];
@@ -2055,8 +2057,15 @@
 	  while ((result = reg.exec(str)) != null) {
 	    splitArray.push(result.toString().match(/\n/img).length);
 	  }
-	  var pageHeight = 0;
-	  splitArray.forEach(function (item, index) {});
+	  //spliArray比strArray少一，这里加一项使之数量一样
+	  splitArray.push(0);
+	  var totalHeight = 0;
+	  strArray.forEach(function (item, index) {
+	    //拒绝最后一项0
+	    var huanhangNum = splitArray[index] - 1 > 0 ? splitArray[index] - 1 > 0 : 0;
+	    totalHeight += Math.ceil(item.length / Math.floor((windowW - 80 / pixelRatio) / fontSize)) * lineHeight + huanhangNum * lineHeight;
+	  });
+	  return Math.ceil(totalHeight / windowH);
 	}
 
 	Page({
@@ -2065,10 +2074,9 @@
 	    windows: { windows_height: 0, windows_width: 0, pixelRatio: 1 },
 	    touches: { lastX: 0, lastY: 0 },
 	    move_direction: 0, //0代表左滑动，1代表右滑动
-	    column: { num: 3 },
 	    leftValue: 0,
 	    pageIndex: 1,
-	    maxPageNum: 3,
+	    maxPageNum: 0,
 	    fontSize: 32, //单位rpx
 	    lineHeight: 36 //单位rpx
 	  },
@@ -2080,7 +2088,8 @@
 	        self.setData({ windows: { windows_height: res.windowHeight, windows_width: res.windowWidth, pixelRatio: res.pixelRatio } });
 	      }
 	    });
-	    countPageNum(self.data.content, self.data.fontSize, self.data.lineHeight);
+	    var maxPageNum = countPageNum(self.data.content, self.data.fontSize, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
+	    self.setData({ maxPageNum: maxPageNum });
 	  },
 	  onLoad: function onLoad(options) {
 	    var self = this;

@@ -1,11 +1,11 @@
 {
   "pages": [
     "pages/book_detail/reader/reader",
-    "pages/shop/shop",
+    "pages/jiaowu/jiaowu",
     "pages/today/today",
+    "pages/shop/shop",
     "pages/booklist/booklist",
     "pages/rank/rank",
-    "pages/jiaowu/jiaowu",
     "pages/login/login",
     "pages/jiaowu_detail/jiaowu_detail",
     "pages/user/user",
