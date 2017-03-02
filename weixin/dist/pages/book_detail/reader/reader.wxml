@@ -2,5 +2,18 @@
 	<view class="content" style="width: {{maxPageNum*100+'%'}}; -webkit-column-count: {{maxPageNum}}; column-count: {{maxPageNum}};left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
 		<text>{{content}}</text>
 	</view>
-	<view class="test" style="width:{{windows.windows_width+'px'}};height: 20rpx; background-color: red; position: absolute;left:0;bottom:0;border:1px solid black;box-sizing: border-box;"></view>
+	<view class="control" style="width:{{windows.windows_width+'px'}};">
+		<view class="control-item">
+			<icon class="mulu-icon"></icon>
+		</view>
+		<view class="control-item">
+			<icon class="jingdu-select-icon"></icon>
+		</view>
+		<view class="control-item">
+			<icon class="day-select-icon"></icon>
+		</view>
+		<view class="control-item">
+			<icon class="font-icon"></icon>
+		</view>
+	</view>
 </view>

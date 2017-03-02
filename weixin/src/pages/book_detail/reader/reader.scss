@@ -3,16 +3,63 @@
 	overflow: hidden;
 }
 .reader-container .content{
+	background-color: #f5f9fc;
 	display: block;
 	overflow-x:hidden;
 	height:100%;
 	box-sizing:border-box;
-	-webkit-column-rule:1px solid #a3cfff;
+	// -webkit-column-rule:1px solid #a3cfff;
 	/* -moz-column-rule:1px solid #a3cfff; */
 	/* column-rule:1px solid #a3cfff; */
 	column-gap: 40rpx;
 	padding:20rpx 30rpx 0 40rpx;
 	position:relative;
 	left:-320rpx;
-	// font-size: .32rem;
+}
+.reader-container .control{
+	height: 110rpx;
+	background-color: #fff;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: -webkit-flex;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	border-top:1px solid #d7d7d7;
+}
+.reader-container .control-item{
+	height: 100rpx;
+	margin-top: 5rpx;
+	width: 100rpx;
+}
+.reader-container .control-item icon{
+	height:50rpx;
+	margin-top:25rpx;
+	margin-left:25rpx;
+	width:50rpx;
+}
+.mulu-icon{
+	background-size:240rpx 240rpx;
+	background-position:-94rpx -145rpx;
+}
+.jingdu-icon{
+	background-size:270rpx 270rpx;
+	background-position:-165rpx -166rpx;
+}
+.jingdu-select-icon{
+	background-size:270rpx 270rpx;
+	background-position:-221rpx -166rpx;
+}
+.day-icon{
+	background-size:260rpx 260rpx;
+	background-position:3rpx -210rpx;
+}
+.day-select-icon{
+	background-size:260rpx 260rpx;
+	background-position:-51rpx -210rpx;
+}
+.font-icon{
+	background-size:270rpx 270rpx;
+	background-position:-111rpx -220rpx;
 }
