@@ -27,7 +27,7 @@ var websiteConfig = [
   }
 ];
 var localMongoJson = {
-  url: 'localhost',
+  url: '123.206.216.202',
   port: '27017',
   dbName: 'myapp',
   username: 'lidikang',
