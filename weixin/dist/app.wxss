@@ -474,8 +474,8 @@ checkbox, radio {
 .email-icon, .username-icon, .password-icon, .see-password-icon, .unsee-password-icon, .wechat-gray-icon, .qq-gray-icon, .weibo-gray-icon, .wechat-light-icon, .qq-light-icon, .weibo-light-icon, .success-toast-icon, .gray-star-icon, .yellow-star-icon, .read-icon, .search-icon, .backTop-icon {
   background: url(https://olpkwt43d.qnssl.com/myapp/iconset&20170225.png) no-repeat; }
 
-.cleft-icon, .cright-icon, .findXuefen-icon, .learnPlan-icon, .learnBook-icon, .chuFaRecord-icon, .add-icon, .edit-icon, .remove-icon, .cancel-icon, .shop-icon, .all-icon, .xuanhuan-icon, .yanqing-icon, .wuxia-icon, .lishi-icon, .kehuan-icon, .mulu-icon, .jingdu-icon, .jingdu-select-icon, .day-icon, .day-select-icon, .font-icon {
-  background: url(https://olpkwt43d.qnssl.com/myapp/jiaowu_iconset&20170302.png) no-repeat; }
+.cleft-icon, .cright-icon, .findXuefen-icon, .learnPlan-icon, .learnBook-icon, .chuFaRecord-icon, .add-icon, .edit-icon, .remove-icon, .cancel-icon, .shop-icon, .all-icon, .xuanhuan-icon, .yanqing-icon, .wuxia-icon, .lishi-icon, .kehuan-icon, .mulu-icon, .jingdu-icon, .jingdu-select-icon, .day-icon, .day-select-icon, .font-icon, .rleft-icon, .rright-icon {
+  background: url(https://olpkwt43d.qnssl.com/myapp/jiaowu_iconset&20170304.png) no-repeat; }
 
 /* 教务的公共样式 */
 /*float action*/

@@ -24,6 +24,14 @@ module.exports = function (Factionlists) {
         var sectionEp = new Eventproxy();
         sectionEp.after('hasGotContent', res.sectionArray.length, function(allSections){
           returnData.sectionArray = allSections;
+          //获取小说的最新章节
+          var newestSection = {sectionNum: 0};
+          allSections.forEach(function(sectionItem){
+            if(sectionItem.sectionNum > newestSection.sectionNum){
+              newestSection = sectionItem;
+            }
+          });
+          returnData.newestSection = newestSection;
           //调用callback把数据传出去
           cb(null, returnData);
         });

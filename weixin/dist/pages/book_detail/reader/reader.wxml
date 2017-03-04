@@ -16,4 +16,17 @@
 			<icon class="font-icon"></icon>
 		</view>
 	</view>
+	<view class="control-detail">
+		<view class="jingdu-detail">
+			<view class="jingdu">
+				<icon class="rleft-icon"></icon>
+				<view class="nameAndNum">
+					<text class="faction">{{factionTitle}}\n</text>
+					<text class="jingdu-num">第{{currentSlideValue}}章{{' 共'+newestSectionNum}}章</text>
+				</view>
+				<icon class="rright-icon"></icon>
+			</view>
+			<slider bindchange="slider1change" left-icon="cancel" right-icon="success_no_circle" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
+		</view>
+	</view>
 </view>

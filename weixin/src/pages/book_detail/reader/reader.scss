@@ -63,3 +63,54 @@
 	background-size:270rpx 270rpx;
 	background-position:-111rpx -220rpx;
 }
+.reader-container .control-detail{
+	height: 200rpx;
+	width: 100%;
+	background-color: #fff;
+	position: absolute;
+	bottom: 110rpx;
+	left: 0;
+	border-bottom:1px solid #d7d7d7;
+}
+.reader-container .control-detail > view{
+	width: 100%;
+}
+.reader-container .control-detail .jingdu{
+	position:relative;
+	text-align:center;
+	font-size:24rpx;
+	color: #999;
+	height:110rpx;
+}
+.reader-container .faction{
+	color: #333;
+	font-size: 30rpx;
+}
+.rleft-icon{
+	position:absolute;
+	top:25rpx;
+	left:10rpx;
+	display:inline-block;
+	height:60rpx;
+	width:60rpx;
+	background-size:270rpx 270rpx;
+	background-position:-163rpx -216rpx;
+}
+.rright-icon{
+	position:absolute;
+	top:25rpx;
+	right:10rpx;
+	display:inline-block;
+	height:60rpx;
+	width:60rpx;
+	background-size:270rpx 270rpx;
+	background-position:-215rpx -216rpx;
+}
+.reader-container .nameAndNum{
+	text-align: center;
+	padding-top: 18rpx;
+}
+.reader-container .jingdu-num{
+	position: relative;
+	top: 8rpx;
+}

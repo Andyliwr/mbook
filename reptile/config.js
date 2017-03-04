@@ -27,11 +27,11 @@ var websiteConfig = [
   }
 ];
 var localMongoJson = {
-  url: '123.206.216.202',
+  url: '127.0.0.1',
   port: '27017',
   dbName: 'myapp',
   username: 'lidikang',
-  password: '121960425mongo'
+  password: '123456'
 };
 var mongoConfig = {
   url: '123.206.216.202',
