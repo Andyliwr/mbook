@@ -178,6 +178,7 @@
 	      var w = self.data.windows.windows_width / 2;
 	      if (x && y && y >= h - 50 && y <= h + 50 && x >= w - 60 && x <= w + 60) {
 	        self.setData({ control: { all: self.data.control.all == '0' ? '1' : '0', control_tab: 1, control_detail: 0, target: '' } });
+	        return;
 	      }
 	    }
 	    currentGesture = 0;
@@ -254,7 +255,19 @@
 	  gotoControlDetail: function gotoControlDetail(event) {
 	    var self = this;
 	    var target = event.currentTarget.dataset.control;
-	    self.setData({ control: { all: self.data.control.all, control_tab: 1, control_detail: self.data.control.control_detail == '0' ? '1' : '0', target: target } });
+	    // 这里control_detail需要做两层判断，首先是control_detail之前是0还是1，0变成1,1变成0，其次是target在两次点击中是否相同，相同则继续上面的判断，否则取反
+	    var control_detail = null;
+	    if (self.data.control.control_detail == '0') {
+	      // 当control_detail不显示的时候不再判断两次点击的目标是否相同，直接统一显示
+	      control_detail = 1;
+	    } else {
+	      if (target && self.data.control.target == target) {
+	        control_detail = 0;
+	      } else {
+	        control_detail = 1;
+	      }
+	    }
+	    self.setData({ control: { all: self.data.control.all, control_tab: 1, control_detail: control_detail, target: target } });
 	  }
 	});
 
