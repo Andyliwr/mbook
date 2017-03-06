@@ -7,10 +7,10 @@
 			<icon class="mulu-icon"></icon>
 		</view>
 		<view class="control-item" data-control="jingdu" bindtap="gotoControlDetail">
-			<icon class="jingdu-select-icon"></icon>
+			<icon class="{{control.target == 'jingdu'? 'jingdu-select-icon': 'jingdu-icon'}}"></icon>
 		</view>
 		<view class="control-item" data-control="color" bindtap="gotoControlDetail">
-			<icon class="day-select-icon"></icon>
+			<icon class="{{control.target == 'color'? 'day-select-icon': 'day-icon'}}"></icon>
 		</view>
 		<view class="control-item" data-control="font" bindtap="gotoControlDetail">
 			<icon class="font-icon"></icon>
@@ -26,10 +26,20 @@
 				</view>
 				<icon class="rright-icon"></icon>
 			</view>
-			<slider bindchange="slider1change" left-icon="cancel" right-icon="success_no_circle" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
+			<slider bindchange="slider1change" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
 		</view>
 		<view class="color-detail" style="display:{{control.target == 'color'? 'block': 'none'}}">
-		color
+			<view class="brightness">
+				<icon class="day-icon"></icon>
+				<slider class="bright-slider" bindchange="slider1change" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
+				<icon class="day-icon"></icon>
+			</view>
+			<view class="color-select">
+				<view class="color-item white-bg"></view>
+				<view class="color-item pink-bg"></view>
+				<view class="color-item green-bg"></view>
+				<view class="color-item back-bg"></view>
+			</view>
 		</view>
 		<view class="font-detail" style="display:{{control.target == 'font'? 'block': 'none'}}">
 		font

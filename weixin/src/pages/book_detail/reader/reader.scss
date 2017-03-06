@@ -116,3 +116,45 @@
 	position: relative;
 	top: 8rpx;
 }
+
+// 颜色控制器
+.reader-container .brightness{
+	display: -webkit-flex;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	padding: 15rpx 20rpx 6rpx 20rpx;
+	align-items: center;
+}
+.reader-container .brightness .day-icon{
+	width: 50rpx;
+	height: 50rpx;
+}
+.reader-container .brightness .bright-slider{
+	flex: 1;
+}
+.reader-container .color-select{
+	display: -webkit-flex;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	padding: 16rpx 10rpx 0 10rpx;
+}
+.reader-container .color-select .color-item{
+	width: 120rpx;
+	height: 48rpx;
+	border-radius: 8rpx;
+}
+.white-bg{
+	background-color: #ffffff;
+	border: 1px solid #e1e1e1;
+}
+.pink-bg{
+	background-color: #f8f3e0;
+}
+.green-bg{
+	background-color: #ccf1d0;
+}
+.back-bg{
+	background-color: #202930;
+}
