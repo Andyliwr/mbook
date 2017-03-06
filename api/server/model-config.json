@@ -14,11 +14,12 @@
     ]
   },
   "User": {
-    "dataSource": "mongodb"
+    "dataSource": "mongodb",
+    "public": false
   },
   "AccessToken": {
     "dataSource": "mongodb",
-    "public": false
+    "public": true
   },
   "ACL": {
     "dataSource": "mongodb",
@@ -46,6 +47,25 @@
   },
   "factionranks": {
     "dataSource": "mongodb",
+    "public": true
+  },
+  "adminUser": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "myAppUser": {
+    "dataSource": "mongodb",
+    "public": true,
+    "options": {
+      "emailVerificationRequired": true
+    }
+  },
+  "asToken": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "email": {
+    "dataSource": "email",
     "public": true
   }
 }

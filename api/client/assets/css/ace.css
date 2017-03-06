@@ -15522,7 +15522,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 }
 
 /*login的错误提示*/
-.error-tip{
+.error-tip, .r-errorTips{
 	position: absolute;
 	font-size: 12px;
 	margin:4px 0;

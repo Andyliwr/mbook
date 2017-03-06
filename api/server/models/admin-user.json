@@ -1,6 +1,7 @@
 {
-  "name": "common",
-  "base": "PersistedModel",
+  "name": "adminUser",
+  "plural": "adminUser",
+  "base": "User",
   "idInjection": true,
   "options": {
     "validateUpsert": true

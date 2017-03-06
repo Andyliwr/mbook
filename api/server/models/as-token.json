@@ -1,6 +1,7 @@
 {
-  "name": "common",
-  "base": "PersistedModel",
+  "name": "asToken",
+  "plural": "astoken",
+  "base": "AccessToken",
   "idInjection": true,
   "options": {
     "validateUpsert": true
