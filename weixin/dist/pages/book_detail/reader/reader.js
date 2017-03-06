@@ -61,6 +61,7 @@
 	var isMoving = 0;
 	var leftTimmerCount = 0;
 	var rightTimmerCount = 0;
+	var hasRunTouchMove = false;
 
 	//计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
 	function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio) {
@@ -100,7 +101,8 @@
 	    newestSectionNum: 1412,
 	    currentSlideValue: 200,
 	    fontSize: 32, //单位rpx
-	    lineHeight: 36 //单位rpx
+	    lineHeight: 36, //单位rpx
+	    control: { all: 0, control_tab: 0, control_detail: 0, target: '' } //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
 	  },
 	  onReady: function onReady() {
 	    var self = this;
@@ -132,6 +134,9 @@
 	    }
 	    var currentX = event.touches[0].pageX;
 	    var currentY = event.touches[0].pageY;
+	    // 判断用没有滑动而是点击屏幕的动作
+	    hasRunTouchMove = true;
+	    console.log('正在执行touchmove, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
 	    var direction = 0;
 	    if (currentX - self.data.touches.lastX < 0) {
 	      direction = 0;
@@ -154,14 +159,27 @@
 	    }
 	  },
 	  handletouchtart: function handletouchtart(event) {
+	    // 判断用户的点击事件，如果不是滑动，将不会执行touchmove
+	    hasRunTouchMove = false;
+	    console.log('正在执行touchtart, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
 	    // console.log('正在执行touchtart, isMoving为：'+isMoving);
 	    if (isMoving == 0) {
 	      this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } });
 	    }
 	  },
 	  handletouchend: function handletouchend() {
-	    // console.log('正在执行touchend, isMoving为：'+isMoving);
+	    console.log('正在执行touchend, isMoving为：' + isMoving);
 	    var self = this;
+	    // 判断用户的点击事件
+	    if (hasRunTouchMove == false) {
+	      var y = self.data.touches.lastY;
+	      var x = self.data.touches.lastX;
+	      var h = self.data.windows.windows_height / 2;
+	      var w = self.data.windows.windows_width / 2;
+	      if (x && y && y >= h - 50 && y <= h + 50 && x >= w - 60 && x <= w + 60) {
+	        self.setData({ control: { all: self.data.control.all == '0' ? '1' : '0', control_tab: 1, control_detail: 0, target: '' } });
+	      }
+	    }
 	    currentGesture = 0;
 	    //左滑动和有滑动的操作
 	    var currentIndex = self.data.pageIndex; //当前页数
@@ -227,11 +245,16 @@
 	          self.setData({ pageIndex: --currentIndex });
 	        }
 	      }
-	    }
+	    } else {}
 	  },
 	  slider1change: function slider1change(event) {
 	    var self = this;
 	    self.setData({ currentSlideValue: event.detail.value });
+	  },
+	  gotoControlDetail: function gotoControlDetail(event) {
+	    var self = this;
+	    var target = event.currentTarget.dataset.control;
+	    self.setData({ control: { all: self.data.control.all, control_tab: 1, control_detail: self.data.control.control_detail == '0' ? '1' : '0', target: target } });
 	  }
 	});
 

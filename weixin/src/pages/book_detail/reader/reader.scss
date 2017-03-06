@@ -74,6 +74,8 @@
 }
 .reader-container .control-detail > view{
 	width: 100%;
+	position: absolute;
+	display: none;
 }
 .reader-container .control-detail .jingdu{
 	position:relative;

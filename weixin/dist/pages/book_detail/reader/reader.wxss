@@ -72,7 +72,9 @@
   border-bottom: 1px solid #d7d7d7; }
 
 .reader-container .control-detail > view {
-  width: 100%; }
+  width: 100%;
+  position: absolute;
+  display: none; }
 
 .reader-container .control-detail .jingdu {
   position: relative;

@@ -46,7 +46,7 @@ window.onload = function(){
 					window.location.href = "index.html?userid="+data.userId;
 				},
 				error:function(err){
-					$('.error-tip').html(err.responseJSON.error.message+' ,请输入正确的用户名或密码').css({'display':'block'});
+					$('.error-tip').html('登录失败，请输入正确的用户名或密码').css({'display':'block'});
 				}
 			});
 		}else{
@@ -66,11 +66,8 @@ window.onload = function(){
 
 
 	//注册逻辑
-	$('.r-errorTips').html('你输入的用户名不对');
 	$('#r-rigster').click(function(){
 		$('.r-errorTips').hide();
-		//将注册按钮的字标改成loading
-		$(this).html('<i class="icon-spinner"></i>');
 
 		var username = $('input[name="r-username"]').val();
 		var email = $('input[name="r-email"]').val();
@@ -86,6 +83,8 @@ window.onload = function(){
 				if(passwordReg.test(password)){
 					if(password == password2){
 						if($('#isAgreen').is(':checked')){
+							//将注册按钮的字标改成loading
+							$(this).html('<i class="icon-spinner"></i>');
 							//全部通过，发送ajax
 							var registeUrl = API_URL+ '/user';
 							var postData={"username":username , "email": email, "password":password, "emailVerified": false};
@@ -109,15 +108,19 @@ window.onload = function(){
 						}
 					}else{
 						$('.r-errorTips').html('两次输入密码不一致').show();
+						$('input[name="r2-password"]').focus();
 					}
 				}else{
 					$('.r-errorTips').html('请输入的最少8位，由字母或者下划线组成的密码').show();
+					$('input[name="r-password"]').focus();
 				}
 			}else{
 				$('.r-errorTips').html('请输入的4-16位的用户名').show();
+				$('input[name="r-username"]').focus();
 			}
 		}else{
 			$('.r-errorTips').html('邮箱格式错误').show();
+			$('input[name="r-email"]').focus();
 		}
 		
 	});

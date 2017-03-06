@@ -70,7 +70,7 @@ module.exports = function(Myappuser) {
         title: 'Signed up successfully',
         content: 'Please check your email and click on the verification link ' -
             'before logging in.',
-        redirectTo: '/',
+        redirectTo: '/',发
         redirectToLinkText: 'Log in'
       });
     });
