@@ -1,44 +1,44 @@
 <view class="reader-container">
-	<view class="content" style="width: {{maxPageNum*100+'%'}}; -webkit-column-count: {{maxPageNum}}; column-count: {{maxPageNum}};left: {{leftValue+'px'}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
+	<view class="content" style="width: {{maxPageNum*100+'%'}}; -webkit-column-count: {{maxPageNum}}; column-count: {{maxPageNum}};left: {{leftValue+'px'}}; background-color: {{colorStyle.content_bg}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
 		<text>{{content}}</text>
 	</view>
-	<view class="control" style="width:{{windows.windows_width+'px'}};display:{{(control.control_tab == '1' && control.all == '1')? 'flex': 'none'}}">
+	<view class="control" style="width:{{windows.windows_width+'px'}};display:{{(control.control_tab == '1' && control.all == '1')? 'flex': 'none'}};background-color:{{colorStyle.control_bg}}">
 		<view class="control-item" data-control="mulu" bindtap="gotoControlDetail">
-			<icon class="mulu-icon"></icon>
+			<icon class="{{'mulu'+colorStyle.styleNum+'-icon'}}"></icon>
 		</view>
 		<view class="control-item" data-control="jingdu" bindtap="gotoControlDetail">
-			<icon class="{{control.target == 'jingdu'? 'jingdu-select-icon': 'jingdu-icon'}}"></icon>
+			<icon class="{{control.target == 'jingdu'? 'jingdu'+colorStyle.styleNum+'-select-icon': 'jingdu'+colorStyle.styleNum+'-icon'}}"></icon>
 		</view>
 		<view class="control-item" data-control="color" bindtap="gotoControlDetail">
-			<icon class="{{control.target == 'color'? 'day-select-icon': 'day-icon'}}"></icon>
+			<icon class="{{control.target == 'color'? 'day'+colorStyle.styleNum+'-select-icon': 'day'+colorStyle.styleNum+'-icon'}}"></icon>
 		</view>
 		<view class="control-item" data-control="font" bindtap="gotoControlDetail">
-			<icon class="font-icon"></icon>
+			<icon class="{{'font'+colorStyle.styleNum+'-icon'}}"></icon>
 		</view>
 	</view>
-	<view class="control-detail" style="display:{{(control.control_detail == '1' && control.all == '1')? 'block': 'none'}}">
+	<view class="control-detail" style="display:{{(control.control_detail == '1' && control.all == '1')? 'block': 'none'}};background-color:{{colorStyle.control_bg}}">
 		<view class="jingdu-detail" style="display:{{control.target == 'jingdu'? 'block': 'none'}}">
 			<view class="jingdu">
-				<icon class="rleft-icon"></icon>
+				<icon class="{{'rleft'+colorStyle.styleNum+'-icon'}}"></icon>
 				<view class="nameAndNum">
 					<text class="faction">{{factionTitle}}\n</text>
 					<text class="jingdu-num">第{{currentSlideValue}}章{{' 共'+newestSectionNum}}章</text>
 				</view>
-				<icon class="rright-icon"></icon>
+				<icon class="{{'rright'+colorStyle.styleNum+'-icon'}}"></icon>
 			</view>
-			<slider bindchange="slider1change" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
+			<slider bindchange="slider1change" selected-color="{{colorStyle.slider_bg}}" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
 		</view>
 		<view class="color-detail" style="display:{{control.target == 'color'? 'block': 'none'}}">
 			<view class="brightness">
-				<icon class="day-icon"></icon>
-				<slider class="bright-slider" bindchange="slider1change" selected-color="#fd9941" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
-				<icon class="day-icon"></icon>
+				<icon class="{{'day'+colorStyle.styleNum+'-icon'}}"></icon>
+				<slider class="bright-slider" bindchange="slider1change" selected-color="{{colorStyle.slider_bg}}" min="0" max="{{newestSectionNum}}" value="{{currentSlideValue}}" />
+				<icon class="{{'day'+colorStyle.styleNum+'-icon'}}"></icon>
 			</view>
 			<view class="color-select">
-				<view class="color-item white-bg"></view>
-				<view class="color-item pink-bg"></view>
-				<view class="color-item green-bg"></view>
-				<view class="color-item back-bg"></view>
+				<view class="color-item white-bg" data-stylenum="1" bindtap="switchColorStyle"></view>
+				<view class="color-item pink-bg" data-stylenum="2" bindtap="switchColorStyle"></view>
+				<view class="color-item green-bg" data-stylenum="3" bindtap="switchColorStyle"></view>
+				<view class="color-item back-bg" data-stylenum="1" bindtap="switchColorStyle"><icon class="yueliang-icon"></icon></view>
 			</view>
 		</view>
 		<view class="font-detail" style="display:{{control.target == 'font'? 'block': 'none'}}">

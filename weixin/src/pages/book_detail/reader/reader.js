@@ -48,7 +48,8 @@ Page({
       currentSlideValue: 200,
       fontSize: 32, //单位rpx
       lineHeight: 36, //单位rpx
-      control: {all: 0, control_tab: 0, control_detail: 0, target: ''} //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
+      control: {all: 0, control_tab: 0, control_detail: 0, target: ''}, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
+      colorStyle: {content_bg: '#f5f9fc', styleNum:1, slider_bg: '#fd9941', control_bg: '#ffffff'}, //1、2、3、4分别对应四种颜色模式
     },
     onReady: function(){
       var self = this;
@@ -216,5 +217,21 @@ Page({
     		}
     	}
     	self.setData({control: {all: self.data.control.all, control_tab: 1, control_detail: control_detail, target: target}});
+    },
+    //点击切换颜色
+    switchColorStyle: function(event){
+    	var self = this;
+    	var styleNum = event.currentTarget.dataset.stylenum;
+    	switch(styleNum){
+    		case '1':
+    			self.setData({colorStyle: {content_bg: '#f5f9fc', styleNum:1, slider_bg: '#fd9941', control_bg: '#ffffff'}});
+    			break;
+    		case '2':
+    			self.setData({colorStyle: {content_bg: '#f5f0da', styleNum:2, slider_bg: '#af7b2f', control_bg: '#f8f3e0'}});
+    			break;
+    		case '3':
+    			self.setData({colorStyle: {content_bg: '#c0edc6', styleNum:3, slider_bg: '#4b712f', control_bg: '#ccf1d0'}});
+    			break;
+    	}
     }
 });

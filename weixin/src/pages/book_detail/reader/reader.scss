@@ -3,7 +3,6 @@
 	overflow: hidden;
 }
 .reader-container .content{
-	background-color: #f5f9fc;
 	display: block;
 	overflow-x:hidden;
 	height:100%;
@@ -18,7 +17,6 @@
 }
 .reader-container .control{
 	height: 110rpx;
-	background-color: #fff;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -39,34 +37,10 @@
 	margin-left:25rpx;
 	width:50rpx;
 }
-.mulu-icon{
-	background-size:240rpx 240rpx;
-	background-position:-94rpx -145rpx;
-}
-.jingdu-icon{
-	background-size:270rpx 270rpx;
-	background-position:-165rpx -166rpx;
-}
-.jingdu-select-icon{
-	background-size:270rpx 270rpx;
-	background-position:-221rpx -166rpx;
-}
-.day-icon{
-	background-size:260rpx 260rpx;
-	background-position:3rpx -210rpx;
-}
-.day-select-icon{
-	background-size:260rpx 260rpx;
-	background-position:-51rpx -210rpx;
-}
-.font-icon{
-	background-size:270rpx 270rpx;
-	background-position:-111rpx -220rpx;
-}
+
 .reader-container .control-detail{
 	height: 200rpx;
 	width: 100%;
-	background-color: #fff;
 	position: absolute;
 	bottom: 110rpx;
 	left: 0;
@@ -88,25 +62,21 @@
 	color: #333;
 	font-size: 30rpx;
 }
-.rleft-icon{
+.rleft1-icon, .rleft2-icon, .rleft3-icon{
 	position:absolute;
 	top:25rpx;
 	left:10rpx;
 	display:inline-block;
 	height:60rpx;
 	width:60rpx;
-	background-size:270rpx 270rpx;
-	background-position:-163rpx -216rpx;
 }
-.rright-icon{
+.rright1-icon, .rright2-icon, .rright3-icon{
 	position:absolute;
 	top:25rpx;
 	right:10rpx;
 	display:inline-block;
 	height:60rpx;
 	width:60rpx;
-	background-size:270rpx 270rpx;
-	background-position:-215rpx -216rpx;
 }
 .reader-container .nameAndNum{
 	text-align: center;
@@ -116,7 +86,6 @@
 	position: relative;
 	top: 8rpx;
 }
-
 // 颜色控制器
 .reader-container .brightness{
 	display: -webkit-flex;
@@ -126,7 +95,7 @@
 	padding: 15rpx 20rpx 6rpx 20rpx;
 	align-items: center;
 }
-.reader-container .brightness .day-icon{
+.reader-container .brightness .day1-icon, .reader-container .brightness .day3-icon, .reader-container .brightness .day3-icon{
 	width: 50rpx;
 	height: 50rpx;
 }
@@ -141,9 +110,10 @@
 	padding: 16rpx 10rpx 0 10rpx;
 }
 .reader-container .color-select .color-item{
-	width: 120rpx;
-	height: 48rpx;
-	border-radius: 8rpx;
+	width:150rpx;
+	height:50rpx;
+	border-radius:8rpx;
+	text-align:center;
 }
 .white-bg{
 	background-color: #ffffff;
@@ -158,3 +128,115 @@
 .back-bg{
 	background-color: #202930;
 }
+
+// 不同的配色，2代表棕色，3代表绿色，1和4代表第一种和最后一种，两者都使用fd9941
+.yueliang-icon{
+	background-size:220rpx 220rpx;
+	background-position:4rpx -1rpx;
+	display:inline-block;
+	height:38rpx;
+	width:48rpx;
+	margin-top:9rpx;
+}
+.mulu1-icon{
+	background-size:240rpx 240rpx;
+	background-position:-94rpx -145rpx;
+}
+.jingdu1-icon{
+	background-size:270rpx 270rpx;
+	background-position:-165rpx -166rpx;
+}
+.jingdu1-select-icon{
+	background-size:270rpx 270rpx;
+	background-position:-221rpx -166rpx;
+}
+.day1-icon{
+	background-size:260rpx 260rpx;
+	background-position:3rpx -210rpx;
+}
+.day1-select-icon{
+	background-size:260rpx 260rpx;
+	background-position:-51rpx -210rpx;
+}
+.font1-icon{
+	background-size:270rpx 270rpx;
+	background-position:-111rpx -220rpx;
+}
+.rleft1-icon{
+	background-size:270rpx 270rpx;
+	background-position:-163rpx -216rpx;
+}
+.rright1-icon{
+	background-size:270rpx 270rpx;
+	background-position:-215rpx -216rpx;
+}
+
+//2
+.mulu2-icon{
+	background-size:220rpx 220rpx;
+	background-position:-85rpx -85rpx;
+}
+.jingdu2-icon{
+	background-size:220rpx 220rpx;
+	background-position:-130rpx -85rpx;
+}
+.jingdu2-select-icon{
+	background-size:220rpx 220rpx;
+	background-position: -175rpx -85rpx;
+}
+.day2-icon{
+	background-size:220rpx 220rpx;
+	background-position:6rpx -130rpx;
+}
+.day2-select-icon{
+	background-size:220rpx 220rpx;
+	background-position:-40rpx -130rpx;
+}
+.font2-icon{
+	background-size:270rpx 270rpx;
+	background-position:-110rpx -166rpx;
+}
+.rleft2-icon{
+	background-size:270rpx 270rpx;
+	background-position:-161rpx -160rpx;
+}
+.rright2-icon{
+	background-size:270rpx 270rpx;
+	background-position:-213rpx -160rpx;
+}
+
+//3
+.mulu3-icon{
+	background-size:220rpx 220rpx;
+	background-position:-84rpx 6rpx;
+}
+.jingdu3-icon{
+	background-size:220rpx 220rpx;
+	background-position:-130rpx 6rpx;
+}
+.jingdu3-select-icon{
+	background-size:220rpx 220rpx;
+	background-position:-175rpx 6rpx;
+}
+.day3-icon{
+	background-size:220rpx 220rpx;
+	background-position:6rpx -40rpx;
+}
+.day3-select-icon{
+	background-size:220rpx 220rpx;
+	background-position:-39rpx -40rpx;
+}
+.font3-icon{
+	background-size:270rpx 270rpx;
+	background-position:-109rpx -54rpx;
+}
+.rleft3-icon{
+	background-size:270rpx 270rpx;
+	background-position:-161rpx -48rpx;
+}
+.rright3-icon{
+	background-size:270rpx 270rpx;
+	background-position:-213rpx -48rpx;
+}
+
+//3

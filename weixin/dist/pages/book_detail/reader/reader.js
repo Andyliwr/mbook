@@ -44,17 +44,798 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(87);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _es6Promise = __webpack_require__(3);
+	//login.js
+	var Api = __webpack_require__(2);
+	var Util = __webpack_require__(38);
+	var currentGesture = 0; //控制当一个手势进行的时候屏蔽其他的手势
+	var moveTime = null; //控制左滑右滑的动画
+	var isMoving = 0;
+	var leftTimmerCount = 0;
+	var rightTimmerCount = 0;
+	var hasRunTouchMove = false;
+
+	//计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
+	function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio) {
+	  var returnNum = 0;
+	  fontSize = fontSize / pixelRatio;
+	  lineHeight = lineHeight / pixelRatio;
+	  //将str根据’\n‘截成数组
+	  var strArray = str.split(/\n+/);
+	  var splitArray = [];
+	  var reg = new RegExp('\n+', 'igm');
+	  var result = '';
+	  //这里写一个for循环去记录每处分隔符的\n的个数，这将会影响到计算换行的高度
+	  while ((result = reg.exec(str)) != null) {
+	    splitArray.push(result.toString().match(/\n/img).length);
+	  }
+	  //spliArray比strArray少一，这里加一项使之数量一样
+	  splitArray.push(0);
+	  var totalHeight = 0;
+	  strArray.forEach(function (item, index) {
+	    //拒绝最后一项0
+	    var huanhangNum = splitArray[index] - 1 > 0 ? splitArray[index] - 1 > 0 : 0;
+	    totalHeight += Math.ceil(item.length / Math.floor((windowW - 80 / pixelRatio) / fontSize)) * lineHeight + huanhangNum * lineHeight;
+	  });
+	  return Math.ceil(totalHeight / windowH);
+	}
+
+	Page({
+	  data: {
+	    content: '第一千四百一十二章\n\n\n当牧尘的身影落在了黑光长老所在的那座白玉石台时，整个天地间，依旧还处于先前的震撼之中，所有人都是一片沉默。\n\n这种沉默持续了许久，终于是有着人有些艰难的开口喃喃道：“那是...传闻中大千世界三十六道绝世神通之一的八部浮屠吧？”\n\n在场的这些各方超级势力，自然也是阅历非凡，所以很快的，也是渐渐的认出了先前牧尘所施展出来的那惊天动地的神通。\n\n那道幽黑光束所具备的毁灭力，看得众多天至尊都是头皮发麻，而如此威能的神通之术，除了那名震大千世界的三十六道绝世神通外，还能是什么？\n\n“没想到，他竟然真的将八部浮屠修炼成功了。”那些浮屠古族的长老，特别是玄脉与墨脉的，更是眼睛通红，无比嫉妒的望着牧尘，那模样，仿佛是恨不得将这般神通抢夺过来一般。\n\n因为身为天至尊，他们非常清楚那三十六道绝世神通对于他们而言究竟代表着什么，若是拥有，他们同样是能够无敌于同级之中。\n\n想想看，大千世界究竟有多少天至尊，然而那最顶尖的神通，却唯有这三十六道，由此可见其价值。\n\n就算是他们浮屠古族这深不可测的底蕴，能够媲美这三十六道绝世神通的神通之术，都是屈指可数。\n\n在那先前牧尘所在的山峰，清霜玉手紧紧的捂住嘴巴，此时的激动，连她素来的冰冷都是再维持不住，娇躯颤抖。\n\n原本以为他们清脉此次将会是毁灭般的打击，但谁料到竟会峰回路转，牧尘的横空出世，居然有着要将这般大势扭转过来的迹象。\n\n“牧尘，加油啊！”清霜喃喃道。\n\n在她身旁，灵溪倒是微笑着拍了拍她的香肩，让得后者有些不好意思的一笑，渐渐的冷静下来。\n\n“灵溪姐，牧尘能赢吗？”清霜带着一丝期盼的问道，虽然她知道，即便赢了两场，但牧尘接下来要面对的对手，却会更强。\n\n灵溪清浅一笑，温婉优雅，道：“放心吧，牧尘既然会出手，那自然有着他的把握，我们只需要等着便行了。”\n\n清霜用力的点了点头，美目凝视着远处那道身影，眸子中异彩流溢。\n\n而在另外一座山峰上，林静拍着玉手用力的鼓掌，笑盈盈的道：“牧尘赢得太漂亮了。”\n\n这两场战斗，牧尘完全没有丝毫试探的意思，一出手便是倾尽全力，甚至不惜暴露底牌，而如此一来，那战绩也是辉煌震撼得很，两招下来，赢得干脆利落，让人看得也是有些热血沸腾。\n\n一旁的萧潇也是螓首轻点，眸子中满是欣赏之色。\n\n“看来牧尘对这浮屠古族怨气很大啊。”倒是一旁的药尘呵呵一笑，他的眼力何等的老辣，一眼就看了出来，这是牧尘故意为之，因为他今日而来，本就是为了心中那口隐忍二十多年的一口气，这口气，为了他，为了他那夫妻分离，孤寂多年的爹，也为了他那被囚禁多年，不见天日的母亲，所以他要的胜利，不是那种势均力敌的激战，而是干脆利落，雷霆万钧。\n\n这样一来，那玄脉的脸面，可就丢得有点大了。\n\n“不过这种战斗方式，只能在有着绝对把握的情况下，若是两者战斗相仿，谁先暴露底牌，怕就得失去一些先机了。”林貂也是点评道，不过虽然这样说着，他的脸庞上，同样是有着欣赏之色，因为牧尘会选择这种战斗方式，那也就说明了他对自身的一种自信。\n\n这种自信，他也曾经在林动的身上见到过。\n\n...\n\n在那沉默的天地间，白玉石台上的黑光长老，也是面色有些阴沉的望着眼前信步而来的青年，望着后者，他眼神深处，也是掠过浓浓的忌惮之色。\n\n先前牧尘展现出来的手段，不管是那诡异的紫色火炎，还是那霸道无比的八部浮屠，都让得黑光长老心中泛着一丝惧意。\n\n他的实力，比玄海，玄风都要强，乃是灵品后期，但在面对着此时锐气逼人的牧尘时，他依旧是没有多少的底气。\n\n“该死，这个家伙怎么现在变得如此之强！”\n\n黑光心中怒骂，旋即生出一些后悔之意，他后悔的并不是为什么要招惹牧尘，而是后悔当初牧尘只是大圆满时，他为何不果决一些，直接出杀手。\n\n即便不必真的将其斩杀，但起码也要将其一身修为给废了，让得他从此变成一个废物，如此的话，也就没了今日的灾劫。\n\n“你是在想为什么当初没杀了我吗？”而在黑光目光闪烁的时候，牧尘盯着他，却是一笑，说道。\n\n黑光闻言，顿时哆嗦了一下，他能够感觉到，牧尘虽然在笑，在那言语间，却是弥漫着无尽的寒气甚至杀意。\n\n不过他毕竟也是浮屠古族的长老，地位显赫，很快渐渐的平复了心情，阴沉的盯着牧尘，道：“牧尘，你做事可不要太过分了，年轻人有锐气是好事，但若是太过，恐怕就得过刚易折了。”\n\n“你玄脉若是有本事，那就折给我看看吧。”牧尘漫不经心的道。\n\n“你！”\n\n黑光一怒，但瞧得牧尘那冰冷目光时，心头又是一悸，不由得羞恼至极。\n\n“还不出手吗？”牧尘盯着他，语气淡漠，然后他伸出手掌，修长如白玉，其上灵光跳跃：“若是不出手的话，那我就要动手了。”\n\n黑光闻言，恼怒得咬牙切齿，而就当他准备运转灵力时，忽有一道传音，落入耳中：“黑光，催动秘法，全力出手，即便不胜，也要将其锐气尽挫，接下来，自会有人收拾他。”\n\n听到这道传音，黑光目光顿时一闪，眼睛不着痕迹的扫了玄脉脉首玄光一眼，这道传音，显然就是来自于后者。\n\n“要催动秘法吗？”黑光踌躇了一下，一旦如此做的话，就算是以他天至尊的恢复力，也起码得虚弱大半年的时间。\n\n不过他也明白玄光的意图，现在的牧尘锐气太甚了，他一场场的打下来，就算到时候无法取胜四场，但也足以让他们玄脉搞得灰头土脸。\n\n眼下众多超级势力在观礼，若是传出去的话，说他们玄脉，被一个罪子横扫，这无疑会将他们玄脉的颜面丢光。\n\n所以，不管如何，黑光都不能再让牧尘如先前那般取得势如破竹般的战绩。\n\n必须将其阻拦下来，破其锐气，而接下来的第四场，他们玄脉，就能够派出仙品天至尊，到时候，要收拾这牧尘，自然是易如反掌。\n\n“好！”\n\n心中踌躇了一下，黑光终于是狠狠一咬牙，在见识了先前牧尘的手段后，即便是他，也是没把握能够接下牧尘的攻势，既然如此，还不如拼命一搏。\n\n“小辈，今日就让你知晓，什么叫做过刚易折！”\n\n黑光心中冷声说道，旋即他身形陡然暴射而退，同时讥讽冷笑道：“牧尘，休要得意，今日你也接我一招试试！”\n\n轰！\n\n随着其音落，只见得黑光身后，亿万道灵光交织，一座巨大的至尊法相现出身来，浩瀚的灵力风暴，肆虐在天地间。\n\n这至尊法相一出现，黑光也是深深的吸了一口气，双手陡然结出一道古怪印法。\n\n同时，其身后的至尊法相，也是双手结印。\n\n在那远处，清天，清萱等长老见到这一幕，瞳孔顿时一缩，骇然道：“无耻！竟然是化灵秘法！”\n\n在他们骇然失声时，那黑光则是对着牧尘露出狠辣笑容，森然道：“既然你咄咄逼人，那也怪不得老夫心狠手辣了。”\n\n话音落下，他的肚子陡然鼓胀起来，同时他身后的至尊法相，也是鼓起巨大的肚子，下一刻，他张开嘴巴，猛然一吐。\n\n黑光与身后的至尊法相嘴中，竟是有着星辰般的洪流远远不断的奔腾而出，那等声势，犹如是能够磨灭万古。\n\n而随着那星河般的洪流不断的呼啸而出，只见得黑光的身躯迅速的干枯，而那至尊法相，也是开始黯淡无光，仿佛两者之中的所有力量，都是化为了那无尽星辰洪流。\n\n天地间，众多天至尊见到这一幕，都是忍不住的面色一变，失声道：“这黑光疯了，竟然将至尊法相都是分解了？！”\n\n至尊法相乃是天至尊最强的战力之一，若是自我分解，那就得再度重新凝炼，那所需要消耗的时间与精力可是不少，而且说不定还会有着损伤。\n\n所以一般这种手段，极少人会动用，那是真正的损人不利己，杀敌一千，自损一千的同归于尽之法。\n\n呼呼！\n\n天地间，星辰洪流呼啸而过，对着牧尘笼罩而去，那等威势，仿佛就算是日月，都将会被消磨而灭。\n\n众多强者神色凝重，先前牧尘的锐气太甚，所以这黑光才会以这种极端的方式，试图将其阻扰，坏其锐气，保住玄脉的颜面。\n\n“黑光可真是狠辣，这下子，那牧尘可是遇见麻烦了。”\n\n...\n\n...',
+	    factionTitle: '八部浮屠',
+	    windows: { windows_height: 0, windows_width: 0, pixelRatio: 1 },
+	    touches: { lastX: 0, lastY: 0 },
+	    move_direction: 0, //0代表左滑动，1代表右滑动
+	    leftValue: 0,
+	    pageIndex: 1,
+	    maxPageNum: 0,
+	    newestSectionNum: 1412,
+	    currentSlideValue: 200,
+	    fontSize: 32, //单位rpx
+	    lineHeight: 36, //单位rpx
+	    control: { all: 0, control_tab: 0, control_detail: 0, target: '' }, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
+	    colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', control_bg: '#ffffff' } },
+	  onReady: function onReady() {
+	    var self = this;
+	    //获取屏幕的高度和宽度，为分栏做准备
+	    wx.getSystemInfo({
+	      success: function success(res) {
+	        self.setData({ windows: { windows_height: res.windowHeight, windows_width: res.windowWidth, pixelRatio: res.pixelRatio } });
+	      }
+	    });
+	    var maxPageNum = countPageNum(self.data.content, self.data.fontSize, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
+	    self.setData({ maxPageNum: maxPageNum });
+	  },
+	  onLoad: function onLoad(options) {
+	    var self = this;
+	    //动态设置标题
+	    var factionName = options.factionName || "大主宰";
+	    wx.setNavigationBarTitle({
+	      title: factionName,
+	      fail: function fail() {
+	        //显示错误页面
+	      }
+	    });
+	  },
+	  handletouchmove: function handletouchmove(event) {
+	    // console.log('正在执行touchmove, isMoving为：'+isMoving);
+	    var self = this;
+	    if (currentGesture != 0 || isMoving == 1) {
+	      return;
+	    }
+	    var currentX = event.touches[0].pageX;
+	    var currentY = event.touches[0].pageY;
+	    // 判断用没有滑动而是点击屏幕的动作
+	    hasRunTouchMove = true;
+	    console.log('正在执行touchmove, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
+	    var direction = 0;
+	    if (currentX - self.data.touches.lastX < 0) {
+	      direction = 0;
+	    } else if (currentX - self.data.touches.lastX > 0) {
+	      direction = 1;
+	    }
+	    //需要减少或者增加的值
+	    var moreOrLessValue = Math.abs(currentX - self.data.touches.lastX);
+	    //将当前坐标进行保存以进行下一次计算
+	    self.setData({ touches: { lastX: currentX, lastY: currentY }, move_direction: direction });
+	    var currentIndex = self.data.pageIndex;
+	    if (direction == 0) {
+	      if (currentIndex < self.data.maxPageNum) {
+	        self.setData({ leftValue: self.data.leftValue - moreOrLessValue });
+	      }
+	    } else {
+	      if (currentIndex > 1) {
+	        self.setData({ leftValue: self.data.leftValue + moreOrLessValue });
+	      }
+	    }
+	  },
+	  handletouchtart: function handletouchtart(event) {
+	    // 判断用户的点击事件，如果不是滑动，将不会执行touchmove
+	    hasRunTouchMove = false;
+	    console.log('正在执行touchtart, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
+	    // console.log('正在执行touchtart, isMoving为：'+isMoving);
+	    if (isMoving == 0) {
+	      this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } });
+	    }
+	  },
+	  handletouchend: function handletouchend() {
+	    console.log('正在执行touchend, isMoving为：' + isMoving);
+	    var self = this;
+	    // 判断用户的点击事件
+	    if (hasRunTouchMove == false) {
+	      var y = self.data.touches.lastY;
+	      var x = self.data.touches.lastX;
+	      var h = self.data.windows.windows_height / 2;
+	      var w = self.data.windows.windows_width / 2;
+	      if (x && y && y >= h - 50 && y <= h + 50 && x >= w - 60 && x <= w + 60) {
+	        self.setData({ control: { all: self.data.control.all == '0' ? '1' : '0', control_tab: 1, control_detail: 0, target: '' } });
+	        return;
+	      }
+	    }
+	    currentGesture = 0;
+	    //左滑动和有滑动的操作
+	    var currentIndex = self.data.pageIndex; //当前页数
+	    var targetLeftValue = null; //移动之后content的目标左值
+	    var pingjunValue = null; //500ms内平均每100ms移动的值
+	    if (isMoving == 0) {
+	      if (self.data.move_direction == 0) {
+	        if (currentIndex < self.data.maxPageNum) {
+	          targetLeftValue = -1 * self.data.windows.windows_width * currentIndex;
+	          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4; //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
+	          isMoving = 1; //开始计时的时候将标志置1
+	          //使用计时器实现动画效果
+	          // console.log('开始向 左 滑动的计时器，isMoving为1');
+	          moveTime = setInterval(function () {
+	            ++leftTimmerCount;
+	            var currentLeftValue = self.data.leftValue;
+	            //如果达到了目标值，立即停止计时器
+	            //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
+	            if (leftTimmerCount == 4) {
+	              clearInterval(moveTime);
+	              isMoving = 0;
+	              leftTimmerCount = 0;
+	              self.setData({ leftValue: targetLeftValue });
+	              return;
+	            }
+	            if (currentLeftValue == targetLeftValue) {
+	              clearInterval(moveTime);
+	              isMoving = 0;
+	              leftTimmerCount = 0;
+	              // console.log('向 左 滑动的计时器结束了，isMoving为0');
+	              return;
+	            }
+	            self.setData({ leftValue: currentLeftValue - pingjunValue });
+	          }, 75);
+	          self.setData({ pageIndex: ++currentIndex });
+	        }
+	      } else {
+	        //前一页和后一页相差其实是2个-320px
+	        if (currentIndex > 1) {
+	          targetLeftValue = -1 * self.data.windows.windows_width * (currentIndex - 2);
+	          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4;
+	          isMoving = 1;
+	          // console.log('开始向 左 滑动的计时器，isMoving为1');
+	          moveTime = setInterval(function () {
+	            ++rightTimmerCount;
+	            var currentLeftValue = self.data.leftValue;
+	            if (rightTimmerCount == 4) {
+	              clearInterval(moveTime);
+	              isMoving = 0;
+	              rightTimmerCount = 0;
+	              self.setData({ leftValue: targetLeftValue });
+	              return;
+	            }
+	            if (currentLeftValue == targetLeftValue) {
+	              clearInterval(moveTime);
+	              isMoving = 0;
+	              rightTimmerCount = 0;
+	              // console.log('向 右 滑动的计时器结束了，isMoving为0');
+	              return;
+	            }
+	            self.setData({ leftValue: currentLeftValue + pingjunValue });
+	          }, 75);
+	          self.setData({ pageIndex: --currentIndex });
+	        }
+	      }
+	    } else {}
+	  },
+	  slider1change: function slider1change(event) {
+	    var self = this;
+	    self.setData({ currentSlideValue: event.detail.value });
+	  },
+	  gotoControlDetail: function gotoControlDetail(event) {
+	    var self = this;
+	    var target = event.currentTarget.dataset.control;
+	    // 这里control_detail需要做两层判断，首先是control_detail之前是0还是1，0变成1,1变成0，其次是target在两次点击中是否相同，相同则继续上面的判断，否则取反
+	    var control_detail = null;
+	    if (self.data.control.control_detail == '0') {
+	      // 当control_detail不显示的时候不再判断两次点击的目标是否相同，直接统一显示
+	      control_detail = 1;
+	    } else {
+	      if (target && self.data.control.target == target) {
+	        control_detail = 0;
+	      } else {
+	        control_detail = 1;
+	      }
+	    }
+	    self.setData({ control: { all: self.data.control.all, control_tab: 1, control_detail: control_detail, target: target } });
+	  },
+	  //点击切换颜色
+	  switchColorStyle: function switchColorStyle(event) {
+	    var self = this;
+	    var styleNum = event.currentTarget.dataset.stylenum;
+	    switch (styleNum) {
+	      case '1':
+	        self.setData({ colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', control_bg: '#ffffff' } });
+	        break;
+	      case '2':
+	        self.setData({ colorStyle: { content_bg: '#f5f0da', styleNum: 2, slider_bg: '#af7b2f', control_bg: '#f8f3e0' } });
+	        break;
+	      case '3':
+	        self.setData({ colorStyle: { content_bg: '#c0edc6', styleNum: 3, slider_bg: '#4b712f', control_bg: '#ccf1d0' } });
+	        break;
+	    }
+	  }
+	});
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 处理数据的请求
+	'use strict';
+
+	var _keys = __webpack_require__(3);
+
+	var _keys2 = _interopRequireDefault(_keys);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var HOST_URL = 'http://localhost:3000/api';
+	var LOGIN = '/as_users/login';
+	var GET_FACTION_LIST = '/factionlists';
+	var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
+	var GET_CONTENT_BY_ID = '/factioncontents/';
+	var GET_EMAILS_PAGEID = '/emails';
+	var GET_BOOKS_SORTBY_TIME = '/xxxx';
+	var GET_RANK = '/xs_rank/getRank';
+
+	function obj2url(obj) {
+		if (obj instanceof Object) {
+			return (0, _keys2.default)(obj).map(function (k) {
+				return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
+			}).join('&');
+		} else {
+			console.err(obj + "，不是一个对象!");
+			return '';
+		}
+	}
+
+	module.exports = {
+		//获取列表数据
+		getFactionList: function getFactionList() {
+			return HOST_URL + GET_FACTION_LIST;
+		},
+		getFactionDetailById: function getFactionDetailById(id) {
+			return HOST_URL + GET_FACTION_DETAIL_BY_ID + id;
+		},
+		//获取页面数据内容
+		// getTopicByID: function(id, obj){
+		// 	return HOST_URL + GET_CONTENT_BY_ID + id + '?' + obj2url(obj);
+		// }
+		getContentByID: function getContentByID(id) {
+			return HOST_URL + GET_CONTENT_BY_ID + id;
+		},
+		login: function login(umt, password) {
+			return HOST_URL + LOGIN;
+		},
+		getEmailsByPageid: function getEmailsByPageid(pageid) {
+			return HOST_URL + GET_FACTION_DETAIL_BY_ID + '?pageid=' + pageid;
+		},
+		//根据时间分类用户的书籍
+		getBooksSortByTime: function getBooksSortByTime(timeObj) {
+			if (timeObj.timeType && timeObj.timeValue) {
+				return HOST_URL + GET_BOOKS_SORTBY_TIME + '?timeType=' + timeObj.timeType + '&timeValue=' + timeObj.timeValue;
+			} else {
+				console.log('根据时间分类用户的书籍 传入参数错误');
+			}
+		},
+		getRank: function getRank(rankType) {
+			return HOST_URL + GET_RANK + '?rankType=' + rankType;
+		}
+	};
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(4), __esModule: true };
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(5);
+	module.exports = __webpack_require__(25).Object.keys;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(6)
+	  , $keys    = __webpack_require__(8);
+
+	__webpack_require__(23)('keys', function(){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(7);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+	var $keys       = __webpack_require__(9)
+	  , enumBugKeys = __webpack_require__(22);
+
+	module.exports = Object.keys || function keys(O){
+	  return $keys(O, enumBugKeys);
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var has          = __webpack_require__(10)
+	  , toIObject    = __webpack_require__(11)
+	  , arrayIndexOf = __webpack_require__(14)(false)
+	  , IE_PROTO     = __webpack_require__(18)('IE_PROTO');
+
+	module.exports = function(object, names){
+	  var O      = toIObject(object)
+	    , i      = 0
+	    , result = []
+	    , key;
+	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+	  // Don't enum bug & hidden keys
+	  while(names.length > i)if(has(O, key = names[i++])){
+	    ~arrayIndexOf(result, key) || result.push(key);
+	  }
+	  return result;
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	var hasOwnProperty = {}.hasOwnProperty;
+	module.exports = function(it, key){
+	  return hasOwnProperty.call(it, key);
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// to indexed object, toObject with fallback for non-array-like ES3 strings
+	var IObject = __webpack_require__(12)
+	  , defined = __webpack_require__(7);
+	module.exports = function(it){
+	  return IObject(defined(it));
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(13);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// false -> Array#indexOf
+	// true  -> Array#includes
+	var toIObject = __webpack_require__(11)
+	  , toLength  = __webpack_require__(15)
+	  , toIndex   = __webpack_require__(17);
+	module.exports = function(IS_INCLUDES){
+	  return function($this, el, fromIndex){
+	    var O      = toIObject($this)
+	      , length = toLength(O.length)
+	      , index  = toIndex(fromIndex, length)
+	      , value;
+	    // Array#includes uses SameValueZero equality algorithm
+	    if(IS_INCLUDES && el != el)while(length > index){
+	      value = O[index++];
+	      if(value != value)return true;
+	    // Array#toIndex ignores holes, Array#includes - not
+	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+	      if(O[index] === el)return IS_INCLUDES || index || 0;
+	    } return !IS_INCLUDES && -1;
+	  };
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.15 ToLength
+	var toInteger = __webpack_require__(16)
+	  , min       = Math.min;
+	module.exports = function(it){
+	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	// 7.1.4 ToInteger
+	var ceil  = Math.ceil
+	  , floor = Math.floor;
+	module.exports = function(it){
+	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+	};
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toInteger = __webpack_require__(16)
+	  , max       = Math.max
+	  , min       = Math.min;
+	module.exports = function(index, length){
+	  index = toInteger(index);
+	  return index < 0 ? max(index + length, 0) : min(index, length);
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var shared = __webpack_require__(19)('keys')
+	  , uid    = __webpack_require__(21);
+	module.exports = function(key){
+	  return shared[key] || (shared[key] = uid(key));
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global = __webpack_require__(20)
+	  , SHARED = '__core-js_shared__'
+	  , store  = global[SHARED] || (global[SHARED] = {});
+	module.exports = function(key){
+	  return store[key] || (store[key] = {});
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	// IE 8- don't enum bug keys
+	module.exports = (
+	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+	).split(',');
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(24)
+	  , core    = __webpack_require__(25)
+	  , fails   = __webpack_require__(34);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(20)
+	  , core      = __webpack_require__(25)
+	  , ctx       = __webpack_require__(26)
+	  , hide      = __webpack_require__(28)
+	  , PROTOTYPE = 'prototype';
+
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , expProto  = exports[PROTOTYPE]
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && target[key] !== undefined;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(a, b, c){
+	        if(this instanceof C){
+	          switch(arguments.length){
+	            case 0: return new C;
+	            case 1: return new C(a);
+	            case 2: return new C(a, b);
+	          } return new C(a, b, c);
+	        } return C.apply(this, arguments);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+	    if(IS_PROTO){
+	      (exports.virtual || (exports.virtual = {}))[key] = out;
+	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+	    }
+	  }
+	};
+	// type bitmap
+	$export.F = 1;   // forced
+	$export.G = 2;   // global
+	$export.S = 4;   // static
+	$export.P = 8;   // proto
+	$export.B = 16;  // bind
+	$export.W = 32;  // wrap
+	$export.U = 64;  // safe
+	$export.R = 128; // real proto method for `library` 
+	module.exports = $export;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(27);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var dP         = __webpack_require__(29)
+	  , createDesc = __webpack_require__(37);
+	module.exports = __webpack_require__(33) ? function(object, key, value){
+	  return dP.f(object, key, createDesc(1, value));
+	} : function(object, key, value){
+	  object[key] = value;
+	  return object;
+	};
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject       = __webpack_require__(30)
+	  , IE8_DOM_DEFINE = __webpack_require__(32)
+	  , toPrimitive    = __webpack_require__(36)
+	  , dP             = Object.defineProperty;
+
+	exports.f = __webpack_require__(33) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	  anObject(O);
+	  P = toPrimitive(P, true);
+	  anObject(Attributes);
+	  if(IE8_DOM_DEFINE)try {
+	    return dP(O, P, Attributes);
+	  } catch(e){ /* empty */ }
+	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+	  if('value' in Attributes)O[P] = Attributes.value;
+	  return O;
+	};
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(31);
+	module.exports = function(it){
+	  if(!isObject(it))throw TypeError(it + ' is not an object!');
+	  return it;
+	};
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	};
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = !__webpack_require__(33) && !__webpack_require__(34)(function(){
+	  return Object.defineProperty(__webpack_require__(35)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(34)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(31)
+	  , document = __webpack_require__(20).document
+	  // in old IE typeof document.createElement is 'object'
+	  , is = isObject(document) && isObject(document.createElement);
+	module.exports = function(it){
+	  return is ? document.createElement(it) : {};
+	};
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.1 ToPrimitive(input [, PreferredType])
+	var isObject = __webpack_require__(31);
+	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+	// and the second argument - flag - preferred type is a string
+	module.exports = function(it, S){
+	  if(!isObject(it))return it;
+	  var fn, val;
+	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+	  throw TypeError("Can't convert object to primitive value");
+	};
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	module.exports = function(bitmap, value){
+	  return {
+	    enumerable  : !(bitmap & 1),
+	    configurable: !(bitmap & 2),
+	    writable    : !(bitmap & 4),
+	    value       : value
+	  };
+	};
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _es6Promise = __webpack_require__(39);
 
 	var _es6Promise2 = _interopRequireDefault(_es6Promise);
 
@@ -212,12 +993,12 @@
 	};
 
 /***/ },
-/* 3 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process, global) {"use strict";
 
-	var _typeof2 = __webpack_require__(5);
+	var _typeof2 = __webpack_require__(41);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -439,10 +1220,10 @@
 	      return this.then(null, t);
 	    } }, U.polyfill = W, U.Promise = U, U;
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40), (function() { return this; }())))
 
 /***/ },
-/* 4 */
+/* 40 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -628,18 +1409,18 @@
 
 
 /***/ },
-/* 5 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _iterator = __webpack_require__(6);
+	var _iterator = __webpack_require__(42);
 
 	var _iterator2 = _interopRequireDefault(_iterator);
 
-	var _symbol = __webpack_require__(57);
+	var _symbol = __webpack_require__(62);
 
 	var _symbol2 = _interopRequireDefault(_symbol);
 
@@ -654,28 +1435,28 @@
 	};
 
 /***/ },
-/* 6 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(7), __esModule: true };
+	module.exports = { "default": __webpack_require__(43), __esModule: true };
 
 /***/ },
-/* 7 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(8);
-	__webpack_require__(52);
-	module.exports = __webpack_require__(56).f('iterator');
+	__webpack_require__(44);
+	__webpack_require__(57);
+	module.exports = __webpack_require__(61).f('iterator');
 
 /***/ },
-/* 8 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var $at  = __webpack_require__(9)(true);
+	var $at  = __webpack_require__(45)(true);
 
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(12)(String, 'String', function(iterated){
+	__webpack_require__(46)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -690,11 +1471,11 @@
 	});
 
 /***/ },
-/* 9 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(10)
-	  , defined   = __webpack_require__(11);
+	var toInteger = __webpack_require__(16)
+	  , defined   = __webpack_require__(7);
 	// true  -> String#at
 	// false -> String#codePointAt
 	module.exports = function(TO_STRING){
@@ -712,41 +1493,20 @@
 	};
 
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	// 7.1.4 ToInteger
-	var ceil  = Math.ceil
-	  , floor = Math.floor;
-	module.exports = function(it){
-	  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	// 7.2.1 RequireObjectCoercible(argument)
-	module.exports = function(it){
-	  if(it == undefined)throw TypeError("Can't call method on  " + it);
-	  return it;
-	};
-
-/***/ },
-/* 12 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(13)
-	  , $export        = __webpack_require__(14)
-	  , redefine       = __webpack_require__(29)
-	  , hide           = __webpack_require__(19)
-	  , has            = __webpack_require__(30)
-	  , Iterators      = __webpack_require__(31)
-	  , $iterCreate    = __webpack_require__(32)
-	  , setToStringTag = __webpack_require__(48)
-	  , getPrototypeOf = __webpack_require__(50)
-	  , ITERATOR       = __webpack_require__(49)('iterator')
+	var LIBRARY        = __webpack_require__(47)
+	  , $export        = __webpack_require__(24)
+	  , redefine       = __webpack_require__(48)
+	  , hide           = __webpack_require__(28)
+	  , has            = __webpack_require__(10)
+	  , Iterators      = __webpack_require__(49)
+	  , $iterCreate    = __webpack_require__(50)
+	  , setToStringTag = __webpack_require__(54)
+	  , getPrototypeOf = __webpack_require__(56)
+	  , ITERATOR       = __webpack_require__(55)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -808,283 +1568,35 @@
 	};
 
 /***/ },
-/* 13 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
-/* 14 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global    = __webpack_require__(15)
-	  , core      = __webpack_require__(16)
-	  , ctx       = __webpack_require__(17)
-	  , hide      = __webpack_require__(19)
-	  , PROTOTYPE = 'prototype';
-
-	var $export = function(type, name, source){
-	  var IS_FORCED = type & $export.F
-	    , IS_GLOBAL = type & $export.G
-	    , IS_STATIC = type & $export.S
-	    , IS_PROTO  = type & $export.P
-	    , IS_BIND   = type & $export.B
-	    , IS_WRAP   = type & $export.W
-	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-	    , expProto  = exports[PROTOTYPE]
-	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
-	    , key, own, out;
-	  if(IS_GLOBAL)source = name;
-	  for(key in source){
-	    // contains in native
-	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if(own && key in exports)continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-	    // bind timers to global for call from export context
-	    : IS_BIND && own ? ctx(out, global)
-	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function(C){
-	      var F = function(a, b, c){
-	        if(this instanceof C){
-	          switch(arguments.length){
-	            case 0: return new C;
-	            case 1: return new C(a);
-	            case 2: return new C(a, b);
-	          } return new C(a, b, c);
-	        } return C.apply(this, arguments);
-	      };
-	      F[PROTOTYPE] = C[PROTOTYPE];
-	      return F;
-	    // make static versions for prototype methods
-	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if(IS_PROTO){
-	      (exports.virtual || (exports.virtual = {}))[key] = out;
-	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
-	    }
-	  }
-	};
-	// type bitmap
-	$export.F = 1;   // forced
-	$export.G = 2;   // global
-	$export.S = 4;   // static
-	$export.P = 8;   // proto
-	$export.B = 16;  // bind
-	$export.W = 32;  // wrap
-	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library` 
-	module.exports = $export;
+	module.exports = __webpack_require__(28);
 
 /***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(18);
-	module.exports = function(fn, that, length){
-	  aFunction(fn);
-	  if(that === undefined)return fn;
-	  switch(length){
-	    case 1: return function(a){
-	      return fn.call(that, a);
-	    };
-	    case 2: return function(a, b){
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function(a, b, c){
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function(/* ...args */){
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var dP         = __webpack_require__(20)
-	  , createDesc = __webpack_require__(28);
-	module.exports = __webpack_require__(24) ? function(object, key, value){
-	  return dP.f(object, key, createDesc(1, value));
-	} : function(object, key, value){
-	  object[key] = value;
-	  return object;
-	};
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var anObject       = __webpack_require__(21)
-	  , IE8_DOM_DEFINE = __webpack_require__(23)
-	  , toPrimitive    = __webpack_require__(27)
-	  , dP             = Object.defineProperty;
-
-	exports.f = __webpack_require__(24) ? Object.defineProperty : function defineProperty(O, P, Attributes){
-	  anObject(O);
-	  P = toPrimitive(P, true);
-	  anObject(Attributes);
-	  if(IE8_DOM_DEFINE)try {
-	    return dP(O, P, Attributes);
-	  } catch(e){ /* empty */ }
-	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-	  if('value' in Attributes)O[P] = Attributes.value;
-	  return O;
-	};
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22);
-	module.exports = function(it){
-	  if(!isObject(it))throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(24) && !__webpack_require__(25)(function(){
-	  return Object.defineProperty(__webpack_require__(26)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(25)(function(){
-	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	module.exports = function(exec){
-	  try {
-	    return !!exec();
-	  } catch(e){
-	    return true;
-	  }
-	};
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(22)
-	  , document = __webpack_require__(15).document
-	  // in old IE typeof document.createElement is 'object'
-	  , is = isObject(document) && isObject(document.createElement);
-	module.exports = function(it){
-	  return is ? document.createElement(it) : {};
-	};
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(22);
-	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-	// and the second argument - flag - preferred type is a string
-	module.exports = function(it, S){
-	  if(!isObject(it))return it;
-	  var fn, val;
-	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  throw TypeError("Can't convert object to primitive value");
-	};
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports = function(bitmap, value){
-	  return {
-	    enumerable  : !(bitmap & 1),
-	    configurable: !(bitmap & 2),
-	    writable    : !(bitmap & 4),
-	    value       : value
-	  };
-	};
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(19);
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	var hasOwnProperty = {}.hasOwnProperty;
-	module.exports = function(it, key){
-	  return hasOwnProperty.call(it, key);
-	};
-
-/***/ },
-/* 31 */
+/* 49 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 32 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(33)
-	  , descriptor     = __webpack_require__(28)
-	  , setToStringTag = __webpack_require__(48)
+	var create         = __webpack_require__(51)
+	  , descriptor     = __webpack_require__(37)
+	  , setToStringTag = __webpack_require__(54)
 	  , IteratorPrototype = {};
 
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(19)(IteratorPrototype, __webpack_require__(49)('iterator'), function(){ return this; });
+	__webpack_require__(28)(IteratorPrototype, __webpack_require__(55)('iterator'), function(){ return this; });
 
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -1092,27 +1604,27 @@
 	};
 
 /***/ },
-/* 33 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	var anObject    = __webpack_require__(21)
-	  , dPs         = __webpack_require__(34)
-	  , enumBugKeys = __webpack_require__(46)
-	  , IE_PROTO    = __webpack_require__(43)('IE_PROTO')
+	var anObject    = __webpack_require__(30)
+	  , dPs         = __webpack_require__(52)
+	  , enumBugKeys = __webpack_require__(22)
+	  , IE_PROTO    = __webpack_require__(18)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
 	  , PROTOTYPE   = 'prototype';
 
 	// Create object with fake `null` prototype: use iframe Object with cleared prototype
 	var createDict = function(){
 	  // Thrash, waste and sodomy: IE GC bug
-	  var iframe = __webpack_require__(26)('iframe')
+	  var iframe = __webpack_require__(35)('iframe')
 	    , i      = enumBugKeys.length
 	    , lt     = '<'
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(47).appendChild(iframe);
+	  __webpack_require__(53).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -1139,14 +1651,14 @@
 
 
 /***/ },
-/* 34 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var dP       = __webpack_require__(20)
-	  , anObject = __webpack_require__(21)
-	  , getKeys  = __webpack_require__(35);
+	var dP       = __webpack_require__(29)
+	  , anObject = __webpack_require__(30)
+	  , getKeys  = __webpack_require__(8);
 
-	module.exports = __webpack_require__(24) ? Object.defineProperties : function defineProperties(O, Properties){
+	module.exports = __webpack_require__(33) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
 	  var keys   = getKeys(Properties)
 	    , length = keys.length
@@ -1157,184 +1669,30 @@
 	};
 
 /***/ },
-/* 35 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(36)
-	  , enumBugKeys = __webpack_require__(46);
-
-	module.exports = Object.keys || function keys(O){
-	  return $keys(O, enumBugKeys);
-	};
+	module.exports = __webpack_require__(20).document && document.documentElement;
 
 /***/ },
-/* 36 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var has          = __webpack_require__(30)
-	  , toIObject    = __webpack_require__(37)
-	  , arrayIndexOf = __webpack_require__(40)(false)
-	  , IE_PROTO     = __webpack_require__(43)('IE_PROTO');
-
-	module.exports = function(object, names){
-	  var O      = toIObject(object)
-	    , i      = 0
-	    , result = []
-	    , key;
-	  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
-	  // Don't enum bug & hidden keys
-	  while(names.length > i)if(has(O, key = names[i++])){
-	    ~arrayIndexOf(result, key) || result.push(key);
-	  }
-	  return result;
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(38)
-	  , defined = __webpack_require__(11);
-	module.exports = function(it){
-	  return IObject(defined(it));
-	};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(39);
-	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-	  return cof(it) == 'String' ? it.split('') : Object(it);
-	};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports) {
-
-	var toString = {}.toString;
-
-	module.exports = function(it){
-	  return toString.call(it).slice(8, -1);
-	};
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// false -> Array#indexOf
-	// true  -> Array#includes
-	var toIObject = __webpack_require__(37)
-	  , toLength  = __webpack_require__(41)
-	  , toIndex   = __webpack_require__(42);
-	module.exports = function(IS_INCLUDES){
-	  return function($this, el, fromIndex){
-	    var O      = toIObject($this)
-	      , length = toLength(O.length)
-	      , index  = toIndex(fromIndex, length)
-	      , value;
-	    // Array#includes uses SameValueZero equality algorithm
-	    if(IS_INCLUDES && el != el)while(length > index){
-	      value = O[index++];
-	      if(value != value)return true;
-	    // Array#toIndex ignores holes, Array#includes - not
-	    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-	      if(O[index] === el)return IS_INCLUDES || index || 0;
-	    } return !IS_INCLUDES && -1;
-	  };
-	};
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(10)
-	  , min       = Math.min;
-	module.exports = function(it){
-	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-	};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var toInteger = __webpack_require__(10)
-	  , max       = Math.max
-	  , min       = Math.min;
-	module.exports = function(index, length){
-	  index = toInteger(index);
-	  return index < 0 ? max(index + length, 0) : min(index, length);
-	};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var shared = __webpack_require__(44)('keys')
-	  , uid    = __webpack_require__(45);
-	module.exports = function(key){
-	  return shared[key] || (shared[key] = uid(key));
-	};
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global = __webpack_require__(15)
-	  , SHARED = '__core-js_shared__'
-	  , store  = global[SHARED] || (global[SHARED] = {});
-	module.exports = function(key){
-	  return store[key] || (store[key] = {});
-	};
-
-/***/ },
-/* 45 */
-/***/ function(module, exports) {
-
-	var id = 0
-	  , px = Math.random();
-	module.exports = function(key){
-	  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-	};
-
-/***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-	// IE 8- don't enum bug keys
-	module.exports = (
-	  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-	).split(',');
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(15).document && document.documentElement;
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var def = __webpack_require__(20).f
-	  , has = __webpack_require__(30)
-	  , TAG = __webpack_require__(49)('toStringTag');
+	var def = __webpack_require__(29).f
+	  , has = __webpack_require__(10)
+	  , TAG = __webpack_require__(55)('toStringTag');
 
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 49 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var store      = __webpack_require__(44)('wks')
-	  , uid        = __webpack_require__(45)
-	  , Symbol     = __webpack_require__(15).Symbol
+	var store      = __webpack_require__(19)('wks')
+	  , uid        = __webpack_require__(21)
+	  , Symbol     = __webpack_require__(20).Symbol
 	  , USE_SYMBOL = typeof Symbol == 'function';
 
 	var $exports = module.exports = function(name){
@@ -1345,13 +1703,13 @@
 	$exports.store = store;
 
 /***/ },
-/* 50 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-	var has         = __webpack_require__(30)
-	  , toObject    = __webpack_require__(51)
-	  , IE_PROTO    = __webpack_require__(43)('IE_PROTO')
+	var has         = __webpack_require__(10)
+	  , toObject    = __webpack_require__(6)
+	  , IE_PROTO    = __webpack_require__(18)('IE_PROTO')
 	  , ObjectProto = Object.prototype;
 
 	module.exports = Object.getPrototypeOf || function(O){
@@ -1363,24 +1721,14 @@
 	};
 
 /***/ },
-/* 51 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(11);
-	module.exports = function(it){
-	  return Object(defined(it));
-	};
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(53);
-	var global        = __webpack_require__(15)
-	  , hide          = __webpack_require__(19)
-	  , Iterators     = __webpack_require__(31)
-	  , TO_STRING_TAG = __webpack_require__(49)('toStringTag');
+	__webpack_require__(58);
+	var global        = __webpack_require__(20)
+	  , hide          = __webpack_require__(28)
+	  , Iterators     = __webpack_require__(49)
+	  , TO_STRING_TAG = __webpack_require__(55)('toStringTag');
 
 	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
 	  var NAME       = collections[i]
@@ -1391,20 +1739,20 @@
 	}
 
 /***/ },
-/* 53 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var addToUnscopables = __webpack_require__(54)
-	  , step             = __webpack_require__(55)
-	  , Iterators        = __webpack_require__(31)
-	  , toIObject        = __webpack_require__(37);
+	var addToUnscopables = __webpack_require__(59)
+	  , step             = __webpack_require__(60)
+	  , Iterators        = __webpack_require__(49)
+	  , toIObject        = __webpack_require__(11);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
 	// 22.1.3.30 Array.prototype[@@iterator]()
-	module.exports = __webpack_require__(12)(Array, 'Array', function(iterated, kind){
+	module.exports = __webpack_require__(46)(Array, 'Array', function(iterated, kind){
 	  this._t = toIObject(iterated); // target
 	  this._i = 0;                   // next index
 	  this._k = kind;                // kind
@@ -1430,13 +1778,13 @@
 	addToUnscopables('entries');
 
 /***/ },
-/* 54 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 55 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = function(done, value){
@@ -1444,58 +1792,58 @@
 	};
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.f = __webpack_require__(49);
+	exports.f = __webpack_require__(55);
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(58), __esModule: true };
+	module.exports = { "default": __webpack_require__(63), __esModule: true };
 
 /***/ },
-/* 58 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(59);
-	__webpack_require__(70);
-	__webpack_require__(71);
-	__webpack_require__(72);
-	module.exports = __webpack_require__(16).Symbol;
+	__webpack_require__(64);
+	__webpack_require__(75);
+	__webpack_require__(76);
+	__webpack_require__(77);
+	module.exports = __webpack_require__(25).Symbol;
 
 /***/ },
-/* 59 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	// ECMAScript 6 symbols shim
-	var global         = __webpack_require__(15)
-	  , has            = __webpack_require__(30)
-	  , DESCRIPTORS    = __webpack_require__(24)
-	  , $export        = __webpack_require__(14)
-	  , redefine       = __webpack_require__(29)
-	  , META           = __webpack_require__(60).KEY
-	  , $fails         = __webpack_require__(25)
-	  , shared         = __webpack_require__(44)
-	  , setToStringTag = __webpack_require__(48)
-	  , uid            = __webpack_require__(45)
-	  , wks            = __webpack_require__(49)
-	  , wksExt         = __webpack_require__(56)
-	  , wksDefine      = __webpack_require__(61)
-	  , keyOf          = __webpack_require__(62)
-	  , enumKeys       = __webpack_require__(63)
-	  , isArray        = __webpack_require__(66)
-	  , anObject       = __webpack_require__(21)
-	  , toIObject      = __webpack_require__(37)
-	  , toPrimitive    = __webpack_require__(27)
-	  , createDesc     = __webpack_require__(28)
-	  , _create        = __webpack_require__(33)
-	  , gOPNExt        = __webpack_require__(67)
-	  , $GOPD          = __webpack_require__(69)
-	  , $DP            = __webpack_require__(20)
-	  , $keys          = __webpack_require__(35)
+	var global         = __webpack_require__(20)
+	  , has            = __webpack_require__(10)
+	  , DESCRIPTORS    = __webpack_require__(33)
+	  , $export        = __webpack_require__(24)
+	  , redefine       = __webpack_require__(48)
+	  , META           = __webpack_require__(65).KEY
+	  , $fails         = __webpack_require__(34)
+	  , shared         = __webpack_require__(19)
+	  , setToStringTag = __webpack_require__(54)
+	  , uid            = __webpack_require__(21)
+	  , wks            = __webpack_require__(55)
+	  , wksExt         = __webpack_require__(61)
+	  , wksDefine      = __webpack_require__(66)
+	  , keyOf          = __webpack_require__(67)
+	  , enumKeys       = __webpack_require__(68)
+	  , isArray        = __webpack_require__(71)
+	  , anObject       = __webpack_require__(30)
+	  , toIObject      = __webpack_require__(11)
+	  , toPrimitive    = __webpack_require__(36)
+	  , createDesc     = __webpack_require__(37)
+	  , _create        = __webpack_require__(51)
+	  , gOPNExt        = __webpack_require__(72)
+	  , $GOPD          = __webpack_require__(74)
+	  , $DP            = __webpack_require__(29)
+	  , $keys          = __webpack_require__(8)
 	  , gOPD           = $GOPD.f
 	  , dP             = $DP.f
 	  , gOPN           = gOPNExt.f
@@ -1618,11 +1966,11 @@
 
 	  $GOPD.f = $getOwnPropertyDescriptor;
 	  $DP.f   = $defineProperty;
-	  __webpack_require__(68).f = gOPNExt.f = $getOwnPropertyNames;
-	  __webpack_require__(65).f  = $propertyIsEnumerable;
-	  __webpack_require__(64).f = $getOwnPropertySymbols;
+	  __webpack_require__(73).f = gOPNExt.f = $getOwnPropertyNames;
+	  __webpack_require__(70).f  = $propertyIsEnumerable;
+	  __webpack_require__(69).f = $getOwnPropertySymbols;
 
-	  if(DESCRIPTORS && !__webpack_require__(13)){
+	  if(DESCRIPTORS && !__webpack_require__(47)){
 	    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
 	  }
 
@@ -1697,7 +2045,7 @@
 	});
 
 	// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-	$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(19)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+	$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(28)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
 	// 19.4.3.5 Symbol.prototype[@@toStringTag]
 	setToStringTag($Symbol, 'Symbol');
 	// 20.2.1.9 Math[@@toStringTag]
@@ -1706,18 +2054,18 @@
 	setToStringTag(global.JSON, 'JSON', true);
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var META     = __webpack_require__(45)('meta')
-	  , isObject = __webpack_require__(22)
-	  , has      = __webpack_require__(30)
-	  , setDesc  = __webpack_require__(20).f
+	var META     = __webpack_require__(21)('meta')
+	  , isObject = __webpack_require__(31)
+	  , has      = __webpack_require__(10)
+	  , setDesc  = __webpack_require__(29).f
 	  , id       = 0;
 	var isExtensible = Object.isExtensible || function(){
 	  return true;
 	};
-	var FREEZE = !__webpack_require__(25)(function(){
+	var FREEZE = !__webpack_require__(34)(function(){
 	  return isExtensible(Object.preventExtensions({}));
 	});
 	var setMeta = function(it){
@@ -1764,25 +2112,25 @@
 	};
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global         = __webpack_require__(15)
-	  , core           = __webpack_require__(16)
-	  , LIBRARY        = __webpack_require__(13)
-	  , wksExt         = __webpack_require__(56)
-	  , defineProperty = __webpack_require__(20).f;
+	var global         = __webpack_require__(20)
+	  , core           = __webpack_require__(25)
+	  , LIBRARY        = __webpack_require__(47)
+	  , wksExt         = __webpack_require__(61)
+	  , defineProperty = __webpack_require__(29).f;
 	module.exports = function(name){
 	  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
 	  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 	};
 
 /***/ },
-/* 62 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getKeys   = __webpack_require__(35)
-	  , toIObject = __webpack_require__(37);
+	var getKeys   = __webpack_require__(8)
+	  , toIObject = __webpack_require__(11);
 	module.exports = function(object, el){
 	  var O      = toIObject(object)
 	    , keys   = getKeys(O)
@@ -1793,13 +2141,13 @@
 	};
 
 /***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// all enumerable object keys, includes symbols
-	var getKeys = __webpack_require__(35)
-	  , gOPS    = __webpack_require__(64)
-	  , pIE     = __webpack_require__(65);
+	var getKeys = __webpack_require__(8)
+	  , gOPS    = __webpack_require__(69)
+	  , pIE     = __webpack_require__(70);
 	module.exports = function(it){
 	  var result     = getKeys(it)
 	    , getSymbols = gOPS.f;
@@ -1813,34 +2161,34 @@
 	};
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports) {
 
 	exports.f = Object.getOwnPropertySymbols;
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports) {
 
 	exports.f = {}.propertyIsEnumerable;
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.2.2 IsArray(argument)
-	var cof = __webpack_require__(39);
+	var cof = __webpack_require__(13);
 	module.exports = Array.isArray || function isArray(arg){
 	  return cof(arg) == 'Array';
 	};
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-	var toIObject = __webpack_require__(37)
-	  , gOPN      = __webpack_require__(68).f
+	var toIObject = __webpack_require__(11)
+	  , gOPN      = __webpack_require__(73).f
 	  , toString  = {}.toString;
 
 	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -1860,30 +2208,30 @@
 
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-	var $keys      = __webpack_require__(36)
-	  , hiddenKeys = __webpack_require__(46).concat('length', 'prototype');
+	var $keys      = __webpack_require__(9)
+	  , hiddenKeys = __webpack_require__(22).concat('length', 'prototype');
 
 	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
 	  return $keys(O, hiddenKeys);
 	};
 
 /***/ },
-/* 69 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pIE            = __webpack_require__(65)
-	  , createDesc     = __webpack_require__(28)
-	  , toIObject      = __webpack_require__(37)
-	  , toPrimitive    = __webpack_require__(27)
-	  , has            = __webpack_require__(30)
-	  , IE8_DOM_DEFINE = __webpack_require__(23)
+	var pIE            = __webpack_require__(70)
+	  , createDesc     = __webpack_require__(37)
+	  , toIObject      = __webpack_require__(11)
+	  , toPrimitive    = __webpack_require__(36)
+	  , has            = __webpack_require__(10)
+	  , IE8_DOM_DEFINE = __webpack_require__(32)
 	  , gOPD           = Object.getOwnPropertyDescriptor;
 
-	exports.f = __webpack_require__(24) ? gOPD : function getOwnPropertyDescriptor(O, P){
+	exports.f = __webpack_require__(33) ? gOPD : function getOwnPropertyDescriptor(O, P){
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
 	  if(IE8_DOM_DEFINE)try {
@@ -1893,364 +2241,22 @@
 	};
 
 /***/ },
-/* 70 */
+/* 75 */
 /***/ function(module, exports) {
 
 	
 
 /***/ },
-/* 71 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(61)('asyncIterator');
+	__webpack_require__(66)('asyncIterator');
 
 /***/ },
-/* 72 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(61)('observable');
-
-/***/ },
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 处理数据的请求
-	'use strict';
-
-	var _keys = __webpack_require__(83);
-
-	var _keys2 = _interopRequireDefault(_keys);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var HOST_URL = 'http://localhost:3000/api';
-	var LOGIN = '/as_users/login';
-	var GET_FACTION_LIST = '/factionlists';
-	var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
-	var GET_CONTENT_BY_ID = '/factioncontents/';
-	var GET_EMAILS_PAGEID = '/emails';
-	var GET_BOOKS_SORTBY_TIME = '/xxxx';
-	var GET_RANK = '/xs_rank/getRank';
-
-	function obj2url(obj) {
-		if (obj instanceof Object) {
-			return (0, _keys2.default)(obj).map(function (k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
-			}).join('&');
-		} else {
-			console.err(obj + "，不是一个对象!");
-			return '';
-		}
-	}
-
-	module.exports = {
-		//获取列表数据
-		getFactionList: function getFactionList() {
-			return HOST_URL + GET_FACTION_LIST;
-		},
-		getFactionDetailById: function getFactionDetailById(id) {
-			return HOST_URL + GET_FACTION_DETAIL_BY_ID + id;
-		},
-		//获取页面数据内容
-		// getTopicByID: function(id, obj){
-		// 	return HOST_URL + GET_CONTENT_BY_ID + id + '?' + obj2url(obj);
-		// }
-		getContentByID: function getContentByID(id) {
-			return HOST_URL + GET_CONTENT_BY_ID + id;
-		},
-		login: function login(umt, password) {
-			return HOST_URL + LOGIN;
-		},
-		getEmailsByPageid: function getEmailsByPageid(pageid) {
-			return HOST_URL + GET_FACTION_DETAIL_BY_ID + '?pageid=' + pageid;
-		},
-		//根据时间分类用户的书籍
-		getBooksSortByTime: function getBooksSortByTime(timeObj) {
-			if (timeObj.timeType && timeObj.timeValue) {
-				return HOST_URL + GET_BOOKS_SORTBY_TIME + '?timeType=' + timeObj.timeType + '&timeValue=' + timeObj.timeValue;
-			} else {
-				console.log('根据时间分类用户的书籍 传入参数错误');
-			}
-		},
-		getRank: function getRank(rankType) {
-			return HOST_URL + GET_RANK + '?rankType=' + rankType;
-		}
-	};
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(84), __esModule: true };
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(85);
-	module.exports = __webpack_require__(16).Object.keys;
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(51)
-	  , $keys    = __webpack_require__(35);
-
-	__webpack_require__(86)('keys', function(){
-	  return function keys(it){
-	    return $keys(toObject(it));
-	  };
-	});
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(14)
-	  , core    = __webpack_require__(16)
-	  , fails   = __webpack_require__(25);
-	module.exports = function(KEY, exec){
-	  var fn  = (core.Object || {})[KEY] || Object[KEY]
-	    , exp = {};
-	  exp[KEY] = exec(fn);
-	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
-	};
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	//login.js
-	var Api = __webpack_require__(82);
-	var Util = __webpack_require__(2);
-	var currentGesture = 0; //控制当一个手势进行的时候屏蔽其他的手势
-	var moveTime = null; //控制左滑右滑的动画
-	var isMoving = 0;
-	var leftTimmerCount = 0;
-	var rightTimmerCount = 0;
-	var hasRunTouchMove = false;
-
-	//计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
-	function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio) {
-	  var returnNum = 0;
-	  fontSize = fontSize / pixelRatio;
-	  lineHeight = lineHeight / pixelRatio;
-	  //将str根据’\n‘截成数组
-	  var strArray = str.split(/\n+/);
-	  var splitArray = [];
-	  var reg = new RegExp('\n+', 'igm');
-	  var result = '';
-	  //这里写一个for循环去记录每处分隔符的\n的个数，这将会影响到计算换行的高度
-	  while ((result = reg.exec(str)) != null) {
-	    splitArray.push(result.toString().match(/\n/img).length);
-	  }
-	  //spliArray比strArray少一，这里加一项使之数量一样
-	  splitArray.push(0);
-	  var totalHeight = 0;
-	  strArray.forEach(function (item, index) {
-	    //拒绝最后一项0
-	    var huanhangNum = splitArray[index] - 1 > 0 ? splitArray[index] - 1 > 0 : 0;
-	    totalHeight += Math.ceil(item.length / Math.floor((windowW - 80 / pixelRatio) / fontSize)) * lineHeight + huanhangNum * lineHeight;
-	  });
-	  return Math.ceil(totalHeight / windowH);
-	}
-
-	Page({
-	  data: {
-	    content: '第一千四百一十二章\n\n\n当牧尘的身影落在了黑光长老所在的那座白玉石台时，整个天地间，依旧还处于先前的震撼之中，所有人都是一片沉默。\n\n这种沉默持续了许久，终于是有着人有些艰难的开口喃喃道：“那是...传闻中大千世界三十六道绝世神通之一的八部浮屠吧？”\n\n在场的这些各方超级势力，自然也是阅历非凡，所以很快的，也是渐渐的认出了先前牧尘所施展出来的那惊天动地的神通。\n\n那道幽黑光束所具备的毁灭力，看得众多天至尊都是头皮发麻，而如此威能的神通之术，除了那名震大千世界的三十六道绝世神通外，还能是什么？\n\n“没想到，他竟然真的将八部浮屠修炼成功了。”那些浮屠古族的长老，特别是玄脉与墨脉的，更是眼睛通红，无比嫉妒的望着牧尘，那模样，仿佛是恨不得将这般神通抢夺过来一般。\n\n因为身为天至尊，他们非常清楚那三十六道绝世神通对于他们而言究竟代表着什么，若是拥有，他们同样是能够无敌于同级之中。\n\n想想看，大千世界究竟有多少天至尊，然而那最顶尖的神通，却唯有这三十六道，由此可见其价值。\n\n就算是他们浮屠古族这深不可测的底蕴，能够媲美这三十六道绝世神通的神通之术，都是屈指可数。\n\n在那先前牧尘所在的山峰，清霜玉手紧紧的捂住嘴巴，此时的激动，连她素来的冰冷都是再维持不住，娇躯颤抖。\n\n原本以为他们清脉此次将会是毁灭般的打击，但谁料到竟会峰回路转，牧尘的横空出世，居然有着要将这般大势扭转过来的迹象。\n\n“牧尘，加油啊！”清霜喃喃道。\n\n在她身旁，灵溪倒是微笑着拍了拍她的香肩，让得后者有些不好意思的一笑，渐渐的冷静下来。\n\n“灵溪姐，牧尘能赢吗？”清霜带着一丝期盼的问道，虽然她知道，即便赢了两场，但牧尘接下来要面对的对手，却会更强。\n\n灵溪清浅一笑，温婉优雅，道：“放心吧，牧尘既然会出手，那自然有着他的把握，我们只需要等着便行了。”\n\n清霜用力的点了点头，美目凝视着远处那道身影，眸子中异彩流溢。\n\n而在另外一座山峰上，林静拍着玉手用力的鼓掌，笑盈盈的道：“牧尘赢得太漂亮了。”\n\n这两场战斗，牧尘完全没有丝毫试探的意思，一出手便是倾尽全力，甚至不惜暴露底牌，而如此一来，那战绩也是辉煌震撼得很，两招下来，赢得干脆利落，让人看得也是有些热血沸腾。\n\n一旁的萧潇也是螓首轻点，眸子中满是欣赏之色。\n\n“看来牧尘对这浮屠古族怨气很大啊。”倒是一旁的药尘呵呵一笑，他的眼力何等的老辣，一眼就看了出来，这是牧尘故意为之，因为他今日而来，本就是为了心中那口隐忍二十多年的一口气，这口气，为了他，为了他那夫妻分离，孤寂多年的爹，也为了他那被囚禁多年，不见天日的母亲，所以他要的胜利，不是那种势均力敌的激战，而是干脆利落，雷霆万钧。\n\n这样一来，那玄脉的脸面，可就丢得有点大了。\n\n“不过这种战斗方式，只能在有着绝对把握的情况下，若是两者战斗相仿，谁先暴露底牌，怕就得失去一些先机了。”林貂也是点评道，不过虽然这样说着，他的脸庞上，同样是有着欣赏之色，因为牧尘会选择这种战斗方式，那也就说明了他对自身的一种自信。\n\n这种自信，他也曾经在林动的身上见到过。\n\n...\n\n在那沉默的天地间，白玉石台上的黑光长老，也是面色有些阴沉的望着眼前信步而来的青年，望着后者，他眼神深处，也是掠过浓浓的忌惮之色。\n\n先前牧尘展现出来的手段，不管是那诡异的紫色火炎，还是那霸道无比的八部浮屠，都让得黑光长老心中泛着一丝惧意。\n\n他的实力，比玄海，玄风都要强，乃是灵品后期，但在面对着此时锐气逼人的牧尘时，他依旧是没有多少的底气。\n\n“该死，这个家伙怎么现在变得如此之强！”\n\n黑光心中怒骂，旋即生出一些后悔之意，他后悔的并不是为什么要招惹牧尘，而是后悔当初牧尘只是大圆满时，他为何不果决一些，直接出杀手。\n\n即便不必真的将其斩杀，但起码也要将其一身修为给废了，让得他从此变成一个废物，如此的话，也就没了今日的灾劫。\n\n“你是在想为什么当初没杀了我吗？”而在黑光目光闪烁的时候，牧尘盯着他，却是一笑，说道。\n\n黑光闻言，顿时哆嗦了一下，他能够感觉到，牧尘虽然在笑，在那言语间，却是弥漫着无尽的寒气甚至杀意。\n\n不过他毕竟也是浮屠古族的长老，地位显赫，很快渐渐的平复了心情，阴沉的盯着牧尘，道：“牧尘，你做事可不要太过分了，年轻人有锐气是好事，但若是太过，恐怕就得过刚易折了。”\n\n“你玄脉若是有本事，那就折给我看看吧。”牧尘漫不经心的道。\n\n“你！”\n\n黑光一怒，但瞧得牧尘那冰冷目光时，心头又是一悸，不由得羞恼至极。\n\n“还不出手吗？”牧尘盯着他，语气淡漠，然后他伸出手掌，修长如白玉，其上灵光跳跃：“若是不出手的话，那我就要动手了。”\n\n黑光闻言，恼怒得咬牙切齿，而就当他准备运转灵力时，忽有一道传音，落入耳中：“黑光，催动秘法，全力出手，即便不胜，也要将其锐气尽挫，接下来，自会有人收拾他。”\n\n听到这道传音，黑光目光顿时一闪，眼睛不着痕迹的扫了玄脉脉首玄光一眼，这道传音，显然就是来自于后者。\n\n“要催动秘法吗？”黑光踌躇了一下，一旦如此做的话，就算是以他天至尊的恢复力，也起码得虚弱大半年的时间。\n\n不过他也明白玄光的意图，现在的牧尘锐气太甚了，他一场场的打下来，就算到时候无法取胜四场，但也足以让他们玄脉搞得灰头土脸。\n\n眼下众多超级势力在观礼，若是传出去的话，说他们玄脉，被一个罪子横扫，这无疑会将他们玄脉的颜面丢光。\n\n所以，不管如何，黑光都不能再让牧尘如先前那般取得势如破竹般的战绩。\n\n必须将其阻拦下来，破其锐气，而接下来的第四场，他们玄脉，就能够派出仙品天至尊，到时候，要收拾这牧尘，自然是易如反掌。\n\n“好！”\n\n心中踌躇了一下，黑光终于是狠狠一咬牙，在见识了先前牧尘的手段后，即便是他，也是没把握能够接下牧尘的攻势，既然如此，还不如拼命一搏。\n\n“小辈，今日就让你知晓，什么叫做过刚易折！”\n\n黑光心中冷声说道，旋即他身形陡然暴射而退，同时讥讽冷笑道：“牧尘，休要得意，今日你也接我一招试试！”\n\n轰！\n\n随着其音落，只见得黑光身后，亿万道灵光交织，一座巨大的至尊法相现出身来，浩瀚的灵力风暴，肆虐在天地间。\n\n这至尊法相一出现，黑光也是深深的吸了一口气，双手陡然结出一道古怪印法。\n\n同时，其身后的至尊法相，也是双手结印。\n\n在那远处，清天，清萱等长老见到这一幕，瞳孔顿时一缩，骇然道：“无耻！竟然是化灵秘法！”\n\n在他们骇然失声时，那黑光则是对着牧尘露出狠辣笑容，森然道：“既然你咄咄逼人，那也怪不得老夫心狠手辣了。”\n\n话音落下，他的肚子陡然鼓胀起来，同时他身后的至尊法相，也是鼓起巨大的肚子，下一刻，他张开嘴巴，猛然一吐。\n\n黑光与身后的至尊法相嘴中，竟是有着星辰般的洪流远远不断的奔腾而出，那等声势，犹如是能够磨灭万古。\n\n而随着那星河般的洪流不断的呼啸而出，只见得黑光的身躯迅速的干枯，而那至尊法相，也是开始黯淡无光，仿佛两者之中的所有力量，都是化为了那无尽星辰洪流。\n\n天地间，众多天至尊见到这一幕，都是忍不住的面色一变，失声道：“这黑光疯了，竟然将至尊法相都是分解了？！”\n\n至尊法相乃是天至尊最强的战力之一，若是自我分解，那就得再度重新凝炼，那所需要消耗的时间与精力可是不少，而且说不定还会有着损伤。\n\n所以一般这种手段，极少人会动用，那是真正的损人不利己，杀敌一千，自损一千的同归于尽之法。\n\n呼呼！\n\n天地间，星辰洪流呼啸而过，对着牧尘笼罩而去，那等威势，仿佛就算是日月，都将会被消磨而灭。\n\n众多强者神色凝重，先前牧尘的锐气太甚，所以这黑光才会以这种极端的方式，试图将其阻扰，坏其锐气，保住玄脉的颜面。\n\n“黑光可真是狠辣，这下子，那牧尘可是遇见麻烦了。”\n\n...\n\n...',
-	    factionTitle: '八部浮屠',
-	    windows: { windows_height: 0, windows_width: 0, pixelRatio: 1 },
-	    touches: { lastX: 0, lastY: 0 },
-	    move_direction: 0, //0代表左滑动，1代表右滑动
-	    leftValue: 0,
-	    pageIndex: 1,
-	    maxPageNum: 0,
-	    newestSectionNum: 1412,
-	    currentSlideValue: 200,
-	    fontSize: 32, //单位rpx
-	    lineHeight: 36, //单位rpx
-	    control: { all: 0, control_tab: 0, control_detail: 0, target: '' } //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
-	  },
-	  onReady: function onReady() {
-	    var self = this;
-	    //获取屏幕的高度和宽度，为分栏做准备
-	    wx.getSystemInfo({
-	      success: function success(res) {
-	        self.setData({ windows: { windows_height: res.windowHeight, windows_width: res.windowWidth, pixelRatio: res.pixelRatio } });
-	      }
-	    });
-	    var maxPageNum = countPageNum(self.data.content, self.data.fontSize, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
-	    self.setData({ maxPageNum: maxPageNum });
-	  },
-	  onLoad: function onLoad(options) {
-	    var self = this;
-	    //动态设置标题
-	    var factionName = options.factionName || "大主宰";
-	    wx.setNavigationBarTitle({
-	      title: factionName,
-	      fail: function fail() {
-	        //显示错误页面
-	      }
-	    });
-	  },
-	  handletouchmove: function handletouchmove(event) {
-	    // console.log('正在执行touchmove, isMoving为：'+isMoving);
-	    var self = this;
-	    if (currentGesture != 0 || isMoving == 1) {
-	      return;
-	    }
-	    var currentX = event.touches[0].pageX;
-	    var currentY = event.touches[0].pageY;
-	    // 判断用没有滑动而是点击屏幕的动作
-	    hasRunTouchMove = true;
-	    console.log('正在执行touchmove, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
-	    var direction = 0;
-	    if (currentX - self.data.touches.lastX < 0) {
-	      direction = 0;
-	    } else if (currentX - self.data.touches.lastX > 0) {
-	      direction = 1;
-	    }
-	    //需要减少或者增加的值
-	    var moreOrLessValue = Math.abs(currentX - self.data.touches.lastX);
-	    //将当前坐标进行保存以进行下一次计算
-	    self.setData({ touches: { lastX: currentX, lastY: currentY }, move_direction: direction });
-	    var currentIndex = self.data.pageIndex;
-	    if (direction == 0) {
-	      if (currentIndex < self.data.maxPageNum) {
-	        self.setData({ leftValue: self.data.leftValue - moreOrLessValue });
-	      }
-	    } else {
-	      if (currentIndex > 1) {
-	        self.setData({ leftValue: self.data.leftValue + moreOrLessValue });
-	      }
-	    }
-	  },
-	  handletouchtart: function handletouchtart(event) {
-	    // 判断用户的点击事件，如果不是滑动，将不会执行touchmove
-	    hasRunTouchMove = false;
-	    console.log('正在执行touchtart, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
-	    // console.log('正在执行touchtart, isMoving为：'+isMoving);
-	    if (isMoving == 0) {
-	      this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } });
-	    }
-	  },
-	  handletouchend: function handletouchend() {
-	    console.log('正在执行touchend, isMoving为：' + isMoving);
-	    var self = this;
-	    // 判断用户的点击事件
-	    if (hasRunTouchMove == false) {
-	      var y = self.data.touches.lastY;
-	      var x = self.data.touches.lastX;
-	      var h = self.data.windows.windows_height / 2;
-	      var w = self.data.windows.windows_width / 2;
-	      if (x && y && y >= h - 50 && y <= h + 50 && x >= w - 60 && x <= w + 60) {
-	        self.setData({ control: { all: self.data.control.all == '0' ? '1' : '0', control_tab: 1, control_detail: 0, target: '' } });
-	        return;
-	      }
-	    }
-	    currentGesture = 0;
-	    //左滑动和有滑动的操作
-	    var currentIndex = self.data.pageIndex; //当前页数
-	    var targetLeftValue = null; //移动之后content的目标左值
-	    var pingjunValue = null; //500ms内平均每100ms移动的值
-	    if (isMoving == 0) {
-	      if (self.data.move_direction == 0) {
-	        if (currentIndex < self.data.maxPageNum) {
-	          targetLeftValue = -1 * self.data.windows.windows_width * currentIndex;
-	          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4; //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
-	          isMoving = 1; //开始计时的时候将标志置1
-	          //使用计时器实现动画效果
-	          // console.log('开始向 左 滑动的计时器，isMoving为1');
-	          moveTime = setInterval(function () {
-	            ++leftTimmerCount;
-	            var currentLeftValue = self.data.leftValue;
-	            //如果达到了目标值，立即停止计时器
-	            //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
-	            if (leftTimmerCount == 4) {
-	              clearInterval(moveTime);
-	              isMoving = 0;
-	              leftTimmerCount = 0;
-	              self.setData({ leftValue: targetLeftValue });
-	              return;
-	            }
-	            if (currentLeftValue == targetLeftValue) {
-	              clearInterval(moveTime);
-	              isMoving = 0;
-	              leftTimmerCount = 0;
-	              // console.log('向 左 滑动的计时器结束了，isMoving为0');
-	              return;
-	            }
-	            self.setData({ leftValue: currentLeftValue - pingjunValue });
-	          }, 75);
-	          self.setData({ pageIndex: ++currentIndex });
-	        }
-	      } else {
-	        //前一页和后一页相差其实是2个-320px
-	        if (currentIndex > 1) {
-	          targetLeftValue = -1 * self.data.windows.windows_width * (currentIndex - 2);
-	          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4;
-	          isMoving = 1;
-	          // console.log('开始向 左 滑动的计时器，isMoving为1');
-	          moveTime = setInterval(function () {
-	            ++rightTimmerCount;
-	            var currentLeftValue = self.data.leftValue;
-	            if (rightTimmerCount == 4) {
-	              clearInterval(moveTime);
-	              isMoving = 0;
-	              rightTimmerCount = 0;
-	              self.setData({ leftValue: targetLeftValue });
-	              return;
-	            }
-	            if (currentLeftValue == targetLeftValue) {
-	              clearInterval(moveTime);
-	              isMoving = 0;
-	              rightTimmerCount = 0;
-	              // console.log('向 右 滑动的计时器结束了，isMoving为0');
-	              return;
-	            }
-	            self.setData({ leftValue: currentLeftValue + pingjunValue });
-	          }, 75);
-	          self.setData({ pageIndex: --currentIndex });
-	        }
-	      }
-	    } else {}
-	  },
-	  slider1change: function slider1change(event) {
-	    var self = this;
-	    self.setData({ currentSlideValue: event.detail.value });
-	  },
-	  gotoControlDetail: function gotoControlDetail(event) {
-	    var self = this;
-	    var target = event.currentTarget.dataset.control;
-	    // 这里control_detail需要做两层判断，首先是control_detail之前是0还是1，0变成1,1变成0，其次是target在两次点击中是否相同，相同则继续上面的判断，否则取反
-	    var control_detail = null;
-	    if (self.data.control.control_detail == '0') {
-	      // 当control_detail不显示的时候不再判断两次点击的目标是否相同，直接统一显示
-	      control_detail = 1;
-	    } else {
-	      if (target && self.data.control.target == target) {
-	        control_detail = 0;
-	      } else {
-	        control_detail = 1;
-	      }
-	    }
-	    self.setData({ control: { all: self.data.control.all, control_tab: 1, control_detail: control_detail, target: target } });
-	  }
-	});
+	__webpack_require__(66)('observable');
 
 /***/ }
 /******/ ]);
