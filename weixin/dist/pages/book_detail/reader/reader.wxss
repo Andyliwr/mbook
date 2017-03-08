@@ -60,7 +60,7 @@
   color: #333;
   font-size: 30rpx; }
 
-.rleft1-icon, .rleft2-icon, .rleft3-icon {
+.rleft1-icon, .rleft2-icon, .rleft3-icon, .rleft4-icon {
   position: absolute;
   top: 25rpx;
   left: 10rpx;
@@ -68,7 +68,7 @@
   height: 60rpx;
   width: 60rpx; }
 
-.rright1-icon, .rright2-icon, .rright3-icon {
+.rright1-icon, .rright2-icon, .rright3-icon, .rright4-icon {
   position: absolute;
   top: 25rpx;
   right: 10rpx;
@@ -92,7 +92,7 @@
   padding: 15rpx 20rpx 6rpx 20rpx;
   align-items: center; }
 
-.reader-container .brightness .day1-icon, .reader-container .brightness .day3-icon, .reader-container .brightness .day3-icon {
+.reader-container .brightness .day1-icon, .reader-container .brightness .day2-icon, .reader-container .brightness .day3-icon, .reader-container .brightness .day4-icon {
   width: 50rpx;
   height: 50rpx; }
 
@@ -113,8 +113,7 @@
   text-align: center; }
 
 .white-bg {
-  background-color: #ffffff;
-  border: 1px solid #e1e1e1; }
+  background-color: #ffffff; }
 
 .pink-bg {
   background-color: #f8f3e0; }
@@ -124,6 +123,77 @@
 
 .back-bg {
   background-color: #202930; }
+
+.reader-container .font-detail {
+  display: -webkit-flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box; }
+
+.reader-container .fontSize {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 15rpx 20rpx 6rpx 20rpx;
+  align-items: center;
+  height: 50%; }
+
+.reader-container .fontSize .font1-icon, .reader-container .fontSize .font2-icon, .reader-container .fontSize .font3-icon, .reader-container .fontSize .font4-icon {
+  width: 50rpx;
+  height: 50rpx; }
+
+.reader-container .fontSize .font1-icon.small, .reader-container .fontSize .font2-icon.small, .reader-container .fontSize .font3-icon.small, .reader-container .fontSize .font4-icon.small {
+  width: 30rpx;
+  height: 30rpx; }
+
+.reader-container .fontSize .font-slider {
+  flex: 1; }
+
+.reader-container .fontSelector {
+  height: 40%;
+  text-align: center;
+  width: 100%; }
+
+.reader-container .fontSelector > text {
+  height: 100%;
+  width: 100%;
+  line-height: 100%; }
+
+.reader-container .fontDetail {
+  position: absolute;
+  top: -120rpx;
+  z-index: 1000;
+  text-align: left;
+  width: 100%;
+  bottom: 0;
+  display: -webkit-flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  font-size: 28rpx; }
+
+.reader-container .fontDetail .font-item {
+  flex: 1;
+  border-bottom: 1px solid #d7d7d7;
+  position: relative; }
+
+.reader-container .fontDetail .font-item text {
+  display: inline-block;
+  position: relative;
+  top: 25rpx; }
+
+.reader-container .fontDetail .font-item icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10rpx; }
+
+.reader-container .fontDetail .font-item:last-child {
+  border-bottom: none; }
 
 .yueliang-icon {
   background-size: 220rpx 220rpx;
@@ -146,8 +216,8 @@
   background-position: -221rpx -166rpx; }
 
 .day1-icon {
-  background-size: 260rpx 260rpx;
-  background-position: 3rpx -210rpx; }
+  background-size: 220rpx 220rpx;
+  background-position: 5rpx -176rpx; }
 
 .day1-select-icon {
   background-size: 260rpx 260rpx;
@@ -156,6 +226,10 @@
 .font1-icon {
   background-size: 270rpx 270rpx;
   background-position: -111rpx -220rpx; }
+
+.font1-icon.small {
+  background-size: 180rpx 180rpx;
+  background-position: -75rpx -150rpx; }
 
 .rleft1-icon {
   background-size: 270rpx 270rpx;
@@ -189,6 +263,10 @@
   background-size: 270rpx 270rpx;
   background-position: -110rpx -166rpx; }
 
+.font2-icon.small {
+  background-size: 180rpx 180rpx;
+  background-position: -75rpx -110rpx; }
+
 .rleft2-icon {
   background-size: 270rpx 270rpx;
   background-position: -161rpx -160rpx; }
@@ -221,6 +299,10 @@
   background-size: 270rpx 270rpx;
   background-position: -109rpx -54rpx; }
 
+.font3-icon.small {
+  background-size: 180rpx 180rpx;
+  background-position: -75rpx -38rpx; }
+
 .rleft3-icon {
   background-size: 270rpx 270rpx;
   background-position: -161rpx -48rpx; }
@@ -228,3 +310,39 @@
 .rright3-icon {
   background-size: 270rpx 270rpx;
   background-position: -213rpx -48rpx; }
+
+.mulu4-icon {
+  background-size: 240rpx 240rpx;
+  background-position: -94rpx -145rpx; }
+
+.jingdu4-icon {
+  background-size: 270rpx 270rpx;
+  background-position: -165rpx -166rpx; }
+
+.jingdu4-select-icon {
+  background-size: 270rpx 270rpx;
+  background-position: -221rpx -166rpx; }
+
+.day4-icon {
+  background-size: 220rpx 220rpx;
+  background-position: 5rpx -176rpx; }
+
+.day4-select-icon {
+  background-size: 260rpx 260rpx;
+  background-position: -51rpx -210rpx; }
+
+.font4-icon {
+  background-size: 270rpx 270rpx;
+  background-position: -111rpx -220rpx; }
+
+.font4-icon.small {
+  background-size: 180rpx 180rpx;
+  background-position: -75rpx -150rpx; }
+
+.rleft4-icon {
+  background-size: 270rpx 270rpx;
+  background-position: -163rpx -216rpx; }
+
+.rright4-icon {
+  background-size: 270rpx 270rpx;
+  background-position: -215rpx -216rpx; }

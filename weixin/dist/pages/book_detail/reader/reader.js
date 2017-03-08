@@ -99,11 +99,13 @@
 	    pageIndex: 1,
 	    maxPageNum: 0,
 	    newestSectionNum: 1412,
+	    allSliderValue: { section: 200, bright: 200, font: 16 },
 	    currentSlideValue: 200,
 	    fontSize: 32, //单位rpx
+	    allFontFamily: ['Arial', '黑体', '微软雅黑', '楷体'],
 	    lineHeight: 36, //单位rpx
 	    control: { all: 0, control_tab: 0, control_detail: 0, target: '' }, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
-	    colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', control_bg: '#ffffff' } },
+	    colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941' } },
 	  onReady: function onReady() {
 	    var self = this;
 	    //获取屏幕的高度和宽度，为分栏做准备
@@ -248,9 +250,17 @@
 	      }
 	    } else {}
 	  },
-	  slider1change: function slider1change(event) {
+	  sectionSliderChange: function sectionSliderChange(event) {
 	    var self = this;
-	    self.setData({ currentSlideValue: event.detail.value });
+	    self.setData({ allSliderValue: { section: event.detail.value, bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font } });
+	  },
+	  brightSliderChange: function brightSliderChange(event) {
+	    var self = this;
+	    self.setData({ allSliderValue: { section: self.data.allSliderValue.section, bright: event.detail.value, font: self.data.allSliderValue.font } });
+	  },
+	  fontSliderChange: function fontSliderChange(event) {
+	    var self = this;
+	    self.setData({ allSliderValue: { section: self.data.allSliderValue.section, bright: self.data.allSliderValue.section, font: event.detail.value } });
 	  },
 	  gotoControlDetail: function gotoControlDetail(event) {
 	    var self = this;
@@ -275,16 +285,20 @@
 	    var styleNum = event.currentTarget.dataset.stylenum;
 	    switch (styleNum) {
 	      case '1':
-	        self.setData({ colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', control_bg: '#ffffff' } });
+	        self.setData({ colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941' } });
 	        break;
 	      case '2':
-	        self.setData({ colorStyle: { content_bg: '#f5f0da', styleNum: 2, slider_bg: '#af7b2f', control_bg: '#f8f3e0' } });
+	        self.setData({ colorStyle: { content_bg: '#f5f0da', styleNum: 2, slider_bg: '#a6832f', slider_none_bg: '#dbd6c3', control_bg: '#f8f3e0', control_fontColor: '#a6832f' } });
 	        break;
 	      case '3':
-	        self.setData({ colorStyle: { content_bg: '#c0edc6', styleNum: 3, slider_bg: '#4b712f', control_bg: '#ccf1d0' } });
+	        self.setData({ colorStyle: { content_bg: '#c0edc6', styleNum: 3, slider_bg: '#359112', slider_none_bg: '#a7ccab', control_bg: '#ccf1d0', control_fontColor: '#359112' } });
+	        break;
+	      case '4':
+	        self.setData({ colorStyle: { content_bg: '#1a1e21', styleNum: 4, slider_bg: '#bb7333', slider_none_bg: '#212528', control_bg: '#101417', control_fontColor: '#bb7333' } });
 	        break;
 	    }
-	  }
+	  },
+	  selectFontFamily: function selectFontFamily() {}
 	});
 
 /***/ },
