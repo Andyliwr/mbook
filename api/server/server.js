@@ -16,6 +16,12 @@ app.start = function() {
     }
   });
 };
+
+//To use cookies for authentication, add the following to server.js (before boot):
+app.use(loopback.token({
+    model: app.models.asToken
+}));
+
 // -- Add your pre-processing middleware here --
 // Retrieve the currently authenticated user
 // app.use(loopback.token());

@@ -1,0 +1,21 @@
+{
+  "name": "adminUser",
+  "plural": "adminUser",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "lidikang",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

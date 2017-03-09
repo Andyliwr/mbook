@@ -4,7 +4,7 @@
     "connector": "memory"
   },
   "mongodb": {
-    "host": "172.0.0.1",
+    "host": "127.0.0.1",
     "port": 27017,
     "url": "mongodb://lidikang:123456@localhost:27017/myapp",
     "database": "myapp",
@@ -12,5 +12,22 @@
     "name": "mongodb",
     "user": "lidikang",
     "connector": "mongodb"
+  },
+  "email": {
+    "name": "email",
+    "connector": "mail",
+    "transports": [{
+      	"type": "smtp",
+	    "host": "smtp.qq.com",
+	    "secure": true,
+	    "port": 465,
+	    "tls": {
+	      "rejectUnauthorized": false
+	    },
+	    "auth":{
+	      "user": "andyliwr@qq.com",
+	      "pass": "121960425qq2"
+	    }
+    }]
   }
 }

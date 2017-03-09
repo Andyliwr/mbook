@@ -8,6 +8,13 @@
   "properties": {},
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "lidikang",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

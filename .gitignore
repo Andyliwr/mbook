@@ -6,3 +6,13 @@ reptile/node_modules/
 
 # api下的node_modules
 api/node_modules/
+
+# ignore config.js
+config.js
+
+# ignore reptile/log/
+reptile/log/
+
+#api/server/datasources.json
+api/server/datasources.json
+reptile/config.js

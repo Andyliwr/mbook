@@ -1,5 +1,5 @@
 {
-  "name": "xiaodiTodoList-node",
+  "name": "graduationDesign",
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "loopback": "^3.0.0-alpha.1",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
+    "loopback-connector-mailgun": "^0.0.7",
     "loopback-connector-mongodb": "^1.15.2",
     "loopback-connector-mysql": "^2.3.0",
     "loopback-context": "^1.0.0",
@@ -33,6 +34,6 @@
     "type": "",
     "url": ""
   },
-  "license": "UNLICENSED",
-  "description": "xiaodiTodoList-node"
+  "license": "MIT",
+  "description": "基于微信小程序的免费在线书城"
 }

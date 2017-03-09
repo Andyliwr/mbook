@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var config = require('../config');
 var chinese_parseInt = require('../tools/chinese-parseint');
 var myAppTools = require('../tools/myAppTools');
+var eventproxy = require('eventproxy');
 //日志相关
 var log4js = require('log4js');
 //config log
@@ -81,17 +82,17 @@ factionRankSchema.methods.showFeiLei = function () {
     return this.standard ? this.standard : "未定义";
 };
 factionRankSchema.methods.returnData = function () {
-  var tempData = {
-      standard: this.standard,
-      engName: this.engName,
-      qidian: this.qidian,//起点分类的中文名
-      zongheng: this.zongheng,
-      qd_url: this.qd_url,
-      qdRank: this.qdRank,
-      zhRank: this.zhRank,
-      updateTime: this.updateTime //更新时间
-  }
-  return tempData;
+    var tempData = {
+        standard: this.standard,
+        engName: this.engName,
+        qidian: this.qidian,//起点分类的中文名
+        zongheng: this.zongheng,
+        qd_url: this.qd_url,
+        qdRank: this.qdRank,
+        zhRank: this.zhRank,
+        updateTime: this.updateTime //更新时间
+    }
+    return tempData;
 };
 
 //创建model
@@ -144,63 +145,63 @@ var initDB = function () {
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 2,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 3,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 4,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 5,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 6,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 7,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 8,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 9,
             factionName: 'xxx',
             author: 'xxx',
             headImg: 'xxx',
             des: 'xxx',
             url: 'xxx'
-        },{
+        }, {
             num: 10,
             factionName: 'xxx',
             author: 'xxx',
@@ -218,7 +219,7 @@ var initDB = function () {
         qdRank: startedData,
         zhRank: startedData,
         updateTime: today //更新时间
-    },{
+    }, {
         standard: '玄幻',
         engName: 'xuanhuan',
         qidian: '玄幻',//起点分类的中文名
@@ -227,7 +228,7 @@ var initDB = function () {
         qdRank: startedData,
         zhRank: startedData,
         updateTime: today //更新时间
-    },{
+    }, {
         standard: '言情',
         engName: 'yanqing',
         qidian: '都市',//起点分类的中文名
@@ -254,7 +255,7 @@ var initDB = function () {
         qdRank: startedData,
         zhRank: startedData,
         updateTime: today //更新时间
-    },{
+    }, {
         standard: '科幻',
         engName: 'kehuan',
         qidian: '科幻',//起点分类的中文名
@@ -265,14 +266,14 @@ var initDB = function () {
         updateTime: today //更新时间
     }];
 
-    readyToStartArr.forEach(function(item){
+    readyToStartArr.forEach(function (item) {
         var factionRankEntity = new factionRankModel(item);
         factionRankEntity.save(function (err) {
             if (err) {
-                logger.warn('小说排行榜 '+factionRankEntity.showFeiLei()+' 类别初始化失败....' + err);
+                logger.warn('小说排行榜 ' + factionRankEntity.showFeiLei() + ' 类别初始化失败....' + err);
                 hasError = true;
-            }else{
-                logger.info('小说排行榜 '+factionRankEntity.showFeiLei()+' 类别初始化成功....');
+            } else {
+                logger.info('小说排行榜 ' + factionRankEntity.showFeiLei() + ' 类别初始化成功....');
             }
         });
     });
@@ -369,12 +370,12 @@ var saveFaction = function (json) {
     }
 };
 
-/*
+/**
  * 传入小说名字和小说来源，获取当前来源的最新的小说章节，以此避免重复爬取无用的章节
  * @param factionName 小说名
  * @param resource 小说来源
  * @return Number 最新章节数
- * */
+ */
 function getNewestSectionNum(factionName, resource, callback) {
     if (typeof factionName == 'string' && typeof resource == 'string') {
         factionListModel.find({factionName: factionName})
@@ -402,74 +403,178 @@ function getNewestSectionNum(factionName, resource, callback) {
     }
 }
 
-function updateRank(jsonArr){
-    if(jsonArr instanceof Array && jsonArr.length == 6){
+/**
+ * @param bookItem 没有小说id的小说对象
+ * @param ranktype 'qd'或者'zh'
+ * @isQdRankReady 控制起点排行是否更新完毕的ep对象
+ * @isZhRankReady 控制纵横排行是否更新完毕的ep对象
+ * @function 将爬取到的小说列表和数据库中已经存在的小说列表做对比，如果存在则为排行榜中每部小说添加bookid，
+ * 如果不存在则尝试插入一段测试章节，并生成新的小说列表，同时为排行榜中的每部小说添加bookid
+ */
+function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady){
+    //查找数据库中书籍list的数据
+    factionListModel.findOne({
+        factionName: bookItem.factionName,
+        author: bookItem.author
+    }, {_id: 1}, function (err, returnData) {
+        if (err) {
+            if(err.toString().indexOf('duplicate') >= 0){
+                logger.warn('之前榜单已经存在小说《' + bookItem.factionName + '》，这里不再重复更新....');
+            }else{
+                logger.warn('查询书名为《' + bookItem.factionName + '》，作者为 ' + bookItem.author + ' 的小说列表失败....'+err);
+            }
+            if(ranktype == 'qd'){
+                isQdRankReady.emit('qdABookFinished', 'fail');
+            }else{
+                isZhRankReady.emit('zhABookFinished', 'fail');
+            }
+            return;
+        }
+        //如果书单存在
+        if (returnData) {
+            bookItem.bookId = returnData.id.toString();
+        } else {
+            var content = new factionContentModel({
+                sectionNum: 0,
+                sectionTitle: '测试章节',
+                sectionContent: '这是一篇很长很长很长很长的测试章节',
+                sectionResource: '起点排行榜自动增加',
+                recentUpdateTime: new Date()
+            });
+
+            content.save(function (err) {
+                if (err) {
+                    logger.warn('自动增加--书名为《' + bookItem.factionName + '》，作者为 ' + bookItem.author + ' 的小说的测试章节失败....'+err);
+                }
+            });
+
+            //创建实例
+            var list = new factionListModel({
+                factionName: bookItem.factionName,
+                des: bookItem.des,
+                headerImage: bookItem.headImg,
+                author: bookItem.author,
+                sectionArray: [content._id],
+                updateTime: new Date()
+            });
+
+            list.save(function (err) {
+                if (err) {
+                    logger.warn('自动增加--书名为《' + bookItem.factionName + '》，作者为 ' + bookItem.author + ' 的小说列表失败.....'+err);
+                }
+            });
+            bookItem.bookId = list.id.toString();
+        }
+        if(ranktype == 'qd'){
+            isQdRankReady.emit('qdABookFinished', 'success');
+        }else{
+            isZhRankReady.emit('zhABookFinished', 'success');
+        }
+    });
+}
+
+/**
+ * @param jsonArr 6类排行榜的数据
+ * @function 存储并更新排行榜，同时对于排行榜中出现的小说在booklist中找不到bookid的情况，新建一个booklist，并存入测试章节
+ */
+function updateRank(jsonArr) {
+    if (jsonArr instanceof Array && jsonArr.length == 6) {
+        var finalEp = new eventproxy();
+        finalEp.after('hasFinishedFenlei', 6, function(){
+            logger.info('排行榜已经更新至数据库.....');
+        });
+        var rankAfterListEp = new eventproxy();
+        rankAfterListEp.after('hasFinishedFindList', 6, function (finalData) {
+            finalData.forEach(function (fenleiItem) {
+                var isAllRankReadyEp = new eventproxy();
+                var isQdRankReady = new eventproxy(); //判断一个分类中起点是否更新好了
+                var isZhRankReady = new eventproxy(); //判断一个分类中纵横是否更新好了
+
+                isAllRankReadyEp.all('qdRankReady', 'zhRankReady', function(){
+                    factionRankModel.update({standard: fenleiItem.standard}, { $set: {qdRank: fenleiItem.qdRank, zhRank: fenleiItem.zhRank, updateTime: new Date()}}, function(err, res){
+                        if(err){
+                            logger.warn('分类 '+fenleiItem.standard+' 的数据更新失败....'+err);
+                            finalEp.emit('hasFinishedFenlei', 'fail');
+                        }else{
+                            finalEp.emit('hasFinishedFenlei', 'success');
+                        }
+                    });
+                });
+                isQdRankReady.after('qdABookFinished', 10, function(){
+                    isAllRankReadyEp.emit('qdRankReady', 'success');
+                });
+                isZhRankReady.after('zhABookFinished', 10, function(){
+                    isAllRankReadyEp.emit('zhRankReady', 'success');
+                });
+                fenleiItem.qdRank.forEach(function (bookItem) {
+                    autoAddTestSection(bookItem, 'qd', isQdRankReady, isZhRankReady);
+                });
+                fenleiItem.zhRank.forEach(function (bookItem) {
+                    autoAddTestSection(bookItem, 'zh', isQdRankReady, isZhRankReady);
+                });
+            });
+        });
         //查找原有文档
-        factionRankModel.find({}, {'_id': 0,'__v':0, 'updateTime':0}, function (err, oldData) {
-            if(err){
+        factionRankModel.find({}, {'_id': 0, '__v': 0, 'updateTime': 0}, function (err, oldData) {
+            if (err) {
                 logger('查找数据库中排行榜数据失败....');
                 return;
             }
-            if(myAppTools.isTwoJSONArrSame(jsonArr, oldData)){
+            if (myAppTools.isTwoJSONArrSame(jsonArr, oldData)) {
                 logger.info('数据相同，不用更新');
                 return;
-            }else{
+            } else {
                 //oldData和jsonArr数据对等
-                jsonArr.forEach(function(item, index){
-                    var successCount = 0;
-                    var callback = function(){
-                        ++successCount;
-                        if(successCount == 6){
-                            logger.info('排行榜已经更新至数据库....');
-                        }
-                    };
+                jsonArr.forEach(function (item, index) {
                     //更新qdRank,为空的数据不再更新
-                    if(!myAppTools.isTwoJSONArrSame(item.qdRank, oldData[index].qdRank)){
+                    if (!myAppTools.isTwoJSONArrSame(item.qdRank, oldData[index].qdRank)) {
                         //判断爬到的数据不是空数据，如果是空数据，则使用oldData的数据覆盖
-                        item.qdRank.forEach(function(item2, index2){
-                            if(item2.factionName == '未知名小说' || item2.factionName == ""){
+                        item.qdRank.forEach(function (item2, index2) {
+                            if (item2.factionName == '未知名小说' || item2.factionName == "") {
                                 item2.factionName = oldData[index].qdRank[index2].factionName;
                             }
-                            if(item2.author == '未知名作者' || item2.author == ""){
+                            if (item2.author == '未知名作者' || item2.author == "") {
                                 item2.author = oldData[index].qdRank[index2].author;
                             }
-                            if(item2.headImg == 'http://chuantu.biz/t5/47/1487230810x1699162616.png' || item2.headImg == ""){
+                            if (item2.headImg == 'http://chuantu.biz/t5/47/1487230810x1699162616.png' || item2.headImg == "") {
                                 item2.headImg = oldData[index].qdRank[index2].headImg;
                             }
-                            if(item2.des == '这是一本很长很长很长很长很长的书' || item2.des == ""){
+                            if (item2.des == '这是一本很长很长很长很长很长的书' || item2.des == "") {
                                 item2.des = oldData[index].qdRank[index2].des;
                             }
-                            if(item2.url == ""){
+                            if (item2.url == "") {
                                 item2.url = oldData[index].qdRank[index2].url;
                             }
                         });
-                        item.zhRank.forEach(function(item2, index2){
-                            if(item2.factionName == '未知名小说' || item2.factionName == ""){
+                        item.zhRank.forEach(function (item2, index2) {
+                            if (item2.factionName == '未知名小说' || item2.factionName == "") {
                                 item2.factionName = oldData[index].zhRank[index2].factionName;
                             }
-                            if(item2.author == '未知名作者' || item2.author == ""){
+                            if (item2.author == '未知名作者' || item2.author == "") {
                                 item2.author = oldData[index].zhRank[index2].author;
                             }
-                            if(item2.headImg == 'http://chuantu.biz/t5/47/1487230810x1699162616.png' || item2.headImg == ""){
+                            if (item2.headImg == 'http://chuantu.biz/t5/47/1487230810x1699162616.png' || item2.headImg == "") {
                                 item2.headImg = oldData[index].zhRank[index2].headImg;
                             }
-                            if(item2.des == '这是一本很长很长很长很长很长的书' || item2.des == ""){
+                            if (item2.des == '这是一本很长很长很长很长很长的书' || item2.des == "") {
                                 item2.des = oldData[index].zhRank[index2].des;
                             }
-                            if(item2.url == ""){
+                            if (item2.url == "") {
                                 item2.url = oldData[index].zhRank[index2].url;
                             }
                         });
-                    }else{
+                    } else {
                         logger.info('数据相同，不用更新');
+                        rankAfterListEp.emit('hasFinishedFindList', item);
                         return;
                     }
-                    factionRankModel.update({standard: item.standard}, { $set: {qdRank: item.qdRank, zhRank: item.zhRank, updateTime: new Date()}}, callback);
+                    rankAfterListEp.emit('hasFinishedFindList', item);
+                    // factionRankModel.update({standard: item.standard}, { $set: {qdRank: item.qdRank, zhRank: item.zhRank, updateTime: new Date()}}, callback);
                 });
             }
         });
 
-    }else{
+    } else {
         logger.warn('传入updateRank的数据格式错误....');
     }
 }
