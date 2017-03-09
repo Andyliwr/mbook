@@ -1,6 +1,7 @@
 .reader-container {
   height: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
 
 .reader-container .content {
   display: block;
@@ -155,7 +156,8 @@
 .reader-container .fontSelector {
   height: 40%;
   text-align: center;
-  width: 100%; }
+  width: 100%;
+  font-size: 32rpx; }
 
 .reader-container .fontSelector > text {
   height: 100%;
@@ -169,31 +171,55 @@
   text-align: left;
   width: 100%;
   bottom: 0;
-  display: -webkit-flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
   padding: 0 20rpx;
   box-sizing: border-box;
   font-size: 28rpx; }
 
+.reader-container .fontDetail .allItem {
+  overflow: auto;
+  height: 260rpx; }
+
 .reader-container .fontDetail .font-item {
-  flex: 1;
+  height: 70rpx;
   border-bottom: 1px solid #d7d7d7;
-  position: relative; }
+  position: relative;
+  line-height: 70rpx; }
 
 .reader-container .fontDetail .font-item text {
-  display: inline-block;
-  position: relative;
-  top: 25rpx; }
+  display: inline-block; }
 
 .reader-container .fontDetail .font-item icon {
   position: absolute;
-  top: 50%;
+  top: 70%;
   transform: translateY(-50%);
   right: 10rpx; }
 
 .reader-container .fontDetail .font-item:last-child {
   border-bottom: none; }
+
+.reader-container .fontDetail .font-title {
+  text-align: left;
+  height: 60rpx;
+  line-height: 60rpx;
+  position: relative;
+  padding-left: 70rpx; }
+
+.leftFont1-icon, .leftFont2-icon, .leftFont3-icon, .leftFont4-icon {
+  display: inline-block;
+  height: 40rpx;
+  width: 46rpx;
+  margin-right: 20rpx;
+  position: absolute;
+  top: 10rpx;
+  left: 0; }
+
+.reader-container .cover {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  top: 0;
+  left: 0; }
 
 .yueliang-icon {
   background-size: 220rpx 220rpx;
@@ -239,6 +265,10 @@
   background-size: 270rpx 270rpx;
   background-position: -215rpx -216rpx; }
 
+.leftFont1-icon {
+  background-size: 220rpx 220rpx;
+  background-position: 0rpx -180rpx; }
+
 .mulu2-icon {
   background-size: 220rpx 220rpx;
   background-position: -85rpx -85rpx; }
@@ -274,6 +304,10 @@
 .rright2-icon {
   background-size: 270rpx 270rpx;
   background-position: -213rpx -160rpx; }
+
+.leftFont2-icon {
+  background-size: 220rpx 220rpx;
+  background-position: 0rpx -180rpx; }
 
 .mulu3-icon {
   background-size: 220rpx 220rpx;
@@ -311,6 +345,10 @@
   background-size: 270rpx 270rpx;
   background-position: -213rpx -48rpx; }
 
+.leftFont3-icon {
+  background-size: 220rpx 220rpx;
+  background-position: 0rpx -180rpx; }
+
 .mulu4-icon {
   background-size: 240rpx 240rpx;
   background-position: -94rpx -145rpx; }
@@ -346,3 +384,7 @@
 .rright4-icon {
   background-size: 270rpx 270rpx;
   background-position: -215rpx -216rpx; }
+
+.leftFont4-icon {
+  background-size: 220rpx 220rpx;
+  background-position: 0rpx -180rpx; }

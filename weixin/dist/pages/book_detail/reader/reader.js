@@ -99,10 +99,13 @@
 	    pageIndex: 1,
 	    maxPageNum: 0,
 	    newestSectionNum: 1412,
-	    allSliderValue: { section: 200, bright: 200, font: 16 },
+	    allSliderValue: { section: 200, bright: 80, font: 16 },
 	    currentSlideValue: 200,
 	    fontSize: 32, //单位rpx
+	    isShowFontSelector: 0, //是否显示选择字体详情板块
+	    isUseBrightModel: 0,
 	    allFontFamily: ['Arial', '黑体', '微软雅黑', '楷体'],
+	    currentFontFamily: '微软雅黑',
 	    lineHeight: 36, //单位rpx
 	    control: { all: 0, control_tab: 0, control_detail: 0, target: '' }, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
 	    colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941' } },
@@ -257,6 +260,18 @@
 	  brightSliderChange: function brightSliderChange(event) {
 	    var self = this;
 	    self.setData({ allSliderValue: { section: self.data.allSliderValue.section, bright: event.detail.value, font: self.data.allSliderValue.font } });
+	    //亮度调节，其实是使用一个黑色的cover调节透明度，这里需要给出提示，使用亮度调节会失去当前颜色背景
+	    if (self.data.isUseBrightModel == '0') {
+	      wx.showModal({
+	        title: '提示',
+	        content: '使用亮度调节，会将背景模式还原至最初模式，建议使用系统的亮度调节',
+	        success: function success(res) {
+	          if (res.confirm) {
+	            self.setData({ isUseBrightModel: 1, colorStyle: { content_bg: '#f5f9fc', styleNum: 1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941' } });
+	          }
+	        }
+	      });
+	    }
 	  },
 	  fontSliderChange: function fontSliderChange(event) {
 	    var self = this;
@@ -298,7 +313,16 @@
 	        break;
 	    }
 	  },
-	  selectFontFamily: function selectFontFamily() {}
+	  selectFontFamily: function selectFontFamily() {
+	    this.setData({ isShowFontSelector: 1 });
+	  },
+	  closeFontSelector: function closeFontSelector() {
+	    this.setData({ isShowFontSelector: 0 });
+	  },
+	  changeFontFamily: function changeFontFamily(event) {
+	    this.setData({ currentFontFamily: event.currentTarget.dataset.fontname });
+	    //todo 执行改变字体后的重新排版
+	  }
 	});
 
 /***/ },

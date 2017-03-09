@@ -1,38 +1,38 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'E:\\nodejs\\node.exe',
-1 verbose cli   'E:\\nodejs\\node_global\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli [ 'D:\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\Andyliwr\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   '--userconfig=C:\\Users\\Andyliwr\\.cnpmrc',
 1 verbose cli   '--disturl=https://npm.taobao.org/mirrors/node',
 1 verbose cli   '--registry=https://registry.npm.taobao.org',
 1 verbose cli   'run',
 1 verbose cli   'dev' ]
 2 info using npm@3.10.10
-3 info using node@v6.7.0
+3 info using node@v6.2.0
 4 verbose run-script [ 'predev', 'dev', 'postdev' ]
 5 info lifecycle graduationDesign@1.0.3~predev: graduationDesign@1.0.3
 6 silly lifecycle graduationDesign@1.0.3~predev: no script for predev, continuing
 7 info lifecycle graduationDesign@1.0.3~dev: graduationDesign@1.0.3
 8 verbose lifecycle graduationDesign@1.0.3~dev: unsafe-perm in lifecycle true
-9 verbose lifecycle graduationDesign@1.0.3~dev: PATH: E:\nodejs\node_global\node_modules\cnpm\node_modules\npm\bin\node-gyp-bin;C:\Users\Andyliwr\Documents\graduationDesign\weixin\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;E:\Git\bin;E:\nodejs;E:\nodejs\node_global;E:\mongo_install\bin;E:\Ruby\bin;C:\Program Files (x86)\MacType
+9 verbose lifecycle graduationDesign@1.0.3~dev: PATH: C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\bin\node-gyp-bin;C:\Users\Andyliwr\Documents\graduationDesign\weixin\node_modules\.bin;D:\python\Scripts\;D:\Komodo\;D:\python\;D:\python\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;D:\nodejs\;D:\WinSCP\;D:\sqlite;D:\Ruby\bin;D:\devkit;D:\mysql\bin;D:\nvmw;D:\nodejs\node_modules\node_global;D:\qshell;D:\mongo\bin;D:\Ruby\bin;C:\Users\Andyliwr\AppData\Roaming\npm;D:\nodejs\node_modules\node_global\node_modules;C:\Program Files (x86)\MacType
 10 verbose lifecycle graduationDesign@1.0.3~dev: CWD: C:\Users\Andyliwr\Documents\graduationDesign\weixin
 11 silly lifecycle graduationDesign@1.0.3~dev: Args: [ '/d /s /c', 'cross-env NODE_ENV=dev gulp dev' ]
 12 silly lifecycle graduationDesign@1.0.3~dev: Returned: code: 3221225786  signal: null
 13 info lifecycle graduationDesign@1.0.3~dev: Failed to exec dev script
 14 verbose stack Error: graduationDesign@1.0.3 dev: `cross-env NODE_ENV=dev gulp dev`
 14 verbose stack Exit status 3221225786
-14 verbose stack     at EventEmitter.<anonymous> (E:\nodejs\node_global\node_modules\cnpm\node_modules\npm\lib\utils\lifecycle.js:255:16)
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\lib\utils\lifecycle.js:255:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (E:\nodejs\node_global\node_modules\cnpm\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\Andyliwr\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\lib\utils\spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at ChildProcess.emit (events.js:191:7)
-14 verbose stack     at maybeClose (internal/child_process.js:877:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+14 verbose stack     at maybeClose (internal/child_process.js:850:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
 15 verbose pkgid graduationDesign@1.0.3
 16 verbose cwd C:\Users\Andyliwr\Documents\graduationDesign\weixin
 17 error Windows_NT 10.0.10586
-18 error argv "E:\\nodejs\\node.exe" "E:\\nodejs\\node_global\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js" "--userconfig=C:\\Users\\Andyliwr\\.cnpmrc" "--disturl=https://npm.taobao.org/mirrors/node" "--registry=https://registry.npm.taobao.org" "run" "dev"
-19 error node v6.7.0
+18 error argv "D:\\nodejs\\node.exe" "C:\\Users\\Andyliwr\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js" "--userconfig=C:\\Users\\Andyliwr\\.cnpmrc" "--disturl=https://npm.taobao.org/mirrors/node" "--registry=https://registry.npm.taobao.org" "run" "dev"
+19 error node v6.2.0
 20 error npm  v3.10.10
 21 error code ELIFECYCLE
 22 error graduationDesign@1.0.3 dev: `cross-env NODE_ENV=dev gulp dev`
