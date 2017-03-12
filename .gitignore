@@ -16,3 +16,7 @@ reptile/log/
 #api/server/datasources.json
 api/server/datasources.json
 reptile/config.js
+
+#忽略微信小城序的生成的dist目录
+weixin/dist/
+weixin/node_modules/
