@@ -30,7 +30,7 @@ function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio){
     var huanhangNum = (splitArray[index]-1) > 0? (splitArray[index]-1) > 0: 0;
     totalHeight += Math.ceil(item.length/Math.floor((windowW-80/pixelRatio)/fontSize))*lineHeight + huanhangNum*lineHeight;
   });
-  return Math.ceil(totalHeight/windowH);
+  return Math.ceil(totalHeight/windowH)+1;
 }
 
 
@@ -45,13 +45,11 @@ Page({
       pageIndex: 1,
       maxPageNum: 0,
       newestSectionNum: 1412,
-      allSliderValue: {section: 200, bright: 80, font: 16},
-      currentSlideValue: 200,
-      fontSize: 32, //单位rpx
+      allSliderValue: {section: 200, bright: 80, font: 32}, //font单位rpx
       isShowFontSelector: 0, //是否显示选择字体详情板块
       isUseBrightModel: 0,
-      allFontFamily: ['Arial','黑体','微软雅黑','楷体'],
-      currentFontFamily: '微软雅黑',
+      allFontFamily: ['微软雅黑','黑体','Arial','楷体', '等线'],
+      currentFontFamily: '等线',
       lineHeight: 36, //单位rpx
       control: {all: 0, control_tab: 0, control_detail: 0, target: ''}, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
       colorStyle: {content_bg: '#f5f9fc', styleNum:1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941'}, //1、2、3、4分别对应四种颜色模式
@@ -64,7 +62,7 @@ Page({
           self.setData({windows: {windows_height: res.windowHeight, windows_width: res.windowWidth, pixelRatio: res.pixelRatio}});
         }
       });
-      var maxPageNum = countPageNum(self.data.content, self.data.fontSize, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
+      var maxPageNum = countPageNum(self.data.content, self.data.allSliderValue.font, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
       self.setData({maxPageNum: maxPageNum});
     },
     onLoad: function(options) {
@@ -74,9 +72,44 @@ Page({
         wx.setNavigationBarTitle({
           title: factionName,
           fail: function(){
-            //显示错误页面
+            //todo 显示错误页面
           }
         });
+    },
+    //重新显示页面执行函数
+    onShow: function(){
+      var self = this;
+      //读取用户设置
+      wx.getStorage({
+        key: 'reader_setting',
+        success: function(res) {
+            var userSetting = JSON.parse(res.data);
+            self.setData({
+              allSliderValue: userSetting.allSliderValue || self.data.allSliderValue,
+              allFontFamily: userSetting.allFontFamily || self.data.allFontFamily,
+              newestSectionNum: userSetting.newestSectionNum || self.data.newestSectionNum,
+              pageIndex: userSetting.pageIndex || self.data.pageIndex,
+              colorStyle: userSetting.colorStyle || self.data.colorStyle
+            });
+        }
+      });
+    },
+    //跳出页面执行函数
+    onHide: function(){
+      var self = this;
+      //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
+      try {
+        var userSetting = {
+          allSliderValue: self.data.allSliderValue, // 控制当前章节，亮度，字体大小
+          allFontFamily: self.data.allFontFamily, // 已经存在的字体列表
+          newestSectionNum: self.data.newestSectionNum, // 当前小说的最新章节
+          pageIndex: self.data.pageIndex, // 当前第几页
+          colorStyle: self.data.colorStyle //当前的主题
+        };
+        wx.setStorage('reader_setting', JSON.stringify(userSetting));
+      } catch (e) {
+        console.log(e);
+      }
     },
     handletouchmove: function(event){
       // console.log('正在执行touchmove, isMoving为：'+isMoving);
@@ -113,7 +146,7 @@ Page({
     handletouchtart: function(event){
       // 判断用户的点击事件，如果不是滑动，将不会执行touchmove
       hasRunTouchMove = false;
-      console.log('正在执行touchtart, isMoving为：'+isMoving+'------event: {x: '+event.touches[0].pageX+' ,y: '+event.touches[0].pageY+'}');
+      // console.log('正在执行touchtart, isMoving为：'+isMoving+'------event: {x: '+event.touches[0].pageX+' ,y: '+event.touches[0].pageY+'}');
       // console.log('正在执行touchtart, isMoving为：'+isMoving);
       if(isMoving == 0){
         this.setData({touches: {lastX: event.touches[0].pageX, lastY: event.touches[0].pageY}});
@@ -122,14 +155,14 @@ Page({
     handletouchend: function(){
       console.log('正在执行touchend, isMoving为：'+isMoving);
       var self = this;
-      // 判断用户的点击事件
+      // 判断用户的点击事件，决定是否显示控制栏
       if(hasRunTouchMove == false){
       	var y = self.data.touches.lastY;
       	var x = self.data.touches.lastX;
       	var h = self.data.windows.windows_height/2;
       	var w = self.data.windows.windows_width/2;
       	if(x && y && y >= (h-50) && y <= (h+50) && x >= (w-60) && x <= (w+60)){
-      		self.setData({control: {all: self.data.control.all == '0'? '1': '0', control_tab: 1, control_detail: 0, target: ''}});
+      		self.setData({control: {all: self.data.control.all == '0'? '1': '0', control_tab: 1, control_detail: 0, target: ''}, isShowFontSelector: 0});
       		return;
       	}
       }
@@ -225,6 +258,9 @@ Page({
     fontSliderChange: function(event){
       var self = this;
       self.setData({allSliderValue: {section: self.data.allSliderValue.section, bright: self.data.allSliderValue.section, font: event.detail.value}});
+      //重新计算分页
+      var maxPageNum = countPageNum(self.data.content, event.detail.value, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
+      self.setData({maxPageNum: maxPageNum});
     },
     gotoControlDetail: function(event){
     	var self = this;
@@ -271,5 +307,10 @@ Page({
     changeFontFamily: function(event){
       this.setData({currentFontFamily: event.currentTarget.dataset.fontname});
       //todo 执行改变字体后的重新排版
+    },
+    testSaveUserSetting: function(){
+      wx.navigateTo({
+        url: '/pages/shop/shop'
+      })
     }
 });
