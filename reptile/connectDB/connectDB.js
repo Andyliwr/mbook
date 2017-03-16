@@ -321,7 +321,7 @@ var saveFaction = function (json) {
                         logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
                     } else {
                         var sectionNumArray = myAppTools.getElementArray(list[0].sectionArray, 'sectionNum');
-
+                        console.log(sectionNumArray.toString());
                         if (myAppTools.isInArray(sectionNumArray, json.sectionNum)) {
                             //数据已存在
                             logger.debug("数据库中已有" + json.factionName + "的第" + json.sectionNum + "章的小说，放弃存储！");
@@ -348,6 +348,7 @@ var saveFaction = function (json) {
 
                             //将更新数据库中小说章节记录
                             var sectionIdArray = myAppTools.getElementArray(list[0].sectionArray, '_id');
+                            console.log(sectionIdArray.toString());
                             sectionIdArray.push(factionContentEntity._id);
 
                             var conditions = {factionName: json.factionName};

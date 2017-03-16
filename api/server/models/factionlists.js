@@ -12,6 +12,7 @@ module.exports = function (Factionlists) {
         console.log('查询小说列表失败....' + err);
         cb(null, {code: -1, errMsg: '查询小说列表失败'})
       } else {
+        console.log(res.sectionArray.toString());
         returnData.code = 0; //标志位
         returnData.author = res.author;
         if(res.headerImage.indexOf('http') < 0){

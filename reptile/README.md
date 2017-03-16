@@ -52,3 +52,14 @@ var j = schedule.scheduleJob('42 * * * *', function(){
 ```javascript
 db.factionlistmodels.update({factionName: '大主宰'}, {$set: {sectionArray:  [....]}});
 ```
+
+,
+      {
+        sourceName: "百度贴吧",
+        url: 'http://tieba.baidu.com/f?kw=%E5%A4%A7%E4%B8%BB%E5%AE%B0&ie=utf-8',
+        coreUrl: 'http://tieba.baidu.com',
+        des: '百度贴吧-大主宰吧，大主宰吧只把最新的小说章节放在置顶ul里, 贴吧每篇文章的url：http://tieba.baidu.com/p/4753875404，贴吧入口data-field="{"id":4755659306...}，百度贴吧吧内容都放在了data_field里，content.content即可访问到内容，不过内容进行了unicode的编码',
+        firstSign: '.thread_top_list_folder .thread_top_list li .threadlist_title.pull_left.j_th_tit a',
+        inWhatAttr: 'href',//链接存储的属性
+        secondSign: '.p_postlist .l_post.l_post_bright.j_l_post .d_post_content.j_d_post_content'
+      }

@@ -28,13 +28,6 @@
     }
   },
   "validations": [],
-  "relations": {
-    "sectionArray": {
-      "type": "belongsTo",
-      "model": "factionlists",
-      "foreignKey": "id"
-    }
-  },
   "acls": [
     {
       "accessType": "*",

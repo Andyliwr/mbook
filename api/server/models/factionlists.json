@@ -35,14 +35,6 @@
     }
   },
   "validations": [],
-  "relations": {
-    "sectionArray": {
-      "type": "hasMany",
-      "model": "factioncontents",
-      "foreignKey": "id",
-      "through": "factioncontents"
-    }
-  },
   "acls": [
     {
       "accessType": "*",
