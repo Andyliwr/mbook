@@ -317,7 +317,8 @@ Page({
     },
     openMulu: function(){
       var self = this;
-      var bookid = self.data.bookid || '58ad5a5586ae4108842aaeee';
+      // var bookid = self.data.bookid || '58ad5a5586ae4108842aaeee';
+      var bookid = self.data.bookid || '58ad9056f5d3811cecea0149'; //home
       //此接口需要分页，不能每次拿到全部的章节数据
       //发送ajax得到这本小说的所有章节
       wx.request({

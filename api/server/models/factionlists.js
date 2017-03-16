@@ -83,15 +83,14 @@ module.exports = function (Factionlists) {
    * @param sectionNum 当前正在阅读的章节数
    * @method 直接根据sectionNum大于小于查询
    */
-  Factionlists.getMuluById = function (bookId, sectionNum, cb) {
+  Factionlists.getMulu = function (bookId, sectionNum, cb) {
     var returnData = {};
     var app = Factionlists.app;
-    app.models.factionlists.findById(bookId,{}, {}, function (err, res) {
+    app.models.factionlists.findById(bookId, {}, {}, function (err, res) {
       if (err) {
         console.log('查询小说列表失败....' + err);
         cb(null, {code: -1, errMsg: '查询小说列表失败'})
       } else {
-        console.log(res.sectionArray.toString());
         returnData.code = 0; //标志位
         returnData.author = res.author;
         if(res.headerImage.indexOf('http') < 0){
@@ -103,15 +102,17 @@ module.exports = function (Factionlists) {
         /*只取这本小说的所有的章节的章节数和章节名，当具体点某章节的时候再去根据章节id获取它的内容*/
         var sectionEp = new Eventproxy();
         sectionEp.after('hasGotContent', res.sectionArray.length, function(allSections){
-          returnData.sectionArray = allSections;
-          //获取小说的最新章节
-          var newestSection = {sectionNum: 0};
-          allSections.forEach(function(sectionItem){
-            if(sectionItem.sectionNum > newestSection.sectionNum){
-              newestSection = sectionItem;
+          returnData.sectionArray = [];
+          //刷选sectionNum前后20章
+          allSections.forEach(function(item, index){
+            if(item.sectionNum >= (sectionNum-10) && item.sectionNum <= (sectionNum+10)){
+              returnData.sectionArray.push(item);
             }
           });
-          returnData.newestSection = newestSection;
+          //排序
+          returnData.sectionArray.sort(function(faction1, faction2){
+            return faction1.sectionNum - faction2.sectionNum;
+          });
           //调用callback把数据传出去
           cb(null, returnData);
         });
@@ -131,7 +132,6 @@ module.exports = function (Factionlists) {
                * 表中，所以很有可能同一章节会存在不同来源的，所以需要设定一个默认来源，同时应该设定一个来源的优先级，当前一
                * 个来源没有数据的时候，采用后一个来源的数据，依次类推
                */
-              returnData.sectionResource = sectionRes.sectionResource;
               sectionEp.emit('hasGotContent', returnData);
             }
           });
@@ -142,17 +142,23 @@ module.exports = function (Factionlists) {
   };
   //register getBookById
   Factionlists.remoteMethod(
-    'getBookById', {
-      accepts: {
+    'getMulu', {
+      accepts: [{
         arg: 'bookId',
         type: 'string',
         description: 'the id of a book'
       },
+      {
+        arg: 'sectionNum',
+        type: 'number',
+        description: 'the num of a book section'
+      }
+      ],
       returns: {
         arg: 'data',
         type: 'object',
         description: '返回的结果对象'
       },
-      http: {path: '/getBookById', verb: 'get'}
+      http: {path: '/getMulu', verb: 'get'}
     });
 };
