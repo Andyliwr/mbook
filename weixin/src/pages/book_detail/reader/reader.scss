@@ -403,3 +403,45 @@
 	background-size:220rpx 220rpx;
 	background-position:0rpx -180rpx;
 }
+
+// 目录的样式
+.mulu-detail{
+	position: absolute;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	width: 100%;
+	top: 0;
+	left: 0;
+	display: none;
+	&.active{
+		display: block;
+	}
+	.muluPanel{
+		width: 0%;
+		height: 100%;
+	}
+	&.active .muluPanel{
+		animation: slideShow 0.4s;
+		//当动画完成后，保持最后一个属性值
+		animation-fill-mode : forwards
+	}
+	.mulu-swipers{
+		height: 90%;
+		width: 100%;
+	}
+	.bottomCtr{
+		height:8%;
+		width:100%;
+		display:-webkit-flex;
+		flex-flow:row nowarp;
+		justify-content:space-between;
+		align-items:center;
+		padding:0 60rpx;
+		box-sizing:border-box;
+		font-size:30rpx;
+	}
+}
+@keyframes slideShow{
+	form{width: 0}
+	to{width: 86%}
+}

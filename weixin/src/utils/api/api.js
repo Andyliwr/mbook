@@ -3,12 +3,13 @@
 
 var HOST_URL = 'http://localhost:3000/api';
 var LOGIN = '/as_users/login';
-var GET_FACTION_LIST = '/factionlists';
-var GET_FACTION_DETAIL_BY_ID = '/factionlists/';
-var GET_CONTENT_BY_ID = '/factioncontents/';
+var GET_FACTION_LIST = '/xs_list';
+var GET_FACTION_DETAIL_BY_ID = '/xs_list/';
+var GET_CONTENT_BY_ID = '/xs_contents/';
 var GET_EMAILS_PAGEID = '/emails';
 var GET_BOOKS_SORTBY_TIME = '/xxxx';
 var GET_RANK = '/xs_rank/getRank';
+var GET_BOOK_MULU = '/xs_list/getBookById'
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -52,5 +53,8 @@ module.exports = {
 	},
 	getRank: function(rankType){
 		return HOST_URL + GET_RANK + '?rankType='+rankType;
+	},
+	getBookMuluById: function(bookid){
+		return HOST_URL + GET_BOOK_MULU + '?bookId='+bookid;
 	}
 }
