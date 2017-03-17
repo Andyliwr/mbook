@@ -29,7 +29,7 @@ var mongoConfig = {
   port: '27017',
   dbName: 'myapp',
   username: 'lidikang',
-  password: '121960425mongo'
+  password: '***'
 };
 
 //七牛配置
