@@ -406,7 +406,7 @@
     animation: slideShow 0.4s;
     animation-fill-mode: forwards; }
   .mulu-detail .mulu-swipers {
-    height: 90%;
+    height: 92%;
     width: 100%; }
   .mulu-detail .bottomCtr {
     height: 8%;
@@ -419,6 +419,80 @@
     box-sizing: border-box;
     font-size: 30rpx; }
 
+.mulu-detail .mulu-swiper{
+  position: relative;
+}
+.mulu-detail .mulu-swiper .search{
+  border: 1px solid #ccc;
+  margin: 30rpx 30rpx;
+  box-sizing: border-box;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  position: relative;
+}
+.mulu-detail .mulu-swiper .search > icon{
+  position: absolute;
+  left: 10rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.mulu-detail .mulu-swiper .search > input{
+  margin-left: 60rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo{
+  margin-left: 30rpx;
+  font-size: 28rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo image{
+  height: 80rpx;
+  width: 50rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo .book{
+  position: absolute;
+  left: 100rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo .factionName{
+  display: block;
+}
+.mulu-detail .mulu-swiper .bookInfo .author{
+  display: block;
+}
+.mulu-detail .mulu-swiper .bookInfo .readerTime{
+  position: absolute;
+  right: 30rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo .num{
+  font-size: 28rpx;
+}
+.mulu-detail .mulu-swiper .bookInfo .timeDes{
+  display: block;
+  font-size: 20rpx;
+}
+.mulu-detail .mulu-swiper .sections{
+  margin-top: 20rpx;
+  height: 86%;
+  /*border-top: 1rpx solid #dedede;*/
+  /*border-bottom: 1rpx solid #dedede;*/
+}
+.mulu-detail .mulu-swiper .section{
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-bottom: 0;
+  border-bottom: 1rpx solid #dedede;
+  font-size: 28rpx;
+  padding-left: 30rpx; 
+}
+.mulu-detail .mulu-swiper .section:first-child{
+  border-top: 1rpx solid #dedede;
+}
+.mulu-detail .mulu-swiper .section:last-child{
+  border-bottom: 1rpx solid #dedede;
+}
+.mulu-detail .mulu-swiper .factionNum{
+  margin-right: 40rpx;
+}
 @keyframes slideShow {
   form {
     width: 0; }

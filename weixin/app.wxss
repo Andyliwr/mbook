@@ -375,7 +375,7 @@ checkbox, radio {
 .err_tips .weui-err_tips {
   position: fixed;
   z-index: 5000;
-  bottom: 3rem;
+  bottom: 160rpx;
   left: 50%;
   background: rgba(40, 40, 40, 0.75);
   text-align: center;

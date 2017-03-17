@@ -8,7 +8,15 @@ var leftTimmerCount = 0;
 var rightTimmerCount = 0;
 var hasRunTouchMove = false;
 
-//计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
+/**
+ * 计算总页数函数，需要理解行高---line-height和字体大小font-size之间的关系，可以查考http://www.jianshu.com/p/f1019737e155，以及http://www.w3school.com.cn/cssref/pr_dim_line-height.asp
+ * @param str 需要分页的内容
+ * @param fontSize 当前的字体大小
+ * @param lineHeight 当前的行高
+ * @param windowW 当前window的宽度
+ * @param windowH 当前window的高度
+ * @param pixelRatio 当前分辨率，用来将rpx转换成px
+ */
 function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio){
   var returnNum = 0;
   fontSize = fontSize/pixelRatio;
@@ -33,6 +41,66 @@ function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio){
   return Math.ceil(totalHeight/windowH)+1;
 }
 
+/**
+ * 发送获取目录请求的方法
+ * @param bookid 书籍的id
+ * @param sectionnum 小说的当前章节
+ * @param obj 操作的对象
+ * @param success 接口完成的回调
+ * @param fail 接口失败的回调
+ * @param preOrNext 是向前翻页还是向后翻页
+ */
+function getMulu(bookid, sectionnum, obj, success, fail, preOrNext){
+  //发送ajax得到这本小说的所有章节
+  var oldSectionData = obj.data.allSectionData;
+  wx.request({
+    url: Api.getMulu(bookid, sectionnum), //仅为示例，并非真实的接口地址
+    success: function(res) {
+      try{
+        var tmpData = res.data.data;
+        //allSectionData像是一个队列，并不是一直加上接口获取的新数据，有一个最大值，当超过这个最大值，会在首尾删减多于的值
+        if(oldSectionData.length == 0){
+          obj.setData({allSectionData: tmpData.sectionArray, headImg: tmpData.headImg});
+        }else{
+          //如果是向前翻页，数据应该插到顶部
+          if(preOrNext == 'pre'){
+            obj.setData({allSectionData: tmpData.sectionArray.concat(oldSectionData)});
+          }else if(preOrNext == 'next'){
+            obj.setData({allSectionData: oldSectionData.concat(tmpData.sectionArray)});
+          }
+        }
+        //处理回调
+        if(typeof success == "function"){
+          success(obj);
+        }
+      }catch(e){
+        console.log(e);
+          if(typeof fail == "function"){
+          fail(obj);
+        }
+      }
+    },
+    fail: function(err){
+      console.log(err);
+      //处理回调
+      if(typeof fail == "function"){
+        fail(obj);
+      }
+    }
+  })
+}
+
+/**
+ * 显示错误函数
+ * @param obj 操作对象
+ * @param errorMsg 需要显示的错误信息
+ */
+function showErrMsg(obj, errorMsg){
+  obj.setData({err_tips_data: {err_tips_show: true, err_tips_text: errorMsg}});
+  setTimeout(function(){
+      obj.setData({err_tips_data: {err_tips_show: false, err_tips_text: ''}});
+  }, 3000);
+}
 
 Page({
     data: {
@@ -47,8 +115,8 @@ Page({
       leftValue: 0,
       pageIndex: 1,
       maxPageNum: 0,
-      newestSectionNum: 1412,
-      allSliderValue: {section: 200, bright: 80, font: 32}, //font单位rpx
+      newestSectionNum: 1450,
+      allSliderValue: {section: 1431, bright: 80, font: 32}, //font单位rpx
       isShowFontSelector: 0, //是否显示选择字体详情板块
       isUseBrightModel: 0,
       allFontFamily: ['微软雅黑','黑体','Arial','楷体', '等线'],
@@ -57,6 +125,7 @@ Page({
       control: {all: 0, control_tab: 0, control_detail: 0, target: ''}, //all表示整个控制是否显示，第一点击显示，再一次点击不显示;target表示显示哪一个detail
       colorStyle: {content_bg: '#f5f9fc', styleNum:1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941'}, //1、2、3、4分别对应四种颜色模式
       isShowMulu: 0, // 是否显示左侧栏
+      muluSwiperNum: 0, //目录的滑块显示第几块
       allSectionData: [] // 所有章节数据
     },
     onReady: function(){
@@ -315,21 +384,93 @@ Page({
       this.setData({currentFontFamily: event.currentTarget.dataset.fontname});
       //todo 执行改变字体后的重新排版
     },
+    //打开目录侧边栏
     openMulu: function(){
       var self = this;
-      // var bookid = self.data.bookid || '58ad5a5586ae4108842aaeee';
-      var bookid = self.data.bookid || '58ad9056f5d3811cecea0149'; //home
+      var bookid = self.data.bookid || '58cbc7c8618cec336c6e8a10';
+      var sectionNum = self.data.allSliderValue.section || 1430;
+      // var bookid = self.data.bookid || '58ad9056f5d3811cecea0149'; //home
       //此接口需要分页，不能每次拿到全部的章节数据
       //发送ajax得到这本小说的所有章节
+      var success = function(obj){
+        obj.setData({isShowMulu: 1});
+      };
+      var fail = function(obj){
+        showErrMsg(obj, '获取目录失败')
+      };
+      getMulu(bookid, sectionNum, self, success, fail);
+    },
+    //目录向上滑动到顶部
+    getPreMuluPage: function(){
+      var self = this;
+      var bookid = self.data.bookid || '58cbc7c8618cec336c6e8a10';
+      var sectionNum = self.data.allSliderValue.section || 1430;
+      sectionNum -= 20;
+      // var bookid = self.data.bookid || '58ad9056f5d3811cecea0149'; //home
+      var success = function(obj){
+        console.log('你向上翻了一页');        
+      };
+      var fail = function(obj){
+        showErrMsg(obj, '获取目录失败')
+      };
+      getMulu(bookid, sectionNum, self, success, fail, 'pre');
+    },
+    //目录向下滑动到底部
+    getNextMuluPage: function(){
+      var self = this;
+      var bookid = self.data.bookid || '58cbc7c8618cec336c6e8a10';
+      var sectionNum = self.data.allSliderValue.section || 1430;
+      sectionNum += 20;
+      // var bookid = self.data.bookid || '58ad9056f5d3811cecea0149'; //home
+      var success = function(obj){
+        console.log('你向上翻了一页');        
+      };
+      var fail = function(obj){
+        showErrMsg(obj, '获取目录失败')
+      };
+      getMulu(bookid, sectionNum, self, success, fail, 'next');
+    },
+    //滑动目录swiper
+    muluSwiper: function(event){
+      var self = this;
+      var currentIndex = event.detail.current;
+      self.setData({ muluSwiperNum: currentIndex });
+    },
+    //点击目录某一章
+    showThisSection: function(event){
+      //显示loading
+      wx.showToast({
+        title: '内容加载中',
+        icon: 'loading',
+        duration: 100
+      });
+
+      var self = this;
+      var sectionId = event.currentTarget.dataset.sectionid;
+      var sectionNum = event.currentTarget.dataset.sectionnum;
+      //根据章节id去得到章节内容
       wx.request({
-        url: Api.getBookMuluById(bookid), //仅为示例，并非真实的接口地址
-        success: function(res) {
-          var tmpData = res.data.data;
-          self.setData({allSectionData: tmpData.sectionArray, headImg: tmpData.headImg});
-          self.setData({isShowMulu: 1});
+        url: Api.getContentById(sectionId),
+        method:'GET',
+        success (res) {
+          try{
+            var tmpData = res.data.data;
+            var newContent = tmpData.content.sectionContent;
+            //重新排版
+            var maxPageNum = countPageNum(newContent, self.data.allSliderValue.font, self.data.lineHeight, self.data.windows.windows_width, self.data.windows.windows_height, self.data.windows.pixelRatio);
+            self.setData({content: newContent, maxPageNum: maxPageNum, allSliderValue: {section: sectionNum, bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font}});
+            wx.hideToast();
+          }catch(e){
+            console.log(e);
+            wx.hideToast();
+            showErrMsg(self, '获取章节内容失败');
+          }
+          wx.hideToast();
         },
-        error: function(err){
-          console.log(err);
+        fail (e) {
+          wx.hideToast();
+          showErrMsg(self, '获取章节内容失败');
+          console.error(e)
         }
       })
     }
