@@ -1,0 +1,126 @@
+@charset "UTF-8";
+.rank-container {
+  position: relative;
+  overflow: hidden;
+  height: 100%; }
+
+.rank-container .tab {
+  overflow-x: auto;
+  white-space: nowrap;
+  height: 6.4%;
+  top: 0;
+  left: 0; }
+
+/*可滑动但是不显示滚动条*/
+.rank-container .tab::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent; }
+
+.rank-container .tab .tab-item {
+  line-height: 80rpx;
+  height: 80rpx;
+  display: inline-block;
+  margin-right: 20rpx;
+  width: 120rpx;
+  text-align: center;
+  font-size: 28rpx; }
+
+.rank-container .tab .tab-item.active {
+  font-size: 32rpx;
+  color: #fd9941; }
+
+.rank-container .tab .tab-item .tabLine {
+  height: 4rpx;
+  width: 100%;
+  background-color: #fd9941;
+  z-index: 1000;
+  margin-top: -6rpx; }
+
+.rank-container .tab-content {
+  height: 93.6%; }
+
+.rank-container .content-item {
+  padding-top: 30rpx; }
+
+.rank-container .content-item:first-child {
+  padding-top: 10rpx; }
+
+.rank-container .content-item .book-item {
+  /*高度塌陷*/
+  overflow: hidden;
+  padding: 0 15rpx; }
+
+.rank-container .content-item .book-item > image {
+  height: 180rpx;
+  width: 140rpx;
+  box-shadow: 4rpx 4rpx 2rpx #888;
+  float: left;
+  display: inline-block;
+  margin-left: -100%;
+  margin-bottom: 20rpx; }
+
+.rank-container .content-item .book-item .bookInfo {
+  float: left;
+  width: 100%;
+  padding: 10rpx 10rpx 10rpx 180rpx;
+  font-size: 22rpx;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 20rpx; }
+
+.rank-container .content-item .book-item .bookInfo::after {
+  content: "";
+  display: none;
+  clear: both; }
+
+.rank-container .content-item .book-item > text {
+  display: block;
+  color: #4d5154; }
+
+.rank-container .bookInfo .bookName {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #4c4d4f; }
+
+.rank-container .bookInfo .author {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  color: #737a80;
+  line-height: 46rpx; }
+
+.rank-container .bookInfo .bookDes {
+  font-size: 24rpx;
+  color: #5a5f62;
+  margin-top: 20rpx; }
+
+.rank-container .bookInfo .text-underline {
+  border-bottom: 4rpx solid #fd9941;
+  margin-right: 10rpx;
+  color: #888; }
+
+.rank-container .bookInfo > icon {
+  position: absolute;
+  right: 20rpx;
+  top: 10rpx;
+  display: inline-block;
+  width: 30rpx;
+  height: 45rpx; }
+
+.rank-container .backTop {
+  position: fixed;
+  bottom: 70rpx;
+  right: 50rpx;
+  height: 80rpx;
+  width: 80rpx;
+  background-color: #d7d7d7;
+  z-index: 1000;
+  text-align: center; }
+
+.rank-container .backTop .backTop-icon {
+  background-size: 300rpx 300rpx;
+  background-position: -244rpx -245rpx;
+  display: inline-block;
+  width: 60rpx;
+  height: 60rpx;
+  margin-top: 10rpx; }

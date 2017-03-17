@@ -1,0 +1,291 @@
+@charset "UTF-8";
+.shop-container {
+  display: -webkit-flex;
+  /* Safari */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  overflow: hidden; }
+
+.shop-container .search {
+  background-color: #fd9941;
+  flex: 0 1 85rpx; }
+
+.shop-container .search .section {
+  width: 96%;
+  margin: 0 auto;
+  height: 70rpx;
+  position: relative; }
+
+.shop-container .section .form {
+  background-color: #fbb16f;
+  width: 100%;
+  height: 100%; }
+
+.shop-container .search .input-block {
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  color: #fff;
+  display: inline-block;
+  border-radius: 6rpx;
+  font-size: 28rpx;
+  position: relative; }
+
+.shop-container .search .input-block > input {
+  width: 100%;
+  padding-left: 20rpx;
+  height: 100%;
+  box-sizing: border-box; }
+
+.shop-container .search .input-block > icon {
+  height: 70%;
+  position: absolute;
+  right: 17rpx;
+  top: 17rpx;
+  z-index: 999; }
+
+.shop-container .search .search-block {
+  position: absolute;
+  top: 14rpx;
+  left: 20rpx;
+  height: 50rpx;
+  line-height: 100%;
+  font-size: 32rpx;
+  color: #ddd; }
+
+.shop-container icon.search-icon {
+  width: 50rpx;
+  display: inline-block;
+  height: 100%;
+  background-size: 230rpx 230rpx;
+  background-position: -90rpx -90rpx;
+  vertical-align: middle; }
+
+.shop-container .search-content {
+  z-index: 1000;
+  height: 93.3%; }
+
+.pt-page-moveToLeft {
+  -webkit-animation: moveToLeft .6s ease both;
+  animation: moveToLeft .6s ease both; }
+
+@-webkit-keyframes moveToLeft {
+  from {
+    -webkit-transform: translateX(-100%); }
+  to {
+    -webkit-transform: translateX(0%); } }
+
+@keyframes moveToLeft {
+  form {
+    transform: translateX(-100%); }
+  to {
+    transform: translateX(0%); } }
+
+/*可滑动但是不显示滚动条*/
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent; }
+
+/*书城主体内容*/
+.shop-content {
+  background-color: #fff;
+  flex: 1;
+  overflow: auto;
+  padding: 15rpx 15rpx 0 15rpx; }
+
+.shop-content .header {
+  padding: 6rpx 0 15rpx 0;
+  font-size: 30rpx;
+  font-weight: bold; }
+
+.topic-container {
+  overflow-x: auto;
+  white-space: nowrap; }
+
+.topic-item {
+  display: inline-block;
+  width: 48.6%;
+  text-align: center;
+  margin-right: 20rpx; }
+
+.topic-item:last-child {
+  margin-right: 0; }
+
+.topic-item image {
+  border-radius: 6rpx;
+  width: 100%;
+  height: 192rpx; }
+
+.rank {
+  padding: 20rpx 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  font-size: 32rpx; }
+
+.rank .qdRank {
+  display: inline-block;
+  width: 30%;
+  height: 90rpx;
+  margin-right: 40rpx;
+  border-radius: 6rpx;
+  background-color: #fe7156;
+  line-height: 90rpx; }
+
+.rank .zhRank {
+  display: inline-block;
+  width: 30%;
+  height: 90rpx;
+  background-color: #30d590;
+  border-radius: 6rpx;
+  line-height: 90rpx; }
+
+/*热门推荐*/
+.recommend-container {
+  margin-top: 12rpx;
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start; }
+
+.recommend-container .recommend-item {
+  flex: 0 0 21%;
+  max-width: 21%;
+  height: 200rpx;
+  margin-right: 5.3%;
+  margin-bottom: 100rpx; }
+
+.recommend-container .recommend-item image {
+  width: 100%;
+  height: 100%; }
+
+.recommend-container .recommend-item .bookName {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold; }
+
+.recommend-container .recommend-item .author {
+  font-size: 20rpx;
+  color: #666; }
+
+/*分类*/
+.sort-container {
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  font-size: 24rpx;
+  padding: 20rpx 40rpx 30rpx 40rpx;
+  text-align: center; }
+
+.sort-item {
+  width: 80rpx; }
+
+.sort-item > icon {
+  display: inline-block;
+  width: 60rpx;
+  height: 60rpx;
+  background-size: 300rpx 300rpx; }
+
+.all-icon {
+  background-position: -58rpx -120rpx; }
+
+.xuanhuan-icon {
+  background-position: -119rpx -120rpx; }
+
+.yanqing-icon {
+  background-position: -182rpx -120rpx; }
+
+.wuxia-icon {
+  background-position: -244rpx -120rpx; }
+
+.lishi-icon {
+  background-position: 5rpx -182rpx; }
+
+.kehuan-icon {
+  background-position: -57rpx -182rpx; }
+
+/*新书*/
+.new-container {
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start; }
+
+.new-container .new-item {
+  flex: 0 0 21%;
+  max-width: 21%;
+  height: 200rpx;
+  margin-right: 5.3%;
+  margin-bottom: 100rpx; }
+
+.new-container .new-item image {
+  width: 100%;
+  height: 100%; }
+
+.new-container .new-item .bookName {
+  font-size: 24rpx;
+  color: #000;
+  font-weight: bold; }
+
+.new-container .new-item .author {
+  font-size: 20rpx;
+  color: #666; }
+
+/*搜索*/
+.search-tips {
+  padding: 20rpx; }
+
+.search-tips .tips-item {
+  display: inline-block;
+  padding: 4rpx 24rpx;
+  height: 40rpx;
+  border-radius: 20rpx;
+  border: 3rpx #d4d6d8 solid;
+  color: #49505a;
+  font-size: 24rpx;
+  line-height: 40rpx; }
+
+.history {
+  border-bottom: 1px solid #d7d8da; }
+
+.history-item {
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  line-height: 100%;
+  position: relative; }
+
+.history-item > icon {
+  vertical-align: middle;
+  top: 23rpx;
+  position: absolute; }
+
+.history-item view {
+  padding: 20rpx 0;
+  margin-left: 43rpx;
+  border-bottom: 1px solid #d7d8da; }
+
+.history-item:last-child view {
+  border-bottom: none; }
+
+.clearBtn {
+  height: 40rpx;
+  text-align: center;
+  margin-top: 40rpx; }
+
+.clearBtn > text {
+  background: transparent;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  color: #1b88ee;
+  border: none;
+  width: 100%; }

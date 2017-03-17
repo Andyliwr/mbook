@@ -1,0 +1,198 @@
+@charset "UTF-8";
+.login-container {
+  padding-top: 4rem;
+  overflow: hidden; }
+
+.login-container .headimg {
+  text-align: center; }
+
+.login-container .headimg image {
+  width: 4rem;
+  height: 4rem; }
+
+.login-container .welcome-text {
+  text-align: center;
+  font-size: .9rem; }
+
+.login-form {
+  width: 100%;
+  text-align: center; }
+
+.login-form .section {
+  width: 76%;
+  height: 2.4rem;
+  border: 1px solid #eee;
+  border-radius: 1.2rem;
+  margin: .8rem auto;
+  padding: 0 1.4rem;
+  position: relative;
+  box-sizing: border-box; }
+
+.login-form .section view {
+  float: left;
+  width: 10%;
+  height: 1.2rem;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%); }
+
+.login-form .section .username-icon {
+  background-size: 580%; }
+
+.login-form .section .password-icon {
+  background-size: 580%;
+  background-position: 25% 0;
+  height: 1.3rem; }
+
+.login-form .section input {
+  margin-left: 10%;
+  width: 90%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: left;
+  padding-left: .5rem;
+  box-sizing: border-box;
+  font-size: .8rem; }
+
+.login-form .section input .input-placeholder {
+  color: #d2d2d4; }
+
+.login-form .section .clear {
+  position: absolute;
+  top: .5rem;
+  right: .8rem; }
+
+.login-form .section .see-password-icon {
+  position: absolute;
+  width: 1rem;
+  height: .9rem;
+  top: 1.1rem;
+  right: .9rem;
+  background-size: 5rem;
+  background-position: -4rem 0; }
+
+.login-form .section .unsee-password-icon {
+  position: absolute;
+  width: 1rem;
+  height: .9rem;
+  top: 1.1rem;
+  right: .9rem;
+  background-size: 5rem;
+  background-position: -3rem 0; }
+
+.login-form .section.section_username {
+  margin-top: 3rem; }
+
+.login-form .section.btn-area {
+  padding: 0;
+  background: #FD9941;
+  width: 76%;
+  box-shadow: 0px 4px #fee7d8;
+  border: none;
+  margin-bottom: .6rem; }
+
+.login-form .section .submit {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  line-height: 2.4rem;
+  color: #fff;
+  background: transparent;
+  border-radius: 1rem;
+  font-size: .8rem; }
+
+.login-form .section .clear .wx-icon-clear {
+  font-size: 18px !important; }
+
+.login-form .quick-link {
+  font-size: .8rem;
+  color: #636365;
+  text-align: left;
+  width: 76%;
+  margin: 0 auto; }
+
+.login-form .quick-link .right {
+  float: right; }
+
+/*删除线*/
+.login-container .other-login {
+  position: relative;
+  z-index: 2;
+  font-size: .8rem;
+  line-height: 24px;
+  text-align: center;
+  color: #636365;
+  overflow: hidden;
+  width: 76%;
+  margin: 2rem auto 0 auto; }
+
+.other-login .caption {
+  position: relative;
+  display: inline-block; }
+
+.other-login .caption .line {
+  position: absolute;
+  top: 11px;
+  width: 600px;
+  height: 1px;
+  background-color: #f0f1f3; }
+
+.other-login .caption .line-l {
+  right: 100%;
+  margin-right: 15px; }
+
+.other-login .caption .line-r {
+  left: 100%;
+  margin-left: 15px; }
+
+.other-login .iconset {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 1rem; }
+
+.other-login .iconset .iconset-item {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: inline-block;
+  margin-right: 1.6rem; }
+
+.other-login .iconset .iconset-item:last-child {
+  margin-right: 0; }
+
+/*all icon css sprite*/
+.wechat-gray-icon {
+  background-size: 13rem !important;
+  background-position: -8rem -2.6rem !important; }
+
+.wechat-gray-icon:active {
+  background-size: 13rem !important;
+  background-position: -5.3rem -2.6rem !important; }
+
+.qq-gray-icon {
+  background-size: 13rem !important;
+  background-position: -2.6rem -2.6rem !important; }
+
+.qq-gray-icon:active {
+  background-size: 13rem !important;
+  background-position: 0 -2.6rem !important; }
+
+.weibo-gray-icon {
+  background-size: 13rem !important;
+  background-position: 0 -5.4rem !important; }
+
+.weibo-gray-icon:active {
+  background-size: 13rem !important;
+  background-position: -10.6rem -2.6rem !important; }
+
+.success-toast-icon {
+  background-size: 20rem !important;
+  background-position: -4rem -8.2rem !important;
+  display: inline-block;
+  width: 3.6rem;
+  height: 3.6rem;
+  position: relative;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%); }
