@@ -1,10 +1,9 @@
 {
   "pages": [
+    "pages/booklist/booklist",
     "pages/book_detail/reader/reader",
     "pages/jiaowu/jiaowu",
-    "pages/today/today",
     "pages/shop/shop",
-    "pages/booklist/booklist",
     "pages/rank/rank",
     "pages/login/login",
     "pages/jiaowu_detail/jiaowu_detail",
@@ -23,15 +22,15 @@
     "borderStyle": "white",
     "backgroundColor": "#ffffff",
     "list": [{
-      "pagePath": "pages/today/today",
-      "iconPath": "image/today_gray.png",
-      "selectedIconPath": "image/today.png",
-      "text": "今日"
+      "pagePath": "pages/booklist/booklist",
+      "iconPath": "image/booklist_gray.png",
+      "selectedIconPath": "image/booklist.png",
+      "text": "书架"
     },{
       "pagePath": "pages/jiaowu/jiaowu",
-      "iconPath": "image/jiaowu_gray.png",
-      "selectedIconPath": "image/jiaowu.png",
-      "text": "教务"
+      "iconPath": "image/tuijian_gray.png",
+      "selectedIconPath": "image/tuijian.png",
+      "text": "推荐"
     }, {
       "pagePath": "pages/user/user",
       "iconPath": "image/user_gray.png",

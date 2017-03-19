@@ -1,6 +1,6 @@
 {
   "name": "myAppUser",
-  "plural": "user",
+  "plural": "myappuser",
   "base": "User",
   "idInjection": true,
   "options": {

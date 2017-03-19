@@ -1,4 +1,4 @@
-//login.js
+//booklist.js
 var Api = require('../../utils/api/api.js');
 var Util = require('../../utils/util.js');
 
@@ -9,7 +9,7 @@ Page({
     books: [
       {
         bookId: '123123121231231',
-        img: '../../image/today/dazhuzai.jpg',
+        img: 'https://olpkwt43d.qnssl.com/myapp/dazhuzai.jpg',
         bookName: '大主宰',
         author: '烟雨江南',
         bookDes: '大千世界,位面交汇,万族林立,群雄荟萃,一位位来自下位面的天之至尊,在这无尽世界,演绎着令人向往的传奇,追求着那主宰之',
@@ -18,7 +18,7 @@ Page({
       },
       {
         bookId: '1231231231',
-        img: '../../image/today/chenyuan.jpg',
+        img: 'https://olpkwt43d.qnssl.com/myapp/chenyuan.jpg',
         bookName: '尘缘',
         author: '烟雨江南',
         bookDes: '那一天，我摇动所有的经桶，不为超度，只为触摸你的指尖；那一年，在山路匍匐，不为觐见',

@@ -1,6 +1,6 @@
 {
   "name": "email",
-  "plural": "Y",
+  "plural": "email",
   "base": "Email",
   "idInjection": true,
   "options": {

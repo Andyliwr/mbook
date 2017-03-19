@@ -3,15 +3,15 @@ Page({
   data: {
     topic: [
       {
-        headImg: '../../image/shop/recommend01.jpg',
+        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend01.jpg',
         id: '01',
       },
       {
-        headImg: '../../image/shop/recommend02.jpg',
+        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend02.jpg',
         id: '02',
       },
       {
-        headImg: '../../image/shop/recommend02.jpg',
+        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend02.jpg',
         id: '03',
       }
     ],

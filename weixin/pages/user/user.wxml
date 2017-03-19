@@ -1,31 +1,94 @@
-<view class="booklist-container">
-	<view class="header">
-		<view class="headerLine"></view>
-		<text class="headerTime">{{headerText}}</text>
-		<view class="timeTab">
-			<block wx:for="{{showMonths}}">
-				<view class="{{(index == showMonths.length-1)? 'active last everyTime': 'everyTime'}}">
-					<text>{{item.monthCname}}</text>
-					<icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
-				</view>
-			</block>
-		</view>
-	</view>
-	<view class="list">
-		<block class="bookitem" wx:for="{{books}}" wx:key="bookId">
-			<view class="bookInfo">
-				<text class="bookName">{{item.bookName}}</text>
-				<text class="author"><text class="text-underline">作者：</text>{{item.author}}</text>
-				<text class="bookDes">{{item.bookDes}}</text>
-				<icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
-			</view>
-			<image src="{{item.img}}" mode="scaleToFill"/>
-		</block>
-	</view>
-	<!-- 出错打印 -->
-    <import src="../component/err_tips/err_tips.wxml"/>
-    <template is="err_tips" data="{{err_tips_data}}" />
-    <!-- 成功的提示 -->
-    <import src="../component/toast/toast.wxml"/>
-    <template is="toast" data="{{toast_data}}" />
+<import src="../component/email_digest/email_digest.wxml" />
+<view class='today-container'>
+  <view class="headimg">
+    <image src="../../image/personal.png" model="center" binderror="headimgError" />
+    <text class="username">andyliwr</text>
+  </view>
+  <view class="more-info">
+    <view class="info-time">
+      <text class="time">
+        <text class="num">2</text>
+        <text class="danwei">小时</text>
+      </text>
+      <text class="des">有效阅读时长</text>
+    </view>
+    <view class="info-day">
+      <text class="day">
+        <text class="num">12</text>
+        <text class="danwei">天</text>
+      </text>
+      <text class="des">坚持阅读天数</text>
+    </view>
+    <view class="info-book" bindtap="goToBookList">
+      <text class="book">
+        <text class="num">17</text>
+        <text class="danwei">本</text>
+      </text>
+      <text class="des">已阅读的书籍</text>
+    </view>
+  </view>
+  <view class="email">
+    <view class="title">
+      <text>
+        <text class="text-underline">所有</text>邮件</text>
+      <icon class="email-icon">
+        <icon class="num-bg"></icon>
+        <text class="num-value">{{totalEmailsNum}}</text>
+      </icon>
+    </view>
+
+    <!--滑块-->
+    <swiper class="swipe" duration="600" bindchange="changeEmail" current="{{currentEmail}}">
+      <block wx:for="{{emails}}" wx:key="id">
+        <swiper-item class="{{index == currentEmail? 'active': ''}}">
+          <view>
+            <view class="author">
+              <image src="{{item.digest.author_img}}" mode="scaleToFill"></image>
+              <view>
+                <text class="name">{{item.digest.author_name}}</text>
+                <br />
+                <text class="des">{{item.digest.author_des}}</text>
+              </view>
+            </view>
+            <view class="title">{{item.digest.title}}</view>
+            <view class="content">
+              <button wx:if="{{item.digest.content.button}}" bindtap="{{item.digest.content.button.eventHandler}}" data-gotoUrl="{{item.digest.content.button.url}}">{{item.digest.content.button.text}}</button>
+              <text class="other">{{item.digest.content.other}}</text>
+            </view>
+          </view>
+          <image src="{{item.bgImgUrl}}" class="slide-image" mode="scaleToFill" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <view class="dailyTask">
+    <view class="title">
+      <text>
+        <text class="text-underline">今日</text>任务
+      </text>
+      <text class="isSigned">{{tasks.isSigned == true? '已签到': '未签到'}}</text>
+    </view>
+    <view class="task-item" wx:for="{{tasks.allTasks}}" wx:for-item="bookItem" wx:key="bookId">
+      <view class="bookDetail">
+        <text class="name">{{bookItem.bookName}}</text>
+        <text class="des">{{bookItem.bookDes}}</text>
+        <view class="hot">
+          热度：
+          <icon class="{{(index+1) <= bookItem.bookHot? 'yellow-star-icon': 'gray-star-icon'}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this"></icon>
+        </view>
+        <view class="progress">
+          <text class="progressRate">{{bookItem.progressRate}}</text><text class="totalProgress">{{'/5\n学习进度'}}</text>
+        </view>
+      </view>
+      <image src="{{bookItem.img}}" mode="scaleToFill"/>
+    </view>
+  </view>
+
+  <!-- 出错打印 -->
+  <import src="../component/err_tips/err_tips.wxml" />
+  <template is="err_tips" data="{{err_tips_data}}" />
+
+  <!-- 成功的提示 -->
+  <import src="../component/toast/toast.wxml" />
+  <template is="toast" data="{{toast_data}}" />
 </view>
