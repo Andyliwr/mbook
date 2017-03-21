@@ -1,6 +1,8 @@
 'use strict';
 var app = require('../server.js');
 var path = require('path');
+var http=require('http');
+var querystring=require('querystring');
 
 module.exports = function(Myappuser) {
   Myappuser.fundBackPwd = function (email, cb) {
@@ -63,6 +65,44 @@ module.exports = function(Myappuser) {
       }
     }
   );
+  //处理微信登录
+  Myappuser.getSessionId = function(wxcode, cb) {
+    console.log(wxcode);
+    //向官方服务器请求session信息
+    var qsdata={  
+        grant_type: 'authorization_code', 
+        appid: 'wx98fdadcaaeac5160',
+        secret: 'ccf815819dcb6761416ed28cf488f4cf',
+        js_code: wxcode
+    };
+    var content=querystring.stringify(qsdata);
+    console.log(content);
+    http.get('https://api.weixin.qq.com/sns/jscode2session?'+content, (res) => {
+      console.log(`Got response: ${res.statusCode}`);
+      console.log(res);
+      res.resume();
+    }).on('error', (e) => {
+      console.log(`Got error: ${e.message}`);
+    });
+    cb(null, 'hi');
+  };
+  Myappuser.remoteMethod(
+    'getSessionId',
+    {
+      'accepts': {
+        arg: 'wxcode',
+        type: 'string',
+        description: 'weixin code'
+      },
+      'returns':[
+        {'arg': 'data','type': 'string'}
+      ],
+      'http':{
+        'verb': 'get',
+        'path': '/getSessionId'
+      }
+    }
+  );
   Myappuser.afterRemote('create',function(context, user, next) {//注册后的回调
     console.log("> user.afterRemote triggered");
     var option={//配置邮件发送参数
@@ -73,5 +113,5 @@ module.exports = function(Myappuser) {
       redirect: '/'//点击发送到邮件的链接激活账号后的回调http地址
     };
     user.verify(option, next);
-  })
+  });
 };

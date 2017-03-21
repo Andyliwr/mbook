@@ -1,7 +1,8 @@
 //booklist.js
 var Api = require('../../utils/api/api.js');
 var Util = require('../../utils/util.js');
-
+//获取应用实例
+var app = getApp();
 Page({
   data: {
     headerText: '',
@@ -27,12 +28,24 @@ Page({
       }
     ],
     isSearching: false,
-    searchValue: ''
+    searchValue: '',
+    userInfo: {}
   },
   onReady: function () {
     var self = this;
     var timeResult = self.allMonths();
     self.setData({ showMonths: timeResult.showMonths, headerText: timeResult.headerText });
+  },
+  onLoad: function () {
+    // console.log('onLoad')
+    // var that = this
+    // //调用应用实例的方法获取全局数据
+    // app.getUserInfo(function(userInfo){
+    //   //更新数据
+    //   that.setData({
+    //     userInfo:userInfo
+    //   })
+    // })
   },
   allMonths: function () {
     var resultArray = [];

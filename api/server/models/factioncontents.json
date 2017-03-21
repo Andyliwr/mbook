@@ -28,6 +28,7 @@
     }
   },
   "validations": [],
+  "relations": {},
   "acls": [
     {
       "accessType": "*",

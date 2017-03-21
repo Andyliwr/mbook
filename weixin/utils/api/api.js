@@ -10,6 +10,7 @@ var GET_EMAILS_PAGEID = '/emails';
 var GET_BOOKS_SORTBY_TIME = '/xxxx';
 var GET_RANK = '/xs_rank/getRank';
 var GET_BOOK_MULU = '/xs_list/getMulu';
+var GET_SESSION_ID = '/myappuser/getSessionId';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -52,5 +53,9 @@ module.exports = {
 	},
 	getMulu: function(bookid, sectionNum){
 		return HOST_URL + GET_BOOK_MULU + '?bookId='+bookid+'&sectionNum='+sectionNum;
+	},
+	//将登录凭证发往你的服务端，并在你的服务端使用该凭证向微信服务器换取该微信用户的唯一标识(openid)和会话密钥(session_key)
+	getSessionId: function(wxcode){
+		return HOST_URL + GET_SESSION_ID + '?wxcode=' + wxcode;
 	}
 }

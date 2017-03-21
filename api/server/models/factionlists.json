@@ -35,6 +35,7 @@
     }
   },
   "validations": [],
+  "relations": {},
   "acls": [
     {
       "accessType": "*",

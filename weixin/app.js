@@ -1,6 +1,30 @@
 import {log, promiseHandle} from './utils/util';
+import Api from 'utils/api/api';
 
 App({
+  onLaunch: function() {
+    wx.login({
+      success: function(res) {
+        var code = res.code;
+          if (code) {
+          console.log('获取用户登录凭证：' + code);
+          // --------- 发送凭证 ------------------
+          wx.request({
+            url: Api.getSessionId(code),
+            success: function(res){
+              console.log(res);
+            },
+            fail: function(err){
+              console.log(err);
+            }
+          })
+          // ------------------------------------
+        } else {
+          console.log('获取用户登录态失败：' + res.errMsg);
+        }
+      }
+    });
+  },
   getUserInfo(cb) {
     if (typeof cb !== "function") return;
     let that = this;
