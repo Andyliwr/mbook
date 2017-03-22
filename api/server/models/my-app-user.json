@@ -41,6 +41,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getSessionId"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "checkSessionId"
     }
   ],
   "methods": {}

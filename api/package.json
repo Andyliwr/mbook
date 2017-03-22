@@ -21,10 +21,12 @@
     "loopback-connector-mysql": "^2.3.0",
     "loopback-context": "^1.0.0",
     "loopback-swagger": "^4.0.0",
+    "redis": "^2.7.1",
     "request": "^2.81.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1",
     "superagent": "^2.2.0",
+    "uuid": "^3.0.1",
     "weapp-session": "^0.3.0"
   },
   "devDependencies": {

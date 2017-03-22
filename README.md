@@ -64,8 +64,24 @@
 ```
 npm i wept -g
 cd 微信小程序所在目录
-wept
+wept -p 3100
 ```
+启动之后直接在浏览器里打开`localhost:3100`并启用手机调试模式就好了。
+
+## **启动后台接口**
+```
+启动mongodb
+mongod --config=E:\mongod_install\mongod.conf
+
+启动redis
+redis-server.exe redis.windows.conf
+
+启动接口
+cd api
+node .
+
+```
+
 ## **目录说明**
 
 ```
