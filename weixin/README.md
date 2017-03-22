@@ -2,14 +2,15 @@
 毕业设计--基于微信小程序的在线免费小说的开发，该项目借助微信小程序的便捷特性，为用户提供快速，并且舒适的阅读体验。负责项目的原型设计，和小程序代码的开发。实现了书城，我的书单，以及在线阅读器功能，目前该项目已经吸引了一批身边爱好阅读的好友用户。
 
 ## **项目截图**
-<div style="width: 100%">
-    <img src="https://dn-cnode.qbox.me/FinpcvLksk3XCJ92L8cfBzkLtwjX" alt="" style="width: 18%; margin-right: 4%">
-    <img src="https://dn-cnode.qbox.me/FibKjoWt5-EFiYLqts0_KQqzA_N2" alt="" style="width: 18%; margin-right: 4%">
-    <img src="https://dn-cnode.qbox.me/FibKjoWt5-EFiYLqts0_KQqzA_N2" alt="" style="width: 24%; margin-right: 0">
-    <br />
-    <img src="https://dn-cnode.qbox.me/FjoDRHkkvt-QAvgg9KxNn8N8V941" alt="" style="width: 18%; margin-right: 4%">
-    <img src="https://dn-cnode.qbox.me/FlExqkfuLlDLCjV1nLL8iP835msr" alt="" style="width: 18%; margin-right: 4%">
-    <img src="https://dn-cnode.qbox.me/FoPMe3PKCxQATog2D0EesE4Hb5HL" alt="" style="width: 18%; margin-right: 0">
+<div style="width: 100%;display:flex;flex-flow:row wrap;justify-content:space-around">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/1.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/2.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/3.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/4.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/5.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/6.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/7.png" alt="" style="flex: 30%;">
+    <img src="https://olpkwt43d.qnssl.com/myapp/show/9.png" alt="" style="flex: 30%;">
 </div>
 
 
@@ -66,6 +67,7 @@ cd 微信小程序所在目录
 wept
     ```
 ## **目录说明**
+
 ```
 api --- 提供后台接口
     |-client --- 暂无用处
@@ -90,6 +92,7 @@ weixin --- 微信小程序目录
        |- util --- 工具类
        |- app.js --- 微信小程序入口文件
 ```
+
 ## **前端完成进度**
 
 1. 登录页面 --- done
