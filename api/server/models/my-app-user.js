@@ -8,7 +8,7 @@ var uuid = require('uuid'); //用于生成sessionid
 var redis = require('redis'),
   redis_port = 6379,
   redis_host = '127.0.0.1',
-  redis_pwd = 'lidikangRedis2',
+  redis_pwd = '123456',
   redis_opts = { auth_pass: redis_pwd };
 
 module.exports = function (Myappuser) {
