@@ -1,5 +1,17 @@
 # **graduationDesign**
-毕业设计--基于微信小程序的在线免费小说的开发
+毕业设计--基于微信小程序的在线免费小说的开发，该项目借助微信小程序的便捷特性，为用户提供快速，并且舒适的阅读体验。负责项目的原型设计，和小程序代码的开发。实现了书城，我的书单，以及在线阅读器功能，目前该项目已经吸引了一批身边爱好阅读的好友用户。
+
+## **项目截图**
+<div style="width: 100%">
+    <img src="https://dn-cnode.qbox.me/FinpcvLksk3XCJ92L8cfBzkLtwjX" alt="" style="width: 24%; margin-right: 4%">
+    <img src="https://dn-cnode.qbox.me/FibKjoWt5-EFiYLqts0_KQqzA_N2" alt="" style="width: 24%; margin-right: 4%">
+    <img src="https://dn-cnode.qbox.me/FibKjoWt5-EFiYLqts0_KQqzA_N2" alt="" style="width: 24%; margin-right: 0">
+    <br />
+    <img src="https://dn-cnode.qbox.me/FjoDRHkkvt-QAvgg9KxNn8N8V941" alt="" style="width: 24%; margin-right: 4%">
+    <img src="https://dn-cnode.qbox.me/FlExqkfuLlDLCjV1nLL8iP835msr" alt="" style="width: 24%; margin-right: 4%">
+    <img src="https://dn-cnode.qbox.me/FoPMe3PKCxQATog2D0EesE4Hb5HL" alt="" style="width: 24%; margin-right: 0">
+</div>
+
 
 ## **运行**
 建议使用VSCode+wept开发微信小程序，VSCode安装JWSnippets-For-VSCode就可以将wxml、wxss解析成html和css，而wept支持使用chrome来调试微信小程序。下面讲讲这两种方法的使用：
@@ -8,11 +20,11 @@
 2. 下载[JWSnippets-For-VSCode](http://pan.baidu.com/s/1miuOy84)， 提取码：8xan
 3. 安装JWSnippets-For-VSCode
     ---
-    **1.将json文件放入IDE的sinppets目录：**
+    **A. 将json文件放入IDE的sinppets目录：**
 
     `VSCode`
-    - Windows版本：C:\Users\用户名\AppData\Roaming\Code\User\snippets
-    - Mac版本：/Users/用户名/Library/Application Support/Code/User/snippets
+    - Windows版本：`C:\Users\用户名\AppData\Roaming\Code\User\snippets`
+    - Mac版本：`/Users/用户名/Library/Application Support/Code/User/snippets`
 
     `Wing`
     - Windows版本：C:\Users\用户名\AppData\Roaming\EgretWing\User\snippets
@@ -21,108 +33,79 @@
 
     > 如果找不到上述目录，可以打开IDE菜单->首选项->用户代码片段，分别选择Javasript、HTML(或者WXML)，将下载的文件代码手动copy进去，保存即可。
 
-    **2.打开IDE菜单->首选项->用户设置，在settings.json加入以下代码：**
+    **B. 打开IDE菜单->首选项->用户设置，在settings.json加入以下代码：**
 
     `VSCode：`
     ```
     "files.associations": { "*.wxml": "html", "*.wxss": "css"}
     ```
-
     `Wing：`
     ```
     "files.associations": { "*.wxss": "css"}
     ```
 
-    **3.为防止和其他命令冲突，本sinppet触发命令以'jw'开头。**
-
-    ### 命令说明：
-    ---
-    - 组件命令和API命令分别关联wxml和wxss文件，不用担心触发命令会冲突
-
-    ### 组件命令列表：
-    ---
-
-    组件命令 | 命令说明 | 组件命令 | 命令说明
-    ---|---|---|---
-    jwview | 创建view组件 | jwradio-group | 创建radio-group组件
-    jwscroll-view | 创建组件 | jwradio | 创建radio组件
-    jwswiper | 创建swiper组件 | jwslider | 创建slider组件
-    jwicon | 创建icon组件 | jwswitch | 创建switch组件
-    jwtext | 创建text组件 | jwaction-sheet | 创建action-sheet组件
-    jwprogress | 创建progress组件 | jwmodal | 创建modal组件
-    jwbutton | 创建button组件 | jwtoast | 创建toast组件
-    jwcheckbox-group | 创建checkbox-group组件 | jwloading | 创建loading组件
-    jwcheckbox| 创建checkbox组件 | jwnavigator | 创建navigator组件
-    jwform | 创建form组件 | jwaudio | 创建audio组件
-    jwinput | 创建input组件 | jwimage | 创建image组件
-    jwlabel | 创建label组件 | jwvideo | 创建video组件
-    jwpicker-selector | 创建picker-selector组件 | jwmap | 创建map组件
-    jwpicker-time | 创建picker-time组件 | jwcanvas | 创建canvas组件
-    jwpicker-date | 创建picker-date组件
-
-    其他命令 | 命令说明 | 其他命令 | 命令说明
-    ---|---|---|---
-    jwtemplate | 创建template模板 | jwimport wxml | import wxml文件
-    jwtemplate is | 创建template组件 | jwinclude wxml | include wxml文件
-
-    ### API命令列表：
-    ---
-
-    API命令 | 命令说明 | API命令 | API说明
-    ---|---|---|---
-    jwwxrequst | 创建wx.request API 网络-发起请求 | jwwxclearStorage | 创建wx.clearStorage API(异步) 数据-缓存
-    jwwxuploadFile | 创建wx.uploadFile API 网络-上传 | jwwxclearStorageSync | 创建wx.clearStorageSync API(同步) 数据-缓存
-    jwwxdownloadFile | 创建wx.downloadFile API 网络-下载 | jwwxgetLocation | 创建wx.getLocation API 位置-获取
-    jwwxwebSocket | 创建wx.webSocket API(全局唯一) 网络 | jwwxopenLocation | 创建wx.openLocation API 位置-查看
-    jwwxchooseImage | 创建wx.chooseImage API 媒体-图片| jwwxgetNetworkType | 创建wx.getNetworkType API 设置-网络状态
-    jwwxpreviewImage | 创建wx.previewImage API 媒体-图片 | jwwxgetSystemInfo | 创建wx.getSystemInfo API 设置-系统信息
-    jwwxrecord | 创建wx.start&stop Record API 媒体-录音 | jwwxonAccelerometerChange | 创建wx.onAccelerometerChange API 设置-重力感应
-    jwwxvoice | 创建wx.play&pause&stop Vioce API 媒体-音频播放控制 | jwwxonCompassChange | 创建wx.onCompassChange API 设置-罗盘
-    jwwxaudio| 创建wx.get&play&pause&seek&stop Audio API 媒体-音乐播放控制 | jwwxsetNavigationBarTitle | 创建wx.setNavigationBarTitle API 界面-导航条
-    jwwxsaveFile | 创建wx.saveFile API 媒体-文件 | jwwxnavigateTo | 创建wx.navigateTo API 界面-导航
-    jwwxchooseVideo | 创建wx.chooseVideo API 媒体-视频 | jwwxredirectTo | 创建wx.redirectTo API 界面-导航
-    jwwxsetStorage | 创建wx.setStorage API(异步) 数据-缓存 | jwwxnavigateBack | 创建wx.navigateBack API 界面-导航
-    jwwxsetStorageSync | 创建wx.setStorageSync API(同步) 数据-缓存 | jwwxlogin | 创建wx.login API 登录
-    jwwxgetStorage | 创建wx.getStorage API(异步) 数据-缓存| jwwxgetUserInfo | 创建wx.getUserInfo API 用户信息
-    jwwxgetStorageSync | 创建wx.getStorageSync API(同步) 数据-缓存 | jwwxrequestPayment | 创建wx.requestPayment API 微信支付
-    jwwxhideKeyboard | 创建wx.hideKeyboard API 界面-键盘 | jwwxstopPullDownRefresh | 创建wx.stopPullDownRefresh API 界面-刷新
-
-    其他命令 | 命令说明 | 其他命令 | 命令说明
-    ---|---|---|---
-    jwapp | 创建App实例 | jwarray | 创建数组
-    jwpage | 创建Page实例 | jwlog | 日志输出
-    jwfunction | 创建普通方法 | jwsetData | 同步视图层数据
-    jwevent | 创建事件方法 |  | 
-
-    如果上述安装过程无误，效果应该如下所示：
-
-    ![img](http://upload-images.jianshu.io/upload_images/2961518-46a377f66c376592.gif?imageMogr2/auto-orient/strip)
-
+    **C. 为防止和其他命令冲突，本sinppet触发命令以'jw'开头。**
     如有疑问，可参照johnwang77大神的[github](https://github.com/johnwang77/JWSnippets-For-VSCode/blob/master/README.md)
 
-4. **wept**
-    `WEPT` 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。支持 Mac, Window 以及 Linux
+### **`WEPT`**
 
-    **1. 主要特性**:
-    + 支持 wxml, wxss, javascript 和 json 保存后热更新
-    + 支持系统 notification 更早提示构建和请求错误
-    + 使用后台转发 XMLHttpRequest 请求，无需配置 CORS, 可 配置代理
-    + 支持 所有小程序公开 API
-    + 可使用 Chrome 移动页面调试，可在移动端体验
-    + 支持 appData 和 storage 面板，需下载 [Chrome 插件](https://chrome.google.com/webstore/detail/wechat-devtools-extension/cmpjfobofbhbghjodehbohchlghacmll)
+`WEPT` 是一个微信小程序实时开发环境，它的目标是为小程序开发提供高效、稳定、友好、无限制的运行环境。项目后台使用 node 提供服务完全动态生成小程序，前端实现了 view 层、service 层和控制层之间的相关通讯逻辑。支持 Mac, Window 以及 Linux
 
-    **2.安装与运行**
+**1. 主要特性**:
++ 支持 wxml, wxss, javascript 和 json 保存后热更新
++ 支持系统 notification 更早提示构建和请求错误
++ 使用后台转发 XMLHttpRequest 请求，无需配置 CORS, 可 配置代理
++ 支持 所有小程序公开 API
++ 可使用 Chrome 移动页面调试，可在移动端体验
++ 支持 appData 和 storage 面板，需下载 [Chrome 插件](https://chrome.google.com/webstore/detail/wechat-devtools-extension/cmpjfobofbhbghjodehbohchlghacmll)
+
+**2.安装与运行**
+```
+npm i wept -g
+cd 微信小程序所在目录
+wept
     ```
-    npm i wept -g
-    cd 微信小程序所在目录
-    wept
-    ```
+## **目录说明**
+```
+api --- 提供后台接口
+    |-client --- 暂无用处
+    |-common --- loopback的公共模型
+    |-server --- loopback的服务器模型
+            |- boot --- 初始化执行脚本
+            |- modle --- 所有定义的模型目录
+            |- datasources.json --- 数据源定义文件
+            |- middleware.json --- 中间件配置文件
+            |- modle-config.json --- 模型定义文件
+            |- server.js --- 主程序
+reptile --- 所有的爬虫目录
+        |- connectDB --- 连接数据库，操作数据库方法类
+        |- tools --- 实用方法类
+        |- networkReptile.js --- 爬虫主程序
+        |- config.js --- 爬虫配置js
+weixin --- 微信小程序目录
+       |- assets --- 静态资源文件
+       |- datas --- 静态数据
+       |- images --- 图片资源文件
+       |- page --- 所有微信小程序的页面
+       |- util --- 工具类
+       |- app.js --- 微信小程序入口文件
+```
+## **前端完成进度**
 
-## **项目截图**
-采用gulp和scss来管理微信小城序的代码，gulp会监听文件的变化刷新到页面上，把wxml改成html，把wxss改成scss，省的每次打开sublime都得改文件解析方式。
-![1.png](//dn-cnode.qbox.me/FinpcvLksk3XCJ92L8cfBzkLtwjX)
-![2.png](//dn-cnode.qbox.me/FibKjoWt5-EFiYLqts0_KQqzA_N2)
-![3.png](//dn-cnode.qbox.me/FvkanLPAIUpdoYcZ4Wj1bIzcjDtU)
-![5.png](//dn-cnode.qbox.me/FjoDRHkkvt-QAvgg9KxNn8N8V941)
-![7.png](//dn-cnode.qbox.me/FlExqkfuLlDLCjV1nLL8iP835msr)
-![8.png](//dn-cnode.qbox.me/FoPMe3PKCxQATog2D0EesE4Hb5HL) 
+1. 登录页面 --- done
+2. 今日页面 --- 改版成为个人中心页
+3. 我的书单页面 --- 完成了静态页面，尚未写接口逻辑
+4. 教务页面 --- 完成了静态页面，尚未写接口逻辑
+5. 书单排行榜页面 --- 完成了静态页面，并调用了获取排行榜的接口，现余下要修复的bug如下，A:纵横网言情分类返回的数据都是xxx的模拟数据，B:排行每本书的点击事件，这个要等book_detail完成之后才会得到解决
+6. 书城页面 --- 完成了静态页面，尚未写接口逻辑
+7. 开始book_detail页面的编写 ---
+8. 使用gulp和scss来管理微信小程序的代码 --- 废弃使用webpack打包小程序
+9. 阅读器 --- 已完成
+
+## **后端完成进度**
+1. 爬虫升级 --- done ，现在可以同时爬去百度贴吧和爱下电子书两个来源的小说
+2. 排行榜的爬虫 --- 已完成
+3. 新增排行榜的接口 --- 已完成，今天又修复了两个bug，A:rank中的书籍信息增加bookId方便以后根据此id定位到bookDetai页面，B:攻破起点网小说图片防盗链的小关卡
+4. 开始书城中推荐版块，免费新书版块后端接口的建设
+5. 改进之前的factionContents模块，增加根据bookId获取书籍包括所有章节和一些其他信息的接口
+6. 微信登录 --- 正在进行

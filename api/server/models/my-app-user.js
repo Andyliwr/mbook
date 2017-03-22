@@ -2,6 +2,7 @@
 var app = require('../server.js');
 var path = require('path');
 var http=require('http');
+var request = require('request');
 var querystring=require('querystring');
 
 module.exports = function(Myappuser) {
@@ -77,12 +78,17 @@ module.exports = function(Myappuser) {
     };
     var content=querystring.stringify(qsdata);
     console.log(content);
-    http.get('https://api.weixin.qq.com/sns/jscode2session?'+content, (res) => {
-      console.log(`Got response: ${res.statusCode}`);
-      console.log(res);
-      res.resume();
-    }).on('error', (e) => {
-      console.log(`Got error: ${e.message}`);
+    // http.get('https://api.weixin.qq.com/sns/jscode2session?'+content, (res) => {
+    //   console.log(`Got response: ${res.statusCode}`);
+    //   console.log(res);
+    //   res.resume();
+    // }).on('error', (e) => {
+    //   console.log(`Got error: ${e.message}`);
+    // });
+    request('https://api.weixin.qq.com/sns/jscode2session?'+content, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log(body);
+      }
     });
     cb(null, 'hi');
   };
