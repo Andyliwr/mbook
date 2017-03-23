@@ -93,6 +93,7 @@ module.exports = function (Myappuser) {
           var sessionid = uuid.v4(); //uuid.v4()随机生成一个唯一标识，uuid.v1()是基于当前时间戳生成唯一标识
           var keyValue = '{session_key: ' + session_key + ', openid: ' + openid + '}';
           console.log('sessionid: ' + sessionid + ', keyValue: ' + keyValue);
+          //查询openid是否和user里的auth对应起来，如果没有则认为是新用户，需要注册一个
 
           var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
           redisClient.auth(redis_pwd, function () {
@@ -142,7 +143,65 @@ module.exports = function (Myappuser) {
   );
 
   //检查sessionid是否过期
-  Myappuser.checkSessionId = function (sessionid, cb) {
+  Myappuser.checkLogin = function (sessionid, cb) {
+    var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
+    redisClient.auth(redis_pwd, function () {
+      console.log('redis通过认证');
+    });
+    //连接redis
+    redisClient.on('connect', function () {
+      //获取sessionid
+      redisClient.get(sessionid, function (err, reply) {
+        if(reply){
+          cb(null, { code: 0, isEffect: 1 });
+        }else{
+          cb(null, { code: 0, isEffect: 0 });
+        }
+      }); //格式：client.get(key,[callback])
+      redisClient.quit();
+    });
+  };
+  Myappuser.remoteMethod(
+    'checkLogin',
+    {
+      'accepts': [{
+        arg: 'sessionAndUuid',
+        type: 'string',
+        description: '客户端缓存的sessionid和userid'
+      },
+      {
+        arg: 'rawData',
+        type: 'string',
+        description: '不包含敏感信息的rawData'
+      },
+      {
+        arg: 'signature',
+        type: 'string',
+        description: '用于校验用户信息'
+      },
+      {
+        arg: 'encryptedData',
+        type: 'string',
+        description: '包括敏感数据在内的完整用户信息的加密数据'
+      },
+      {
+        arg: 'vi',
+        type: 'string',
+        description: 'session id'
+      }
+      ],
+      'returns': [
+        { 'arg': 'data', 'type': 'string' }
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/checkSessionId'
+      }
+    }
+  );
+
+  //判断微信用户是否已经注册过
+  Myappuser.isRegistedByWx = function (wxcode, cb) {
     var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
     redisClient.auth(redis_pwd, function () {
       console.log('redis通过认证');
@@ -178,15 +237,31 @@ module.exports = function (Myappuser) {
     }
   );
 
-  Myappuser.afterRemote('create', function (context, user, next) {//注册后的回调
-    console.log("> user.afterRemote triggered");
-    var option = {//配置邮件发送参数
+  Myappuser.afterRemote('create', function(context, userInstance, next) {
+    console.log('> user.afterRemote triggered');
+
+    var options = {
       type: 'email',
-      to: user.email, //邮件接收方，即注册时填入的有限地址
-      from: '408523614@qq.com',//邮件发送方
-      subject: 'Thanks for registering.',//发送的邮件标题
-      redirect: '/'//点击发送到邮件的链接激活账号后的回调http地址
+      to: userInstance.email,
+      from: 'andyliwr@outlook.com',
+      subject: 'Thanks for registering.',
+      // template: path.resolve(__dirname, '../../server/views/verify.ejs'),
+      redirect: '/verified',
+      user: Myappuser
     };
-    user.verify(option, next);
+
+    userInstance.verify(options, function(err, response, next) {
+      if (err) return next(err);
+
+      console.log('> verification email sent:', response);
+
+      context.res.render('response', {
+        title: 'Signed up successfully',
+        content: 'Please check your email and click on the verification link ' -
+            'before logging in.',
+        redirectTo: '/',
+        redirectToLinkText: 'Log in'
+      });
+    });
   });
 };

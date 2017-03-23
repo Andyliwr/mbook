@@ -7,7 +7,6 @@ Page({
         item: '',
         levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger],
     },
-
     onLoad(option) {
         const {id} = option;
         let item = DataService.findById(id).then((item) => {

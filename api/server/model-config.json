@@ -63,9 +63,5 @@
   "asToken": {
     "dataSource": "mongodb",
     "public": true
-  },
-  "email": {
-    "dataSource": "email",
-    "public": true
   }
 }

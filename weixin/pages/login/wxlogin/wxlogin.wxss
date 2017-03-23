@@ -1,0 +1,38 @@
+.wxlogin-container{
+    background-color: #efeff4;
+    height: 100%;
+}
+.wxlogin-container .notice{
+    background-color: #09BB07;
+    text-align: center;
+    padding-top: 30rpx;
+    padding-bottom: 40rpx;
+}
+.wxlogin-container .notice image{
+    width: 200rpx;
+    height: 200rpx;
+    display: block;
+    margin: 0 auto;
+}
+.wxlogin-container .notice .des{
+    color: #fff;
+    display: block;
+    font-size: 30rpx;
+    margin: 20rpx 80rpx;
+}
+.wxlogin-container .needInfo{
+    padding: 30rpx 20rpx;
+}
+.wxlogin-container .needInfo checkbox-group{
+    padding-bottom: 50rpx;
+}
+.wxlogin-container .needInfo .checkbox{
+    font-size: 26rpx;
+    color: #a6a6a6;
+}
+.wxlogin-container .needInfo .checkbox > checkbox{
+    vertical-align: middle;
+}
+.wxlogin-container .needInfo button{
+    margin-bottom: 30rpx;
+}

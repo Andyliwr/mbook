@@ -18,6 +18,15 @@
     },
     "signatrue": {
       "type": "string"
+    },
+    "myBooks": {
+      "type": [
+        "object"
+      ]
+    },
+    "auth": {
+      "type": "object",
+      "required": true
     }
   },
   "validations": [],

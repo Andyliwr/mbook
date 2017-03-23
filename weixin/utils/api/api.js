@@ -11,7 +11,8 @@ var GET_BOOKS_SORTBY_TIME = '/xxxx';
 var GET_RANK = '/xs_rank/getRank';
 var GET_BOOK_MULU = '/xs_list/getMulu';
 var GET_SESSION_ID = '/myappuser/getSessionId';
-var CHECK_SESSION_ID = '/myappuser/checkSessionId';
+var CHECK_LOGIN = '/myappuser/checkLogin';
+var IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -59,8 +60,12 @@ module.exports = {
 	getSessionId: function(wxcode){
 		return HOST_URL + GET_SESSION_ID + '?wxcode=' + wxcode;
 	},
-	//检查本地缓存中的sessionid是否过期
-	checkSessionId: function(sessionid_local){
-		return HOST_URL + CHECK_SESSION_ID + '?sessionid=' + sessionid_local;
+	//检查本地缓存中记录的登录信息是否有效
+	checkLogin: function(){
+		return HOST_URL + CHECK_SESSION_ID;
+	},
+	//检查用户是否已经通过微信注册过
+	isRegistedByWx: function(wxcode){
+		return HOST_URL + IS_REGISTED_BY_WX + '?wxcode=' + wxcode;
 	}
 }

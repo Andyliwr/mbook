@@ -40,10 +40,10 @@
   </view>
 
   <!-- 出错打印 -->
-  <import src="../component/err_tips/err_tips.wxml" />
+  <import src="../../component/err_tips/err_tips.wxml" />
   <template is="err_tips" data="{{err_tips_data}}" />
 
   <!-- 成功的提示 -->
-  <import src="../component/toast/toast.wxml" />
+  <import src="../../component/toast/toast.wxml" />
   <template is="toast" data="{{toast_data}}" />
 </view>

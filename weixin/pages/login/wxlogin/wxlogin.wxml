@@ -1,0 +1,15 @@
+<view class="wxlogin-container">
+    <view class="notice">
+        <image src="https://olpkwt43d.qnssl.com/myapp/wxlogin/wechat_save.png"></image>
+        <view class="des">该页面由FollowHeart开发，向其提供以下权限即可继续操作</view>
+    </view>
+    <view class="needInfo">
+        <checkbox-group bindchange="checkboxChange">
+            <label class="checkbox">
+                <checkbox value="" checked="true"/>将获得你的公开信息（昵称，头像等）
+            </label>
+        </checkbox-group>
+        <button type="primary" bindtap="confirmLogin" loading="{{isShowLoading}}">确认登录</button>
+        <button type="default" bindtap="gotoRegiste">立即注册</button>
+    </view>
+</view>
