@@ -11,6 +11,9 @@ var redis = require('redis'),
   redis_pwd = '123456',
   redis_opts = { auth_pass: redis_pwd };
 
+//加密解密
+var crypto = require('crypto');
+
 module.exports = function (Myappuser) {
   Myappuser.fundBackPwd = function (email, cb) {
     var app = Myappuser.app;
@@ -73,7 +76,8 @@ module.exports = function (Myappuser) {
     }
   );
   //处理微信登录
-  Myappuser.getSessionId = function (wxcode, cb) {
+  Myappuser.getSessionId = function (wxcode, userInfo, rawData, signature, encryptedData, iv, cb) {
+
     //向官方服务器请求session信息
     var qsdata = {
       grant_type: 'authorization_code',
@@ -89,34 +93,72 @@ module.exports = function (Myappuser) {
         if (wxdata.session_key && wxdata.openid) {
           var session_key = wxdata.session_key;
           var openid = wxdata.openid;
-          //使用uuid生成一个唯一字符串sessionid作为键，将openid和session_key作为值，存入redis，超时时间设置为2小时
-          var sessionid = uuid.v4(); //uuid.v4()随机生成一个唯一标识，uuid.v1()是基于当前时间戳生成唯一标识
-          var keyValue = '{session_key: ' + session_key + ', openid: ' + openid + '}';
-          console.log('sessionid: ' + sessionid + ', keyValue: ' + keyValue);
-          //查询openid是否和user里的auth对应起来，如果没有则认为是新用户，需要注册一个
 
-          var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
-          redisClient.auth(redis_pwd, function () {
-            console.log('redis通过认证');
-          });
-          //连接redis
-          redisClient.on('connect', function () {
-            //设置单个值和获取单个值
-            redisClient.set(sessionid, keyValue, redis.print);//格式：client.set(key,value,[callback])， redis.print：简便的回调函数，测试时显示返回值
-            redisClient.expire(sessionid, 7*24*60*60);
-            redisClient.get(sessionid, function (err, reply) {
-              if(reply){
-                cb(null, { code: 0, sessionid: sessionid });
-              }else{
-                cb(null, { code: -1, errmsg: 'redis存储sessionid失败' });
-              }
-            }); //格式：client.get(key,[callback])
-            redisClient.quit();
-          });
+          //核对信息的有效性,数据签名校验
+          console.log(typeof session_key);
+          var hmac = crypto.createHmac('sha1', session_key);
+          hmac.update(rawData);
+          var signature2 = hmac.digest('hex');
+        if(signature2){
+            //解密获取opendid和unionid
+            // base64 decode
+            var sessionKey = new Buffer(session_key, 'base64');
+            var encryptedData = new Buffer(encryptedData, 'base64');
+            var iv = new Buffer(iv, 'base64');
 
-          // redisClient.on('ready', function (res) {
-          //   console.log('redis is ready....');
-          // });
+            try {
+               // 解密
+              var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
+              // 设置自动 padding 为 true，删除填充补位
+              decipher.setAutoPadding(true)
+              var decoded = decipher.update(encryptedData, 'binary', 'utf8')
+              decoded += decipher.final('utf8')
+              
+              decoded = JSON.parse(decoded)
+
+            } catch (err) {
+              throw new Error('Illegal Buffer');
+              cb(null, { code: -1, errmsg: '解密得到用户openid和unionid失败' });
+            }
+
+            if (decoded.watermark.appid !== this.appId) {
+              throw new Error('Illegal Buffer')
+              cb(null, { code: -1, errmsg: '数据不具有有效性' });
+            }else{
+              console.log(decoded);
+            }
+
+            //使用uuid生成一个唯一字符串sessionid作为键，将openid和session_key作为值，存入redis，超时时间设置为2小时
+            var sessionid = uuid.v4(); //uuid.v4()随机生成一个唯一标识，uuid.v1()是基于当前时间戳生成唯一标识
+            var keyValue = '{session_key: ' + session_key + ', openid: ' + openid + '}';
+            console.log('sessionid: ' + sessionid + ', keyValue: ' + keyValue);
+            //查询openid是否和user里的auth对应起来，如果没有则认为是新用户，需要注册一个
+
+            var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
+            redisClient.auth(redis_pwd, function () {
+              console.log('redis通过认证');
+            });
+            //连接redis
+            redisClient.on('connect', function () {
+              //设置单个值和获取单个值
+              redisClient.set(sessionid, keyValue, redis.print);//格式：client.set(key,value,[callback])， redis.print：简便的回调函数，测试时显示返回值
+              redisClient.expire(sessionid, 7*24*60*60);
+              redisClient.get(sessionid, function (err, reply) {
+                if(reply){
+                  cb(null, { code: 0, sessionid: sessionid });
+                }else{
+                  cb(null, { code: -1, errmsg: 'redis存储sessionid失败' });
+                }
+              }); //格式：client.get(key,[callback])
+              redisClient.quit();
+            });
+
+            // redisClient.on('ready', function (res) {
+            //   console.log('redis is ready....');
+            // });
+          }else{
+            cb(null, { code: -1, errmsg: '微信登录信息数字签名失败' });
+          }
         } else {
           cb(null, { code: -1, errmsg: wxdata.errmsg });
         }
@@ -127,57 +169,25 @@ module.exports = function (Myappuser) {
   Myappuser.remoteMethod(
     'getSessionId',
     {
-      'accepts': {
+      'accepts': [{
         arg: 'wxcode',
         type: 'string',
         description: 'weixin code'
       },
-      'returns': [
-        { 'arg': 'data', 'type': 'string' }
-      ],
-      'http': {
-        'verb': 'get',
-        'path': '/getSessionId'
-      }
-    }
-  );
-
-  //检查sessionid是否过期
-  Myappuser.checkLogin = function (sessionid, cb) {
-    var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
-    redisClient.auth(redis_pwd, function () {
-      console.log('redis通过认证');
-    });
-    //连接redis
-    redisClient.on('connect', function () {
-      //获取sessionid
-      redisClient.get(sessionid, function (err, reply) {
-        if(reply){
-          cb(null, { code: 0, isEffect: 1 });
-        }else{
-          cb(null, { code: 0, isEffect: 0 });
-        }
-      }); //格式：client.get(key,[callback])
-      redisClient.quit();
-    });
-  };
-  Myappuser.remoteMethod(
-    'checkLogin',
-    {
-      'accepts': [{
-        arg: 'sessionAndUuid',
+      {
+        arg: 'userInfo',
         type: 'string',
-        description: '客户端缓存的sessionid和userid'
+        description: '用户信息对象，不包含 openid 等敏感信息'
       },
       {
         arg: 'rawData',
         type: 'string',
-        description: '不包含敏感信息的rawData'
+        description: '不包括敏感信息的原始数据字符串，用于计算签名'
       },
       {
         arg: 'signature',
         type: 'string',
-        description: '用于校验用户信息'
+        description: '使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息'
       },
       {
         arg: 'encryptedData',
@@ -185,23 +195,22 @@ module.exports = function (Myappuser) {
         description: '包括敏感数据在内的完整用户信息的加密数据'
       },
       {
-        arg: 'vi',
+        arg: 'iv',
         type: 'string',
-        description: 'session id'
-      }
-      ],
+        description: '加密算法的初始向量'
+      }],
       'returns': [
         { 'arg': 'data', 'type': 'string' }
       ],
       'http': {
-        'verb': 'get',
-        'path': '/checkSessionId'
+        'verb': 'post',
+        'path': '/getSessionId'
       }
     }
   );
 
-  //判断微信用户是否已经注册过
-  Myappuser.isRegistedByWx = function (wxcode, cb) {
+  //检查sessionid是否过期
+  Myappuser.checkSessionId = function (sessionid, cb) {
     var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
     redisClient.auth(redis_pwd, function () {
       console.log('redis通过认证');
@@ -223,9 +232,9 @@ module.exports = function (Myappuser) {
     'checkSessionId',
     {
       'accepts': {
-        arg: 'sessionid',
+        arg: 'sessionAndUuid',
         type: 'string',
-        description: 'session id'
+        description: '客户端缓存的sessionid和userid'
       },
       'returns': [
         { 'arg': 'data', 'type': 'string' }

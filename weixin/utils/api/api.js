@@ -11,7 +11,7 @@ var GET_BOOKS_SORTBY_TIME = '/xxxx';
 var GET_RANK = '/xs_rank/getRank';
 var GET_BOOK_MULU = '/xs_list/getMulu';
 var GET_SESSION_ID = '/myappuser/getSessionId';
-var CHECK_LOGIN = '/myappuser/checkLogin';
+var CHECK_SESSION_ID = '/myappuser/checkSessionId';
 var IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
 
 function obj2url(obj){
@@ -61,7 +61,7 @@ module.exports = {
 		return HOST_URL + GET_SESSION_ID + '?wxcode=' + wxcode;
 	},
 	//检查本地缓存中记录的登录信息是否有效
-	checkLogin: function(){
+	checkSessionId: function(){
 		return HOST_URL + CHECK_SESSION_ID;
 	},
 	//检查用户是否已经通过微信注册过
