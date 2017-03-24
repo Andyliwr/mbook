@@ -13,6 +13,7 @@ var GET_BOOK_MULU = '/xs_list/getMulu';
 var GET_SESSION_ID = '/myappuser/getSessionId';
 var CHECK_SESSION_ID = '/myappuser/checkSessionId';
 var IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
+var GET_UPLOAD_TOKEN = '/myappuser/getUploadToken';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -67,5 +68,9 @@ module.exports = {
 	//检查用户是否已经通过微信注册过
 	isRegistedByWx: function(wxcode){
 		return HOST_URL + IS_REGISTED_BY_WX + '?wxcode=' + wxcode;
+	},
+	//个人中心上传图片获取上传token
+	getUploadToken: function(){
+		return HOST_URL + GET_UPLOAD_TOKEN;
 	}
 }

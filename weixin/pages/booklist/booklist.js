@@ -1,6 +1,6 @@
 //booklist.js
-var Api = require('../../utils/api/api.js');
-var Util = require('../../utils/util.js');
+var Api = require('../../utils/api/api');
+var Util = require('../../utils/util');
 //获取应用实例
 var app = getApp();
 Page({

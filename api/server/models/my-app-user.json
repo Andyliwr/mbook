@@ -25,7 +25,7 @@
       ]
     },
     "auth": {
-      "type": "object",
+      "type": "string",
       "required": true
     }
   },
@@ -57,6 +57,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "checkSessionId"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "getUploadToken"
     }
   ],
   "methods": {}

@@ -1,6 +1,6 @@
 //login.js
-var Api = require('../../../utils/api/api.js');
-var Util = require('../../../utils/util.js');
+// import showErrMsg from '../../../utils/util';
+// import { getMulu, getContentById } from '../../../utils/api/api';
 var currentGesture  = 0; //控制当一个手势进行的时候屏蔽其他的手势
 var moveTime = null; //控制左滑右滑的动画
 var isMoving = 0;
@@ -54,7 +54,7 @@ function getMulu(bookid, sectionnum, obj, success, fail, preOrNext){
   //发送ajax得到这本小说的所有章节
   var oldSectionData = obj.data.allSectionData;
   wx.request({
-    url: Api.getMulu(bookid, sectionnum), //仅为示例，并非真实的接口地址
+    url: getMulu(bookid, sectionnum), //仅为示例，并非真实的接口地址
     success: function(res) {
       try{
         var tmpData = res.data.data;
@@ -90,18 +90,6 @@ function getMulu(bookid, sectionnum, obj, success, fail, preOrNext){
   })
 }
 
-/**
- * 显示错误函数
- * @param obj 操作对象
- * @param errorMsg 需要显示的错误信息
- */
-function showErrMsg(obj, errorMsg){
-  obj.setData({err_tips_data: {err_tips_show: true, err_tips_text: errorMsg}});
-  setTimeout(function(){
-      obj.setData({err_tips_data: {err_tips_show: false, err_tips_text: ''}});
-  }, 3000);
-}
-
 Page({
     data: {
       bookid: '',
@@ -126,7 +114,8 @@ Page({
       colorStyle: {content_bg: '#f5f9fc', styleNum:1, slider_bg: '#fd9941', slider_none_bg: '#dbdbdb', control_bg: '#ffffff', control_fontColor: '#fd9941'}, //1、2、3、4分别对应四种颜色模式
       isShowMulu: 0, // 是否显示左侧栏
       muluSwiperNum: 0, //目录的滑块显示第几块
-      allSectionData: [] // 所有章节数据
+      allSectionData: [], // 所有章节数据
+      err_tips_data: {err_tips_show: false, err_tips_text: ''}
     },
     onReady: function(){
       var self = this;
@@ -450,7 +439,7 @@ Page({
       var sectionNum = event.currentTarget.dataset.sectionnum;
       //根据章节id去得到章节内容
       wx.request({
-        url: Api.getContentById(sectionId),
+        url: getContentById(sectionId),
         method:'GET',
         success (res) {
           try{

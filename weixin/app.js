@@ -8,13 +8,13 @@ App({
     //从缓存中读取sessionid
     // wx.setStorageSync('sessionAndUuid', ''); //test
     var sessionId = wx.getStorageSync('sessionId');//sessionAndUuid由sessionId和userId组成
-    if(sessionId){
-      self.checkSessionEffect(sessionId);
-    }else{
-      //用户未登录，接下来判断用户是否注册
-      self.doLogin();
-      // wx.navigateTo({url: '/pages/login/wxlogin/wxlogin'});
-    }
+    // if(sessionId){
+    //   self.checkSessionEffect(sessionId);
+    // }else{
+    //   //用户未登录，接下来判断用户是否注册
+    //   self.doLogin();
+    //   // wx.navigateTo({url: '/pages/login/wxlogin/wxlogin'});
+    // }
   },
   /**
    * 获取微信用户的详细信息，包括头像，昵称，城市...
@@ -79,41 +79,53 @@ App({
           wx.getUserInfo({
             success: function(res) {
               console.log(res);
-              var loginData = {
-                wxcode: code,
-                userInfo: JSON.stringify(res.userInfo),
-                rawData: res.rawData,
-                signature: res.signature,
-                encryptedData: res.encryptedData,
-                iv: res.iv
-              };
-              // --------- 发送凭证 ------------------
-              wx.request({
-                url: getSessionId(code),
-                method: 'POST',
-                data: loginData,
-                success: function (res) {
-                  var tmpdata = res.data.data;
-                  if (tmpdata.code == 0) {
-                    //如果登录成功，将sessionid存储在本地缓存中
-                    wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
-                    self.globalData.sessionId = tmpdata.sessionid;
-                    wx.showToast({ title: '登录成功', icon: 'success', duration: 100 });
-                    //2s后隐藏提示
-                    setTimeout(function () { wx.hideToast() }, 2000);
-                  } else {
-                    console.log("登录失败, " + tmpdata.errMsg);
+              if(res.userInfo && res.rawData && res.signature && res.encryptedData && res.iv){
+                var loginData = {
+                  wxcode: code,
+                  userInfo: JSON.stringify(res.userInfo),
+                  rawData: res.rawData,
+                  signature: res.signature,
+                  encryptedData: res.encryptedData,
+                  iv: res.iv
+                };
+                // --------- 发送凭证 ------------------
+                wx.request({
+                  url: getSessionId(code),
+                  method: 'POST',
+                  data: loginData,
+                  success: function (res) {
+                    var tmpdata = res.data.data;
+                    if (tmpdata.code == 0) {
+                      //如果用户未绑定myappuser
+                      if(tmpdata.redirect){
+                        wx.navigateTo({
+                          url: tmpdata.redirect
+                        });
+                      }else{
+                        //如果登录成功，将sessionid存储在本地缓存中
+                        wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
+                        self.globalData.sessionId = tmpdata.sessionid;
+                        wx.showToast({ title: '登录成功', icon: 'success', duration: 100 });
+                        //2s后隐藏提示
+                        setTimeout(function () { wx.hideToast() }, 2000);
+                      }
+                    } else {
+                      console.log("登录失败, " + tmpdata.errMsg);
+                      //todo 失败的处理
+                      self.loginFail();
+                    }
+                  },
+                  fail: function (err) {
+                    console.log("登录失败, " + err);
                     //todo 失败的处理
                     self.loginFail();
                   }
-                },
-                fail: function (err) {
-                  console.log("登录失败, " + err);
-                  //todo 失败的处理
-                  self.loginFail();
-                }
-              })
-              // ------------------------------------
+                })
+                // ------------------------------------
+              }else{
+                console.log('getUserInfo返回数据错误');
+                self.loginFail();
+              }
             },
             fail: function(err){
               console.log("登录失败, " + err);

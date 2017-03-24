@@ -139,6 +139,18 @@ function promiseHandle(func, options) {
   });
 }
 
+/**
+ * 显示错误函数
+ * @param obj 操作对象
+ * @param errorMsg 需要显示的错误信息
+ */
+function showErrMsg(obj, errorMsg){
+  obj.setData({err_tips_data: {err_tips_show: true, err_tips_text: errorMsg}});
+  setTimeout(function(){
+      obj.setData({err_tips_data: {err_tips_show: false, err_tips_text: ''}});
+  }, 3000);
+}
+
 //导出以上函数
 module.exports = {
   formatTime: formatTime,
@@ -149,5 +161,6 @@ module.exports = {
   log: log,
   promiseHandle: promiseHandle,
   getDateStr: getDateStr,
-  formatNumber: formatNumber
+  formatNumber: formatNumber,
+  showErrMsg: showErrMsg
 }

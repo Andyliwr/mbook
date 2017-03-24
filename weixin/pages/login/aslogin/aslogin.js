@@ -1,6 +1,6 @@
 //login.js
-var Api = require('../../../utils/api/api.js');
-var util = require('../../../utils/util.js');
+var Api = require('../../../utils/api/api');
+var util = require('../../../utils/util');
 
 Page({
   data: {
