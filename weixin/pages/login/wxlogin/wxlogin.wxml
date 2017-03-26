@@ -12,7 +12,7 @@
         <view class="tips">请设置完善个人信息</view>
         <form bindsubmit="formSubmit" bindreset="formReset">
             <view class="section avatar">
-                <image src="{{userInfoFromUrl.avatar || 'https://olpkwt43d.qnssl.com/myapp/user/personal.png'}}"></image>
+                <image src="{{userInfoFromUrl.avatar || 'https://olpkwt43d.qnssl.com/myapp/user/personal.png'}}" bindtap="uploadAvatar"></image>
                 <icon class="upload-icon"></icon>
             </view>
             <view class="section">

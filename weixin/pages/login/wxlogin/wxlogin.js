@@ -1,14 +1,14 @@
 //wxlogin.js
-import { getUploadToken } from '../../utils/api/api';
-import { qiniuUploader } from '../../utils/qiniuUploader';
-import { showErrMsg } from '../../utils/util';
+var Api = require('../../../utils/api/api');
+var qiniuUploader = require('../../../utils/qiniuUpload');
+var Util = require('../../../utils/util');
 
 // 初始化七牛相关参数
-function initQiniu() {
+function initQiniu(callback) {
   var options = {
     region: 'SCN', // 华东区，生产环境应换成自己七牛帐户bucket的区域
-    uptokenURL: getUploadToken(), // 生产环境该地址应换成自己七牛帐户的token地址，具体配置请见server端
-    domain: 'https://olpkwt43d.qnssl.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
+    uptokenURL: Api.getUploadToken(), // 生产环境该地址应换成自己七牛帐户的token地址，具体配置请见server端
+    domain: 'https://olpkwt43d.qnssl.com' // 生产环境该地址应换成自己七牛帐户对象存储的域名
   };
   qiniuUploader.init(options);
 }
@@ -52,6 +52,8 @@ Page({
         });
     },
     uploadAvatar: function(){
+      initQiniu();
+      var  self = this;
       wx.chooseImage({
         sourceType: ['camera', 'album'],
         sizeType: ['compressed'], //压缩图片
@@ -59,71 +61,23 @@ Page({
         success: function (res) {
           console.log('拍照之后：');
           console.log(res);
-          that.setData({
-            src: res.tempFilePath
+          self.setData({
+            userInfoFromUrl: res.tempFilePaths[0]
           });
           //七牛上传文件
-          var vedioObject = res;
-          var filePath = res.tempFilePath;
+          var filePath = res.tempFilePaths[0];
           qiniuUploader.upload(filePath, (res) => {
-            console.log('此时的videoObject：'+JSON.stringify(vedioObject));
-            var allPicture = [];
-            for(var i=0; i<vedioObject.duration; i++){
-              allPicture.push(res.imageURL+'?vframe/jpg/offset/'+i+'/w/'+vedioObject.width+'/h/'+vedioObject.height+'/rotate/0');
-            }
-            that.setData({
-              'afterUploadVedio': res,
-              'allPicture': allPicture
-            });
-            wx.showToast({
-              title: '请稍候...',
-              icon: 'loading',
-              duration: 3000
-            });
-            //上传成功，开始发送检测图片的请求
-            wx.request({
-              url: that.data.analysisVideoUrl + '?video_url=' + res.imageURL + '&duration=' + vedioObject.duration + '&width=' + vedioObject.width + '&height=' +vedioObject.height, //仅为示例，并非真实的接口地址
-              header: { 'content-type': 'application/json' },
-              success: function (res) {
-                that.setData({ analysisRes: res.data, isShowRes: true });
-                //检测用户是否微笑
-                console.log('第一个result是数组吗？'+(res.data.result instanceof Array));
-                var isSimle = res.data.result.some(function(item){
-                  console.log('第二个result是数组吗？'+(item.result instanceof Array));
-                  if(item.result instanceof Array){
-                    return item.result.some(function(item2){
-                      return item2.expression == '1';
-                    })
-                  }else{
-                    return item.result.expression == '1';
-                  }
-                });
-                console.log('isSimle:  '+isSimle);
-                if(isSimle){
-                  wx.showToast({
-                    title: '成功',
-                    icon: 'success',
-                    duration: 2000
-                  });
-                }else{
-                  wx.showModal({
-                    title: '提示',
-                    content: '你在视频中没有微笑...',
-                    success: function(res) {
-                      if (res.confirm) {
-                        console.log('用户点击确定');
-                      }
-                    }
-                  })
-                }
-              }
+            console.log(res);
+            //更新图片地址
+            self.setData({
+              userInfoFromUrl: res.tempFilePaths[0]
             });
           }, (error) => {
             console.error('error: ' + JSON.stringify(error));
           });
         },
         fail: function(err){
-
+          console.log("选择图片失败, "+err);
         }
       })
     }
