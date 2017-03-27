@@ -1740,3 +1740,178 @@
 [2017-03-27 17:16:22.864] [INFO] networkReptile - 大主宰 的第 1459 章 天罗盟 factionContentModel 更新-----成功！
 [2017-03-27 17:16:22.871] [INFO] networkReptile - 大主宰 的第 1456 章 进化，上古不死鸟 factionContentModel 更新-----成功！
 [2017-03-27 17:16:22.875] [INFO] networkReptile - 大主宰 的第 1455 章 准圣血精入手 factionContentModel 更新-----成功！
+[2017-03-27 21:42:49.685] [INFO] networkReptile - 今天是 2017年02月27日 星期一，排行版每天18:00点更新.......
+[2017-03-27 21:42:49.909] [INFO] networkReptile - 连接数据库成功.....
+[2017-03-27 21:42:53.778] [INFO] networkReptile - 起点小说排行榜爬取完毕.....
+[2017-03-27 21:42:55.159] [INFO] networkReptile - 纵横小说排行榜爬取完毕.....
+[2017-03-27 21:42:56.318] [INFO] networkReptile - 排行榜已经更新至数据库.....
+[2017-03-27 21:44:18.175] [INFO] networkReptile - 
+
+
+
+
+
+[2017-03-27 21:44:18.185] [DEBUG] networkReptile - 现在爬取的小说是----《大主宰》
+[2017-03-27 21:44:18.187] [DEBUG] networkReptile - 爬取来源----爱下电子书
+[2017-03-27 21:44:18.381] [INFO] networkReptile - 连接数据库成功.....
+[2017-03-27 21:44:18.955] [INFO] networkReptile - 存储前更新list成功！
+[2017-03-27 21:44:22.596] [INFO] networkReptile - 从爱下电子书抓取到的最新的小说章节有50章。
+[2017-03-27 21:44:23.098] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449551203.html）内容成功!
+[2017-03-27 21:44:23.222] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448422460.html）内容成功!
+[2017-03-27 21:44:23.271] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448136931.html）内容成功!
+[2017-03-27 21:44:23.378] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451591243.html）内容成功!
+[2017-03-27 21:44:23.404] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448034540.html）内容成功!
+[2017-03-27 21:44:23.517] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449795012.html）内容成功!
+[2017-03-27 21:44:23.642] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451458366.html）内容成功!
+[2017-03-27 21:44:23.795] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/447757585.html）内容成功!
+[2017-03-27 21:44:23.952] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/450009321.html）内容成功!
+[2017-03-27 21:44:24.055] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451727389.html）内容成功!
+[2017-03-27 21:44:24.262] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448325771.html）内容成功!
+[2017-03-27 21:44:24.291] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449707526.html）内容成功!
+[2017-03-27 21:44:24.621] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449171229.html）内容成功!
+[2017-03-27 21:44:24.724] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/447758818.html）内容成功!
+[2017-03-27 21:44:24.783] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451358404.html）内容成功!
+[2017-03-27 21:44:24.803] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/450518150.html）内容成功!
+[2017-03-27 21:44:24.823] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/447828862.html）内容成功!
+[2017-03-27 21:44:24.862] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448194298.html）内容成功!
+[2017-03-27 21:44:24.885] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449381622.html）内容成功!
+[2017-03-27 21:44:25.040] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449081908.html）内容成功!
+[2017-03-27 21:44:25.047] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448907140.html）内容成功!
+[2017-03-27 21:44:25.067] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/450853678.html）内容成功!
+[2017-03-27 21:44:25.102] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448485153.html）内容成功!
+[2017-03-27 21:44:25.294] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/452155956.html）内容成功!
+[2017-03-27 21:44:25.328] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451958301.html）内容成功!
+[2017-03-27 21:44:25.362] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449707525.html）内容成功!
+[2017-03-27 21:44:25.524] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451806421.html）内容成功!
+[2017-03-27 21:44:25.555] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/452227978.html）内容成功!
+[2017-03-27 21:44:25.603] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/450979470.html）内容成功!
+[2017-03-27 21:44:25.646] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451684132.html）内容成功!
+[2017-03-27 21:44:25.679] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449315206.html）内容成功!
+[2017-03-27 21:44:25.694] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451358405.html）内容成功!
+[2017-03-27 21:44:25.836] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448913519.html）内容成功!
+[2017-03-27 21:44:25.857] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448685303.html）内容成功!
+[2017-03-27 21:44:25.914] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/448886311.html）内容成功!
+[2017-03-27 21:44:25.931] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451054244.html）内容成功!
+[2017-03-27 21:44:25.945] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449707527.html）内容成功!
+[2017-03-27 21:44:26.117] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451178215.html）内容成功!
+[2017-03-27 21:44:26.565] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449417040.html）内容成功!
+[2017-03-27 21:44:27.493] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/451492682.html）内容成功!
+[2017-03-27 21:44:27.773] [INFO] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/449496527.html）内容成功!
+[2017-03-27 21:44:35.236] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453309567.html）内容失败，请检查网络!
+[2017-03-27 21:44:48.539] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/454041800.html）内容失败，请检查网络!
+[2017-03-27 21:44:57.418] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453781148.html）内容失败，请检查网络!
+[2017-03-27 21:44:58.672] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453975049.html）内容失败，请检查网络!
+[2017-03-27 21:45:00.114] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453527709.html）内容失败，请检查网络!
+[2017-03-27 21:45:02.784] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453195248.html）内容失败，请检查网络!
+[2017-03-27 21:45:17.293] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/454365071.html）内容失败，请检查网络!
+[2017-03-27 21:45:17.296] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453611708.html）内容失败，请检查网络!
+[2017-03-27 21:45:17.341] [WARN] networkReptile - 获取网址（http://read.ixdzs.com/66/66485/453404649.html）内容失败，请检查网络!
+[2017-03-27 21:45:17.345] [TRACE] networkReptile - 爬取到小说第1450章..
+[2017-03-27 21:45:17.347] [TRACE] networkReptile - 爬取到小说第1418章..
+[2017-03-27 21:45:17.348] [TRACE] networkReptile - 爬取到小说第1415章..
+[2017-03-27 21:45:17.349] [TRACE] networkReptile - 爬取到小说第1445章..
+[2017-03-27 21:45:17.351] [TRACE] networkReptile - 爬取到小说第1414章..
+[2017-03-27 21:45:17.351] [TRACE] networkReptile - 爬取到小说第1434章..
+[2017-03-27 21:45:17.353] [TRACE] networkReptile - 爬取到小说第1443章..
+[2017-03-27 21:45:17.354] [TRACE] networkReptile - 爬取到小说第1411章..
+[2017-03-27 21:45:17.356] [TRACE] networkReptile - 爬取到小说第1435章..
+[2017-03-27 21:45:17.357] [TRACE] networkReptile - 爬取到小说第1447章..
+[2017-03-27 21:45:17.363] [TRACE] networkReptile - 爬取到小说第1417章..
+[2017-03-27 21:45:17.366] [TRACE] networkReptile - 爬取到小说第1432章..
+[2017-03-27 21:45:17.387] [TRACE] networkReptile - 爬取到小说第1425章..
+[2017-03-27 21:45:17.390] [TRACE] networkReptile - 爬取到小说第1412章..
+[2017-03-27 21:45:17.391] [TRACE] networkReptile - 爬取到小说第1441章..
+[2017-03-27 21:45:17.392] [TRACE] networkReptile - 爬取到小说第1436章..
+[2017-03-27 21:45:17.393] [TRACE] networkReptile - 爬取到小说第1413章..
+[2017-03-27 21:45:17.394] [TRACE] networkReptile - 爬取到小说第1416章..
+[2017-03-27 21:45:17.395] [TRACE] networkReptile - 爬取到小说第1447章..
+[2017-03-27 21:45:17.396] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.398] [TRACE] networkReptile - 爬取到小说第1422章..
+[2017-03-27 21:45:17.399] [TRACE] networkReptile - 爬取到小说第1437章..
+[2017-03-27 21:45:17.401] [TRACE] networkReptile - 爬取到小说第1419章..
+[2017-03-27 21:45:17.402] [TRACE] networkReptile - 爬取到小说第1449章..
+[2017-03-27 21:45:17.403] [TRACE] networkReptile - 爬取到小说第1449章..
+[2017-03-27 21:45:17.404] [TRACE] networkReptile - 爬取到小说第1431章..
+[2017-03-27 21:45:17.405] [TRACE] networkReptile - 爬取到小说第1448章..
+[2017-03-27 21:45:17.406] [TRACE] networkReptile - 爬取到小说第1450章..
+[2017-03-27 21:45:17.407] [TRACE] networkReptile - 爬取到小说第1438章..
+[2017-03-27 21:45:17.408] [TRACE] networkReptile - 爬取到小说第1446章..
+[2017-03-27 21:45:17.409] [TRACE] networkReptile - 爬取到小说第1426章..
+[2017-03-27 21:45:17.410] [TRACE] networkReptile - 爬取到小说第1442章..
+[2017-03-27 21:45:17.414] [TRACE] networkReptile - 爬取到小说第1423章..
+[2017-03-27 21:45:17.416] [TRACE] networkReptile - 爬取到小说第1420章..
+[2017-03-27 21:45:17.417] [TRACE] networkReptile - 爬取到小说第1421章..
+[2017-03-27 21:45:17.418] [TRACE] networkReptile - 爬取到小说第1439章..
+[2017-03-27 21:45:17.419] [TRACE] networkReptile - 爬取到小说第1433章..
+[2017-03-27 21:45:17.420] [TRACE] networkReptile - 爬取到小说第1440章..
+[2017-03-27 21:45:17.421] [TRACE] networkReptile - 爬取到小说第1448章..
+[2017-03-27 21:45:17.422] [TRACE] networkReptile - 爬取到小说第1444章..
+[2017-03-27 21:45:17.423] [TRACE] networkReptile - 爬取到小说第1449章..
+[2017-03-27 21:45:17.424] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.425] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.426] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.427] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.428] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.431] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.432] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.433] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.434] [WARN] networkReptile - 在子页面中找不到章节数!
+[2017-03-27 21:45:17.435] [INFO] networkReptile - 以下是爬到的章节的内容，以及他们的存储情况：
+[2017-03-27 21:45:18.636] [DEBUG] networkReptile - 数据库中已有大主宰的第1411章的小说，放弃存储！
+[2017-03-27 21:45:18.654] [DEBUG] networkReptile - 数据库中已有大主宰的第1419章的小说，放弃存储！
+[2017-03-27 21:45:18.669] [DEBUG] networkReptile - 数据库中已有大主宰的第1412章的小说，放弃存储！
+[2017-03-27 21:45:18.686] [DEBUG] networkReptile - 数据库中已有大主宰的第1415章的小说，放弃存储！
+[2017-03-27 21:45:18.711] [DEBUG] networkReptile - 数据库中已有大主宰的第1447章的小说，放弃存储！
+[2017-03-27 21:45:18.732] [DEBUG] networkReptile - 数据库中已有大主宰的第1426章的小说，放弃存储！
+[2017-03-27 21:45:18.750] [DEBUG] networkReptile - 数据库中已有大主宰的第1434章的小说，放弃存储！
+[2017-03-27 21:45:18.769] [DEBUG] networkReptile - 数据库中已有大主宰的第1423章的小说，放弃存储！
+[2017-03-27 21:45:18.796] [DEBUG] networkReptile - 数据库中已有大主宰的第1421章的小说，放弃存储！
+[2017-03-27 21:45:18.819] [DEBUG] networkReptile - 数据库中已有大主宰的第1417章的小说，放弃存储！
+[2017-03-27 21:45:18.846] [DEBUG] networkReptile - 数据库中已有大主宰的第1422章的小说，放弃存储！
+[2017-03-27 21:45:18.870] [DEBUG] networkReptile - 数据库中已有大主宰的第1449章的小说，放弃存储！
+[2017-03-27 21:45:18.887] [DEBUG] networkReptile - 数据库中已有大主宰的第1418章的小说，放弃存储！
+[2017-03-27 21:45:19.051] [DEBUG] networkReptile - 数据库中已有大主宰的第1448章的小说，放弃存储！
+[2017-03-27 21:45:19.067] [DEBUG] networkReptile - 数据库中已有大主宰的第1445章的小说，放弃存储！
+[2017-03-27 21:45:19.080] [DEBUG] networkReptile - 数据库中已有大主宰的第1420章的小说，放弃存储！
+[2017-03-27 21:45:19.494] [INFO] networkReptile - 大主宰 的第 1458 章 牧府局势 factionListModel 更新-----成功！
+[2017-03-27 21:45:19.662] [DEBUG] networkReptile - 数据库中已有大主宰的第1438章的小说，放弃存储！
+[2017-03-27 21:45:19.679] [DEBUG] networkReptile - 数据库中已有大主宰的第1435章的小说，放弃存储！
+[2017-03-27 21:45:19.697] [DEBUG] networkReptile - 数据库中已有大主宰的第1447章的小说，放弃存储！
+[2017-03-27 21:45:19.718] [DEBUG] networkReptile - 数据库中已有大主宰的第1413章的小说，放弃存储！
+[2017-03-27 21:45:19.844] [DEBUG] networkReptile - 数据库中已有大主宰的第1448章的小说，放弃存储！
+[2017-03-27 21:45:19.860] [DEBUG] networkReptile - 数据库中已有大主宰的第1425章的小说，放弃存储！
+[2017-03-27 21:45:19.873] [DEBUG] networkReptile - 数据库中已有大主宰的第1416章的小说，放弃存储！
+[2017-03-27 21:45:19.887] [DEBUG] networkReptile - 数据库中已有大主宰的第1451章的小说，放弃存储！
+[2017-03-27 21:45:19.904] [DEBUG] networkReptile - 数据库中已有大主宰的第1431章的小说，放弃存储！
+[2017-03-27 21:45:19.916] [DEBUG] networkReptile - 数据库中已有大主宰的第1439章的小说，放弃存储！
+[2017-03-27 21:45:20.034] [DEBUG] networkReptile - 数据库中已有大主宰的第1449章的小说，放弃存储！
+[2017-03-27 21:45:20.047] [DEBUG] networkReptile - 数据库中已有大主宰的第1414章的小说，放弃存储！
+[2017-03-27 21:45:20.063] [DEBUG] networkReptile - 数据库中已有大主宰的第1446章的小说，放弃存储！
+[2017-03-27 21:45:20.201] [DEBUG] networkReptile - 数据库中已有大主宰的第1443章的小说，放弃存储！
+[2017-03-27 21:45:20.213] [DEBUG] networkReptile - 数据库中已有大主宰的第1440章的小说，放弃存储！
+[2017-03-27 21:45:20.225] [DEBUG] networkReptile - 数据库中已有大主宰的第1432章的小说，放弃存储！
+[2017-03-27 21:45:20.242] [DEBUG] networkReptile - 数据库中已有大主宰的第1444章的小说，放弃存储！
+[2017-03-27 21:45:20.254] [DEBUG] networkReptile - 数据库中已有大主宰的第1433章的小说，放弃存储！
+[2017-03-27 21:45:20.267] [DEBUG] networkReptile - 数据库中已有大主宰的第1436章的小说，放弃存储！
+[2017-03-27 21:45:20.279] [DEBUG] networkReptile - 数据库中已有大主宰的第1437章的小说，放弃存储！
+[2017-03-27 21:45:20.389] [DEBUG] networkReptile - 数据库中已有大主宰的第1424章的小说，放弃存储！
+[2017-03-27 21:45:20.461] [INFO] networkReptile - 大主宰 的第 1459 章 天罗盟 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.462] [INFO] networkReptile - 大主宰 的第 1453 章 三合境 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.503] [DEBUG] networkReptile - 数据库中已有大主宰的第1450章的小说，放弃存储！
+[2017-03-27 21:45:20.515] [DEBUG] networkReptile - 数据库中已有大主宰的第1449章的小说，放弃存储！
+[2017-03-27 21:45:20.529] [DEBUG] networkReptile - 数据库中已有大主宰的第1441章的小说，放弃存储！
+[2017-03-27 21:45:20.545] [DEBUG] networkReptile - 数据库中已有大主宰的第1442章的小说，放弃存储！
+[2017-03-27 21:45:20.553] [INFO] networkReptile - 大主宰 的第 1458 章 牧府局势 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.583] [INFO] networkReptile - 大主宰 的第 1456 章 进化，上古不死鸟 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.618] [INFO] networkReptile - 大主宰 的第 1452 章 九转入圣诀 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.858] [DEBUG] networkReptile - 数据库中已有大主宰的第1450章的小说，放弃存储！
+[2017-03-27 21:45:20.864] [INFO] networkReptile - 大主宰 的第 1459 章 天罗盟 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.866] [INFO] networkReptile - 大主宰 的第 1452 章 九转入圣诀 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.869] [INFO] networkReptile - 大主宰 的第 1456 章 进化，上古不死鸟 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.870] [INFO] networkReptile - 大主宰 的第 1453 章 三合境 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.879] [INFO] networkReptile - 大主宰 的第 1454 章 胜负 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.881] [INFO] networkReptile - 大主宰 的第 1457 章 真龙与真凤 factionListModel 更新-----成功！
+[2017-03-27 21:45:20.979] [INFO] networkReptile - 大主宰 的第 1457 章 真龙与真凤 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.982] [INFO] networkReptile - 大主宰 的第 1454 章 胜负 factionContentModel 更新-----成功！
+[2017-03-27 21:45:20.983] [INFO] networkReptile - 大主宰 的第 1455 章 准圣血精入手 factionListModel 更新-----成功！
+[2017-03-27 21:45:21.019] [INFO] networkReptile - 大主宰 的第 1455 章 准圣血精入手 factionContentModel 更新-----成功！

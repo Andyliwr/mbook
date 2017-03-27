@@ -193,9 +193,6 @@ module.exports = function (Myappuser) {
           }
           checkRegisteEp.emit('hasFinishedCheck', checkData);
         });
-
-        
-        
       } else {
         cb(null, { code: -1, errmsg: '微信登录信息数字签名失败' });
       }

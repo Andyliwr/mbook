@@ -6,8 +6,8 @@ App({
   onLaunch: function () {
     var self = this;
     //从缓存中读取sessionid
-    // wx.setStorageSync('sessionAndUuid', ''); //test
-    var sessionId = wx.getStorageSync('sessionId');//sessionAndUuid由sessionId和userId组成
+    // wx.setStorageSync('sessionid', ''); //test
+    var sessionId = wx.getStorageSync('sessionid');//sessionAndUuid由sessionId和userId组成
     if(sessionId){
       self.checkSessionEffect(sessionId);
     }else{
