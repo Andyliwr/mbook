@@ -128,3 +128,6 @@ weixin --- 微信小程序目录
 4. 开始书城中推荐版块，免费新书版块后端接口的建设
 5. 改进之前的factionContents模块，增加根据bookId获取书籍包括所有章节和一些其他信息的接口
 6. 微信登录 --- 正在进行
+
+### 测试未绑定的微信的用户
+auth: {\"type\": \"wechat\", \"wxOpenId\": \"oj7fq0NOUGhlm798MwxrIGmmFXTM\"}

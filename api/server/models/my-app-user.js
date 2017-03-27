@@ -193,9 +193,6 @@ module.exports = function (Myappuser) {
           }
           checkRegisteEp.emit('hasFinishedCheck', checkData);
         });
-
-        
-        
       } else {
         cb(null, { code: -1, errmsg: '微信登录信息数字签名失败' });
       }
@@ -309,7 +306,7 @@ module.exports = function (Myappuser) {
   //获取上传个人头像的token值
   Myappuser.getUploadToken = function (cb) {
     var avatarId = uuid.v1();
-    var key = '/avatar/'+avatarId+'.png';
+    var key = 'avatar/'+avatarId+'.png';
     var putPolicy = new qiniu.rs.PutPolicy(QINIU_BUCKET+':'+key);
     cb(null, putPolicy.token());
   };
@@ -318,7 +315,7 @@ module.exports = function (Myappuser) {
     {
       'accepts': '',
       'returns': [
-        { 'arg': 'token', 'type': 'string' }
+        { 'arg': 'uptoken', 'type': 'string' }
       ],
       'http': {
         'verb': 'get',
@@ -327,31 +324,60 @@ module.exports = function (Myappuser) {
     }
   );
 
-  Myappuser.afterRemote('create', function (context, userInstance, next) {
-    console.log('> user.afterRemote triggered');
+  //获取用户所有的书籍
+  Myappuser.getMyBooks = function (userid, cb) {
+    Myappuser.findById(userid, {myBooks: 1, _id: 0}, {}, function(err, res){
+      if(err){
+        console.log('getMyBooks查询失败，'+err);
+        cb(null, {code: -1, errMsg: 'getMyBooks查询失败'});
+        return;
+      }
+      cb(null, {code: 0, books: res.myBooks});
+    });//Model.find(query, fields, options, callback)
+  };
+  Myappuser.remoteMethod(
+    'getMyBooks',
+    {
+      'accepts': {
+        arg: 'userid',
+        type: 'string',
+        description: '用户id'
+      },
+      'returns': [
+        { 'arg': 'data', 'type': 'string' }
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/getMyBooks'
+      }
+    }
+  );
 
-    var options = {
-      type: 'email',
-      to: userInstance.email,
-      from: 'andyliwr@outlook.com',
-      subject: 'Thanks for registering.',
-      // template: path.resolve(__dirname, '../../server/views/verify.ejs'),
-      redirect: '/verified',
-      user: Myappuser
-    };
+  // Myappuser.afterRemote('create', function (context, userInstance, next) {
+  //   console.log('> user.afterRemote triggered');
 
-    userInstance.verify(options, function (err, response, next) {
-      if (err) return next(err);
+  //   var options = {
+  //     type: 'email',
+  //     to: userInstance.email,
+  //     from: 'andyliwr@outlook.com',
+  //     subject: 'Thanks for registering.',
+  //     // template: path.resolve(__dirname, '../../server/views/verify.ejs'),
+  //     redirect: '/verified',
+  //     user: Myappuser
+  //   };
 
-      console.log('> verification email sent:', response);
+  //   userInstance.verify(options, function (err, response, next) {
+  //     if (err) return next(err);
 
-      context.res.render('response', {
-        title: 'Signed up successfully',
-        content: 'Please check your email and click on the verification link ' -
-        'before logging in.',
-        redirectTo: '/',
-        redirectToLinkText: 'Log in'
-      });
-    });
-  });
+  //     console.log('> verification email sent:', response);
+
+  //     context.res.render('response', {
+  //       title: 'Signed up successfully',
+  //       content: 'Please check your email and click on the verification link ' -
+  //       'before logging in.',
+  //       redirectTo: '/',
+  //       redirectToLinkText: 'Log in'
+  //     });
+  //   });
+  // });
 };
