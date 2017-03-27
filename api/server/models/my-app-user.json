@@ -3,9 +3,6 @@
   "plural": "myappuser",
   "base": "User",
   "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
   "properties": {
     "age": {
       "type": "number"
@@ -64,6 +61,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getUploadToken"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "getMyBooks"
     }
   ],
   "methods": {}

@@ -56,19 +56,19 @@ function uploadFileToQiNiu(localFileUrl, remoteFileName, success, fail) {
     uploadFile(token, remoteFileName, localFileUrl, success, fail);
 }
 
-// var success = function (ret) {
-//     /**
-//      * ret一般有两个值：
-//      * hash： Fi1tl4j7NjPlt5xyFdhvIBpokrK6 上传图片的hash值
-//      * key：me_test2.jpg 远程服务器图片的名字
-//      */
-//     console.log('success');
-//     console.log(JSON.stringify(ret));
-// };
-// var fail = function (err) {
-//     console.log('fail');
-//     console.log(err);
-// };
-// uploadFileToQiNiu('./reptile/qn_upload/me_test2.jpg', 'me_test2.jpg', success, fail);
+var success = function (ret) {
+    /**
+     * ret一般有两个值：
+     * hash： Fi1tl4j7NjPlt5xyFdhvIBpokrK6 上传图片的hash值
+     * key：me_test2.jpg 远程服务器图片的名字
+     */
+    console.log('success');
+    console.log(JSON.stringify(ret));
+};
+var fail = function (err) {
+    console.log('fail');
+    console.log(err);
+};
+uploadFileToQiNiu('me_test.jpg', 'me_test20170326.jpg', success, fail);
 
 exports.uploadFileToQiNiu = uploadFileToQiNiu;
