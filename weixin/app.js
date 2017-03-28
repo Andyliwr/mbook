@@ -6,7 +6,8 @@ App({
   onLaunch: function () {
     var self = this;
     //从缓存中读取sessionid
-    // wx.setStorageSync('sessionid', ''); //test
+    // wx.removeStorage({key: 'sessionid',success: function(res) {console.log('缓存清除成功')}}) //test
+    // wx.removeStorage({key: 'id',success: function(res) {console.log('缓存清除成功')}}) //test
     var sessionId = wx.getStorageSync('sessionid');//sessionAndUuid由sessionId和userId组成
     if(sessionId){
       self.checkSessionEffect(sessionId);
@@ -50,6 +51,7 @@ App({
           var tmpdata = res.data.data;
           if(tmpdata.code == 0 && tmpdata.isEffect == 1){
             self.globalData.sessionId = sessionId;
+            console.log('已登录，sessionid有效');
             // wx.showToast({ title: '已登录', icon: 'success', duration: 100 });
             // //2s后隐藏提示
             // setTimeout(function () { wx.hideToast() }, 2000);
@@ -68,7 +70,7 @@ App({
     }
   },
   //执行登录操作
-  doLogin: function(){
+  doLogin: function(callback){
     var self = this;
     wx.login({
       success: function (res) {
@@ -104,6 +106,9 @@ App({
                         //如果登录成功，将sessionid存储在本地缓存中
                         wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
                         self.globalData.sessionId = tmpdata.sessionid;
+                        if(typeof callback == "function"){
+                          callback();
+                        }
                         wx.showToast({ title: '登录成功', icon: 'success', duration: 100 });
                         //2s后隐藏提示
                         setTimeout(function () { wx.hideToast() }, 2000);

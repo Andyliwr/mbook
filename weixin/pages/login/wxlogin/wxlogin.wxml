@@ -16,26 +16,29 @@
                 <icon class="upload-icon"></icon>
             </view>
             <view class="section">
-                <label for="username">用户名<input  bindinput="bindReplaceInput" placeholder="username" /></label>
+                <label for="username">用户名<input type="text" value="{{username}}" placeholder="username" bindinput="userInput" data-type="username" maxlength="16" /></label>
             </view>
             <view class="section">
-                <label for="passowrd">密码<input  bindinput="bindReplaceInput" placeholder="password" /></label>
+                <label for="username">邮箱<input type="text" value="{{email}}" placeholder="email" bindinput="userInput" data-type="email" /></label>
             </view>
             <view class="section">
-                <label for="gender">昵称<input  bindinput="bindReplaceInput" placeholder="nickname" value="{{userInfoFromApp.nickName}}" /></label>
+                <label for="passowrd">密码<input type="text" password="true" value="{{password}}" placeholder="password" bindinput="userInput" data-type="password" /></label>
+            </view>
+            <view class="section">
+                <label for="gender">昵称<input type="text" value="{{nickName}}" placeholder="nickname" value="{{userInfoFromApp.nickName}}" bindinput="userInput" data-type="nickname" /></label>
             </view>
             <view class="section sex">
                 <text>性别</text>
-                <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromApp.gender == 1}}"></radio>
-                <label class="label-2__text" for="{{item.name}}"><text>男</text></label>
-                 <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromApp.gender == 0}}"></radio>
-                <label class="label-2__text" for="{{item.name}}"><text>女</text></label>
+                <radio checked="{{userInfoFromApp.gender == 1}}" bindtap="genderChange" data-gender="male"></radio>
+                <label class="label-2__text"><text>男</text></label>
+                <radio checked="{{userInfoFromApp.gender == 0}}" bindtap="genderChange" data-gender="female"></radio>
+                <label class="label-2__text"><text>女</text></label>
             </view>
             <view class="section">
-                <label for="city">城市<input  bindinput="bindReplaceInput" placeholder="city" value="{{userInfoFromApp.city}}" /></label>
+                <label for="city">城市<input type="text" value="{{city}}" placeholder="city" value="{{userInfoFromApp.city}}" bindinput="userInput" data-type="city" /></label>
             </view>
         </form>
-        <button type="primary" bindtap="confirmLogin" loading="{{isShowLoading}}">确认注册</button>
+        <button type="primary" bindtap="confirmRegiste" loading="{{isShowLoading}}">确认注册</button>
         <button type="default" bindtap="gotoRegiste">其他注册方式</button>
     </view>
     <!-- 出错打印 -->
