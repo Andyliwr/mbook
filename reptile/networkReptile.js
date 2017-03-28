@@ -9,6 +9,8 @@ var fs = require('fs');
 var htmlToText = require('html-to-text');
 var chinese_parseInt = require('./tools/chinese-parseint');
 var connectDB = require('./connectDB/connectDB');
+connectDB.configLog('networkReptile');
+
 //日志相关
 var log4js = require('log4js');
 //config log

@@ -6,15 +6,28 @@ var myAppTools = require('../tools/myAppTools');
 var eventproxy = require('eventproxy');
 //日志相关
 var log4js = require('log4js');
+var logger = null;
 //config log
-log4js.configure({
-    appenders: [
-        {type: 'console'},
-        {type: 'file', filename: '../log/networkReptile.log', category: 'networkReptile'}
-    ]
-});
-var logger = log4js.getLogger('networkReptile');
-// logger.setLevel('ERROR');
+
+function configLog(reptileType){
+    if(reptileType == "networkReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
+            ]
+        });
+        logger = log4js.getLogger('networkReptile');
+    }else if(reptileType == "rankReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/rankReptile.log', category: 'rankReptile'}
+            ]
+        });
+        logger = log4js.getLogger('rankReptile');
+    }
+}
 
 // Connection URL
 // var url = 'mongodb://'+config.mongoConfig.username+':'+config.mongoConfig.password+'@'+config.mongoConfig.url+':'+config.mongoConfig.port+'/'+config.mongoConfig.dbName;
@@ -581,6 +594,7 @@ function updateRank(jsonArr) {
 }
 
 //把存储方法暴露出来
+exports.configLog = configLog;
 exports.saveFaction = saveFaction;
 exports.updateSectionList = updateSectionList;
 exports.getNewestSectionNum = getNewestSectionNum;
