@@ -20,3 +20,6 @@ reptile/config.js
 #忽略vscode的配置目录
 .vscode/
 
+#忽略掉这些很sb的log文件
+log/
+reptile/log/

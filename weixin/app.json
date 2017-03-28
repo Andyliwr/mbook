@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/booklist/booklist",
+    "pages/registe/registe",
     "pages/login/wxlogin/wxlogin",
     "pages/book_detail/reader/reader",
     "pages/jiaowu/jiaowu",

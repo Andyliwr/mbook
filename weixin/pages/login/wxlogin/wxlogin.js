@@ -40,6 +40,8 @@ Page({
         });
     },
     uploadAvatar: function(){
+      wx.hideToast();
+      wx.showToast({title: '上传中',icon: 'loading',duration: 300})
       initQiniu();
       var  self = this;
       wx.chooseImage({
@@ -55,6 +57,9 @@ Page({
             self.setData({
               userInfoFromApp: {openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: self.data.userInfoFromApp.gender}
             });
+            wx.hideToast();
+            wx.showToast({title: '上传成功',icon: 'success',duration: 1000});
+            setTimeout(function(){wx.hideToast()},2000)
           }, (error) => {
             console.error('error: ' + JSON.stringify(error));
           },self.data.userInfoFromApp.openid);
@@ -62,6 +67,11 @@ Page({
         fail: function(err){
           console.log("选择图片失败, "+err);
         }
+      })
+    },
+    gotoRegiste: function(){
+      wx.navigateTo({
+        url: 'pages/registe/registe'
       })
     }
 });
