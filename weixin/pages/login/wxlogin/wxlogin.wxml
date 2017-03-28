@@ -12,7 +12,7 @@
         <view class="tips">请设置完善个人信息</view>
         <form bindsubmit="formSubmit" bindreset="formReset">
             <view class="section avatar">
-                <image src="{{userInfoFromUrl.avatar || 'https://olpkwt43d.qnssl.com/myapp/user/personal.png'}}" bindtap="uploadAvatar"></image>
+                <image src="{{userInfoFromApp.avatar}}" bindtap="uploadAvatar"></image>
                 <icon class="upload-icon"></icon>
             </view>
             <view class="section">
@@ -22,17 +22,17 @@
                 <label for="passowrd">密码<input  bindinput="bindReplaceInput" placeholder="password" /></label>
             </view>
             <view class="section">
-                <label for="gender">昵称<input  bindinput="bindReplaceInput" placeholder="nickname" value="{{userInfoFromUrl.nickName}}" /></label>
+                <label for="gender">昵称<input  bindinput="bindReplaceInput" placeholder="nickname" value="{{userInfoFromApp.nickName}}" /></label>
             </view>
             <view class="section sex">
                 <text>性别</text>
-                <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromUrl.gender == 1}}"></radio>
+                <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromApp.gender == 1}}"></radio>
                 <label class="label-2__text" for="{{item.name}}"><text>男</text></label>
-                 <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromUrl.gender == 0}}"></radio>
+                 <radio id="{{item.name}}" value="{{item.name}}" checked="{{userInfoFromApp.gender == 0}}"></radio>
                 <label class="label-2__text" for="{{item.name}}"><text>女</text></label>
             </view>
             <view class="section">
-                <label for="city">城市<input  bindinput="bindReplaceInput" placeholder="city" value="{{userInfoFromUrl.city}}" /></label>
+                <label for="city">城市<input  bindinput="bindReplaceInput" placeholder="city" value="{{userInfoFromApp.city}}" /></label>
             </view>
         </form>
         <button type="primary" bindtap="confirmLogin" loading="{{isShowLoading}}">确认注册</button>

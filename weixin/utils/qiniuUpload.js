@@ -45,7 +45,7 @@ function updateConfigWithOptions(options) {
     }
 }
 
-function upload(filePath, success, fail, options) {
+function upload(filePath, success, fail, openid, options) {
     if (null == filePath) {
         console.error('qiniu uploader need filePath to upload');
         return;
@@ -53,54 +53,72 @@ function upload(filePath, success, fail, options) {
     if (options) {
         init(options);
     }
-    if (config.qiniuUploadToken) {
-        doUpload(filePath, success, fail, options);
-    } else if (config.qiniuUploadTokenURL) {
-        getQiniuToken(function() {
-            doUpload(filePath, success, fail, options);
-        });
-    } else if (config.qiniuUploadTokenFunction) {
-        config.qiniuUploadToken = config.qiniuUploadTokenFunction();
-    } else {
-        console.error('qiniu uploader need one of [uptoken, uptokenURL, uptokenFunc]');
-        return;
-    }
+    doUpload(filePath, success, fail, openid, options);
+    //token不在在这儿产生
+    // if (config.qiniuUploadToken) {
+    //     doUpload(filePath, success, fail, options);
+    // } else if (config.qiniuUploadTokenURL) {
+    //     getQiniuToken(function() {
+    //         doUpload(filePath, success, fail, options);
+    //     });
+    // } else if (config.qiniuUploadTokenFunction) {
+    //     config.qiniuUploadToken = config.qiniuUploadTokenFunction();
+    // } else {
+    //     console.error('qiniu uploader need one of [uptoken, uptokenURL, uptokenFunc]');
+    //     return;
+    // }
 }
 
-function doUpload(filePath, success, fail, options) {
+function doUpload(filePath, success, fail, openid, options) {
     var url = uploadURLFromRegionCode(config.qiniuRegion);
-    var fileName = filePath.split('//')[1];
-    if (options && options.key) {
-        fileName = options.key;
+    //产生key
+    var nowDate = new Date();
+    var fileName = nowDate.getTime()+'.png';
+    if(openid){
+        fileName = openid+nowDate.getTime()+'.png'; 
     }
-    var formData = {
-        'token': config.qiniuUploadToken,
-        'key': fileName
-    };
-    console.log('url:', url, 'filePath:', filePath, 'formData:', formData)
-    wx.uploadFile({
-        url: url,
-        filePath: filePath,
-        name: 'file',
-        formData: formData,
+    //产生token
+    wx.request({
+        url: config.qiniuUploadTokenURL+'?key='+fileName,
         success: function (res) {
-            var dataString = res.data
-            var dataObject = JSON.parse(dataString);
-            //do something
-            var imageUrl = config.qiniuImageURLPrefix + dataObject.key;
-            dataObject.imageURL = imageUrl;
-            console.log(dataObject);
-            if (success) {
-                success(dataObject);
-            }
+            var token = res.data.uptoken;
+            config.qiniuUploadToken = token;
+            //上传动作
+            var formData = {
+                'token': token,
+                'key': fileName
+            };
+            console.log('url:', url, 'filePath:', filePath, 'formData:', formData)
+            wx.uploadFile({
+                url: url,
+                filePath: filePath,
+                name: 'file',
+                formData: formData,
+                success: function (res) {
+                    var dataString = res.data
+                    var dataObject = JSON.parse(dataString);
+                    //do something
+                    var imageUrl = config.qiniuImageURLPrefix + dataObject.key;
+                    dataObject.imageURL = imageUrl;
+                    console.log(dataObject);
+                    if (success) {
+                        success(dataObject);
+                    }
+                },
+                fail: function (error) {
+                    console.log(error);
+                    if (fail) {
+                        fail(error);
+                    }
+                }
+            })
         },
         fail: function (error) {
             console.log(error);
-            if (fail) {
-                fail(error);
-            }
         }
     })
+ 
+    
 }
 
 function getQiniuToken(callback) {

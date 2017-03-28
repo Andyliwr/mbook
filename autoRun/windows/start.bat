@@ -6,7 +6,7 @@ ECHO.
 If %username% == Andyliwr (
   :: 记得改成ANDYLIWRTHS
   echo %computername%
-  If %computername% == ANDYLIWRPC ( 
+  If %computername% == ANDYLIWRTHS ( 
      set projectAddr=C:\Users\Andyliwr\Documents\graduationDesign
      set mongoDbPath=D:\mongo\data
      set mongoLogPath=D:\mongo\log\mongo.log
