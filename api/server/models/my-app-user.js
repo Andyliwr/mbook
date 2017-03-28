@@ -137,7 +137,7 @@ module.exports = function (Myappuser) {
                 //用户未注册,导向微信注册页
                 var userData = JSON.parse(userInfo);
                 var city = ((userData.country == 'CN'?'China':userData.country) +' '+userData.province+' '+userData.city).trim();
-                cb(null, { code: 0, redirect: 'pages/login/wxlogin/wxlogin?openid='+ checkData.openid +'&nickName='+ userData.nickName + '&city='+city+'&avatar='+userData.avatarUrl+'&gender='+userData.gender});
+                cb(null, { code: 0, redirectParam: {openid: checkData.openid, nickName: userData.nickName, city: city, avatar: userData.avatarUrl, gender: userData.gender}});
               }else{
                 //用户已经注册，执行登录
                 //使用uuid生成一个唯一字符串sessionid作为键，将openid和session_key作为值，存入redis，超时时间设置为2小时
@@ -176,6 +176,7 @@ module.exports = function (Myappuser) {
         });
         
         var openidReg = new RegExp(returnData.data.openid, 'ig');
+        // todo 这个查找过滤条件无法生效，原因暂未查明
         Myappuser.find({auth: openidReg}, function(err, res){
           var checkData = null;
           if(err){
@@ -184,11 +185,17 @@ module.exports = function (Myappuser) {
             checkRegisteEp.emit('hasFinishedCheck', checkData);
             return;
           }
-          if(res.length){
-            console.log('openid为'+JSON.parse(res[0].auth).wxOpenId+'的用户已经绑定了myappuser的账号'+res[0].username+', userId为'+res[0].id+'...');
+
+          //过滤不合格的用户
+          var thisUserArr = res.filter(function(item){
+            return openidReg.test(item.auth);
+          });
+
+          if(thisUserArr.length){
+            console.log('openid为'+JSON.parse(thisUserArr[0].auth).wxOpenId+'的用户已经绑定了myappuser的账号'+thisUserArr[0].username+', userId为'+thisUserArr[0].id+'...');
             checkData = {code: 0, isRegisted: 1, openid: returnData.data.openid, session_key: returnData.data.session_key};
           }else{
-            console.log('用户openid: '+returnData.data.openid+' 未绑定myappuser账号，正在自动绑定');
+            console.log('用户openid: '+returnData.data.openid+' 未绑定myappuser账号');
             checkData = {code: 0, isRegisted: 0, openid: returnData.data.openid};
           }
           checkRegisteEp.emit('hasFinishedCheck', checkData);
@@ -304,16 +311,19 @@ module.exports = function (Myappuser) {
   );
 
   //获取上传个人头像的token值
-  Myappuser.getUploadToken = function (cb) {
-    var avatarId = uuid.v1();
-    var key = 'avatar/'+avatarId+'.png';
+  Myappuser.getUploadToken = function (key, cb) {
+    //key值应该由客户端指定，否则会导致前端和后端因为key值不一样致使上传失败
     var putPolicy = new qiniu.rs.PutPolicy(QINIU_BUCKET+':'+key);
     cb(null, putPolicy.token());
   };
   Myappuser.remoteMethod(
     'getUploadToken',
     {
-      'accepts': '',
+      'accepts':  {
+        arg: 'key',
+        type: 'string',
+        description: '上传到到七牛云服务器之后的图片名字'
+      },
       'returns': [
         { 'arg': 'uptoken', 'type': 'string' }
       ],

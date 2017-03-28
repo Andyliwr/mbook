@@ -13,7 +13,7 @@ App({
     }else{
       //用户未登录，接下来判断用户是否注册
       self.doLogin();
-      // wx.navigateTo({url: '/pages/login/wxlogin/wxlogin'});
+      // wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
     }
   },
   /**
@@ -97,10 +97,9 @@ App({
                     var tmpdata = res.data.data;
                     if (tmpdata.code == 0) {
                       //如果用户未绑定myappuser
-                      if(tmpdata.redirect){
-                        wx.navigateTo({
-                          url: tmpdata.redirect
-                        });
+                      if(tmpdata.redirectParam){
+                        self.globalData.registerParam = tmpdata.redirectParam;
+                        wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
                       }else{
                         //如果登录成功，将sessionid存储在本地缓存中
                         wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
@@ -156,7 +155,8 @@ App({
   },
   globalData: {
     userInfo: null,
-    sessionId: ''
+    sessionId: '',
+    registerParam: null
   },
 
   //自定义配置

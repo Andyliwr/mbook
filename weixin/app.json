@@ -1,12 +1,12 @@
 {
   "pages": [
     "pages/booklist/booklist",
+    "pages/login/wxlogin/wxlogin",
     "pages/book_detail/reader/reader",
     "pages/jiaowu/jiaowu",
     "pages/shop/shop",
     "pages/rank/rank",
     "pages/login/aslogin/aslogin",
-    "pages/login/wxlogin/wxlogin",
     "pages/jiaowu_detail/jiaowu_detail",
     "pages/user/user",
     "pages/book_detail/book_detail"

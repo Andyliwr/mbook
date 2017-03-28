@@ -69,6 +69,6 @@ var fail = function (err) {
     console.log('fail');
     console.log(err);
 };
-uploadFileToQiNiu('me_test.jpg', 'me_test20170326.jpg', success, fail);
+uploadFileToQiNiu('me_test.jpg', 'me_test20170328.png', success, fail);
 
 exports.uploadFileToQiNiu = uploadFileToQiNiu;
