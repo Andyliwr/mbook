@@ -26,6 +26,14 @@ function configLog(reptileType){
             ]
         });
         logger = log4js.getLogger('rankReptile');
+    }else if(reptileType == "ixdzsReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
+            ]
+        });
+        logger = log4js.getLogger('ixdzsReptile');
     }
 }
 

@@ -40,8 +40,6 @@ var ALL_TYPES = [
 ];
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
-//最终数据
-var finalData = [];
 
 fs.exists('log', function (ret) {
     if (!ret) {
@@ -52,7 +50,7 @@ fs.exists('log', function (ret) {
         if (err) {
             console.log('创建日志文件失败！');
         } else {
-            // logger.info('\n\n\n\n\n');
+            logger.info('\n\n\n');
             init();
         }
     });
