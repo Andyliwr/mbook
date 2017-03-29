@@ -20,23 +20,23 @@ var log4js = require('log4js');
 //config log
 log4js.configure({
     appenders: [
-        {type: 'console'},
-        {type: 'file', filename: 'log/ixdzsReptile.log', category: 'ixdzsReptile'}
+        { type: 'console' },
+        { type: 'file', filename: 'log/ixdzsReptile.log', category: 'ixdzsReptile' }
     ]
 });
 var logger = log4js.getLogger('ixdzsReptile');
 
 
-var AXDZS_SEARCH_URL = 'http://www.ixdzs.com/bsearch?q=';
+var AXDZS_SEARCH_URL = 'http://zhannei.baidu.com/cse/search';
 var QI_DIAN_WEB = 'http://r.qidian.com/';
 var ZONG_HENG_WEB = 'http://book.zongheng.com/rank.html';
 var ALL_TYPES = [
-    {standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '百度小说月票榜'},
-    {standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻玄幻点击榜'},
-    {standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '言情小说点击榜'},
-    {standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠仙侠点击榜'},
-    {standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史军事点击榜'},
-    {standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻游戏点击榜'}
+    { standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '百度小说月票榜' },
+    { standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻玄幻点击榜' },
+    { standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '言情小说点击榜' },
+    { standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠仙侠点击榜' },
+    { standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史军事点击榜' },
+    { standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻游戏点击榜' }
 ];
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
@@ -60,7 +60,7 @@ fs.exists('log', function (ret) {
 var init = function () {
     var rule = new schedule.RecurrenceRule();
     //每天0点执行就是rule.hour =0;rule.minute =0;rule.second =0;
-    rule.second =[0, 10, 20, 30, 40, 50];
+    rule.second = [0, 10, 20, 30, 40, 50];
     // rule.second = 0;
     // rule.hour =18;rule.minute =0;rule.second =0;
     // var j = schedule.scheduleJob(rule, function(){
@@ -68,7 +68,7 @@ var init = function () {
     //     getQdFactionRankList();
     // });
     logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
-    startReptile('武神血脉');
+    startReptile('大主宰');
     // getQdFactionRankList();
 };
 
@@ -76,10 +76,10 @@ var init = function () {
  * 输入小说名字，开始爬取小说章节内容
  * @param factionNmme 小说名
  */
-function startReptile(factionNmme){
-    if(typeof factionNmme == 'string'){
+function startReptile(factionNmme) {
+    if (typeof factionNmme == 'string') {
         doSearch(factionNmme);
-    }else{
+    } else {
         logger.warn('startReptile传入参数错误');
     }
 }
@@ -88,20 +88,88 @@ function startReptile(factionNmme){
  * 使用爱下电子书搜索小说名字
  * @param factionNmme 小说名
  */
-function doSearch(factionName){
-    if(typeof factionName == 'string'){
-        superagent.get(encodeURI(AXDZS_SEARCH_URL+factionName))
-            .end(function(err, res){
-                if(err){
-                    logger.warn('使用爱下电子书搜索 '+factionName+' 失败');
+function doSearch(factionName) {
+    if (typeof factionName == 'string') {
+        superagent.get(AXDZS_SEARCH_URL)
+            .query({ s: '7466980319800320338', loc: 'http://www.ixdzs.com/bsearch?q=' + factionName, width: 580, q: factionName, wt: 1, ht: 1, pn: 10, fpos: 2, rmem: 0, reg: '' })
+            .end(function (err, res) {
+                if (err) {
+                    logger.warn('使用爱下电子书搜索 ' + factionName + ' 失败');
                     return;
                 }
                 var $ = cheerio.load(res.text);
-                console.log($('.result-list').text());
+                //小说展示页面的url
+                var factionDisplayUrl = $('.result-list .result-item .result-item-title a').each(function (index, element) {
+                    var $element = $(element);
+                    return $(element).attr('title') === factionName;
+                }).attr('href');
+                //转换小说的展示页面URL成为小说列表页的URL, 规律：http://www.ixdzs.com/d/133/133430/ ==> http://read.ixdzs.com/133/133430/
+                var factionUrl = factionDisplayUrl.replace(/www/, 'read');
+                factionUrl = factionUrl.replace(/\/d/, '');
+                logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
             });
-    }else{
+    } else {
         logger.warn('doSearch传入参数错误');
     }
+}
+
+function getFactionList() {
+    //开始爬取小说章节内容
+    var getNewestFactionList = function (newestFactionNum) {
+        //test, 爬去所有小说
+        newestFactionNum = 1410;
+        var totalNewestNum = 0;
+        superagent.get(factionUrl)
+            .end(function (err, res) {
+                if (err) {
+                    logger.warn('访问爱下电子书-- ' + factionName + ' 章节列表页失败');
+                    return;
+                };
+                var $ = cheerio.load(res.text);
+                $('.catalog .chapter > a').each(function (idx, element) {
+                    var $element = $(element);
+                    var sectionID = $element.attr('href');
+                    //获取章节数和章标题
+                    //这里做个判断并不是置顶的就一定会是小说，这些我们要排除
+                    if ($element.text().indexOf('第') < 0 || $element.text().indexOf('章') < 0) {
+                        return true;
+                    }
+                    var reg = new RegExp('第.*章');
+                    var dealString = myAppTools.removeNaN(reg.exec($element.text())[0]);
+                    /*
+                    * 积累正则
+                    * var reg = new RegExp('第[一二三四五六七八九十]章');
+                    * dealString.slice(dealString.indexOf('第')+1, dealString.indexOf('章')).trim()
+                    * */
+                    var sectionNum = chinese_parseInt(dealString);
+                    if (sectionNum > parseInt(newestFactionNum)) {
+                        totalNewestNum++;
+                        var href = url.resolve(factionUrl, sectionID);
+                        if (!myAppTools.isInArray(readyToBroswerUrls, href)) {
+                            readyToBroswerUrls.push(href);
+                        }
+                        var sectionTitle = $element.text().substring($element.text().indexOf('章') + 1).trim();
+                        var dealedDataElement = {
+                            sectionNum: sectionNum,
+                            sectionTitle: sectionTitle,
+                            url: href,
+                            sectionContent: '',
+                            upDateTime: new Date()
+                        };
+                        if (!myAppTools.isInArray(dealedData, dealedDataElement)) {
+                            dealedData.push(dealedDataElement);
+                        }
+                    }
+                });
+                if (totalNewestNum >= 1) {
+                    logger.info("从" + factionInfo.sourceName + "抓取到的最新的小说章节有" + totalNewestNum + "章。");
+                    getFactionContent(factionInfo, readyToBroswerUrls, dealedData);
+                } else {
+                    logger.info(factionInfo.sourceName + "小说--《" + factionName + "》暂时没有更新~");
+                }
+            });
+    };
+    connectDB.getNewestSectionNum(factionName, factionInfo.sourceName, getNewestFactionList);
 }
 
 
@@ -133,7 +201,7 @@ function getQdFactionRankList() {
                 //使用计时器来判断起点小说排行榜是否爬取完毕
                 qdTimmer = setInterval(function () {
                     //更新进度条
-                    qdBar.tick({'percent': ++qdProgressValue, 'time': qdProgressValue / 10});
+                    qdBar.tick({ 'percent': ++qdProgressValue, 'time': qdProgressValue / 10 });
                     var isQdReady = ALL_TYPES.every(function (item, index, array) {
                         return item.qdRank.every(function (item2, index2, array2) {
                             return item2.author && item2.headImg;
@@ -142,7 +210,7 @@ function getQdFactionRankList() {
                     if (isQdReady) {
                         //标志爬取完毕
                         qdBar.curr = 100;
-                        qdBar.tick({'percent': 100, 'time': qdProgressValue / 10});
+                        qdBar.tick({ 'percent': 100, 'time': qdProgressValue / 10 });
                         logger.info('起点小说排行榜爬取完毕.....');
                         clearInterval(qdTimmer);
                         QzEp.emit('hasFinishedQidian', 'qd');
@@ -157,7 +225,7 @@ function getQdFactionRankList() {
                         superagent.get(item.qd_url)
                             .end(function (err, res) {
                                 if (err) {
-                                    logger.warn('访问起点排行分类---'+item.qidian+'失败，将自动忽略这个分类排行榜的更新....');
+                                    logger.warn('访问起点排行分类---' + item.qidian + '失败，将自动忽略这个分类排行榜的更新....');
                                     QdEp.emit('getQdRank', 'qdFail');
                                     return;
                                 }
@@ -241,7 +309,7 @@ function getZhFactionRankList() {
                 //使用计时器来判断纵横小说排行榜是否爬取完毕
                 zhTimmer = setInterval(function () {
                     //更新进度条
-                    zhBar.tick({'percent': ++zhProgressValue, 'time': zhProgressValue / 10});
+                    zhBar.tick({ 'percent': ++zhProgressValue, 'time': zhProgressValue / 10 });
                     var isZhReady = ALL_TYPES.every(function (item, index, array) {
                         return item.zhRank.every(function (item2, index2, array2) {
                             return item2.author && item2.headImg;
@@ -250,7 +318,7 @@ function getZhFactionRankList() {
                     if (isZhReady) {
                         //标志爬取完毕
                         zhBar.curr = 100;
-                        zhBar.tick({'percent': 100, 'time': zhProgressValue / 10});
+                        zhBar.tick({ 'percent': 100, 'time': zhProgressValue / 10 });
                         logger.info('纵横小说排行榜爬取完毕.....');
                         clearInterval(zhTimmer);
                         finalEp.emit('hasFinishedZongheng', 'zh');
@@ -267,7 +335,7 @@ function getZhFactionRankList() {
                     superagent
                         .get('http://book.zongheng.com/ajax/rank.getZongHengRankList.do')
                         .set('Accept', 'application/json')
-                        .query({rankType: 1, pageNum: 1, pageSize: 10, callback: 'jsonp' + nowDate.getTime()})
+                        .query({ rankType: 1, pageNum: 1, pageSize: 10, callback: 'jsonp' + nowDate.getTime() })
                         .use(sjsonapify) // json格式化插件
                         .end(function (res) {
                             if (!res.statusCode) {
@@ -336,7 +404,7 @@ function getZhFactionRankList() {
                             $ele.parent().next().next().children('ul').children('li').children('a').each(function (idx2, ele2) {
                                 var $everybook = $(ele2);
                                 zhItem.zhRank.push({
-                                    num: idx2+1,
+                                    num: idx2 + 1,
                                     factionName: $everybook.text(),
                                     author: '',
                                     headImg: '',

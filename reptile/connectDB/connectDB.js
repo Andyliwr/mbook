@@ -413,7 +413,9 @@ function getNewestSectionNum(factionName, resource, callback) {
                         if (list.length == 0) {
                             logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
                         } else {
-                            callback(list[0].sectionArray[0].sectionNum || 0);
+                            if(typeof callback == 'function'){
+                                callback(list[0].sectionArray[0].sectionNum || 0);
+                            }
                         }
                     } catch (err) {
                         logger.warn('获取小说' + factionName + '，来源为' + resource + '的小说的最新章节数失败！');
