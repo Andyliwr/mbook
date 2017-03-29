@@ -5,7 +5,7 @@ import {LEVEL} from '../../datas/Config';
 Page({
     data: {
         item: '',
-        levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger],
+        // levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger],
     },
     onLoad(option) {
         const {id} = option;

@@ -7,6 +7,7 @@ module.exports = function (Factionlists) {
   Factionlists.getBookById = function (bookId, cb) {
     var returnData = {};
     var app = Factionlists.app;
+    console.log(bookId);
     app.models.factionlists.findById(bookId,{}, {}, function (err, res) {
       if (err) {
         console.log('查询小说列表失败....' + err);

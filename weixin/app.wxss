@@ -10,7 +10,7 @@
 page {
   background-color: #ffffff;
   height: 100%;
-  font-family: 'Arial'; }
+  font-family: PingFangSC-Regular, sans-serif, "Microsoft YaHei"; }
 
 .container {
   display: flex;
@@ -551,3 +551,12 @@ checkbox, radio {
 
 .text-center {
   text-align: center !important; }
+.clearfix{
+  clear:both;
+  content:'';}
+.splitor{
+  height:20rpx;
+  background: #f5f5f5;
+  border-top:1rpx solid #dcdcdc;
+  border-bottom:1rpx solid #dcdcdc;
+  }

@@ -185,6 +185,9 @@
   margin-top: 10rpx; }
 
 .booklist-container .bookInfo .bookDes {
+  overflow:hidden; /*超出的部分隐藏起来。*/ 
+  white-space:nowrap;/*不显示的地方用省略号...代替*/
+  text-overflow:ellipsis;/* 支持 IE */
   font-size: 22rpx;
   color: #888;
   margin-top: 20rpx; }

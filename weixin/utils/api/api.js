@@ -4,7 +4,7 @@
 var HOST_URL = 'http://localhost:3000/api';
 var LOGIN = '/as_users/login';
 var GET_FACTION_LIST = '/xs_list';
-var GET_FACTION_DETAIL_BY_ID = '/xs_list/';
+var GET_FACTION_DETAIL_BY_ID = '/xs_list';
 var GET_CONTENT_BY_ID = '/xs_content/getContentById';
 var GET_EMAILS_PAGEID = '/emails';
 var GET_BOOKS_SORTBY_TIME = '/xxxx';
@@ -14,6 +14,7 @@ var GET_SESSION_ID = '/myappuser/getSessionId';
 var CHECK_SESSION_ID = '/myappuser/checkSessionId';
 var IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
 var GET_UPLOAD_TOKEN = '/myappuser/getUploadToken';
+var GET_BOOK_BY_ID = '/xs_list/getBookById';
 
 function obj2url(obj){
 	if(obj instanceof Object){
@@ -50,6 +51,9 @@ module.exports = {
 		}else{
 			console.log('根据时间分类用户的书籍 传入参数错误');
 		}
+	},
+	getBookById: function(bookid){
+		return HOST_URL + GET_BOOK_BY_ID + '?bookId='+bookid;
 	},
 	getRank: function(rankType){
 		return HOST_URL + GET_RANK + '?rankType='+rankType;

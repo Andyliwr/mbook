@@ -1,1 +1,45 @@
-I am book_detail
+<view class="book-detail-container">
+	<view class="headBackgroundContainer">
+		<view class="headBackground" style="background:url('{{img}}') no-repeat center;background-size:200%;" >
+		</view>
+	</view>	
+	<view class="head">
+		<view class="bookInfo">
+			<image class="headImg" src="{{img}}" mode="aspectFill"></image>
+			<view class="left-text">
+				<view class="bookName">大主宰</view>
+				<view class="author">作者：{{book.author}}</view>
+				<view class="wordsNum">字数：348.33万</view>
+				<view class="source">来源：百度贴吧</view>
+				<view class="updatetime">最新更新时间：{{book.updatetime}}</view>
+			</view>
+		</view>
+		<view class="clearfix"></view>
+		<view class="btn-group">
+			<view class="addToList" bindtap="addToList"><image src="../../image/add.png" mode="scaleToFill"></image>加入书架</view>
+			<view class="read" bindtap="goToReader"><image src="../../image/read1.png"></image>立即阅读</view>
+		</view>
+	</view>
+	<view class="book-des">
+		<view class="des-content" bindtap="showAllDes">{{showAllDes?des:shortDes}}</view>
+	</view>
+	<view class="splitor"></view>
+	<view class="comments"> 
+		<view class="title">精彩评论<text class="add-comment" bindtap="toWriteComment">写评论</text>
+		</view>
+		<view class="comment-list">
+			<view class="comment-item" wx:for="{{comments}}">
+				<image class="headImg" src="{{item.headImg}}" mode="scaleToFill"></image>
+				<view class="comment-right">
+					<view class="reader-name">{{item.readerName}}</view>
+					<view class="comment">{{item.comment}}</view>		
+					<view class="create-time">2月31日 19:02</view>	
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="commnet-input-bar" hidden="{{commentInputHide}}">
+	<input class="comment-input" value="{{currentCommentValue}}" placeholder="发表评论" placeholder-style="margin-top:10rpx;" focus="{{!commentInputHide}}" maxlength="100" bindconfirm="sendComment"  confirm-type="send" ></input>
+	<view class="cancle" bindtap="hideCommentBar">取消</view>
+	</view>
+</view>

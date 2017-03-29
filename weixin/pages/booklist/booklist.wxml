@@ -29,15 +29,15 @@
     </view>
   </view>
   <view class="list">
-    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{item.isShow}}">
-      <view class="bookInfo">
-        <text class="bookName">{{item.bookName}}</text>
+    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10}}">
+      <view class="bookInfo" bindtap="goToBookDetail" id="{{item.id}}">
+        <text class="bookName">{{item.factionName}}</text>
         <text class="author">
           <text class="text-underline">作者：</text>{{item.author}}</text>
-        <text class="bookDes">{{item.bookDes}}</text>
+        <text class="bookDes">{{item.des}}</text>
         <icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
       </view>
-      <image src="{{item.img}}" mode="scaleToFill" />
+      <image src="{{item.headerImage}}" mode="scaleToFill" />
     </block>
   </view>
 
