@@ -14,6 +14,7 @@ var GET_SESSION_ID = '/myappuser/getSessionId';
 var CHECK_SESSION_ID = '/myappuser/checkSessionId';
 var IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
 var GET_UPLOAD_TOKEN = '/myappuser/getUploadToken';
+var REGISTE = '/myappuser';
 var GET_BOOK_BY_ID = '/xs_list/getBookById';
 
 function obj2url(obj){
@@ -66,8 +67,8 @@ module.exports = {
 		return HOST_URL + GET_SESSION_ID + '?wxcode=' + wxcode;
 	},
 	//检查本地缓存中记录的登录信息是否有效
-	checkSessionId: function(){
-		return HOST_URL + CHECK_SESSION_ID;
+	checkSessionId: function(sessionid){
+		return HOST_URL + CHECK_SESSION_ID + '?sessionid='+sessionid;
 	},
 	//检查用户是否已经通过微信注册过
 	isRegistedByWx: function(wxcode){
@@ -76,5 +77,9 @@ module.exports = {
 	//个人中心上传图片获取上传token
 	getUploadToken: function(){
 		return HOST_URL + GET_UPLOAD_TOKEN;
+	},
+	//新用户注册
+	registe: function(){
+		return HOST_URL + REGISTE;
 	}
 }

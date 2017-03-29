@@ -9,6 +9,8 @@ var fs = require('fs');
 var htmlToText = require('html-to-text');
 var chinese_parseInt = require('./tools/chinese-parseint');
 var connectDB = require('./connectDB/connectDB');
+connectDB.configLog('networkReptile');
+
 //日志相关
 var log4js = require('log4js');
 //config log
@@ -41,7 +43,7 @@ fs.exists('log', function (ret) {
     if (err) {
       console.log('创建日志文件失败！');
     } else {
-      logger.info('\n\n\n\n\n');
+      logger.info('\n\n\n');
       init();
     }
   });

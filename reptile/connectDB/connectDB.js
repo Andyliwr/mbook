@@ -6,15 +6,36 @@ var myAppTools = require('../tools/myAppTools');
 var eventproxy = require('eventproxy');
 //日志相关
 var log4js = require('log4js');
+var logger = null;
 //config log
-log4js.configure({
-    appenders: [
-        {type: 'console'},
-        {type: 'file', filename: '../log/networkReptile.log', category: 'networkReptile'}
-    ]
-});
-var logger = log4js.getLogger('networkReptile');
-// logger.setLevel('ERROR');
+
+function configLog(reptileType){
+    if(reptileType == "networkReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
+            ]
+        });
+        logger = log4js.getLogger('networkReptile');
+    }else if(reptileType == "rankReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/rankReptile.log', category: 'rankReptile'}
+            ]
+        });
+        logger = log4js.getLogger('rankReptile');
+    }else if(reptileType == "ixdzsReptile"){
+        log4js.configure({
+            appenders: [
+                {type: 'console'},
+                {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
+            ]
+        });
+        logger = log4js.getLogger('ixdzsReptile');
+    }
+}
 
 // Connection URL
 // var url = 'mongodb://'+config.mongoConfig.username+':'+config.mongoConfig.password+'@'+config.mongoConfig.url+':'+config.mongoConfig.port+'/'+config.mongoConfig.dbName;
@@ -392,7 +413,9 @@ function getNewestSectionNum(factionName, resource, callback) {
                         if (list.length == 0) {
                             logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
                         } else {
-                            callback(list[0].sectionArray[0].sectionNum || 0);
+                            if(typeof callback == 'function'){
+                                callback(list[0].sectionArray[0].sectionNum || 0);
+                            }
                         }
                     } catch (err) {
                         logger.warn('获取小说' + factionName + '，来源为' + resource + '的小说的最新章节数失败！');
@@ -581,6 +604,7 @@ function updateRank(jsonArr) {
 }
 
 //把存储方法暴露出来
+exports.configLog = configLog;
 exports.saveFaction = saveFaction;
 exports.updateSectionList = updateSectionList;
 exports.getNewestSectionNum = getNewestSectionNum;
