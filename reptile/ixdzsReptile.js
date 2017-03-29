@@ -68,8 +68,7 @@ var init = function () {
     //     getQdFactionRankList();
     // });
     logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
-    startReptile('大主宰');
-    // getQdFactionRankList();
+    startReptile('天影');
 };
 
 /**
@@ -91,7 +90,7 @@ function startReptile(factionNmme) {
 function doSearch(factionName) {
     if (typeof factionName == 'string') {
         superagent.get(AXDZS_SEARCH_URL)
-            .query({ s: '7466980319800320338', loc: 'http://www.ixdzs.com/bsearch?q=' + factionName, width: 580, q: factionName, wt: 1, ht: 1, pn: 10, fpos: 2, rmem: 0, reg: '' })
+            .query({ s: '7466980319800320338', loc: 'http://www.ixdzs.com/bsearch?q=' + encodeURI(factionName), width: 580, q: factionName, wt: 1, ht: 1, pn: 10, fpos: 2, rmem: 0, reg: '' })
             .end(function (err, res) {
                 if (err) {
                     logger.warn('使用爱下电子书搜索 ' + factionName + ' 失败');
@@ -99,38 +98,76 @@ function doSearch(factionName) {
                 }
                 var $ = cheerio.load(res.text);
                 //小说展示页面的url
-                var factionDisplayUrl = $('.result-list .result-item .result-item-title a').each(function (index, element) {
-                    var $element = $(element);
+                var factionDisplayUrlArr = $('.result-list .result-item .result-item-title a').filter(function (index, element) {
                     return $(element).attr('title') === factionName;
-                }).attr('href');
+                });
+                var factionDisplayUrl = '';
+                if(factionDisplayUrlArr.length == 0){
+                    //无结果
+                    logger.info('|' + factionName + '| 在 |爱下电子书| 无搜索结果');
+                }else if(factionDisplayUrlArr.length == 1){
+                    //正好有个结果项
+                    factionDisplayUrl = factionDisplayUrlArr[0].attribs.href;
+                }else if(factionDisplayUrlArr.length > 1){
+                    //有多个结果项，选取热度更加高的，继续访问详情页
+                    logger.info('搜索的 |'+factionName+'| 具有多个结果项，正在对比热度数据....');
+                    var compareHotEp = new eventproxy();
+                    compareHotEp.after('hasFinishedHot', factionDisplayUrlArr.length, function(allHots){
+                        //排序，找到最大值
+                        allHots.sort(function(hot1, hot2){
+                            return hot2.hot - hot1.hot;
+                        });
+                        factionDisplayUrl = factionDisplayUrlArr[allHots[0].idx].attribs.href;
+                        var factionUrl = factionDisplayUrl.replace(/www/, 'read');
+                        factionUrl = factionUrl.replace(/\/d/, '');
+                        logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
+                        getFactionList(factionName, factionUrl);
+                    });
+                    //遍历每个结果项去获取热度数据
+                    factionDisplayUrlArr.each(function(index, element){
+                        var thisUrl = $(element).attr('href');
+                        superagent.get(thisUrl)
+                            .end(function(err, res){
+                                if(err){
+                                    logger.warn('获取 第'+index+'结果项 的热度数据失败，地址：'+thisUrl);
+                                    compareHotEp.emit('hasFinishedHot', {idx: index, hot: 0});
+                                    return;
+                                }
+                                var $ = cheerio.load(res.text);
+                                var hotValue = $('.d_info .d_ac li:nth-child(5)').text().replace(/热度：/, '');
+                                compareHotEp.emit('hasFinishedHot', {idx: index, hot: hotValue});
+                            });
+                    });
+                    return;
+                }
                 //转换小说的展示页面URL成为小说列表页的URL, 规律：http://www.ixdzs.com/d/133/133430/ ==> http://read.ixdzs.com/133/133430/
                 var factionUrl = factionDisplayUrl.replace(/www/, 'read');
                 factionUrl = factionUrl.replace(/\/d/, '');
                 logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
+                getFactionList(factionName, factionUrl);
             });
     } else {
         logger.warn('doSearch传入参数错误');
     }
 }
 
-function getFactionList() {
+function getFactionList(name, url) {
     //开始爬取小说章节内容
     var getNewestFactionList = function (newestFactionNum) {
         //test, 爬去所有小说
-        newestFactionNum = 1410;
         var totalNewestNum = 0;
-        superagent.get(factionUrl)
+        superagent.get(url)
             .end(function (err, res) {
                 if (err) {
                     logger.warn('访问爱下电子书-- ' + factionName + ' 章节列表页失败');
                     return;
                 };
                 var $ = cheerio.load(res.text);
+                //这里放弃从章节标题中过滤得到章节数的做法，而是直接使用dom的顺序
                 $('.catalog .chapter > a').each(function (idx, element) {
                     var $element = $(element);
                     var sectionID = $element.attr('href');
                     //获取章节数和章标题
-                    //这里做个判断并不是置顶的就一定会是小说，这些我们要排除
                     if ($element.text().indexOf('第') < 0 || $element.text().indexOf('章') < 0) {
                         return true;
                     }
@@ -169,7 +206,7 @@ function getFactionList() {
                 }
             });
     };
-    connectDB.getNewestSectionNum(factionName, factionInfo.sourceName, getNewestFactionList);
+    connectDB.getNewestSectionNum(name, '爱下电子书', getNewestFactionList);
 }
 
 
