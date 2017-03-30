@@ -154,56 +154,90 @@ function doSearch(factionName) {
 function getFactionList(name, url) {
     //开始爬取小说章节内容
     var getNewestFactionList = function (newestFactionNum) {
+        newestFactionNum = 330;
         //test, 爬去所有小说
-        var totalNewestNum = 0;
         superagent.get(url)
             .end(function (err, res) {
                 if (err) {
-                    logger.warn('访问爱下电子书-- ' + factionName + ' 章节列表页失败');
+                    logger.warn('访问爱下电子书-- ' + name + ' 章节列表页失败');
                     return;
                 };
                 var $ = cheerio.load(res.text);
                 //这里放弃从章节标题中过滤得到章节数的做法，而是直接使用dom的顺序
+                var allSections = [];
+                var count = 0;
                 $('.catalog .chapter > a').each(function (idx, element) {
                     var $element = $(element);
-                    var sectionID = $element.attr('href');
+                    var aText = $element.text().trim();
+                    var sectionTitleReg = /(^\d+(\.)*( )*(第[零一二三四五六七八九十0-9]+章))|(^第[零一二三四五六七八九十0-9]+章)|(^[零一二三四五六七八九十])|(^\d+(\.)*[^零一二三四五六七八九十0-9])/;
+                    var matchResult = aText.match(sectionTitleReg);
+                    //当且仅当titile通过正则检测，并且章节数大于最新章节数，才会被加到待访问队列中
+                    if(matchResult != null && matchResult.length > 0){
+                        ++ count;
+                        if(count > newestFactionNum){
+                            allSections.push({sectionNum: count, sectionTitle: aText.replace(sectionTitleReg, '').trim(), contentUrl: url+$element.attr('href')})
+                        }
+                    }
                     //获取章节数和章标题
-                    if ($element.text().indexOf('第') < 0 || $element.text().indexOf('章') < 0) {
-                        return true;
-                    }
-                    var reg = new RegExp('第.*章');
-                    var dealString = myAppTools.removeNaN(reg.exec($element.text())[0]);
-                    /*
-                    * 积累正则
-                    * var reg = new RegExp('第[一二三四五六七八九十]章');
-                    * dealString.slice(dealString.indexOf('第')+1, dealString.indexOf('章')).trim()
-                    * */
-                    var sectionNum = chinese_parseInt(dealString);
-                    if (sectionNum > parseInt(newestFactionNum)) {
-                        totalNewestNum++;
-                        var href = url.resolve(factionUrl, sectionID);
-                        if (!myAppTools.isInArray(readyToBroswerUrls, href)) {
-                            readyToBroswerUrls.push(href);
-                        }
-                        var sectionTitle = $element.text().substring($element.text().indexOf('章') + 1).trim();
-                        var dealedDataElement = {
-                            sectionNum: sectionNum,
-                            sectionTitle: sectionTitle,
-                            url: href,
-                            sectionContent: '',
-                            upDateTime: new Date()
-                        };
-                        if (!myAppTools.isInArray(dealedData, dealedDataElement)) {
-                            dealedData.push(dealedDataElement);
-                        }
-                    }
+                    // if ($element.text().indexOf('第') < 0 || $element.text().indexOf('章') < 0) {
+                    //     return true;
+                    // }
+                    // var reg = new RegExp('第.*章');
+                    // var dealString = myAppTools.removeNaN(reg.exec($element.text())[0]);
+                    // /*
+                    // * 积累正则
+                    // * var reg = new RegExp('第[一二三四五六七八九十]章');
+                    // * dealString.slice(dealString.indexOf('第')+1, dealString.indexOf('章')).trim()
+                    // * */
+                    // var sectionNum = chinese_parseInt(dealString);
+                    // if (sectionNum > parseInt(newestFactionNum)) {
+                    //     totalNewestNum++;
+                    //     var href = url.resolve(factionUrl, sectionID);
+                    //     if (!myAppTools.isInArray(readyToBroswerUrls, href)) {
+                    //         readyToBroswerUrls.push(href);
+                    //     }
+                    //     var sectionTitle = $element.text().substring($element.text().indexOf('章') + 1).trim();
+                    //     var dealedDataElement = {
+                    //         sectionNum: sectionNum,
+                    //         sectionTitle: sectionTitle,
+                    //         url: href,
+                    //         sectionContent: '',
+                    //         upDateTime: new Date()
+                    //     };
+                    //     if (!myAppTools.isInArray(dealedData, dealedDataElement)) {
+                    //         dealedData.push(dealedDataElement);
+                    //     }
+                    // }
                 });
-                if (totalNewestNum >= 1) {
-                    logger.info("从" + factionInfo.sourceName + "抓取到的最新的小说章节有" + totalNewestNum + "章。");
-                    getFactionContent(factionInfo, readyToBroswerUrls, dealedData);
-                } else {
-                    logger.info(factionInfo.sourceName + "小说--《" + factionName + "》暂时没有更新~");
-                }
+                //开始爬取小说每章的内容
+                var contentEp = new eventproxy();
+                contentEp.after('hasFinishedContent', allSections.length, function(allContents){
+                    //拼合数组
+                    allContents.forEach(function(item, index){
+                        allSections[index].content = item;
+                        delete allSections[index].contentUrl;
+                    });
+                    console.log(allSections);
+                });
+                allSections.forEach(function(item){
+                   superagent.get(item.contentUrl)
+                       .end(function(err, res){
+                           if(err){
+                               //这里可以考虑失败了是否再重新爬取一次
+                               logger('小说 |'+name+'| 获取第 '+ item.sectionNum +' 章内容失败，地址：'+item.contentUrl);
+                               contentEp.emit('hasFinishedContent', '你来到了没有知识的荒原...');
+                               return;
+                           }
+                           var $ = cheerio.load(res.text);
+                           contentEp.emit('hasFinishedContent', $('.content').text());
+                       })
+                });
+                // if (totalNewestNum >= 1) {
+                //     logger.info("从" + factionInfo.sourceName + "抓取到的最新的小说章节有" + totalNewestNum + "章。");
+                //     getFactionContent(factionInfo, readyToBroswerUrls, dealedData);
+                // } else {
+                //     logger.info(factionInfo.sourceName + "小说--《" + factionName + "》暂时没有更新~");
+                // }
             });
     };
     connectDB.getNewestSectionNum(name, '爱下电子书', getNewestFactionList);
