@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var config = require('../config');
-var chinese_parseInt = require('../tools/chinese-parseint');
 var myAppTools = require('../tools/myAppTools');
 var eventproxy = require('eventproxy');
 //日志相关
@@ -40,6 +39,8 @@ function configLog(reptileType) {
 // Connection URL
 // var url = 'mongodb://'+config.mongoConfig.username+':'+config.mongoConfig.password+'@'+config.mongoConfig.url+':'+config.mongoConfig.port+'/'+config.mongoConfig.dbName;
 var url = 'mongodb://' + config.localMongoJson.username + ':' + config.localMongoJson.password + '@' + config.localMongoJson.url + ':' + config.localMongoJson.port + '/' + config.localMongoJson.dbName;
+//not use the default promise
+mongoose.Promise = global.Promise;
 // Use connect method to connect to the Server
 mongoose.connect(url);
 var db = mongoose.connection;
@@ -59,7 +60,8 @@ var factionContentSchema = new mongoose.Schema({
   sectionTitle: String,
   sectionContent: String,
   sectionResource: String,//小说来源
-  recentUpdateTime: Date  //最新的更新时间，用来比对最新文章
+  recentUpdateTime: Date,  //最新的更新时间，用来比对最新文章
+  des: String //add some signature used to management
 }, {safe: {j: 1, w: 1, wtimeout: 10000}});
 //创建model
 var factionContentModel = mongoose.model('factionContent', factionContentSchema);
@@ -127,7 +129,8 @@ var initDB = function () {
     sectionTitle: '测试章节',
     sectionContent: '这是我存进去的第一章，仅供测试',
     sectionResource: '百度贴吧',
-    recentUpdateTime: new Date()
+    recentUpdateTime: myAppTools.formatDate(new Date()),
+    des: '大主宰'
   });
 
   factionContentEntity.save(function (err) {
@@ -302,30 +305,47 @@ var initDB = function () {
 };
 // initDB();
 
-//每次存储之前都根据，factionContent里的内容更新sectionList
-var updateSectionList = function () {
-  factionContentModel.find().exec(function (err, list) {
-    if (err) {
-      logger.warn('查询factionContent文档失败，' + err);
-    } else {
-      factionListModel.update({}, {$set: {sectionArray: list}}).exec(function (err) {
-        if (err) {
-          logger.warn('存储前更新list失败，' + err);
-        } else {
-          logger.info('存储前更新list成功！');
-        }
-      });
-    }
+/**
+ * before get new faction data, update lists with contents data (remove the same sectionNum contents, and update list)
+ * @param factionName
+ * @param source the source of faction
+ */
+function updateSectionList (factionName, source) {
+  var reg = new RegExp(factionName, 'g');
+  factionContentModel.find({des: reg, sectionResource: source})
+    .exec(function (err, list) {
+      if (err) {
+        logger.warn('查询factionContent文档失败，' + err);
+      } else {
+        //when the factionContent is duplicate, just delete it
+        var whenDuplicate = function(itemId){
+          factionContentModel.remove({_id: itemId}, function(err){
+            if(err){
+              logger.warn('小说 |'+factionName+'| 中factionCentents的id为 '+itemId+' 的重复项删除失败，请手动删除...');
+            }else{
+              logger.info('小说 |'+factionName+'| 中factionCentents的id为 '+itemId+' 的重复项删除成功...');
+            }
+          });
+        };
+        list = myAppTools.removeDuplicate(list, 'sectionNum', whenDuplicate);
+        var sectionArray = myAppTools.getElementArray(list, 'id')
+        factionListModel.update({factionName: reg}, {$set: {sectionArray: sectionArray, updateTime: myAppTools.formatDate(new Date())}}).exec(function (err) {
+          if (err) {
+            logger.warn('存储前更新list失败，' + err);
+          } else {
+            logger.info('存储前更新list成功！');
+          }
+        });
+      }
   })
 };
 
 //存储小说的方法
-var saveFaction = function (json) {
+function saveFaction (json) {
   if (!(json.sectionNum && json.factionName)) {
     logger.warn('存储数据时，格式错误！！');
     return;
   } else {
-    //首先写好sectionArray，最重要的
     //先查询要存入的内容是否存在，不存在则存入，否则摒弃
     factionListModel.find({factionName: json.factionName})
       .populate('sectionArray', 'sectionNum', null, {sort: {sectionNum: -1}})
@@ -338,8 +358,7 @@ var saveFaction = function (json) {
           //从list[0].sectionArray中提取出sectionNum---[{"_id":"57c8eaeec70bd8882b0c20da","sectionNum":2},{"_id":"57c85f18463272883ffd8283","sectionNum":1}]
           //增强程序健壮性，当数据库为空的时候，不可以应用list[0]
           if (list.length == 0) {
-            // list.push({_id: '0000000000000000000000000', sectionNum: '0'});//无数据的默认值
-            logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
+            logger.warn('数据库无数据，请释放initDB函数，初始化数据！！');
           } else {
             var sectionNumArray = myAppTools.getElementArray(list[0].sectionArray, 'sectionNum');
             if (myAppTools.isInArray(sectionNumArray, json.sectionNum)) {
@@ -353,37 +372,30 @@ var saveFaction = function (json) {
                 sectionTitle: json.sectionTitle,
                 sectionContent: json.sectionContent,
                 sectionResource: json.sectionResource,
-                recentUpdateTime: json.recentUpdateTime
+                recentUpdateTime: json.recentUpdateTime,
+                des: json.factionName //add some signature
               };
 
               //将小说内容存入数据库
-              var factionContentEntity = new factionContentModel(jsonTemp);
-              logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----成功！');
-              factionContentEntity.save(function (err) {
-                  if (err) {
-                      logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----失败！' + err);
-                  } else {
-                      logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----成功！');
-                  }
-              });
+              factionContentModel.create(jsonTemp, function (err, doc) {
+                if(err){
+                  logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----失败！' + err);
+                }else{
+                  logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----成功！');
+                  //只有在小说内容存储成功之后才去更新小说章节列表
+                  var sectionIdArray = myAppTools.getElementArray(list[0].sectionArray, '_id');
+                  sectionIdArray.push(doc.id);
 
-              //将更新数据库中小说章节记录
-              var sectionIdArray = myAppTools.getElementArray(list[0].sectionArray, '_id');
-              sectionIdArray.push(factionContentEntity._id);
-
-              var conditions = {factionName: json.factionName};
-              var update = {$set: {sectionArray: sectionIdArray}};
-              var options = {upsert: true};
-
-              logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----成功！');
-              factionListModel.update(conditions, update, options, function (error) {
-                  if (error) {
-                      logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----失败！' + error);
-                  } else {
+                  var conditions = {factionName: json.factionName};
+                  var update = {$set: {sectionArray: sectionIdArray, updateTime: myAppTools.formatDate(new Date())}};
+                  factionListModel.update(conditions, update, function(err, doc){
+                    if (err) {
+                      logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----失败！' + err);
+                    } else {
                       logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----成功！');
-                  }
-                  //关闭数据库链接
-                  // db.close();
+                    }
+                  });
+                }
               });
             }
           }
@@ -414,7 +426,11 @@ function getNewestSectionNum(factionName, resource, callback) {
               logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
             } else {
               if (typeof callback == 'function') {
-                callback(list[0].sectionArray[0].sectionNum || 0);
+                if(list[0].sectionArray[0]){
+                  callback(list[0].sectionArray[0].sectionNum || 0);
+                }else{
+                  callback(0);
+                }
               }
             }
           } catch (err) {
@@ -463,7 +479,8 @@ function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady) {
         sectionTitle: '测试章节',
         sectionContent: '这是一篇很长很长很长很长的测试章节',
         sectionResource: '起点排行榜自动增加',
-        recentUpdateTime: new Date()
+        recentUpdateTime: new Date(),
+        des: bookItem.factionName //add some signature
       });
 
       content.save(function (err) {
@@ -617,12 +634,37 @@ function updateRank(jsonArr) {
 function emptyFaction(factionName, resource){
   if (typeof factionName == 'string' && typeof resource == 'string') {
     factionListModel.find({factionName: factionName})
-      .populate('sectionArray', 'sectionNum', null, {sort: {sectionNum: -1}})
+      .populate('sectionArray', {'sectionNum': 1, 'sectionTitle': 1}, null, {sort: {sectionNum: -1}})
       .exec(function (err, list) {
         if (err) {
           logger.warn("查询mongo-----失败！" + err);
         } else {
-            console.log(list);
+          try{
+            if (list.length == 0) {
+              logger.fatal('小说 |'+factionName+' |的数据库未正确初始化...');
+            } else {
+              //delete factionContent
+              list[0].sectionArray.forEach(function (item) {
+                factionContentModel.remove({_id: item._id}, function (err, doc) {
+                  if(err){
+                    logger.warn('小说 |'+factionName+'| 第 '+item.sectionNum+' '+item.sectionTitle+'删除 失败，请手动删除...');
+                  }else{
+                    logger.warn('小说 |'+factionName+'| 第 '+item.sectionNum+' '+item.sectionTitle+'删除 成功...');
+                  }
+                })
+              });
+              //update factionList sectionArray
+              factionListModel.update({factionName: factionName}, {$set : {sectionArray: [], updateTime: myAppTools.formatDate(new Date())}}, function (err, doc) {
+                if(err){
+                  logger.warn('小说 |'+factionName+'| factionList sectionArray清除 失败...');
+                }else{
+                  logger.warn('小说 |'+factionName+'| factionList sectionArray清除 成功...');
+                }
+              });
+            }
+          } catch (error) {
+
+          }
         }
       });
   } else {

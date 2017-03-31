@@ -1,3 +1,37 @@
 var connectDB = require('./connectDB');
+var myAppTools = require('../tools/myAppTools');
+
 connectDB.configLog('ixdzsReptile');
-connectDB.emptyFaction('天影', '爱下电子书');
+
+// connectDB.saveFaction({
+//   factionName: '天影',
+//   sectionNum: 1,
+//   sectionTitle: '测试章节01',
+//   sectionContent: '你到了没有知识的荒野...',
+//   sectionResource: '爱下电子书',
+//   recentUpdateTime: myAppTools.formatDate(new Date())
+// })
+
+// connectDB.emptyFaction('天影', '爱下电子书');
+
+connectDB.updateSectionList('天影', '爱下电子书');
+
+
+// var jsonArr = [
+//   {
+//     a: 1,
+//     sectionNum: 0
+//   },
+//   {
+//     a: 2,
+//     sectionNum: 2
+//   },
+//   {
+//     a: 3,
+//     sectionNum: 1
+//   },{
+//     a: 4,
+//     sectionNum: 2
+//   }
+// ];
+// console.log(JSON.stringify(myAppTools.removeDuplicate(jsonArr, 'sectionNum')));

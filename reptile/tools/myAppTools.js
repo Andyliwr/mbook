@@ -69,7 +69,7 @@ var concatJSON = function (JSONArray1, JSONArray2) {
 };
 
 //提取JSON数组里某个特殊字段形成数组
-var getElementArray = function (jsonArray, element) {
+function getElementArray (jsonArray, element) {
   if (!jsonArray instanceof Object) {
     console.log("提取json数组中特定值时传入的json数组格式错误1！");
     return null;
@@ -162,7 +162,7 @@ var isTwoJSONArrSame = function (jsonArr1, jsonArr2) {
  * 格式化日期函数，给定一个日期对象，会被格式化成"2017/03/18 01:01:02"这种格式
  * @param dateObj 日期对象
  */
-function formatDate(dateObj) {
+function formatDate (dateObj) {
   var year = dateObj.getFullYear();
   var month = dateObj.getMonth() + 1;
   month = month < 9 ? '0' + month : month;
@@ -177,6 +177,48 @@ function formatDate(dateObj) {
   return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+/**
+ * remove duplicate item from a JSON Array
+ * @param jsonArr
+ * @param according remove duplicate item according what
+ * @param whenDuplicate the callback when found duplicate item
+ */
+function removeDuplicate (jsonArr, according, whenDuplicate) {
+  var result = []; //the fianl result needing return
+  if((jsonArr instanceof Array) && typeof according == 'string'){
+    var sectionNumArr = []; // an array contains all contents sectionNum
+    jsonArr.forEach(function(item, index){
+      try{
+        if(!isInArray(sectionNumArr, item[according])){
+          result.push(item);
+          sectionNumArr.push(item[according]);
+        }else{
+          if(typeof whenDuplicate === 'function' && item.id){
+            whenDuplicate(item.id);
+          }
+          // console.log('when running removeDuplicate, index '+ (index+1) +' of item is duplicate, item: '+JSON.stringify(item));
+        }
+      } catch (e){
+        console.log('when running removeDuplicate, index '+ (index+1) +'of item do not have the property of '+according)
+      }
+    });
+  }else{
+    console.log('The parameter of fuction---removeDuplicate is illegal')
+  }
+  return result.sort(function(item1, item2){
+      if(typeof item1[according] === 'number'){
+        return item1[according] - item2[according];
+      }else if(typeof item1[according] === 'string'){
+        return item1[according].length - item2[according].length;
+      }else{
+        var number1 = new Number(item1[according]);
+        var number2 = new Number(item2[according]);
+        return number1 - number2;
+      }
+    }
+  );
+}
+
 exports.isInArray = isInArray;
 exports.selectCorrect = selectCorrect;
 exports.concatJSON = concatJSON;
@@ -185,3 +227,4 @@ exports.removeNaN = removeNaN;
 exports.getToDayStr = getToDayStr;
 exports.isTwoJSONArrSame = isTwoJSONArrSame;
 exports.formatDate = formatDate;
+exports.removeDuplicate = removeDuplicate;

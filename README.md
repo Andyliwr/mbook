@@ -154,3 +154,11 @@ auth: {\"type\": \"wechat\", \"wxOpenId\": \"oj7fq0NOUGhlm798MwxrIGmmFXTM\"}
 + 注释：
 
     过滤之后trim去掉空格
+
+### 常用的mongo查询
+```
+//查询所有这部小说的章节并排序
+db.getCollection('factioncontents').find({des: /天影/, sectionResource:'爱下电子书'}).sort({sectionNum: 1})
+//查询这部小说的详细信息
+db.getCollection('factionlists').find({factionName: '天影'})
+```
