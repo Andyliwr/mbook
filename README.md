@@ -131,3 +131,34 @@ weixin --- 微信小程序目录
 
 ### 测试未绑定的微信的用户
 auth: {\"type\": \"wechat\", \"wxOpenId\": \"oj7fq0NOUGhlm798MwxrIGmmFXTM\"}
+
+### 爱下电子书过滤章节的规则
++ 爱下电子书常用的小说章节命名：
+    ```
+    5.第5章 忠心弟子
+    第四章 大浮屠诀
+    公告！此书暂停！
+    完本感言以及新书发布！
+    〖免费公告〗关于结局加更一章！！！
+    010 强化训练(四)
+    第0228章 哈赤之墓（2）
+    五　驯服
+    ```
+
++ 过滤正则表达式：
+    ```
+    第[一二...十0123...9]章
+    [0-9]
+    没有任何数字的，全部去掉
+    ```
++ 注释：
+
+    过滤之后trim去掉空格
+
+### 常用的mongo查询
+```
+//查询所有这部小说的章节并排序
+db.getCollection('factioncontents').find({des: /天影/, sectionResource:'爱下电子书'}).sort({sectionNum: 1})
+//查询这部小说的详细信息
+db.getCollection('factionlists').find({factionName: '天影'})
+```

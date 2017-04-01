@@ -212,22 +212,18 @@ module.exports = function (Myappuser) {
       secret: SECRET,
       js_code: wxcode
     };
-    console.log(wxcode);
     var content = querystring.stringify(qsdata);
     request('https://api.weixin.qq.com/sns/jscode2session?' + content, function (error, response, body) {
       var returnData = null;
       if (!error && response.statusCode == 200) {
         var wxdata = JSON.parse(body);
         //当微信服务器返回正确
-        console.log(body);
         if (wxdata.session_key && wxdata.openid) {
           returnData = { code: 0, data: { session_key: wxdata.session_key, openid: wxdata.openid } }
         } else {
-          console.log(1);
           returnData = { code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg }
         }
       } else {
-        console.log(2);
         returnData = { code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg }
       }
       ep.emit('hasFinishedWx', returnData);
