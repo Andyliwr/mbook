@@ -399,8 +399,8 @@ module.exports = function (Myappuser) {
   //add a book, operation by User
   Myappuser.addMyBooks = function (userid, bookids, cb) {
     //拿到书籍的详细信息
-    var bookidArr = bookids.split(',');
-    if(typeof userid === 'string' && bookidArr instanceof Array){
+    if(typeof userid === 'string' && typeof bookids === 'string'){
+      var bookidArr = bookids.split(',');
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = Myappuser.app;
       var getBookDetailEp = new eventproxy();
@@ -486,8 +486,8 @@ module.exports = function (Myappuser) {
   //删除书架里的书籍
   Myappuser.deleteMyBooks = function (userid, bookids, cb) {
     //拿到书籍的详细信息
-    var bookidArr = bookids.split(',');
-    if(typeof userid === 'string' && bookidArr instanceof Array){
+    if(typeof userid === 'string' && typeof bookids === 'string'){
+      var bookidArr = bookids.split(',');
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = Myappuser.app;
       var getBookDetailEp = new eventproxy();
