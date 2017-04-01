@@ -68,6 +68,20 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getMyBooks"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "addMyBooks"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "deleteMyBooks"
     }
   ],
   "methods": {}
