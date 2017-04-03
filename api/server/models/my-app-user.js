@@ -174,7 +174,7 @@ module.exports = function (Myappuser) {
             cb(null, { code: -1, errmsg: '查询myappuser失败，未找到和当前openid对应的用户' });
           }
         });
-        
+
         var openidReg = new RegExp(returnData.data.openid, 'ig');
         // todo 这个查找过滤条件无法生效，原因暂未查明
         Myappuser.find({auth: openidReg}, function(err, res){
@@ -347,7 +347,7 @@ module.exports = function (Myappuser) {
       var getBookDetailEp = new eventproxy();
       var allMyBooks = res.myBooks;
       getBookDetailEp.after('hasFinishedDetail', allMyBooks.length, function(booksResult){
-        try{  
+        try{
           var successBooks = booksResult.filter(function(bookDetailItem){
             return (bookDetailItem.success === 1) && bookDetailItem.name && bookDetailItem.headImage
           });
@@ -364,7 +364,7 @@ module.exports = function (Myappuser) {
           console.log(err);
           cb(null, {code: -1, data: '查询个人书单失败，try-catch报错'});
         }
-        
+
       });
       allMyBooks.forEach(function(item, index){
         app.models.factionlists.findById(item.bookid, {id: 0, sectionArray: 0}, {}, function(err, res){
@@ -408,7 +408,7 @@ module.exports = function (Myappuser) {
         var trueBookidArr = booksResult.filter(function(item){
           return item.success === 1
         });
-        
+
         //更新myappuser的书单数组，先获取后更新
         Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
           if(err || !res){
@@ -445,7 +445,7 @@ module.exports = function (Myappuser) {
             });
           }
         });
-        
+
       });
       bookidArr.forEach(function(item){
         app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function(err, res){
@@ -495,7 +495,7 @@ module.exports = function (Myappuser) {
         var trueBookidArr = booksResult.filter(function(item){
           return item.success === 1
         });
-        
+
         //更新myappuser的书单数组，先获取后更新
         Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
           if(err || !res){
@@ -530,7 +530,7 @@ module.exports = function (Myappuser) {
             }
           }
         });
-        
+
       });
       bookidArr.forEach(function(item){
         app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function(err, res){
@@ -565,6 +565,63 @@ module.exports = function (Myappuser) {
       'http': {
         'verb': 'post',
         'path': '/deleteMyBooks'
+      }
+    }
+  );
+
+  //用户退出阅读器之前更新已阅读章节
+  Myappuser.updateHasRead = function (userid, bookid, hasRead, cb) {//定义一个http接口方法
+    Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
+      if(err || !res){
+        cb(null, {code: -1, errMsg: 'hasRead更新前查询我的书单失败'});
+      }else{
+        var myBooks = res.myBooks;
+        var hasThisBook = false;
+        var finalMyBooks = myBooks.map(function(item, index){
+          if(item.bookid === bookid){
+            hasThisBook = true;
+            item.hasRead = hasRead;
+          }
+          return item
+        });
+        if(hasThisBook === false){
+          cb(null, {code: -1, errMsg: '未找到该书单id'});
+        }else{
+          Myappuser.update({id: userid}, {myBooks: finalMyBooks}, function(err, res){
+            if(err || !res){
+              cb(null, {code: -1, errMsg: '用户已阅读章节更新失败'});
+            }else{
+              cb(null, {code: 0, successMsg: '用户已阅读章节更新成功'});
+            }
+          });
+        }
+      }
+    });
+  };
+  Myappuser.remoteMethod(//把方法暴露给http接口
+    'updateHasRead',
+    {
+      'accepts': [
+        {
+          arg: 'userid',
+          type: 'string',
+          description: '用户id'
+        },{
+          arg: 'bookid',
+          type: 'string',
+          description: '书籍id'
+        },{
+          arg: 'hasRead',
+          type: 'number',
+          description: '已阅读章节'
+        }
+      ],
+      'returns': [
+        { 'arg': 'result', 'type': 'string' }
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/updateHasRead'
       }
     }
   );

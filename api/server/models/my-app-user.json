@@ -82,6 +82,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "deleteMyBooks"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "updateHasRead"
     }
   ],
   "methods": {}

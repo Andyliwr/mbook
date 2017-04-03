@@ -159,3 +159,19 @@
         }
       }
   ```
+
+  + ### 更新用户已经阅读的章节
+  ```
+  + REST: post
+  + addr: http://localhost:3000/api/myappuser/updateHasRead
+  + data: 单个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookid":"58cbc7e8753ae423a4aaaf8dc","hasRead":4}
+  + param: userid为已经注册的用户id， bookid为要更新的书籍id，hasRead为用户已阅读章节
+  + return:
+      操作成功的返回：
+      {
+        "result": {
+          "code": 0,
+          "successMsg": "用户已阅读章节更新成功"
+        }
+      }
+  ```
