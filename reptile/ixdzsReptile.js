@@ -19,13 +19,13 @@ var log4js = require('log4js');
 log4js.configure({
   appenders: [
     {type: 'console'},
-    {type: 'file', filename: 'log/ixdzsReptile.log', category: 'ixdzsReptile'}
+    {type: 'file', filename: './reptile/log/ixdzsReptile.log', category: 'ixdzsReptile'}
   ]
 });
 const logger = log4js.getLogger('ixdzsReptile');
 const AXDZS_SEARCH_URL = 'http://zhannei.baidu.com/cse/search';
 
-fs.exists('log', function (ret) {
+fs.exists('./reptile/log', function (ret) {
   if (!ret) {
     logger.warn('日志目录不存在，正在为你创建....');
     fs.mkdir('log');
@@ -162,9 +162,9 @@ function doSearch(factionName) {
 }
 
 function getFactionList(name, url) {
-  var maxFactionNum = 100000; // set the maxinum number of getting Faction section
   //开始爬取小说章节内容
   var getNewestFactionList = function (newestFactionNum) {
+    var maxFactionNum = 100000; // set the maxinum number of getting Faction section
     // newestFactionNum = 330;
     //test, 爬去所有小说
     superagent.get(url)

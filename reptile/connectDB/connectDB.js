@@ -21,7 +21,7 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/rankReptile.log', category: 'rankReptile'}
+        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
       ]
     });
     logger = log4js.getLogger('rankReptile');
@@ -29,7 +29,7 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
+        {type: 'file', filename: './reptile/log/ixdzsReptile.log', category: 'ixdzsReptile'}
       ]
     });
     logger = log4js.getLogger('ixdzsReptile');
