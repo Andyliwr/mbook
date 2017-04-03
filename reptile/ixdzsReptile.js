@@ -1,4 +1,4 @@
-const myAppTools =  require('./tools/myAppTools');
+const myAppTools = require('./tools/myAppTools');
 const connectDB = require('./connectDB/connectDB');
 
 const express = require('express');
@@ -10,6 +10,7 @@ const config = require('./config');
 const schedule = require('node-schedule');
 const fs = require('fs');
 const htmlToText = require('html-to-text');
+const chinese_parseInt = require('./tools/chinese-parseint');
 connectDB.configLog('ixdzsReptile');
 
 
@@ -24,6 +25,7 @@ log4js.configure({
 });
 const logger = log4js.getLogger('ixdzsReptile');
 const AXDZS_SEARCH_URL = 'http://zhannei.baidu.com/cse/search';
+var everyTime = null; //初始化爬虫中使用的计时器
 
 fs.exists('./reptile/log', function (ret) {
   if (!ret) {
@@ -59,8 +61,8 @@ var init = function () {
 /**
  * package to a export function that can be used by other javascript file
  */
-function startIxdzsReptile(factionName){
-  if(typeof factionName === 'string'){
+function startIxdzsReptile(factionName) {
+  if (typeof factionName === 'string') {
     logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
     //before getting faction, update the factionList
     logger.info('正在更新List...');
@@ -131,7 +133,7 @@ function doSearch(factionName) {
             var factionUrl = factionDisplayUrl.replace(/www/, 'read');
             factionUrl = factionUrl.replace(/\/d/, '');
             logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
-            getFactionList(factionName, factionUrl);
+            getFactionList(factionName, factionUrl, 'regular');
           });
           //遍历每个结果项去获取热度数据
           factionDisplayUrlArr.each(function (index, element) {
@@ -154,87 +156,133 @@ function doSearch(factionName) {
         var factionUrl = factionDisplayUrl.replace(/www/, 'read');
         factionUrl = factionUrl.replace(/\/d/, '');
         logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
-        getFactionList(factionName, factionUrl);
+        getFactionList(factionName, factionUrl, 'regular');
       });
   } else {
     logger.warn('doSearch传入参数错误');
   }
 }
 
-function getFactionList(name, url) {
-  //开始爬取小说章节内容
-  var getNewestFactionList = function (newestFactionNum) {
-    var maxFactionNum = 100000; // set the maxinum number of getting Faction section
-    // newestFactionNum = 330;
-    //test, 爬去所有小说
-    superagent.get(url)
+/**
+ * getFactionList需要区分是常规爬虫（负责小说更新），和并发爬虫（负责小说全部章节的爬取和初始化）
+ * @param name 小说名字
+ * @param url 小说列表url
+ * @param reptileType 常规爬虫(regular), 并发爬虫(init)
+ */
+function getFactionList(name, url, reptileType) {
+  superagent.get(url)
+    .end(function (err, res) {
+      if (err) {
+        logger.warn('访问爱下电子书-- ' + name + ' 章节列表页失败');
+        return;
+      }
+      var $ = cheerio.load(res.text);
+      //这里放弃从章节标题中过滤得到章节数的做法，而是直接使用dom的顺序
+      var allSections = []; //存储所有合法的章节的章节数、章节名、章节url
+      $('.catalog .chapter > a').each(function (idx, element) {
+        var $element = $(element);
+        var aText = $element.text().trim();
+        var sectionTitleReg = /(^\d+(\.)*( )*(第[零一二三四五六七八九十百千万0-9]+章))|(^第[零一二三四五六七八九十百千万0-9]+章)|(^[零一二三四五六七八九十百千万])|(^\d+(\.)*[^零一二三四五六七八九十百千万0-9])/igm;
+        var matchResult = aText.match(sectionTitleReg);
+        //当且仅当titile通过正则检测，并且章节数大于最新章节数，才会被加到待访问队列中
+        if (matchResult != null && matchResult.length > 0) {
+          allSections.push({
+            sectionNum: chinese_parseInt(myAppTools.removeNaN(matchResult[0])),
+            sectionTitle: aText.replace(sectionTitleReg, '').trim(),
+            contentUrl: url + $element.attr('href')
+          })
+        } else {
+          // console.log('非章节：'+aText);
+        }
+      });
+
+      //sort the allSections
+      allSections.sort(function(item1, item2){
+        return item1.sectionNum - item2.sectionNum
+      });
+
+      //begin to get the content of every section
+      if(reptileType === 'init'){
+        //inder to reduce the press of mongodb，it can only get 100 sections at once
+        //pack the array into small array
+        var everyPosition = 0; //记录当前爬取到allSections的位置
+        everyTime = setInterval(function () {
+          var everyTimeArr = allSections.splice(everyPosition, 100);
+          getFactionContent(name, everyTimeArr);
+        }, 15 * 1000);
+      }else if(reptileType === 'regular'){
+        //常规爬虫需要根据最新章节去截取allSections数组，同时需要检测哪些章节是断层的，这些章节需要被加入到allSections里
+        connectDB.getSlipSection(name, '爱下电子书', function(result){
+          // console.log(idArr);
+          var newSectionArr = allSections.slice((result.newest-1));
+          //重新获取那些断层的章节，并在获取完成之后执行更新
+          result.sections.forEach(function(item){
+
+          });
+          getFactionContent(name, newSectionArr, function(){
+            logger.info('存储完毕，常规爬虫执行完毕...');
+          });
+        });
+      }
+    });
+}
+
+/**
+ * 获取小说每章的内容的函数
+ * @param name 小说名字
+ * @param allSections 小说列表数组
+ * @callback 爬取完的回调函数
+ */
+function getFactionContent(name, allSections, callback) {
+
+  //开始爬取小说每章的内容
+  var contentEp = new eventproxy();
+  contentEp.after('hasFinishedContent', allSections.length, function (allContents) {
+    if (allContents.length >= 1) {
+      logger.info('从 |爱下电子书| 抓取到的 |' + name + '| 最新的小说章节有' + allContents.length + '章...');
+      logger.info('正在存储这些获取到的数据至mongo...');
+    } else {
+      logger.info('爱下电子书' + '小说 |' + name + '| 暂时没有更新~');
+    }
+
+    //为了清晰的知道啥时候爬取完了，这里再次写一个ep
+    var isFinishReptile = new eventproxy();
+    isFinishReptile.after('hasFinishedReptile', allContents.length, function(saveResults){
+      typeof callback === 'function' && callback();
+    });
+
+    //拼合数组
+    allContents.forEach(function (item, index) {
+      allSections[index].content = item;
+      // delete allSections[index].contentUrl;
+      var jsonTemp = {
+        factionName: name,
+        sectionNum: allSections[index].sectionNum,
+        sectionTitle: allSections[index].sectionTitle,
+        sectionContent: allSections[index].content || '你到了没有知识的荒野~',
+        sectionResource: '爱下电子书',
+        recentUpdateTime: myAppTools.formatDate(new Date())
+      };
+      //调用存储函数
+      var saveCallback = function(result){
+        isFinishReptile.emit('hasFinishedContent', result);
+      }
+      connectDB.saveFaction(jsonTemp, saveCallback);
+    });
+  });
+  allSections.forEach(function (item) {
+    superagent.get(item.contentUrl)
       .end(function (err, res) {
         if (err) {
-          logger.warn('访问爱下电子书-- ' + name + ' 章节列表页失败');
+          //这里可以考虑失败了是否再重新爬取一次
+          logger.info('小说 |' + name + '| 获取第 ' + item.sectionNum + ' 章内容失败，地址：' + item.contentUrl);
+          contentEp.emit('hasFinishedContent', '你来到了没有知识的荒原...');
           return;
         }
         var $ = cheerio.load(res.text);
-        //这里放弃从章节标题中过滤得到章节数的做法，而是直接使用dom的顺序
-        var allSections = [];
-        var count = 0;
-        $('.catalog .chapter > a').each(function (idx, element) {
-          var $element = $(element);
-          var aText = $element.text().trim();
-          var sectionTitleReg = /(^\d+(\.)*( )*(第[零一二三四五六七八九十0-9]+章))|(^第[零一二三四五六七八九十0-9]+章)|(^[零一二三四五六七八九十])|(^\d+(\.)*[^零一二三四五六七八九十0-9])/;
-          var matchResult = aText.match(sectionTitleReg);
-          //当且仅当titile通过正则检测，并且章节数大于最新章节数，才会被加到待访问队列中
-          if (matchResult != null && matchResult.length > 0) {
-            ++count;
-            if (count > newestFactionNum && count <= (maxFactionNum+1)) {
-              allSections.push({
-                sectionNum: count,
-                sectionTitle: aText.replace(sectionTitleReg, '').trim(),
-                contentUrl: url + $element.attr('href')
-              })
-            }
-          }
-        });
-        //开始爬取小说每章的内容
-        var contentEp = new eventproxy();
-        contentEp.after('hasFinishedContent', allSections.length, function (allContents) {
-          if (allContents.length >= 1) {
-              logger.info('从 |爱下电子书| 抓取到的 |'+ name +'| 最新的小说章节有' + allContents.length + '章...');
-              logger.info('正在存储这些获取到的数据至mongo...');
-          } else {
-              logger.info('爱下电子书' + '小说 |' + name + '| 暂时没有更新~');
-          }
-          //拼合数组
-          allContents.forEach(function (item, index) {
-            allSections[index].content = item;
-            // delete allSections[index].contentUrl;
-            var jsonTemp = {
-              factionName: name,
-              sectionNum: allSections[index].sectionNum,
-              sectionTitle: allSections[index].sectionTitle,
-              sectionContent: allSections[index].content || '你到了没有知识的荒野...',
-              sectionResource: '爱下电子书',
-              recentUpdateTime: myAppTools.formatDate(new Date())
-            };
-            //调用存储函数
-            connectDB.saveFaction(jsonTemp);
-          });
-        });
-        allSections.forEach(function (item) {
-          superagent.get(item.contentUrl)
-            .end(function (err, res) {
-              if (err) {
-                //这里可以考虑失败了是否再重新爬取一次
-                logger.info('小说 |' + name + '| 获取第 ' + item.sectionNum + ' 章内容失败，地址：' + item.contentUrl);
-                contentEp.emit('hasFinishedContent', '你来到了没有知识的荒原...');
-                return;
-              }
-              var $ = cheerio.load(res.text);
-              contentEp.emit('hasFinishedContent', htmlToText.fromString($('.content').html(), {wordwrap: 130}));
-            })
-        });
-      });
-  };
-  connectDB.getNewestSectionNum(name, '爱下电子书', getNewestFactionList);
+        contentEp.emit('hasFinishedContent', htmlToText.fromString($('.content').html(), {wordwrap: 130}));
+      })
+  });
 }
 
 exports.startIxdzsReptile = startIxdzsReptile;
