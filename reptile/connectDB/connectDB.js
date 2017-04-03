@@ -303,7 +303,6 @@ var initDB = function () {
   });
 
 };
-// initDB();
 
 /**
  * before get new faction data, update lists with contents data (remove the same sectionNum contents, and update list)
@@ -674,6 +673,7 @@ function emptyFaction(factionName, resource){
 
 //把存储方法暴露出来
 exports.configLog = configLog;
+exports.initDB = initDB;
 exports.saveFaction = saveFaction;
 exports.updateSectionList = updateSectionList;
 exports.getNewestSectionNum = getNewestSectionNum;

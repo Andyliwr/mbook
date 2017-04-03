@@ -162,6 +162,18 @@ db.getCollection('factioncontents').find({des: /天影/, sectionResource:'爱下
 //查询这部小说的详细信息
 db.getCollection('factionlists').find({factionName: '天影'})
 ```
+### mongoose查询链式语法
+```
+ Person
+      .find({ occupation: /host/ })
+      .where('name.last').equals('Ghost')
+      .where('age').gt(17).lt(66)
+      .where('likes').in(['vaporizing', 'talking'])
+      .limit(10)
+      .sort('-occupation')
+      .select('name occupation')
+      .exec(callback);
+```
 
 ### 剩余要做的
 + 前端在每次用户离开的时候存储一个时间，后端getMyBooks接口的时候返回updateTime这个字段，前端用这个字段做判断，已经阅读的不再提示

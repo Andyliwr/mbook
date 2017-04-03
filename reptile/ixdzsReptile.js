@@ -53,8 +53,8 @@ var init = function () {
   logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
   //before getting faction, update the factionList
   logger.info('正在更新List...');
-  connectDB.updateSectionList('天影', '爱下电子书');
-  startReptile('天影');
+  connectDB.updateSectionList('大主宰', '爱下电子书');
+  startReptile('大主宰');
 };
 /**
  * package to a export function that can be used by other javascript file

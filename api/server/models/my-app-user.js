@@ -371,10 +371,22 @@ module.exports = function (Myappuser) {
           //不存在还是会查询成功，但是应该返回错误
           if(err || !res){
             console.log('查询书单错误项：'+item.bookid);
-            getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', headImage: ''});
+            getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', headImage: '', newest: '', updateTime: ''});
             return;
           }
-          getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage});
+          //对于每本书需要查询他的最新章节
+          var getBookNewestNum = new eventproxy();
+          getBookNewestNum.all('hasFinishedNewwst', function(newestNum){
+            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: newest, updateTime: res.updateTime});
+          });
+
+          var resReg = new RegExp(res.factionName, 'ig');
+          app.models.factioncontents.find({res: resReg}, {_id: 0, sectionContent: 0, sectionResource: 0}, function(contentErr, contentRes){
+            if(contentErr || !contentRes){
+              console.log('查询 |'+ contentRes.res + '| 出错，'+contentErr);
+              getBookNewestNum.emit('hasFinishedNewwst', contentRes);
+            }
+          });
         });
       })
     });//Model.find(query, fields, options, callback)
