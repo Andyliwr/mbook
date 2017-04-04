@@ -378,7 +378,7 @@ module.exports = function (Myappuser) {
             delete successItem.success;
             return successItem;
           })
-          cb(null, {code: 0, data: finalArr});
+          cb(null, {code: 0, books: finalArr});
         }catch(err){
           console.log(err);
           cb(null, {code: -1, data: '查询个人书单失败，try-catch报错'});
@@ -390,9 +390,15 @@ module.exports = function (Myappuser) {
           //不存在还是会查询成功，但是应该返回错误
           if(err || !res){
             console.log('查询书单错误项：'+item.bookid);
-            getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', headImage: '', newest: '', updateTime: ''});
+            getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', author: '', des: '', headImage: '', newest: '', updateTime: ''});
           }else{
-            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: res.newest, updateTime: tools.formatDate(res.updateTime)});
+            //处理起点小说网的图片url
+            var urlReg = new RegExp('^\/\/.*\\r\\n$', 'ig');
+            var headImage = res.headerImage;
+            if(urlReg.test(headImage)){
+              headImage = 'http:'+headImage.substring(0, headImage.length-2);
+            }
+            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, author: res.author, des: res.des, headImage: headImage, newest: res.newest, updateTime: tools.formatDate(res.updateTime)});
           }
           //对于每本书需要查询他的最新章节
           // var getBookNewestNum = new eventproxy();

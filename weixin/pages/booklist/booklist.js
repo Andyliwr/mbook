@@ -7,67 +7,95 @@ Page({
   data: {
     headerText: '',
     showMonths: [],
-    books: [{
-      factionName: '大主宰',
-      author: '天蚕土豆',
-      shortDes: '神秘古怪的嬉命小丑百城联邦，三大帝国，异族横行，魂兽霸幽这是一....""双月当空，无限可能的英魂世界孤神秘古怪的嬉命小丑百城联邦，三大帝国，异异...',
-      des: '神秘古怪的嬉命小丑百城联邦，三大帝国，异族横行，魂兽霸幽这是一....""双月当空，无限可能的英魂世界孤神秘古怪的嬉命小丑百城联邦，三大帝国，异族横行，魂兽霸幽这是一....""双月当空，无限可能的英魂世界孤神秘古怪的嬉命小丑百城联邦，三大帝国，异族横行，魂兽霸幽这是一....""双月当空，无限可能的英魂世界孤22',
-      headerImage: 'https://olpkwt43d.qnssl.com/myapp/dazhuzai.jpg'
-    }],
+    books: [],
     isSearching: false,
     searchValue: '',
-    userInfo: {}
+    userInfo: {},
+    err_page_data: null, //app状态页
+    monthIndex: 6
   },
-  onReady: function() {
+  onReady: function () {
     var self = this;
     var timeResult = self.allMonths();
     self.setData({
       showMonths: timeResult.showMonths,
       headerText: timeResult.headerText
     });
-  },
-  onLoad: function(e) {
-    var self = this;
-    var books = e.books
-    wx.request({
-      url: Api.getFactionList(),
-      success: function(res) {
-        var books = res.data.slice(0,3);
-        self.setData({
-          books: books
-        })
-      },
-      fail: function() {
-        console.log("请求书籍列表失败")
-      }
-    });
-    wx.setStorage({
-     key:'booklist',
-     data:books,
-     success:function(res){
-       console.log('成功保存书籍列表到本地缓存');
-     }
-   });
+    //先获取本地缓存中的书单数据，等接口返回之后再更新
     wx.getStorage({
       key: 'booklist',
-      success: function(res) {
-      console.log(res.data)
+      success: function (res) {
+        console.log('使用本地缓存的书单数据');
+        self.setData({books: res.data});
       }
-    })
-      // console.log('onLoad')
-      // var that = this
-      // //调用应用实例的方法获取全局数据
-      // app.getUserInfo(function(userInfo){
-      //   //更新数据
-      //   that.setData({
-      //     userInfo:userInfo
-      //   })
-      // })
-    },
-    allMonths: function() {
-      var resultArray = [];
-      var today = new Date();
-      var month = today.getMonth();
+    });
+  },
+  onLoad: function (e) {
+    var self = this;
+    //获取我的书单
+    self.getMyBooks();
+  },
+  //获取我的书单
+  getMyBooks: function(){
+    var self = this;
+    //显示加载中
+    wx.showToast({
+      title: '正在获取书单...',
+      icon: 'loading',
+      duration: 0
+    });
+    //读取缓存中的userid
+    wx.getStorage({
+      key: 'id',
+      success: function (res) {
+        var id = JSON.parse(res.data);
+        if(id){
+          wx.request({
+            url: Api.getMyBooks(id.userid),
+            success: function (res) {
+              var books = res.data.data.books;
+              //更新视图books
+              self.setData({books: books});
+              //将书单数据缓存到本地
+              wx.setStorage({
+                key: 'booklist',
+                data: books,
+                success: function (res) {
+                  console.log('成功保存书籍列表到本地缓存');
+                }
+              });
+            },
+            fail: function () {
+              //显示网络错误提示页面
+              self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '登录', click: 'getMyBooks'}});
+              console.log("请求书籍列表失败");
+            },
+            complete: function(){
+              //请求完成结束loading
+              wx.hideToast();
+            }
+          });
+        }else{
+          wx.hideToast();
+          //显示还未登录提示页面
+          self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/nologin_err.png', text: '你还未登录呢，还能不能愉快的交朋友！', buttonText: '登录', click: 'doLogin'}});
+        }
+      }
+    });
+  },
+  //执行登录操作
+  doLogin: function(){
+    var self = this;
+    app.doLogin(function(){
+      self.setData({err_page_data: null});
+      self.getMyBooks();
+    });
+  },
+  allMonths: function () {
+    var self = this;
+    var resultArray = [];
+    var today = new Date();
+    var month = today.getMonth();
     // todo给出是否有记录的判断
     resultArray.push({
       monthCname: Util.eNumToCNum(Math.abs(month)) + '月',
@@ -76,7 +104,8 @@ Page({
     for (var i = 1; i <= 6; i++) {
       resultArray.push({
         monthCname: Util.eNumToCNum(Math.abs(month - i < 0 ? month + 12 - i : month - i)) + '月',
-        hasRecord: true
+        hasRecord: ((Math.random() > 0.5) ? true : false),
+        monthIndex: i
       });
     }
     return {
@@ -84,24 +113,23 @@ Page({
       showMonths: resultArray.reverse()
     }
   },
-  goToShop: function() {
+  goToShop: function () {
     wx.navigateTo({
       url: '../shop/shop'
     });
   },
-  goToBookDetail: function(e) {
-    var currentBookId = e.currentTarget.id
-    console.log(currentBookId)
+  goToBookDetail: function (e) {
+    var currentBookId = e.currentTarget.dataset.bookid;
     wx.navigateTo({
-      url: '../book_detail/book_detail?bookId=' + currentBookId
-    })
+      url: '../book_detail/book_detail?bookid=' + currentBookId
+    });
   },
-  setIsSearching: function() {
+  setIsSearching: function () {
     this.setData({
       isSearching: true
     });
   },
-  judgeIsNull: function(event) {
+  judgeIsNull: function (event) {
     if (event.detail.value == '') {
       this.setData({
         isSearching: false
@@ -112,13 +140,13 @@ Page({
       });
     }
   },
-  finishedInput: function(event) {
+  finishedInput: function (event) {
     var self = this;
     var searchStr = event.detail.value;
     if (searchStr) {
       var allBooks = self.data.books;
 
-      allBooks.forEach(function(item, index, array) {
+      allBooks.forEach(function (item, index, array) {
         //标志位，用来标志是不是需要设置item.isShow = false，如果经历foreach循环没有被设置为false，就认为这不小说不是搜索的结果
         var isNeedtoChage = true;
         //查询小说名字
@@ -153,7 +181,7 @@ Page({
     }
 
   },
-  findAndSigned: function(searchString, readyToBeSearch) {
+  findAndSigned: function (searchString, readyToBeSearch) {
     if (typeof searchString == 'string') {
       var regExp = new RegExp(searchString, 'igm');
       var leftStr = ''; //记录关键词左边的字符串
@@ -175,15 +203,21 @@ Page({
       return '';
     }
   },
-  clearSearchContent: function() {
+  clearSearchContent: function () {
     //将不显示的书籍设置显示
     var allBooks = this.data.books;
-    allBooks.forEach(function(item) {
+    allBooks.forEach(function (item) {
       item.isShow = true;
     });
     this.setData({
       searchValue: '',
       books: allBooks
     });
+  },
+  //选择月份
+  chooseMonth: function(event){
+    var self = this;
+    var month = event.currentTarget.dataset.month;
+    self.setData({monthIndex: month});
   }
 });

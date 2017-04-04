@@ -20,8 +20,8 @@
     <view class="headerLine"></view>
     <text class="headerTime">{{headerText}}</text>
     <view class="timeTab">
-      <block wx:for="{{showMonths}}">
-        <view class="{{(index == showMonths.length-1)? 'active last everyTime': 'everyTime'}}">
+      <block wx:for="{{showMonths}}" wx:key="month">
+        <view class="{{(index === monthIndex) ? 'active last everyTime' : 'everyTime'}}" bindtap="chooseMonth" data-month="{{item.monthIndex}}">
           <text>{{item.monthCname}}</text>
           <icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
         </view>
@@ -30,14 +30,14 @@
   </view>
   <view class="list">
     <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10}}">
-      <view class="bookInfo" bindtap="goToBookDetail" id="{{item.id}}">
-        <text class="bookName">{{item.factionName}}</text>
+      <view class="bookInfo" bindtap="goToBookDetail" data-bookid="{{item.bookid}}">
+        <text class="bookName">{{item.name}}</text>
         <text class="author">
           <text class="text-underline">作者：</text>{{item.author}}</text>
         <text class="bookDes">{{item.des}}</text>
-        <icon class="{{item.isRead? 'read-icon isRead': 'read-icon notRead'}}"></icon>
+        <icon class="{{item.hasRead === 0? 'read-icon isRead': 'read-icon notRead'}}"></icon>
       </view>
-      <image src="{{item.headerImage}}" mode="scaleToFill" />
+      <image src="{{item.headImage}}" mode="scaleToFill" />
     </block>
   </view>
 
@@ -48,4 +48,8 @@
   <!-- 成功的提示 -->
   <import src="../component/toast/toast.wxml" />
   <template is="toast" data="{{toast_data}}" />
+
+  <!-- app状态页 -->
+  <import src="../component/err_page/err_page.wxml" />
+  <template is="err_page" data="{{err_page_data}}" />
 </view>
