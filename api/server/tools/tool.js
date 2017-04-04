@@ -31,5 +31,25 @@ function getQdTrueImgUrl(imgurl){
   return returnStr;
 }
 
+/**
+ * 格式化日期函数，给定一个日期对象，会被格式化成"2017/03/18 01:01:02"这种格式
+ * @param dateObj 日期对象
+ */
+function formatDate (dateObj) {
+  var year = dateObj.getFullYear();
+  var month = dateObj.getMonth() + 1;
+  month = month < 9 ? '0' + month : month;
+  var day = dateObj.getDate();
+  day = day < 9 ? '0' + day : day;
+  var hour = dateObj.getHours();
+  hour = hour < 9 ? '0' + hour : hour;
+  var minute = dateObj.getMinutes();
+  minute = minute < 9 ? '0' + minute : minute;
+  var second = dateObj.getSeconds();
+  second = second < 9 ? '0' + second : second;
+  return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+
 exports.overflowDeal = overflowDeal;
 exports.getQdTrueImgUrl = getQdTrueImgUrl;
+exports.formatDate = formatDate;

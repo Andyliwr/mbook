@@ -23,6 +23,7 @@ qiniu.conf.SECRET_KEY = 'uASYB6XxzJy9tLWeGsLaNaQyX4bVafIVh6Dpgvxo';
 qiniu.conf.SCHEME = 'https';
 qiniu.conf.UP_HTTPS_HOST = 'https://up-z2.qbox.me';
 var promise = require('bluebird');
+var tools = require('../tools/tool');
 
 
 module.exports = function (Myappuser) {
@@ -390,21 +391,22 @@ module.exports = function (Myappuser) {
           if(err || !res){
             console.log('查询书单错误项：'+item.bookid);
             getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', headImage: '', newest: '', updateTime: ''});
-            return;
+          }else{
+            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: res.newest, updateTime: tools.formatDate(res.updateTime)});
           }
           //对于每本书需要查询他的最新章节
-          var getBookNewestNum = new eventproxy();
-          getBookNewestNum.all('hasFinishedNewest', function(newestNum){
-            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: newest, updateTime: res.updateTime});
-          });
-
-          var resReg = new RegExp(res.factionName, 'ig');
-          app.models.factioncontents.find({res: resReg}, {limit: 1, sort: {sectionNum: 1}}, function(contentErr, contentRes){
-            if(contentErr || !contentRes){
-              console.log('查询 |'+ contentRes.res + '| 出错，'+contentErr);
-              getBookNewestNum.emit('hasFinishedNewest', contentRes);
-            }
-          });
+          // var getBookNewestNum = new eventproxy();
+          // getBookNewestNum.all('hasFinishedNewest', function(newestNum){
+          //   getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: newest, updateTime: res.updateTime});
+          // });
+          //
+          // var resReg = new RegExp(res.factionName, 'ig');
+          // app.models.factioncontents.find({res: resReg}, {limit: 1, sort: {sectionNum: 1}}, function(contentErr, contentRes){
+          //   if(contentErr || !contentRes){
+          //     console.log('查询 |'+ contentRes.res + '| 出错，'+contentErr);
+          //     getBookNewestNum.emit('hasFinishedNewest', contentRes);
+          //   }
+          // });
         });
       })
     });//Model.find(query, fields, options, callback)
@@ -475,7 +477,6 @@ module.exports = function (Myappuser) {
             });
           }
         });
-
       });
       bookidArr.forEach(function(item){
         app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function(err, res){
