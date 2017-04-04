@@ -186,6 +186,17 @@ Myappuser.find({username: 'lidikang'})
         console.log(err);
       });
 ```
+### find
+```
+var docs = yield collection.find({})
+  .skip(1).limit(1).project({b:1}).toArray();
+    test.equal(1, docs.length);
+    test.equal(null, docs[0].a);
+    test.equal(2, docs[0].b);
+
+    // Close db
+    db.close();
+```
 
 ### 剩余要做的
 + 前端在每次用户离开的时候存储一个时间，后端getMyBooks接口的时候返回updateTime这个字段，前端用这个字段做判断，已经阅读的不再提示

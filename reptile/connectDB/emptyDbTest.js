@@ -16,7 +16,7 @@ connectDB.configLog('ixdzsReptile');
 // connectDB.emptyFaction('天影', '爱下电子书');
 
 //测试整理更新小说的方法
-// connectDB.updateSectionList('天影', '爱下电子书');
+connectDB.updateSectionList('大主宰', '爱下电子书');
 
 //测试tool中的去重函数
 // var jsonArr = [
@@ -42,6 +42,6 @@ connectDB.configLog('ixdzsReptile');
 // connectDB.initDB();
 
 //获取断层章节
-connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){
-  console.log(idArr);
-})
+// connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){
+//   console.log(idArr);
+// })

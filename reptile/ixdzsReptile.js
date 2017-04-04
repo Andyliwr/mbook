@@ -55,7 +55,7 @@ var init = function () {
   logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
   //before getting faction, update the factionList
   logger.info('正在更新List...');
-  connectDB.updateSectionList('大主宰', '爱下电子书');
+  connectDB.updateSectionList('大主宰', '爱下电子书', 'notdone');
   startReptile('大主宰');
 };
 /**
@@ -220,7 +220,8 @@ function getFactionList(name, url, reptileType) {
 
           });
           getFactionContent(name, newSectionArr, function(){
-            logger.info('存储完毕，常规爬虫执行完毕...');
+            logger.info('存储完毕，常规爬虫执行完毕, 再次执行列表更新...');
+            connectDB.updateSectionList(name, '爱下电子书', 'done');
           });
         });
       }

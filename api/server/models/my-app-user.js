@@ -79,6 +79,16 @@ module.exports = function (Myappuser) {
       .catch(function (err) {
         console.log(err);
       });
+    // var app = Myappuser.app;
+    // app.models.factioncontents.find({res: '大主宰'})
+    //   .limit(1).project({sectionNum: 1})
+    //   .then(function(res){
+    //     console.log(res);
+    //     callback(null, 'hi');
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //   });
   };
   Myappuser.remoteMethod(//把方法暴露给http接口
     'sayHi',
@@ -389,7 +399,7 @@ module.exports = function (Myappuser) {
           });
 
           var resReg = new RegExp(res.factionName, 'ig');
-          app.models.factioncontents.find({res: resReg}, {_id: 0, sectionContent: 0, sectionResource: 0}, function(contentErr, contentRes){
+          app.models.factioncontents.find({res: resReg}, {limit: 1, sort: {sectionNum: 1}}, function(contentErr, contentRes){
             if(contentErr || !contentRes){
               console.log('查询 |'+ contentRes.res + '| 出错，'+contentErr);
               getBookNewestNum.emit('hasFinishedNewest', contentRes);

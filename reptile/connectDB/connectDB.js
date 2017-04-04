@@ -61,7 +61,7 @@ var factionContentSchema = new mongoose.Schema({
   sectionContent: String,
   sectionResource: String,//小说来源
   recentUpdateTime: Date,  //最新的更新时间，用来比对最新文章
-  des: String //add some signature used to management
+  des: String //add some signature used to management,
 }, {safe: {j: 1, w: 1, wtimeout: 10000}});
 //创建model
 var factionContentModel = mongoose.model('factionContent', factionContentSchema);
@@ -79,7 +79,8 @@ var factionListSchema = new mongoose.Schema({
   headerImage: String, //小说首图链接
   author: String, //小说作者
   sectionArray: [{type: Schema.Types.ObjectId, ref: 'factionContent'}], //小说章节列表, 每个元素是包含章节数、标题、章节内容的JSON
-  updateTime: Date //更新时间
+  updateTime: Date, //更新时间
+  newest: Number //最新章节
 }, {safe: {j: 1, w: 1, wtimeout: 10000}}); //new Schema(config,options); j表示做1份日志，w表示做2个副本（尚不明确），超时时间10秒
 
 //创建model
@@ -148,7 +149,8 @@ var initDB = function () {
     headerImage: 'http://res.cloudinary.com/idwzx/image/upload/v1472746056/dazhuzai_y6428k.jpg',
     author: '天蚕土豆',
     sectionArray: [factionContentEntity._id],
-    updateTime: new Date()
+    updateTime: new Date(),
+    newest: 1
   });
 
   factionListEntity.save(function (err) {
@@ -309,9 +311,10 @@ var initDB = function () {
  * @param factionName
  * @param source the source of faction
  */
-function updateSectionList(factionName, source) {
+function updateSectionList(factionName, source, isDone) {
   var reg = new RegExp(factionName, 'g');
   factionContentModel.find({des: reg, sectionResource: source})
+    .sort({sectionNum: -1})
     .exec(function (err, list) {
       if (err) {
         logger.warn('查询factionContent文档失败，' + err);
@@ -331,13 +334,22 @@ function updateSectionList(factionName, source) {
         factionListModel.update({factionName: reg}, {
           $set: {
             sectionArray: sectionArray,
-            updateTime: myAppTools.formatDate(new Date())
+            updateTime: myAppTools.formatDate(new Date()),
+            newest: sectionArray.length
           }
         }).exec(function (err) {
           if (err) {
-            logger.warn('存储前更新list失败，' + err);
+            if(isDone == 'done'){
+              logger.warn('存储后更新list失败，' + err);
+            }else{
+              logger.warn('存储前更新list失败，' + err);
+            }
           } else {
-            logger.info('存储前更新list成功！');
+            if(isDone == 'done'){
+              logger.info('存储后更新list成功！');
+            }else{
+              logger.info('存储前更新list成功！');
+            }
           }
         });
       }
@@ -514,7 +526,8 @@ function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady) {
         headerImage: bookItem.headImg,
         author: bookItem.author,
         sectionArray: [content._id],
-        updateTime: new Date()
+        updateTime: new Date(),
+        newest: 0 //最新章节
       });
 
       list.save(function (err) {

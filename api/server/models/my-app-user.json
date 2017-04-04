@@ -96,6 +96,12 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "sayHi"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

@@ -32,10 +32,20 @@
       "default": [
         "[]"
       ]
+    },
+    "newest": {
+      "type": "number"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "contents": {
+      "type": "hasMany",
+      "model": "factioncontents",
+      "foreignKey": "",
+      "through": "factioncontents"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
