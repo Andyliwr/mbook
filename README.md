@@ -174,6 +174,18 @@ db.getCollection('factionlists').find({factionName: '天影'})
       .select('name occupation')
       .exec(callback);
 ```
+### 如何使用node promise
+```
+var promise = require('bluebrid');
+Myappuser.find({username: 'lidikang'})
+      .then(function(res){
+        console.log(res);
+        callback(null, 'hi');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+```
 
 ### 剩余要做的
 + 前端在每次用户离开的时候存储一个时间，后端getMyBooks接口的时候返回updateTime这个字段，前端用这个字段做判断，已经阅读的不再提示

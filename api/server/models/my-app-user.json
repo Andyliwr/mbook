@@ -89,6 +89,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "updateHasRead"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "sayHi"
     }
   ],
   "methods": {}

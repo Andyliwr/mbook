@@ -22,6 +22,7 @@ qiniu.conf.ACCESS_KEY = 't5tBss9FrousfymdmFw4ki2fscwZ8qGaIw8SZmX8';
 qiniu.conf.SECRET_KEY = 'uASYB6XxzJy9tLWeGsLaNaQyX4bVafIVh6Dpgvxo';
 qiniu.conf.SCHEME = 'https';
 qiniu.conf.UP_HTTPS_HOST = 'https://up-z2.qbox.me';
+var promise = require('bluebird');
 
 
 module.exports = function (Myappuser) {
@@ -70,7 +71,14 @@ module.exports = function (Myappuser) {
   );
 
   Myappuser.sayHi = function (callback) {//定义一个http接口方法
-    callback(null, 'hi');
+    Myappuser.find({username: 'lidikang'})
+      .then(function(res){
+        console.log(res);
+        callback(null, 'hi');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   };
   Myappuser.remoteMethod(//把方法暴露给http接口
     'sayHi',
@@ -376,7 +384,7 @@ module.exports = function (Myappuser) {
           }
           //对于每本书需要查询他的最新章节
           var getBookNewestNum = new eventproxy();
-          getBookNewestNum.all('hasFinishedNewwst', function(newestNum){
+          getBookNewestNum.all('hasFinishedNewest', function(newestNum){
             getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, headImage: res.headerImage, newest: newest, updateTime: res.updateTime});
           });
 
@@ -384,7 +392,7 @@ module.exports = function (Myappuser) {
           app.models.factioncontents.find({res: resReg}, {_id: 0, sectionContent: 0, sectionResource: 0}, function(contentErr, contentRes){
             if(contentErr || !contentRes){
               console.log('查询 |'+ contentRes.res + '| 出错，'+contentErr);
-              getBookNewestNum.emit('hasFinishedNewwst', contentRes);
+              getBookNewestNum.emit('hasFinishedNewest', contentRes);
             }
           });
         });
