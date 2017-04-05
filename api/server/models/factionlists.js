@@ -180,33 +180,46 @@ module.exports = function (Factionlists) {
     var app = Factionlists.app;
     app.models.myAppUser.findById(userid)
       .then(function (res) {
-        const nickName = res.nickName;
+        const nickName = res.nickName || 'unkown';
         // query the comments all existed
         Factionlists.findById(bookid)
           .then(function (listRes) {
-            console.log(res);
             const oldComments = listRes.comments;
-            var newComments = oldComments;
-            var nowTime = new Date()
+            var newComments = oldComments || [];
+            var nowTime = new Date();
             const nowTimeset = nowTime.getTime();
             const commentId = uuid.v1();
 
             // find current comment's father
             // when commentid == root, this comment is the child of the root(this book)
-            newComments.push({commentid: commentId, userid: userid, nickname: nickName, time: nowTimeset, father: father})
-            Factionlists.update({id: bookid}, {comments: newComments})
-
+            if(father && content){
+              newComments.push({commentid: commentId, userid: userid, nickname: nickName, time: nowTimeset, father: father, content: content});
+              Factionlists.update({id: bookid}, {comments: newComments})
+                .then(function(updateRes){
+                  if(updateRes){
+                    cb(null, {code: 0, commentid: commentId});
+                  }else{
+                    cb(null, {code: -1, errMsg: '更新书单的书评失败'});
+                  }
+                })
+                .catch(function(updateErr){
+                  console.log(updateErr);
+                  cb(null, {code: -1, errMsg: '更新书单的书评失败'});
+                })
+            }else{
+              cb(null, {code: -1, errMsg: '参数father和content不合法'});
+            }
           })
-          .catch(function (err) {
-
-          })
-        callback(null, 'hi');
+          .catch(function (listErr) {
+            console.log(listErr);
+            cb(null, {code: -1, errMsg: 'bookid不合法'});
+          });
       })
       .catch(function (err) {
         console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法'});
       });
-
-  }
+  };
   Factionlists.remoteMethod(
     'addComment', {
       accepts: [
@@ -217,7 +230,7 @@ module.exports = function (Factionlists) {
           arg: 'bookid',
           type: 'string'
         },{
-          arg: 'commentid',
+          arg: 'father',
           type: 'string',
           description: 'id of belonging comments'
         },{
@@ -233,4 +246,84 @@ module.exports = function (Factionlists) {
       },
       http: {path: '/addComment', verb: 'post'}
     });
+
+  //delete comment
+  Factionlists.deleteComment = function (userid, bookid, commentid, cb) {
+    var app = Factionlists.app;
+    app.models.myAppUser.findById(userid)
+      .then(function (res) {
+        // query the comments all existed
+        Factionlists.findById(bookid)
+          .then(function (listRes) {
+            const oldComments = listRes.comments || [];
+            // judge commentid is existed
+            var isExisted = oldComments.some(function(item){
+              return commentid === item.commentid
+            });
+            if(isExisted){
+              //delete the comment and the child of this comment
+              var newComments = oldComments.filter(function(item){
+                return !((commentid === item.commentid) || (commentid === item.father))
+              });
+              Factionlists.update({id: bookid}, {comments: newComments})
+                .then(function(updateRes){
+                  if(updateRes){
+                    cb(null, {code: 0, successMsg: '删除书评成功'});
+                  }else{
+                    cb(null, {code: -1, errMsg: '删除书评失败'});
+                  }
+                })
+                .catch(function(updateErr){
+                  console.log(updateErr);
+                  cb(null, {code: -1, errMsg: '删除书评失败'});
+                })
+            }else{
+              cb(null, {code: -1, errMsg: '书评id错误'});
+            }
+          })
+          .catch(function (listErr) {
+            console.log(listErr);
+            cb(null, {code: -1, errMsg: 'bookid不合法'});
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法'});
+      });
+  }
+
+  Factionlists.remoteMethod(
+    'deleteComment', {
+      accepts: [
+        {
+          arg: 'userid',
+          type: 'string'
+        },{
+          arg: 'bookid',
+          type: 'string'
+        },{
+          arg: 'commentid',
+          type: 'string',
+          description: 'id of belonging comments'
+        }
+      ],
+      returns: {
+        arg: 'data',
+        type: 'object',
+        description: 'result object'
+      },
+      http: {path: '/deleteComment', verb: 'post'}
+    });
+
+  // list all comments of one book
+  Factionlists.listComments = function (bookid, cb) {
+    Factionlists.findById(bookid)
+      .then(function(res){
+        // deal comment tree
+        var get
+      })
+      .catch(function(err){
+
+      })
+  }
 };
