@@ -1,6 +1,8 @@
 'use strict';
 var app = require('../server.js');
 var Tools = require('../tools/tool');
+var uuid = require('uuid'); //用于生成sessionid
+var promise = require('bluebird');
 var Eventproxy = require('eventproxy');
 
 module.exports = function (Factionlists) {
@@ -10,7 +12,7 @@ module.exports = function (Factionlists) {
     app.models.factionlists.findById(bookId, {}, {}, function (err, res) {
       if (err) {
         console.log('查询小说列表失败....' + err);
-        cb(null, { code: -1, errMsg: '查询小说列表失败' })
+        cb(null, {code: -1, errMsg: '查询小说列表失败'})
       } else {
         if (res) {
           console.log(res.sectionArray.toString());
@@ -28,7 +30,7 @@ module.exports = function (Factionlists) {
           sectionEp.after('hasGotContent', res.sectionArray.length, function (allSections) {
             returnData.sectionArray = allSections;
             //获取小说的最新章节
-            var newestSection = { sectionNum: 0 };
+            var newestSection = {sectionNum: 0};
             allSections.forEach(function (sectionItem) {
               if (sectionItem.sectionNum > newestSection.sectionNum) {
                 newestSection = sectionItem;
@@ -40,7 +42,7 @@ module.exports = function (Factionlists) {
           });
           res.sectionArray.forEach(function (sectionItem) {
             app.models.factioncontents.findById(sectionItem, {}, function (err, sectionRes) {
-              var returnData = { sectionId: null, sectionNum: null, sectionTitle: null };
+              var returnData = {sectionId: null, sectionNum: null, sectionTitle: null};
               if (err) {
                 console.log('查询小说内容失败....' + err);
                 sectionEp.emit('hasGotContent', returnData);
@@ -59,8 +61,8 @@ module.exports = function (Factionlists) {
               }
             });
           });
-        }else{
-          cb(null, { code: -1, errMsg: '找不到该书籍' })
+        } else {
+          cb(null, {code: -1, errMsg: '找不到该书籍'})
         }
       }
     });
@@ -78,7 +80,7 @@ module.exports = function (Factionlists) {
         type: 'object',
         description: '返回的结果对象'
       },
-      http: { path: '/getBookById', verb: 'get' }
+      http: {path: '/getBookById', verb: 'get'}
     });
 
   /**
@@ -93,7 +95,7 @@ module.exports = function (Factionlists) {
     app.models.factionlists.findById(bookId, {}, {}, function (err, res) {
       if (err) {
         console.log('查询小说列表失败....' + err);
-        cb(null, { code: -1, errMsg: '查询小说列表失败' })
+        cb(null, {code: -1, errMsg: '查询小说列表失败'})
       } else {
         returnData.code = 0; //标志位
         returnData.author = res.author;
@@ -122,7 +124,7 @@ module.exports = function (Factionlists) {
         });
         res.sectionArray.forEach(function (sectionItem) {
           app.models.factioncontents.findById(sectionItem, {}, function (err, sectionRes) {
-            var returnData = { sectionId: null, sectionNum: null, sectionTitle: null };
+            var returnData = {sectionId: null, sectionNum: null, sectionTitle: null};
             if (err) {
               console.log('查询小说内容失败....' + err);
               sectionEp.emit('hasGotContent', returnData);
@@ -152,17 +154,83 @@ module.exports = function (Factionlists) {
         type: 'string',
         description: 'the id of a book'
       },
-      {
-        arg: 'sectionNum',
-        type: 'number',
-        description: 'the num of a book section'
-      }
+        {
+          arg: 'sectionNum',
+          type: 'number',
+          description: 'the num of a book section'
+        }
       ],
       returns: {
         arg: 'data',
         type: 'object',
         description: '返回的结果对象'
       },
-      http: { path: '/getMulu', verb: 'get' }
+      http: {path: '/getMulu', verb: 'get'}
+    });
+
+  /**
+   * add commnets
+   * @param userid
+   * @param bookid
+   * @param father the id of what this comment belongs to, the father of this comment. when father == root, this comment is the child of the root(this book)
+   * @param content
+   */
+  Factionlists.addComment = function (userid, bookid, father, content, cb) {
+    // query according userid to get username, if userid is error, give up to add this comment
+    var app = Factionlists.app;
+    app.models.myAppUser.findById(userid)
+      .then(function (res) {
+        const nickName = res.nickName;
+        // query the comments all existed
+        Factionlists.findById(bookid)
+          .then(function (listRes) {
+            console.log(res);
+            const oldComments = listRes.comments;
+            var newComments = oldComments;
+            var nowTime = new Date()
+            const nowTimeset = nowTime.getTime();
+            const commentId = uuid.v1();
+
+            // find current comment's father
+            // when commentid == root, this comment is the child of the root(this book)
+            newComments.push({commentid: commentId, userid: userid, nickname: nickName, time: nowTimeset, father: father})
+            Factionlists.update({id: bookid}, {comments: newComments})
+
+          })
+          .catch(function (err) {
+
+          })
+        callback(null, 'hi');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+
+  }
+  Factionlists.remoteMethod(
+    'addComment', {
+      accepts: [
+        {
+          arg: 'userid',
+          type: 'string'
+        },{
+          arg: 'bookid',
+          type: 'string'
+        },{
+          arg: 'commentid',
+          type: 'string',
+          description: 'id of belonging comments'
+        },{
+          arg: 'content',
+          type: 'string',
+          description: 'content of this comments'
+        }
+      ],
+      returns: {
+        arg: 'data',
+        type: 'object',
+        description: 'result object'
+      },
+      http: {path: '/addComment', verb: 'post'}
     });
 };

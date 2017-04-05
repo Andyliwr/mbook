@@ -35,6 +35,11 @@
     },
     "newest": {
       "type": "number"
+    },
+    "comments": {
+      "type": [
+        "object"
+      ]
     }
   },
   "validations": [],

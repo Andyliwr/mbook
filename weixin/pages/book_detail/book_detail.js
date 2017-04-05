@@ -64,7 +64,7 @@ Page({
     goToReader: function(){
         wx.navigateTo({
             url:'reader/reader'
-        });        
+        });
     },
     //评论相关
     toWriteComment: function(){

@@ -79,8 +79,9 @@ var factionListSchema = new mongoose.Schema({
   headerImage: String, //小说首图链接
   author: String, //小说作者
   sectionArray: [{type: Schema.Types.ObjectId, ref: 'factionContent'}], //小说章节列表, 每个元素是包含章节数、标题、章节内容的JSON
-  updateTime: Date, //更新时间
-  newest: Number //最新章节
+  updateTime: Date, // time of update
+  newest: Number, // the newest section number
+  comments: [] // all comments of this book
 }, {safe: {j: 1, w: 1, wtimeout: 10000}}); //new Schema(config,options); j表示做1份日志，w表示做2个副本（尚不明确），超时时间10秒
 
 //创建model
@@ -150,7 +151,8 @@ var initDB = function () {
     author: '天蚕土豆',
     sectionArray: [factionContentEntity._id],
     updateTime: new Date(),
-    newest: 1
+    newest: 1,
+    comments: []
   });
 
   factionListEntity.save(function (err) {
@@ -527,7 +529,8 @@ function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady) {
         author: bookItem.author,
         sectionArray: [content._id],
         updateTime: new Date(),
-        newest: 0 //最新章节
+        newest: 0, //最新章节
+        comments: []
       });
 
       list.save(function (err) {
