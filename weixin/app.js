@@ -7,7 +7,6 @@ App({
     var self = this;
     //从缓存中读取sessionid
     // wx.clearStorageSync();
-    // wx.setStorageSync('sessionid', ''); //test
     var sessionId = wx.getStorageSync('sessionid');//sessionAndUuid由sessionId和userId组成
     if(sessionId){
       self.checkSessionEffect(sessionId);
@@ -105,6 +104,8 @@ App({
                       }else{
                         //如果登录成功，将sessionid存储在本地缓存中
                         wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
+                        var idStr = JSON.stringify({userid: tmpdata.userid, openid: tmpdata.openid});
+                        wx.setStorage({ key: "id", data: idStr });
                         self.globalData.sessionId = tmpdata.sessionid;
                         if(typeof callback == "function"){
                           callback();

@@ -24,6 +24,9 @@
     "auth": {
       "type": "string",
       "required": true
+    },
+    "avatar": {
+      "type": "string"
     }
   },
   "validations": [],

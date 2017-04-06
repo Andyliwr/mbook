@@ -90,7 +90,8 @@ Page({
               //校验成功，开始注册
               var registeData = {
                 "nickName": self.data.nickName,
-                "myBooks": [{}],
+                "avatar": self.data.userInfoFromApp.avatar,
+                "myBooks": [],
                 "auth": "{\"type\": \"wechat\", \"wxOpenId\": \"" + self.data.userInfoFromApp.openid + "\"}",
                 "username": self.data.username,
                 "email": self.data.email,
@@ -143,6 +144,9 @@ Page({
       success: function (res) {
         //七牛上传文件
         var filePath = res.tempFilePaths[0];
+        self.setData({
+          userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: self.data.userInfoFromApp.gender }
+        });
         qiniuUploader.upload(filePath, (res) => {
           console.log(res);
           //更新图片地址
@@ -150,7 +154,7 @@ Page({
             userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: self.data.userInfoFromApp.gender }
           });
           wx.hideToast();
-          wx.showToast({ title: '上传成功', icon: 'success', duration: 1000 });
+          wx.showToast({ title: '上传成功', icon: 'success', duration: 2000 });
           setTimeout(function () { wx.hideToast() }, 2000)
         }, (error) => {
           console.error('error: ' + JSON.stringify(error));

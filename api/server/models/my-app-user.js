@@ -176,7 +176,7 @@ module.exports = function (Myappuser) {
                   redisClient.expire(sessionid, 7 * 24 * 60 * 60);
                   redisClient.get(sessionid, function (err, reply) {
                     if (reply) {
-                      cb(null, { code: 0, sessionid: sessionid });
+                      cb(null, { code: 0, sessionid: sessionid, userid:checkData.userid, openid: checkData.openid });
                     } else {
                       cb(null, { code: -1, errmsg: 'redis存储sessionid失败' });
                     }
@@ -212,7 +212,7 @@ module.exports = function (Myappuser) {
 
           if(thisUserArr.length){
             console.log('openid为'+JSON.parse(thisUserArr[0].auth).wxOpenId+'的用户已经绑定了myappuser的账号'+thisUserArr[0].username+', userId为'+thisUserArr[0].id+'...');
-            checkData = {code: 0, isRegisted: 1, openid: returnData.data.openid, session_key: returnData.data.session_key};
+            checkData = {code: 0, isRegisted: 1, userid:thisUserArr[0].id, openid: returnData.data.openid, session_key: returnData.data.session_key};
           }else{
             console.log('用户openid: '+returnData.data.openid+' 未绑定myappuser账号');
             checkData = {code: 0, isRegisted: 0, openid: returnData.data.openid};

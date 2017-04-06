@@ -320,7 +320,14 @@ module.exports = function (Factionlists) {
     Factionlists.findById(bookid)
       .then(function(res){
         // deal comment tree
-        var get
+        var comments = res.comments;
+        var result = {};
+        // find the comment which the father is root
+        comments.forEach(function(item, index){
+          if(item.father === 'root'){
+            result.push({})
+          }
+        });
       })
       .catch(function(err){
 
