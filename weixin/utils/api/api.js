@@ -3,8 +3,6 @@
 
 const HOST_URL = 'http://localhost:3000/api';
 const LOGIN = '/as_users/login';
-const GET_FACTION_LIST = '/xs_list';
-const GET_FACTION_DETAIL_BY_ID = '/xs_list';
 const GET_CONTENT_BY_ID = '/xs_content/getContentById';
 const GET_EMAILS_PAGEID = '/emails';
 const GET_BOOKS_SORTBY_TIME = '/xxxx';
@@ -16,6 +14,7 @@ const IS_REGISTED_BY_WX = '/myappuser/isRegistedByWx';
 const GET_UPLOAD_TOKEN = '/myappuser/getUploadToken';
 const REGISTE = '/myappuser';
 const GET_BOOK_BY_ID = '/xs_list/getBookById';
+const GET_BOOK_DETAIL = '/xs_list/getBookDetail';
 const GET_MY_BOOKS = '/myappuser/getMyBooks';
 const ADD_MY_BOOKS = '/myappuser/addMyBooks';
 const DELETE_MY_BOOKS = '/myappuser/addMyBooks';
@@ -32,12 +31,8 @@ function obj2url(obj) {
 }
 
 module.exports = {
-  //获取列表数据
-  getFactionList: function () {
-    return HOST_URL + GET_FACTION_LIST;
-  },
-  getFactionDetailById: function (id) {
-    return HOST_URL + GET_FACTION_DETAIL_BY_ID + id;
+  getBookDetail: function (bookid) {
+    return HOST_URL + GET_BOOK_DETAIL + '?bookid=' + bookid;
   },
   getContentById: function (sectionId) {
     return HOST_URL + GET_CONTENT_BY_ID + '?sectionId=' + sectionId;

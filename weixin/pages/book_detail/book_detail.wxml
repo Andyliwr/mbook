@@ -7,11 +7,11 @@
 		<view class="bookInfo">
 			<image class="headImg" src="{{img}}" mode="aspectFill"></image>
 			<view class="left-text">
-				<view class="bookName">大主宰</view>
-				<view class="author">作者：{{book.author}}</view>
+				<view class="bookName">{{bookDetail.name}}</view>
+				<view class="author">作者：{{bookDetail.author}}</view>
 				<view class="wordsNum">字数：348.33万</view>
-				<view class="source">来源：百度贴吧</view>
-				<view class="updatetime">最新更新时间：{{book.updatetime}}</view>
+				<view class="source">最新章节：{{bookDetail.newest}}</view>
+				<view class="updatetime">更新时间：{{bookDetail.updateTime}}</view>
 			</view>
 		</view>
 		<view class="clearfix"></view>
@@ -21,7 +21,7 @@
 		</view>
 	</view>
 	<view class="book-des">
-		<view class="des-content" bindtap="showAllDes">{{showAllDes?des:shortDes}}</view>
+		<view class="des-content" bindtap="showAllDes">{{showAllDes?des:shortDes}}<text class="read-more" hidden="{{showAllDes}}">阅读全部 ></text></view>
 	</view>
 	<view class="splitor"></view>
 	<view class="comments"> 
@@ -42,4 +42,16 @@
 	<input class="comment-input" value="{{currentCommentValue}}" placeholder="发表评论" placeholder-style="margin-top:10rpx;" focus="{{!commentInputHide}}" maxlength="100" bindconfirm="sendComment"  confirm-type="send" ></input>
 	<view class="cancle" bindtap="hideCommentBar">取消</view>
 	</view>
+
+	<!-- 出错打印 -->
+    <import src="../component/err_tips/err_tips.wxml" />
+    <template is="err_tips" data="{{err_tips_data}}" />
+
+    <!-- 成功的提示 -->
+    <import src="../component/toast/toast.wxml" />
+    <template is="toast" data="{{toast_data}}" />
+
+    <!-- app状态页 -->
+    <import src="../component/err_page/err_page.wxml" />
+    <template is="err_page" data="{{err_page_data}}" />
 </view>

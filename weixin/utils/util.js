@@ -88,6 +88,34 @@ function formatTime2(time) {
   }).join(':')
 }
 
+/**
+ * format date to 'a minute ago, an hour ago, one day ago'
+ * date nowtime
+ */
+function formatDate3(date) {
+  var resultStr = '';
+  var timePre = date.getTime();
+  var now = new Date();
+  var timeNow = now.getTime();
+  if(timeNow >= timePre){
+    var distance = (timeNow - timePre)/1000;
+    if(distance >= 0 && distance < 60){
+      resultStr = '刚刚';
+    }else if(distance >= 60 && distance <= (60*60)){
+      resultStr = Math.floor(distance/60)+'分钟前';
+    }else if(distance > 3600 && distance <= (24*60*60)){
+      resultStr = Math.floor(distance/3600)+"小时前";
+    }else if(distance > 86400 && distance/(30*24*60*60)){
+      resultStr = Math.floor(distance/86400)+"天前"
+    }else{
+      resultStr = formatTime(date);
+    }
+  }else{
+    console.log('nowTime is behind on this time');
+  }
+  return resultStr;
+}
+
 function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -155,6 +183,7 @@ function showErrMsg(obj, errorMsg, time){
 module.exports = {
   formatTime: formatTime,
   formatTime2: formatTime2,
+  formatDate3: formatDate3,
   judgeTelOrName: judgeTelOrName,
   eNumToCNum: eNumToCNum,
   guid: guid,

@@ -1,3 +1,4 @@
+@import "../component/err_page/err_page.wxss";
 .book-detail-container{
 	line-height: 1.8;
 	font-size: 12px;
@@ -71,6 +72,10 @@
 .book-des{
 	font-size: 28rpx;
 	padding:40rpx;
+}
+.book-des .read-more{
+	color: #fd9941;
+	font-size: 24rpx;
 }
 .book-des .des-content{
 	text-align: justify;

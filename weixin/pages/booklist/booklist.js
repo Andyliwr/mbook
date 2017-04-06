@@ -22,13 +22,13 @@ Page({
       headerText: timeResult.headerText
     });
     //先获取本地缓存中的书单数据，等接口返回之后再更新
-    wx.getStorage({
-      key: 'booklist',
-      success: function (res) {
-        console.log('使用本地缓存的书单数据');
-        self.setData({books: res.data});
-      }
-    });
+    // wx.getStorage({
+    //   key: 'booklist',
+    //   success: function (res) {
+    //     console.log('使用本地缓存的书单数据');
+    //     self.setData({books: res.data});
+    //   }
+    // });
   },
   onLoad: function (e) {
     var self = this;
@@ -67,8 +67,24 @@ Page({
             },
             fail: function () {
               //显示网络错误提示页面
-              self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '登录', click: 'getMyBooks'}});
+              //先获取本地缓存中的书单数据，并提示网络错误，若本地没有缓存数据，显示app状态页
+              wx.getStorage({
+                key: 'booklist',
+                success: function (res) {
+                  console.log('使用本地缓存的书单数据');
+                  if(res.data && res.data[0].factionName){
+                    self.setData({books: res.data});
+                  }else{
+                    self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
+                  }
+                },
+                fail: function (err) {
+                  console.log('获取缓存失败'+err);
+                  self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
+                }
+              });
               console.log("请求书籍列表失败");
+              self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
             },
             complete: function(){
               //请求完成结束loading

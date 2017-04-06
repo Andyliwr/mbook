@@ -6,13 +6,13 @@ var promise = require('bluebird');
 var Eventproxy = require('eventproxy');
 
 module.exports = function (Factionlists) {
-  Factionlists.getBookById = function (bookId, cb) {
+  Factionlists.getBookById = function (bookid, cb) {
     var returnData = {};
     var app = Factionlists.app;
-    app.models.factionlists.findById(bookId, {}, {}, function (err, res) {
+    app.models.factionlists.findById(bookid, {}, {}, function (err, res) {
       if (err) {
         console.log('查询小说列表失败....' + err);
-        cb(null, {code: -1, errMsg: '查询小说列表失败'})
+        cb(null, {code: -1, errMsg: '查询小说列表失败, bookid不合法'})
       } else {
         if (res) {
           console.log(res.sectionArray.toString());
@@ -71,7 +71,7 @@ module.exports = function (Factionlists) {
   Factionlists.remoteMethod(
     'getBookById', {
       accepts: {
-        arg: 'bookId',
+        arg: 'bookid',
         type: 'string',
         description: 'the id of a book'
       },
@@ -373,5 +373,49 @@ module.exports = function (Factionlists) {
         description: 'result object'
       },
       http: {path: '/listComments', verb: 'get'}
+    });
+
+  // get book detail by id
+  Factionlists.getBookDetail = function (bookid, cb) {
+    var app = Factionlists.app;
+    Factionlists.findById(bookid)
+      .then(function(res){
+        var result = {};
+        result.name = res.factionName;
+        result.author = res.author;
+        result.headImage = res.headerImage;
+        result.des = res.des;
+        result.updateTime = res.updateTime.getTime();
+        result.newest = res.newest;
+        cb(null, {code: 0, detail: result});
+        // get newest section infomation
+        // var factionNameReg = new RegExp(res.factionName, 'ig');
+        // app.models.Factioncontents.find({des: factionNameReg, sectionNum: res.newest}, {_id: 0, sectionNum: 0, sectionContent: 0, sectionTitle: 1}, function(contentErr, contentRes){
+        //   if(contentErr || !contentRes){
+        //     console.log('查询最新章节章节名失败，'+contentErr);
+        //   }else{
+        //     result.newest = {num: res.newest, title: contentRes.sectionTitle}
+        //   }
+        //   cb(null, {code: 0, detail: result});
+        // });
+      })
+      .catch(function(err){
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'bookid不合法'});
+      })
+  }
+
+  Factionlists.remoteMethod(
+    'getBookDetail', {
+      accepts: {
+        arg: 'bookid',
+        type: 'string'
+      },
+      returns: {
+        arg: 'data',
+        type: 'object',
+        description: 'result object'
+      },
+      http: {path: '/getBookDetail', verb: 'get'}
     });
 };
