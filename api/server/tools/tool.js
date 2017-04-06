@@ -50,6 +50,33 @@ function formatDate (dateObj) {
   return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+/**
+ * Array delete one element, and return the array
+ * @param arr
+ * @parma ele the element needding to be deleted
+ */
+function removeElement(arr, ele){
+  var result  = [];
+  if(arr instanceof Array){
+    if(ele instanceof Array){
+      result = arr.filter(function(item){
+        var isInEle = ele.some(function(eleItem){
+          return item === eleItem;
+        });
+        return !isInEle
+      })
+    }else{
+      result = arr.filter(function(item){
+        return item !== ele
+      })
+    }
+  }else{
+    console.log('parameter error of function removeElement');
+  }
+  return result;
+}
+
 exports.overflowDeal = overflowDeal;
 exports.getQdTrueImgUrl = getQdTrueImgUrl;
 exports.formatDate = formatDate;
+exports.removeElement = removeElement;

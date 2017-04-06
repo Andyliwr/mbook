@@ -181,6 +181,7 @@ module.exports = function (Factionlists) {
     app.models.myAppUser.findById(userid)
       .then(function (res) {
         const nickName = res.nickName || 'unkown';
+        const avatar = res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png';
         // query the comments all existed
         Factionlists.findById(bookid)
           .then(function (listRes) {
@@ -193,7 +194,7 @@ module.exports = function (Factionlists) {
             // find current comment's father
             // when commentid == root, this comment is the child of the root(this book)
             if(father && content){
-              newComments.push({commentid: commentId, userid: userid, nickname: nickName, time: nowTimeset, father: father, content: content});
+              newComments.push({commentid: commentId, userid: userid, nickname: nickName, avatar: avatar, time: nowTimeset, father: father, content: content});
               Factionlists.update({id: bookid}, {comments: newComments})
                 .then(function(updateRes){
                   if(updateRes){
@@ -321,16 +322,56 @@ module.exports = function (Factionlists) {
       .then(function(res){
         // deal comment tree
         var comments = res.comments;
-        var result = {};
+        var result = [];
+
         // find the comment which the father is root
         comments.forEach(function(item, index){
           if(item.father === 'root'){
-            result.push({})
+            result.push({rootComment: item, child: []});
           }
         });
+        var noRootComments = Tools.removeElement(comments, result);
+
+        // find the comment whitch facther is not root, pack them into an array
+        result.forEach(function(resultItem){
+          var resultArr = [];
+          var findChildAndSon = function(commentid, nickname){
+            var tmpArr = noRootComments.filter(function(notRootItem){
+              return notRootItem.father === commentid
+            });
+            tmpArr.forEach(function(tmpItem){
+              tmpItem.reply = nickname;
+            });
+            resultArr = resultArr.concat(tmpArr);
+            // when this comment has child
+            if(tmpArr.length > 0){
+              tmpArr.forEach(function(childItem){
+                findChildAndSon(childItem.commentid, childItem.nickname);
+              });
+            }
+          };
+          findChildAndSon(resultItem.rootComment.commentid, resultItem.rootComment.nickname);
+          resultItem.child = resultArr;
+        });
+        cb(null, {code: 0, comments: result});
       })
       .catch(function(err){
-
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'bookid不合法'});
       })
   }
+
+  Factionlists.remoteMethod(
+    'listComments', {
+      accepts: {
+        arg: 'bookid',
+        type: 'string'
+      },
+      returns: {
+        arg: 'data',
+        type: 'object',
+        description: 'result object'
+      },
+      http: {path: '/listComments', verb: 'get'}
+    });
 };
