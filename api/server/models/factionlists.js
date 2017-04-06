@@ -383,7 +383,13 @@ module.exports = function (Factionlists) {
         var result = {};
         result.name = res.factionName;
         result.author = res.author;
-        result.headImage = res.headerImage;
+        //处理起点小说网的图片url
+        var urlReg = new RegExp('^\/\/.*\\r\\n$', 'ig');
+        var headImage = res.headerImage;
+        if(urlReg.test(headImage)){
+          headImage = 'http:'+headImage.substring(0, headImage.length-2);
+        }
+        result.headImage = headImage;
         result.des = res.des;
         result.updateTime = res.updateTime.getTime();
         result.newest = res.newest;

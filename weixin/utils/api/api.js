@@ -18,6 +18,9 @@ const GET_BOOK_DETAIL = '/xs_list/getBookDetail';
 const GET_MY_BOOKS = '/myappuser/getMyBooks';
 const ADD_MY_BOOKS = '/myappuser/addMyBooks';
 const DELETE_MY_BOOKS = '/myappuser/addMyBooks';
+const ADD_COMMENT = '/xs_list/addComment';
+const DELETE_COMMENT = '/xs_list/deleteComment';
+const GET_COMMENTS = '/xs_list/listComments';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
@@ -43,7 +46,7 @@ module.exports = {
   getEmailsByPageid: function (pageid) {
     return HOST_URL + GET_FACTION_DETAIL_BY_ID + '?pageid=' + pageid;
   },
-  //根据时间分类用户的书籍
+  // 根据时间分类用户的书籍
   getBooksSortByTime: function (timeObj) {
     if (timeObj.timeType && timeObj.timeValue) {
       return HOST_URL + GET_BOOKS_SORTBY_TIME + '?timeType=' + timeObj.timeType + '&timeValue=' + timeObj.timeValue;
@@ -60,36 +63,48 @@ module.exports = {
   getMulu: function (bookid, sectionNum) {
     return HOST_URL + GET_BOOK_MULU + '?bookId=' + bookid + '&sectionNum=' + sectionNum;
   },
-  //将登录凭证发往你的服务端，并在你的服务端使用该凭证向微信服务器换取该微信用户的唯一标识(openid)和会话密钥(session_key)
+  // 将登录凭证发往你的服务端，并在你的服务端使用该凭证向微信服务器换取该微信用户的唯一标识(openid)和会话密钥(session_key)
   getSessionId: function (wxcode) {
     return HOST_URL + GET_SESSION_ID + '?wxcode=' + wxcode;
   },
-  //检查本地缓存中记录的登录信息是否有效
+  // 检查本地缓存中记录的登录信息是否有效
   checkSessionId: function (sessionid) {
     return HOST_URL + CHECK_SESSION_ID + '?sessionid=' + sessionid;
   },
-  //检查用户是否已经通过微信注册过
+  // 检查用户是否已经通过微信注册过
   isRegistedByWx: function (wxcode) {
     return HOST_URL + IS_REGISTED_BY_WX + '?wxcode=' + wxcode;
   },
-  //个人中心上传图片获取上传token
+  // 个人中心上传图片获取上传token
   getUploadToken: function () {
     return HOST_URL + GET_UPLOAD_TOKEN;
   },
-  //新用户注册
+  // 新用户注册
   registe: function () {
     return HOST_URL + REGISTE;
   },
-  //获取我的书单
+  // 获取我的书单
   getMyBooks: function (userid) {
     return HOST_URL + GET_MY_BOOKS + '?userid=' + userid;
   },
-  //新增书单, post方法
+  // 新增书单, post方法
   addMyBooks: function () {
     return HOST_URL + ADD_MY_BOOKS
   },
-  //删除书单，post方法
+  // 删除书单，post方法
   deleteMyBooks: function () {
     return HOST_URL + DELETE_MY_BOOKS
+  },
+  // 增加评论, post方法
+  addComment: function(){
+    return HOST_URL + ADD_COMMENT
+  },
+  // 删除评论，post方法
+  deleteComment: function(){
+    return HOST_URL + DELETE_COMMENT
+  },
+  // 获取评论
+  listComments: function(bookid){
+    return HOST_URL + GET_COMMENTS + '?bookid=' + bookid
   }
 }

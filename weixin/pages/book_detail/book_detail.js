@@ -42,6 +42,7 @@ Page({
     });
     self.setData({showAllDes: false});
     self.getBookDetail(options.bookid);
+    self.getComments(options.bookid);
   },
   getBookDetail: function (bookid) {
     var self = this;
@@ -62,7 +63,47 @@ Page({
         }
       },
       fail: function (err) {
-        console.log('书籍不存在....'+err);
+        console.log(err);
+        self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '登录', click: 'getBookDetail'}});
+      },
+      complete: function () {
+        //hide loading
+        setTimeout(function(){
+          wx.hideToast()
+        },1000)
+      }
+    });
+  },
+  // get comments
+  getComments: function(bookid){
+    var self = this;
+    wx.request({
+      url: Api.listComments(bookid),
+      success: function (res) {
+        var tmpData = res.data.data;
+        if (tmpData && tmpData.code == 0) {
+          // 格式化日期
+          var finalData = tmpData.comments.map(function(item){
+            // rootComment
+            var rootDate = new Date(item.rootComment.time);
+            item.rootComment.time = Util.formatDate3(rootDate);
+            // child
+            item.child.forEach(function(childItem){
+              var childDate = new Date(childItem.time);
+              childItem.time = Util.formatDate3(childDate);
+            });
+            return item;
+          });
+          self.setData({comments: finalData});
+          // des
+
+        } else {
+          console.log('请求书籍信息失败....');
+          self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getBookDetail'}});
+        }
+      },
+      fail: function (err) {
+        console.log(err);
         self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '登录', click: 'getBookDetail'}});
       },
       complete: function () {

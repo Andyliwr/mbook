@@ -1,11 +1,11 @@
 <view class="book-detail-container">
 	<view class="headBackgroundContainer">
-		<view class="headBackground" style="background:url('{{img}}') no-repeat center;background-size:200%;" >
+		<view class="headBackground" style="background:url('{{bookDetail.headImage}}') no-repeat center;background-size:200%;" >
 		</view>
 	</view>	
 	<view class="head">
 		<view class="bookInfo">
-			<image class="headImg" src="{{img}}" mode="aspectFill"></image>
+			<image class="headImg" src="{{bookDetail.headImage}}" mode="aspectFill"></image>
 			<view class="left-text">
 				<view class="bookName">{{bookDetail.name}}</view>
 				<view class="author">作者：{{bookDetail.author}}</view>
@@ -29,11 +29,11 @@
 		</view>
 		<view class="comment-list">
 			<view class="comment-item" wx:for="{{comments}}">
-				<image class="headImg" src="{{item.headImg}}" mode="scaleToFill"></image>
+				<image class="headImg" src="{{item.rootComment.avatar}}" mode="scaleToFill"></image>
 				<view class="comment-right">
-					<view class="reader-name">{{item.readerName}}</view>
-					<view class="comment">{{item.comment}}</view>		
-					<view class="create-time">2月31日 19:02</view>	
+					<view class="reader-name" data-userid="{{item.rootComment.userid}}">{{item.rootComment.nickname}}</view>
+					<view class="comment">{{item.rootComment.content}}</view>		
+					<view class="create-time">{{item.rootComment.time}}</view>	
 				</view>
 			</view>
 		</view>
