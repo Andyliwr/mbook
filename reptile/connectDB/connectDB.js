@@ -341,15 +341,15 @@ function updateSectionList(factionName, source, isDone) {
           }
         }).exec(function (err) {
           if (err) {
-            if(isDone == 'done'){
+            if (isDone == 'done') {
               logger.warn('存储后更新list失败，' + err);
-            }else{
+            } else {
               logger.warn('存储前更新list失败，' + err);
             }
           } else {
-            if(isDone == 'done'){
+            if (isDone == 'done') {
               logger.info('存储后更新list成功！');
-            }else{
+            } else {
               logger.info('存储前更新list成功！');
             }
           }
@@ -748,7 +748,7 @@ function getSlipSection(factionName, resource, callback) {
               list[0].sectionArray.forEach(function (item, index, array) {
                 if (item.sectionContent !== '你到了没有知识的荒野~' && item.sectionContent !== '你来到了没有知识的荒原...' && item.sectionTitle !== '测试章节') {
                   //if this item above has slip case, create a new factionContent to replace it
-                  var createReplaceSection = function(sectionNum, createCallback){
+                  var createReplaceSection = function (sectionNum, createCallback) {
                     factionContentModel.create({
                       sectionNum: (sectionNum + 1),
                       sectionTitle: '测试章节',
@@ -761,7 +761,7 @@ function getSlipSection(factionName, resource, callback) {
                         logger.warn('检测断层章节过程中，发现第 ' + (sectionNum + 1) + ' 出现断层，新建测试章节补位fail，' + err);
                       } else {
                         resultArr.push(res.id);
-                        sectionArr.push(sectionNum+1);
+                        sectionArr.push(sectionNum + 1);
                         logger.warn('检测断层章节过程中，发现第 ' + (sectionNum + 1) + ' 出现断层，新建测试章节补位success，id: ' + res.id);
                       }
                       typeof createCallback === 'function' && createCallback();
@@ -769,27 +769,27 @@ function getSlipSection(factionName, resource, callback) {
                   };
                   if (index !== (array.length - 1)) {
                     if (((item.sectionNum + 1) !== (array[index + 1].sectionNum))) {
-                      createReplaceSection(item.sectionNum+1, function(){
+                      createReplaceSection(item.sectionNum + 1, function () {
                         detectSlipEp.emit('hasFinishedDetect', '');
                       });
-                    }else{
+                    } else {
                       detectSlipEp.emit('hasFinishedDetect', '');
                     }
                   } else {
                     //this is the last section can be found
                     //如果遍历到最后发现最大章节数比当前数组的长度还要大，则剩余的也需要补齐
-                    var distanceNum = array[length-1].sectionNum - length;
-                    if(distanceNum > 0){
+                    var distanceNum = array[length - 1].sectionNum - length;
+                    if (distanceNum > 0) {
                       var lastEp = new eventproxy();
                       lastEp.after('hasFinishedCreate', distanceNum, function (datas) {
                         detectSlipEp.emit('hasFinishedDetect', '');
                       });
-                      for(var i = 0; i < distanceNum; i++){
-                        createReplaceSection((index+1+i), function(){
+                      for (var i = 0; i < distanceNum; i++) {
+                        createReplaceSection((index + 1 + i), function () {
                           lastEp.emit('hasFinishedCreate', '');
                         });
                       }
-                    }else{
+                    } else {
                       detectSlipEp.emit('hasFinishedDetect', '');
                     }
                   }

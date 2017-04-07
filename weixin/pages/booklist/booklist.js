@@ -203,7 +203,7 @@ Page({
   goToBookDetail: function (e) {
     var currentBookId = e.currentTarget.dataset.bookid;
     wx.navigateTo({
-      url: '../book_detail/book_detail?bookid=' + currentBookId
+      url: '../book_detail/book_detail?bookid=' + currentBookId + '&isInList=1'
     });
   },
   setIsSearching: function () {

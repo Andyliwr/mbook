@@ -17,11 +17,12 @@ const GET_BOOK_BY_ID = '/xs_list/getBookById';
 const GET_BOOK_DETAIL = '/xs_list/getBookDetail';
 const GET_MY_BOOKS = '/myappuser/getMyBooks';
 const ADD_MY_BOOKS = '/myappuser/addMyBooks';
-const DELETE_MY_BOOKS = '/myappuser/addMyBooks';
+const DELETE_MY_BOOKS = '/myappuser/deleteMyBooks';
 const ADD_COMMENT = '/xs_list/addComment';
 const DELETE_COMMENT = '/xs_list/deleteComment';
 const GET_COMMENTS = '/xs_list/listComments';
 const GET_USER_INFO = '/myappuser/getUserInfo';
+const ADD_LIKE_NUM = '/xs_list/addLikeNum';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
@@ -111,5 +112,9 @@ module.exports = {
   // 获取用户详细信息
   getUserInfo: function(userid){
     return HOST_URL + GET_USER_INFO + '?userid=' + userid
+  },
+  // 点赞, post
+  addLikeNum: function(){
+    return HOST_URL + ADD_LIKE_NUM
   }
 }

@@ -193,21 +193,43 @@ module.exports = function (Factionlists) {
 
             // find current comment's father
             // when commentid == root, this comment is the child of the root(this book)
-            if(father && content){
-              newComments.push({commentid: commentId, userid: userid, nickname: nickName, avatar: avatar, time: nowTimeset, father: father, content: content});
+            if (father && content) {
+              // if father is ‘root’, need to add a like param
+              if (father === 'root') {
+                newComments.push({
+                  commentid: commentId,
+                  userid: userid,
+                  nickname: nickName,
+                  avatar: avatar,
+                  time: nowTimeset,
+                  father: father,
+                  content: content,
+                  likenum: 0
+                });
+              } else {
+                newComments.push({
+                  commentid: commentId,
+                  userid: userid,
+                  nickname: nickName,
+                  avatar: avatar,
+                  time: nowTimeset,
+                  father: father,
+                  content: content
+                });
+              }
               Factionlists.update({id: bookid}, {comments: newComments})
-                .then(function(updateRes){
-                  if(updateRes){
+                .then(function (updateRes) {
+                  if (updateRes) {
                     cb(null, {code: 0, commentid: commentId});
-                  }else{
+                  } else {
                     cb(null, {code: -1, errMsg: '更新书单的书评失败'});
                   }
                 })
-                .catch(function(updateErr){
+                .catch(function (updateErr) {
                   console.log(updateErr);
                   cb(null, {code: -1, errMsg: '更新书单的书评失败'});
                 })
-            }else{
+            } else {
               cb(null, {code: -1, errMsg: '参数father和content不合法'});
             }
           })
@@ -227,14 +249,14 @@ module.exports = function (Factionlists) {
         {
           arg: 'userid',
           type: 'string'
-        },{
+        }, {
           arg: 'bookid',
           type: 'string'
-        },{
+        }, {
           arg: 'father',
           type: 'string',
           description: 'id of belonging comments'
-        },{
+        }, {
           arg: 'content',
           type: 'string',
           description: 'content of this comments'
@@ -258,27 +280,27 @@ module.exports = function (Factionlists) {
           .then(function (listRes) {
             const oldComments = listRes.comments || [];
             // judge commentid is existed
-            var isExisted = oldComments.some(function(item){
+            var isExisted = oldComments.some(function (item) {
               return commentid === item.commentid
             });
-            if(isExisted){
+            if (isExisted) {
               //delete the comment and the child of this comment
-              var newComments = oldComments.filter(function(item){
+              var newComments = oldComments.filter(function (item) {
                 return !((commentid === item.commentid) || (commentid === item.father))
               });
               Factionlists.update({id: bookid}, {comments: newComments})
-                .then(function(updateRes){
-                  if(updateRes){
+                .then(function (updateRes) {
+                  if (updateRes) {
                     cb(null, {code: 0, successMsg: '删除书评成功'});
-                  }else{
+                  } else {
                     cb(null, {code: -1, errMsg: '删除书评失败'});
                   }
                 })
-                .catch(function(updateErr){
+                .catch(function (updateErr) {
                   console.log(updateErr);
                   cb(null, {code: -1, errMsg: '删除书评失败'});
                 })
-            }else{
+            } else {
               cb(null, {code: -1, errMsg: '书评id错误'});
             }
           })
@@ -299,10 +321,10 @@ module.exports = function (Factionlists) {
         {
           arg: 'userid',
           type: 'string'
-        },{
+        }, {
           arg: 'bookid',
           type: 'string'
-        },{
+        }, {
           arg: 'commentid',
           type: 'string',
           description: 'id of belonging comments'
@@ -319,33 +341,33 @@ module.exports = function (Factionlists) {
   // list all comments of one book
   Factionlists.listComments = function (bookid, cb) {
     Factionlists.findById(bookid)
-      .then(function(res){
+      .then(function (res) {
         // deal comment tree
         var comments = res.comments;
         var result = [];
 
         // find the comment which the father is root
-        comments.forEach(function(item, index){
-          if(item.father === 'root'){
+        comments.forEach(function (item, index) {
+          if (item.father === 'root') {
             result.push({rootComment: item, child: []});
           }
         });
         var noRootComments = Tools.removeElement(comments, result);
 
         // find the comment whitch facther is not root, pack them into an array
-        result.forEach(function(resultItem){
+        result.forEach(function (resultItem) {
           var resultArr = [];
-          var findChildAndSon = function(commentid, nickname){
-            var tmpArr = noRootComments.filter(function(notRootItem){
+          var findChildAndSon = function (commentid, nickname) {
+            var tmpArr = noRootComments.filter(function (notRootItem) {
               return notRootItem.father === commentid
             });
-            tmpArr.forEach(function(tmpItem){
+            tmpArr.forEach(function (tmpItem) {
               tmpItem.reply = nickname;
             });
             resultArr = resultArr.concat(tmpArr);
             // when this comment has child
-            if(tmpArr.length > 0){
-              tmpArr.forEach(function(childItem){
+            if (tmpArr.length > 0) {
+              tmpArr.forEach(function (childItem) {
                 findChildAndSon(childItem.commentid, childItem.nickname);
               });
             }
@@ -353,9 +375,13 @@ module.exports = function (Factionlists) {
           findChildAndSon(resultItem.rootComment.commentid, resultItem.rootComment.nickname);
           resultItem.child = resultArr;
         });
+        // 评论排序
+        result.sort(function (comment1, comment2) {
+          return comment2.rootComment.time - comment1.rootComment.time
+        });
         cb(null, {code: 0, comments: result});
       })
-      .catch(function(err){
+      .catch(function (err) {
         console.log(err);
         cb(null, {code: -1, errMsg: 'bookid不合法'});
       })
@@ -375,19 +401,70 @@ module.exports = function (Factionlists) {
       http: {path: '/listComments', verb: 'get'}
     });
 
+  // add like num
+  Factionlists.addLikeNum = function (bookid, commentid, cb) {
+    Factionlists.findById(bookid)
+      .then(function (res) {
+        if (res) {
+          var commentArr = res.comments;
+          commentArr.forEach(function (item, index) {
+            if (item.commentid === commentid && item.father === 'root') {
+              item.likenum++;
+              console.log('点赞成功');
+            }
+          });
+          Factionlists.update({id: bookid}, {comments: commentArr})
+            .then(function (updateRes) {
+              if (updateRes) {
+                cb(null, {code: 0, successMsg: "点赞成功"});
+              } else {
+                cb(null, {code: -1, errMsg: '点赞失败，更新list失败'});
+              }
+            })
+            .catch(function (updateErr) {
+              console.log(updateErr);
+              cb(null, {code: -1, errMsg: '点赞失败，bookid不合法'});
+            })
+        } else {
+          cb(null, {code: -1, errMsg: "点赞失败，bookid不合法"})
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: "点赞失败，bookid不合法"})
+      })
+  }
+
+  Factionlists.remoteMethod(
+    'addLikeNum', {
+      accepts: [{
+        arg: 'bookid',
+        type: 'string'
+      }, {
+        arg: 'commentid',
+        type: 'string'
+      }],
+      returns: {
+        arg: 'data',
+        type: 'object',
+        description: 'result object'
+      },
+      http: {path: '/addLikeNum', verb: 'post'}
+    });
+
   // get book detail by id
   Factionlists.getBookDetail = function (bookid, cb) {
     var app = Factionlists.app;
     Factionlists.findById(bookid)
-      .then(function(res){
+      .then(function (res) {
         var result = {};
         result.name = res.factionName;
         result.author = res.author;
         //处理起点小说网的图片url
         var urlReg = new RegExp('^\/\/.*\\r\\n$', 'ig');
         var headImage = res.headerImage;
-        if(urlReg.test(headImage)){
-          headImage = 'http:'+headImage.substring(0, headImage.length-2);
+        if (urlReg.test(headImage)) {
+          headImage = 'http:' + headImage.substring(0, headImage.length - 2);
         }
         result.headImage = headImage;
         result.des = res.des;
@@ -405,7 +482,7 @@ module.exports = function (Factionlists) {
         //   cb(null, {code: 0, detail: result});
         // });
       })
-      .catch(function(err){
+      .catch(function (err) {
         console.log(err);
         cb(null, {code: -1, errMsg: 'bookid不合法'});
       })

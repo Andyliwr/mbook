@@ -9,7 +9,7 @@ var redis = require('redis'),
   redis_port = 6379,
   redis_host = '127.0.0.1',
   redis_pwd = '123456',
-  redis_opts = { auth_pass: redis_pwd };
+  redis_opts = {auth_pass: redis_pwd};
 
 var crypto = require('crypto');//加密解密
 var eventproxy = require('eventproxy');//并发控制
@@ -30,10 +30,10 @@ module.exports = function (Myappuser) {
   Myappuser.fundBackPwd = function (email, cb) {
     var app = Myappuser.app;
     var returnData = {};
-    app.models.myAppUser.find({ where: { email: email } }, function (err, res) {
+    app.models.myAppUser.find({where: {email: email}}, function (err, res) {
       if (err) {
         console.log('找回密码接口查询出错，' + err);
-        returnData = { code: -1, msg: '邮箱不存在' };
+        returnData = {code: -1, msg: '邮箱不存在'};
         return;
       }
       //这里做发送邮件的处理...
@@ -47,11 +47,11 @@ module.exports = function (Myappuser) {
       app.models.email.send(emailOptions, function (err, res) {
         if (err) {
           console.log('找回密码发送邮件失败，' + err);
-          returnData = { code: -1, msg: '发送重置密码邮件失败' };
+          returnData = {code: -1, msg: '发送重置密码邮件失败'};
           return;
         }
         console.log('发送成功');
-        returnData = { code: 0, msg: '找回密码的邮件已经发送至您的邮箱，请注意查收' };
+        returnData = {code: 0, msg: '找回密码的邮件已经发送至您的邮箱，请注意查收'};
         cb(null, returnData);
       });
     });
@@ -73,7 +73,7 @@ module.exports = function (Myappuser) {
 
   Myappuser.sayHi = function (callback) {//定义一个http接口方法
     Myappuser.find({username: 'lidikang'})
-      .then(function(res){
+      .then(function (res) {
         console.log(res);
         callback(null, 'hi');
       })
@@ -96,7 +96,7 @@ module.exports = function (Myappuser) {
     {
       'accepts': [],
       'returns': [
-        { 'arg': 'result', 'type': 'string' }
+        {'arg': 'result', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
@@ -108,8 +108,8 @@ module.exports = function (Myappuser) {
   Myappuser.getSessionId = function (wxcode, userInfo, rawData, signature, encryptedData, iv, cb) {
     var ep = new eventproxy();
     ep.all('hasFinishedWx', function (returnData) {
-      if(returnData.code == (-1)){
-        cb(null, { code: -1, errmsg: returnData.errMsg });
+      if (returnData.code == (-1)) {
+        cb(null, {code: -1, errmsg: returnData.errMsg});
         return;
       }
       //核对信息的有效性,数据签名校验
@@ -147,17 +147,26 @@ module.exports = function (Myappuser) {
 
         //检查这个openid是否已经绑定了myappuser的用户
         var checkRegisteEp = new eventproxy();
-        checkRegisteEp.all('hasFinishedCheck', function(checkData){
-          if(checkData){
-            if(checkData.code == (-1)){
-              cb(null, { code: -1, errmsg: checkData.errMsg });
-            }else{
-              if(checkData.isRegisted == 0){
+        checkRegisteEp.all('hasFinishedCheck', function (checkData) {
+          if (checkData) {
+            if (checkData.code == (-1)) {
+              cb(null, {code: -1, errmsg: checkData.errMsg});
+            } else {
+              if (checkData.isRegisted == 0) {
                 //用户未注册,导向微信注册页
                 var userData = JSON.parse(userInfo);
-                var city = ((userData.country == 'CN'?'China':userData.country) +' '+userData.province+' '+userData.city).trim();
-                cb(null, { code: 0, redirectParam: {openid: checkData.openid, nickName: userData.nickName, city: city, avatar: userData.avatarUrl, gender: userData.gender}});
-              }else{
+                var city = ((userData.country == 'CN' ? 'China' : userData.country) + ' ' + userData.province + ' ' + userData.city).trim();
+                cb(null, {
+                  code: 0,
+                  redirectParam: {
+                    openid: checkData.openid,
+                    nickName: userData.nickName,
+                    city: city,
+                    avatar: userData.avatarUrl,
+                    gender: userData.gender
+                  }
+                });
+              } else {
                 //用户已经注册，执行登录
                 //使用uuid生成一个唯一字符串sessionid作为键，将openid和session_key作为值，存入redis，超时时间设置为2小时
                 var sessionid = uuid.v4(); //uuid.v4()随机生成一个唯一标识，uuid.v1()是基于当前时间戳生成唯一标识
@@ -176,9 +185,9 @@ module.exports = function (Myappuser) {
                   redisClient.expire(sessionid, 7 * 24 * 60 * 60);
                   redisClient.get(sessionid, function (err, reply) {
                     if (reply) {
-                      cb(null, { code: 0, sessionid: sessionid, userid:checkData.userid, openid: checkData.openid });
+                      cb(null, {code: 0, sessionid: sessionid, userid: checkData.userid, openid: checkData.openid});
                     } else {
-                      cb(null, { code: -1, errmsg: 'redis存储sessionid失败' });
+                      cb(null, {code: -1, errmsg: 'redis存储sessionid失败'});
                     }
                   }); //格式：client.get(key,[callback])
                   redisClient.quit();
@@ -189,38 +198,44 @@ module.exports = function (Myappuser) {
                 // });
               }
             }
-          }else{
-            cb(null, { code: -1, errmsg: '查询myappuser失败，未找到和当前openid对应的用户' });
+          } else {
+            cb(null, {code: -1, errmsg: '查询myappuser失败，未找到和当前openid对应的用户'});
           }
         });
 
         var openidReg = new RegExp(returnData.data.openid, 'ig');
         // todo 这个查找过滤条件无法生效，原因暂未查明
-        Myappuser.find({auth: openidReg}, function(err, res){
+        Myappuser.find({auth: openidReg}, function (err, res) {
           var checkData = null;
-          if(err){
-            console.log('查询myappuser失败，'+err);
-            checkData = {code: -1, errMsg:'查询myappuser失败，'+err};
+          if (err) {
+            console.log('查询myappuser失败，' + err);
+            checkData = {code: -1, errMsg: '查询myappuser失败，' + err};
             checkRegisteEp.emit('hasFinishedCheck', checkData);
             return;
           }
 
           //过滤不合格的用户
-          var thisUserArr = res.filter(function(item){
+          var thisUserArr = res.filter(function (item) {
             return openidReg.test(item.auth);
           });
 
-          if(thisUserArr.length){
-            console.log('openid为'+JSON.parse(thisUserArr[0].auth).wxOpenId+'的用户已经绑定了myappuser的账号'+thisUserArr[0].username+', userId为'+thisUserArr[0].id+'...');
-            checkData = {code: 0, isRegisted: 1, userid:thisUserArr[0].id, openid: returnData.data.openid, session_key: returnData.data.session_key};
-          }else{
-            console.log('用户openid: '+returnData.data.openid+' 未绑定myappuser账号');
+          if (thisUserArr.length) {
+            console.log('openid为' + JSON.parse(thisUserArr[0].auth).wxOpenId + '的用户已经绑定了myappuser的账号' + thisUserArr[0].username + ', userId为' + thisUserArr[0].id + '...');
+            checkData = {
+              code: 0,
+              isRegisted: 1,
+              userid: thisUserArr[0].id,
+              openid: returnData.data.openid,
+              session_key: returnData.data.session_key
+            };
+          } else {
+            console.log('用户openid: ' + returnData.data.openid + ' 未绑定myappuser账号');
             checkData = {code: 0, isRegisted: 0, openid: returnData.data.openid};
           }
           checkRegisteEp.emit('hasFinishedCheck', checkData);
         });
       } else {
-        cb(null, { code: -1, errmsg: '微信登录信息数字签名失败' });
+        cb(null, {code: -1, errmsg: '微信登录信息数字签名失败'});
       }
     });
 
@@ -238,12 +253,12 @@ module.exports = function (Myappuser) {
         var wxdata = JSON.parse(body);
         //当微信服务器返回正确
         if (wxdata.session_key && wxdata.openid) {
-          returnData = { code: 0, data: { session_key: wxdata.session_key, openid: wxdata.openid } }
+          returnData = {code: 0, data: {session_key: wxdata.session_key, openid: wxdata.openid}}
         } else {
-          returnData = { code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg }
+          returnData = {code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg}
         }
       } else {
-        returnData = { code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg }
+        returnData = {code: -1, errMsg: '使用code交换openid和session_key接口返回失败' + wxdata.errmsg}
       }
       ep.emit('hasFinishedWx', returnData);
     });
@@ -257,33 +272,33 @@ module.exports = function (Myappuser) {
         type: 'string',
         description: 'weixin code'
       },
-      {
-        arg: 'userInfo',
-        type: 'string',
-        description: '用户信息对象，不包含 openid 等敏感信息'
-      },
-      {
-        arg: 'rawData',
-        type: 'string',
-        description: '不包括敏感信息的原始数据字符串，用于计算签名'
-      },
-      {
-        arg: 'signature',
-        type: 'string',
-        description: '使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息'
-      },
-      {
-        arg: 'encryptedData',
-        type: 'string',
-        description: '包括敏感数据在内的完整用户信息的加密数据'
-      },
-      {
-        arg: 'iv',
-        type: 'string',
-        description: '加密算法的初始向量'
-      }],
+        {
+          arg: 'userInfo',
+          type: 'string',
+          description: '用户信息对象，不包含 openid 等敏感信息'
+        },
+        {
+          arg: 'rawData',
+          type: 'string',
+          description: '不包括敏感信息的原始数据字符串，用于计算签名'
+        },
+        {
+          arg: 'signature',
+          type: 'string',
+          description: '使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息'
+        },
+        {
+          arg: 'encryptedData',
+          type: 'string',
+          description: '包括敏感数据在内的完整用户信息的加密数据'
+        },
+        {
+          arg: 'iv',
+          type: 'string',
+          description: '加密算法的初始向量'
+        }],
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'post',
@@ -303,9 +318,9 @@ module.exports = function (Myappuser) {
       //获取sessionid
       redisClient.get(sessionid, function (err, reply) {
         if (reply) {
-          cb(null, { code: 0, isEffect: 1 });
+          cb(null, {code: 0, isEffect: 1});
         } else {
-          cb(null, { code: 0, isEffect: 0 });
+          cb(null, {code: 0, isEffect: 0});
         }
       }); //格式：client.get(key,[callback])
       redisClient.quit();
@@ -320,7 +335,7 @@ module.exports = function (Myappuser) {
         description: '客户端缓存的sessionid和userid'
       },
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
@@ -332,19 +347,19 @@ module.exports = function (Myappuser) {
   //获取上传个人头像的token值
   Myappuser.getUploadToken = function (key, cb) {
     //key值应该由客户端指定，否则会导致前端和后端因为key值不一样致使上传失败
-    var putPolicy = new qiniu.rs.PutPolicy(QINIU_BUCKET+':'+key);
+    var putPolicy = new qiniu.rs.PutPolicy(QINIU_BUCKET + ':' + key);
     cb(null, putPolicy.token());
   };
   Myappuser.remoteMethod(
     'getUploadToken',
     {
-      'accepts':  {
+      'accepts': {
         arg: 'key',
         type: 'string',
         description: '上传到到七牛云服务器之后的图片名字'
       },
       'returns': [
-        { 'arg': 'uptoken', 'type': 'string' }
+        {'arg': 'uptoken', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
@@ -355,9 +370,9 @@ module.exports = function (Myappuser) {
 
   //获取用户所有的书籍
   Myappuser.getMyBooks = function (userid, cb) {
-    Myappuser.findById(userid, {myBooks: 1, _id: 0}, {}, function(err, res){
-      if(err || !res){
-        console.log('用户id错误，'+err);
+    Myappuser.findById(userid, {myBooks: 1, _id: 0}, {}, function (err, res) {
+      if (err || !res) {
+        console.log('用户id错误，' + err);
         cb(null, {code: -1, errMsg: '用户id错误'});
         return;
       }
@@ -365,13 +380,13 @@ module.exports = function (Myappuser) {
       var app = Myappuser.app;
       var getBookDetailEp = new eventproxy();
       var allMyBooks = res.myBooks;
-      getBookDetailEp.after('hasFinishedDetail', allMyBooks.length, function(booksResult){
-        try{
-          var successBooks = booksResult.filter(function(bookDetailItem){
+      getBookDetailEp.after('hasFinishedDetail', allMyBooks.length, function (booksResult) {
+        try {
+          var successBooks = booksResult.filter(function (bookDetailItem) {
             return (bookDetailItem.success === 1) && bookDetailItem.name && bookDetailItem.headImage
           });
           //整理即将返回的数据
-          var finalArr =  successBooks.map(function(successItem){
+          var finalArr = successBooks.map(function (successItem) {
             successItem.bookid = allMyBooks[successItem.index].bookid;
             successItem.hasRead = allMyBooks[successItem.index].hasRead;
             delete successItem.index;
@@ -379,26 +394,44 @@ module.exports = function (Myappuser) {
             return successItem;
           })
           cb(null, {code: 0, books: finalArr});
-        }catch(err){
+        } catch (err) {
           console.log(err);
           cb(null, {code: -1, data: '查询个人书单失败，try-catch报错'});
         }
 
       });
-      allMyBooks.forEach(function(item, index){
-        app.models.factionlists.findById(item.bookid, {id: 0, sectionArray: 0}, {}, function(err, res){
+      allMyBooks.forEach(function (item, index) {
+        app.models.factionlists.findById(item.bookid, {id: 0, sectionArray: 0}, {}, function (err, res) {
           //不存在还是会查询成功，但是应该返回错误
-          if(err || !res){
-            console.log('查询书单错误项：'+item.bookid);
-            getBookDetailEp.emit('hasFinishedDetail', {success: 0, index: index, name: '', author: '', des: '', headImage: '', newest: '', updateTime: ''});
-          }else{
+          if (err || !res) {
+            console.log('查询书单错误项：' + item.bookid);
+            getBookDetailEp.emit('hasFinishedDetail', {
+              success: 0,
+              index: index,
+              name: '',
+              author: '',
+              des: '',
+              headImage: '',
+              newest: '',
+              updateTime: ''
+            });
+          } else {
             //处理起点小说网的图片url
             var urlReg = new RegExp('^\/\/.*\\r\\n$', 'ig');
             var headImage = res.headerImage;
-            if(urlReg.test(headImage)){
-              headImage = 'http:'+headImage.substring(0, headImage.length-2);
+            if (urlReg.test(headImage)) {
+              headImage = 'http:' + headImage.substring(0, headImage.length - 2);
             }
-            getBookDetailEp.emit('hasFinishedDetail', {success: 1, index: index, name: res.factionName, author: res.author, des: res.des, headImage: headImage, newest: res.newest, updateTime: tools.formatDate(res.updateTime)});
+            getBookDetailEp.emit('hasFinishedDetail', {
+              success: 1,
+              index: index,
+              name: res.factionName,
+              author: res.author,
+              des: res.des,
+              headImage: headImage,
+              newest: res.newest,
+              updateTime: tools.formatDate(res.updateTime)
+            });
           }
           //对于每本书需要查询他的最新章节
           // var getBookNewestNum = new eventproxy();
@@ -426,7 +459,7 @@ module.exports = function (Myappuser) {
         description: '用户id'
       },
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
@@ -437,65 +470,65 @@ module.exports = function (Myappuser) {
   //add a book, operation by User
   Myappuser.addMyBooks = function (userid, bookids, cb) {
     //拿到书籍的详细信息
-    if(typeof userid === 'string' && typeof bookids === 'string'){
+    if (typeof userid === 'string' && typeof bookids === 'string') {
       var bookidArr = bookids.split(',');
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = Myappuser.app;
       var getBookDetailEp = new eventproxy();
-      getBookDetailEp.after('hasFinishedDetail', bookidArr.length, function(booksResult){
-        var trueBookidArr = booksResult.filter(function(item){
+      getBookDetailEp.after('hasFinishedDetail', bookidArr.length, function (booksResult) {
+        var trueBookidArr = booksResult.filter(function (item) {
           return item.success === 1
         });
 
         //更新myappuser的书单数组，先获取后更新
-        Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
-          if(err || !res){
+        Myappuser.findById(userid, {id: 0, sectionArray: 0}, function (err, res) {
+          if (err || !res) {
             cb(null, {code: -1, errMsg: '更新前查询我的书单失败'});
-          }else{
+          } else {
             //整理数据，准备存入
-            var beforeConcatArr = trueBookidArr.map(function(bookItem){
+            var beforeConcatArr = trueBookidArr.map(function (bookItem) {
               return {hasRead: 0, bookid: bookItem.bookid}
             });
             var afterConcatArr = beforeConcatArr.concat(res.myBooks);
             //final去重
             var finalArr = [];
-            afterConcatArr.forEach(function(finalItem){
+            afterConcatArr.forEach(function (finalItem) {
               //判断是否在finalArray中
-              if(finalArr.length > 0){
-                var isInFinalArray = finalArr.some(function(testItem){
+              if (finalArr.length > 0) {
+                var isInFinalArray = finalArr.some(function (testItem) {
                   return testItem.bookid === finalItem.bookid;
                 });
-                if(!isInFinalArray){
+                if (!isInFinalArray) {
                   finalArr.push(finalItem);
-                }else{
-                  console.log('更新书单重复项: '+finalItem.bookid);
+                } else {
+                  console.log('更新书单重复项: ' + finalItem.bookid);
                 }
-              }else{
+              } else {
                 finalArr.push(finalItem);
               }
             });
-            Myappuser.update({id: userid}, {myBooks: finalArr}, function(err, res){
-              if(err){
+            Myappuser.update({id: userid}, {myBooks: finalArr}, function (err, res) {
+              if (err) {
                 cb(null, {code: -1, errMsg: '更新我的书单失败'});
-              }else{
+              } else {
                 cb(null, {code: 0, successMsg: '书单添加成功'});
               }
             });
           }
         });
       });
-      bookidArr.forEach(function(item){
-        app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function(err, res){
+      bookidArr.forEach(function (item) {
+        app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function (err, res) {
           //不存在还是会查询成功，但是应该返回错误
-          if(err || !res){
-            console.log('查询书单错误项：'+item);
+          if (err || !res) {
+            console.log('查询书单错误项：' + item);
             getBookDetailEp.emit('hasFinishedDetail', {success: 0, bookid: item});
             return;
           }
           getBookDetailEp.emit('hasFinishedDetail', {success: 1, bookid: item});
         });
       })
-    }else{
+    } else {
       cb(null, {code: -1, errMsg: '传入参数有误'});
     }
   };
@@ -506,13 +539,13 @@ module.exports = function (Myappuser) {
         arg: 'userid',
         type: 'string',
         description: '用户id'
-      },{
+      }, {
         arg: 'bookids',
         type: 'string',
         description: '书籍id'
       }],
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'post',
@@ -523,64 +556,64 @@ module.exports = function (Myappuser) {
   //删除书架里的书籍
   Myappuser.deleteMyBooks = function (userid, bookids, cb) {
     //拿到书籍的详细信息
-    if(typeof userid === 'string' && typeof bookids === 'string'){
+    if (typeof userid === 'string' && typeof bookids === 'string') {
       var bookidArr = bookids.split(',');
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = Myappuser.app;
       var getBookDetailEp = new eventproxy();
-      getBookDetailEp.after('hasFinishedDetail', bookidArr.length, function(booksResult){
-        var trueBookidArr = booksResult.filter(function(item){
+      getBookDetailEp.after('hasFinishedDetail', bookidArr.length, function (booksResult) {
+        var trueBookidArr = booksResult.filter(function (item) {
           return item.success === 1
         });
 
         //更新myappuser的书单数组，先获取后更新
-        Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
-          if(err || !res){
+        Myappuser.findById(userid, {id: 0, sectionArray: 0}, function (err, res) {
+          if (err || !res) {
             cb(null, {code: -1, errMsg: '更新前查询我的书单失败'});
-          }else{
+          } else {
             //去除要删除的项
             var finalArr = res.myBooks;
-            res.myBooks.forEach(function(everyBook, index){
+            res.myBooks.forEach(function (everyBook, index) {
               //判断是否在finalArray中
-              var isInFinalArray = trueBookidArr.some(function(testItem){
+              var isInFinalArray = trueBookidArr.some(function (testItem) {
                 return testItem.bookid === everyBook.bookid;
               });
-              if(isInFinalArray){
+              if (isInFinalArray) {
                 finalArr[index].needdingDelete = true;
-                console.log('需删除书单项: '+finalArr[index].bookid);
+                console.log('需删除书单项: ' + finalArr[index].bookid);
               }
             });
             //去掉那些带needdingDelete标记的finalArr
-            var lastArray = finalArr.filter(function(item){
+            var lastArray = finalArr.filter(function (item) {
               return !item.needdingDelete
             });
-            if(lastArray.length !== res.myBooks.length){
-              Myappuser.update({id: userid}, {myBooks: lastArray}, function(err, res){
-                if(err){
+            if (lastArray.length !== res.myBooks.length) {
+              Myappuser.update({id: userid}, {myBooks: lastArray}, function (err, res) {
+                if (err) {
                   cb(null, {code: -1, errMsg: '删除我的书单失败'});
-                }else{
+                } else {
                   cb(null, {code: 0, successMsg: '书单删除成功'});
                 }
               });
-            }else{
+            } else {
               cb(null, {code: -1, errMsg: '原书单找不到该书籍'});
             }
           }
         });
 
       });
-      bookidArr.forEach(function(item){
-        app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function(err, res){
+      bookidArr.forEach(function (item) {
+        app.models.factionlists.findById(item, {id: 0, sectionArray: 0}, {}, function (err, res) {
           //不存在还是会查询成功，但是应该返回错误
-          if(err || !res){
-            console.log('查询书单错误项：'+item);
+          if (err || !res) {
+            console.log('查询书单错误项：' + item);
             getBookDetailEp.emit('hasFinishedDetail', {success: 0, bookid: item});
             return;
           }
           getBookDetailEp.emit('hasFinishedDetail', {success: 1, bookid: item});
         });
       })
-    }else{
+    } else {
       cb(null, {code: -1, errMsg: '传入参数有误'});
     }
   };
@@ -591,13 +624,13 @@ module.exports = function (Myappuser) {
         arg: 'userid',
         type: 'string',
         description: '用户id'
-      },{
+      }, {
         arg: 'bookids',
         type: 'string',
         description: '书籍id'
       }],
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'post',
@@ -608,26 +641,26 @@ module.exports = function (Myappuser) {
 
   //用户退出阅读器之前更新已阅读章节
   Myappuser.updateHasRead = function (userid, bookid, hasRead, cb) {//定义一个http接口方法
-    Myappuser.findById(userid, {id: 0, sectionArray: 0}, function(err, res){
-      if(err || !res){
+    Myappuser.findById(userid, {id: 0, sectionArray: 0}, function (err, res) {
+      if (err || !res) {
         cb(null, {code: -1, errMsg: 'hasRead更新前查询我的书单失败'});
-      }else{
+      } else {
         var myBooks = res.myBooks;
         var hasThisBook = false;
-        var finalMyBooks = myBooks.map(function(item, index){
-          if(item.bookid === bookid){
+        var finalMyBooks = myBooks.map(function (item, index) {
+          if (item.bookid === bookid) {
             hasThisBook = true;
             item.hasRead = hasRead;
           }
           return item
         });
-        if(hasThisBook === false){
+        if (hasThisBook === false) {
           cb(null, {code: -1, errMsg: '未找到该书单id'});
-        }else{
-          Myappuser.update({id: userid}, {myBooks: finalMyBooks}, function(err, res){
-            if(err || !res){
+        } else {
+          Myappuser.update({id: userid}, {myBooks: finalMyBooks}, function (err, res) {
+            if (err || !res) {
               cb(null, {code: -1, errMsg: '用户已阅读章节更新失败'});
-            }else{
+            } else {
               cb(null, {code: 0, successMsg: '用户已阅读章节更新成功'});
             }
           });
@@ -643,18 +676,18 @@ module.exports = function (Myappuser) {
           arg: 'userid',
           type: 'string',
           description: '用户id'
-        },{
+        }, {
           arg: 'bookid',
           type: 'string',
           description: '书籍id'
-        },{
+        }, {
           arg: 'hasRead',
           type: 'number',
           description: '已阅读章节'
         }
       ],
       'returns': [
-        { 'arg': 'result', 'type': 'string' }
+        {'arg': 'result', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
@@ -666,7 +699,7 @@ module.exports = function (Myappuser) {
   Myappuser.getUserInfo = function (userid, cb) {
     Myappuser.findById(userid)
       .then(function (res) {
-        if(res){
+        if (res) {
           var returnData = {
             "age": res.age || 0,
             "nickName": res.nickName || '',
@@ -679,7 +712,7 @@ module.exports = function (Myappuser) {
             "email": res.email || ''
           }
           cb(null, {code: 0, info: returnData});
-        }else{
+        } else {
           cb(null, {code: -1, errMsg: '获取到的用户信息为空'});
         }
 
@@ -699,7 +732,7 @@ module.exports = function (Myappuser) {
         description: '用户id'
       },
       'returns': [
-        { 'arg': 'data', 'type': 'string' }
+        {'arg': 'data', 'type': 'string'}
       ],
       'http': {
         'verb': 'get',
