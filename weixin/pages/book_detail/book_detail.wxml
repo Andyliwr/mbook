@@ -32,14 +32,15 @@
 				<image class="headImg" src="{{item.rootComment.avatar}}" mode="scaleToFill"></image>
 				<view class="comment-right">
 					<view class="reader-name" data-userid="{{item.rootComment.userid}}">{{item.rootComment.nickname}}</view>
-					<view class="comment">{{item.rootComment.content}}</view>		
 					<view class="create-time">{{item.rootComment.time}}</view>	
+					<view class="comment">{{item.rootComment.content}}</view>		
+					<view class="comment-more" wx:if="{{item.child.length > 0}}">{{'查看' + item.child.length + '回复 >'}}</view>
 				</view>
 			</view>
 		</view>
 	</view>
 	<view class="commnet-input-bar" hidden="{{commentInputHide}}">
-	<input class="comment-input" value="{{currentCommentValue}}" placeholder="发表评论" placeholder-style="margin-top:10rpx;" focus="{{!commentInputHide}}" maxlength="100" bindconfirm="sendComment"  confirm-type="send" ></input>
+	<input class="comment-input" value="{{currentCommentValue}}" placeholder="发表评论" placeholder-class="commentInputP" focus="{{!commentInputHide}}" maxlength="100" bindblur="hideCommentBar" bindconfirm="sendComment"  confirm-type="send" ></input>
 	<view class="cancle" bindtap="hideCommentBar">取消</view>
 	</view>
 

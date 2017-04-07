@@ -104,8 +104,7 @@ App({
                       }else{
                         //如果登录成功，将sessionid存储在本地缓存中
                         wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
-                        var idStr = JSON.stringify({userid: tmpdata.userid, openid: tmpdata.openid});
-                        wx.setStorage({ key: "id", data: idStr });
+                        wx.setStorage({ key: "id", data: {userid: tmpdata.userid, openid: tmpdata.openid} });
                         self.globalData.sessionId = tmpdata.sessionid;
                         if(typeof callback == "function"){
                           callback();

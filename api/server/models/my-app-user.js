@@ -663,6 +663,52 @@ module.exports = function (Myappuser) {
     }
   );
 
+  Myappuser.getUserInfo = function (userid, cb) {
+    Myappuser.findById(userid)
+      .then(function (res) {
+        if(res){
+          var returnData = {
+            "age": res.age || 0,
+            "nickName": res.nickName || '',
+            "birthday": res.birthday || '',
+            "signatrue": res.signatrue || '',
+            "books": res.myBooks.length || 0,
+            "avatar": res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim',
+            "realm": res.realm || '',
+            "username": res.username,
+            "email": res.email || ''
+          }
+          cb(null, {code: 0, info: returnData});
+        }else{
+          cb(null, {code: -1, errMsg: '获取到的用户信息为空'});
+        }
+
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取用户信息失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'getUserInfo',
+    {
+      'accepts': {
+        arg: 'userid',
+        type: 'string',
+        description: '用户id'
+      },
+      'returns': [
+        { 'arg': 'data', 'type': 'string' }
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/getUserInfo'
+      }
+    }
+  );
+
+
   // Myappuser.afterRemote('create', function (context, userInstance, next) {
   //   console.log('> user.afterRemote triggered');
 

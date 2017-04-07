@@ -99,13 +99,10 @@
 	background: #f5f5f5;
 }
 .comment-item {
-	background: #ffffff;
+	background:#ffffff;
 	padding:20rpx;
-	margin-bottom: 20rpx;
-	box-sizing: border-box;
-	border-top: 1rpx solid #dcdcdc;
-	border-bottom: 1rpx solid #dcdcdc;
-	overflow: auto;
+	box-sizing:border-box;
+	overflow:auto;
 }
 .comment-item .headImg{
 	float: left;
@@ -114,12 +111,14 @@
 	margin-right: 20rpx;
 	border-radius: 40rpx;
 	display: inline-block;
-	border:1rpx solid #eeeeee; 
+	border:1rpx solid #eeeeee;
 }
 .comment-item .comment-right{
-	float: left;
-	width: 610rpx;
-	display: inline-block;
+	float:left;
+	width:610rpx;
+	display:inline-block;
+	padding-bottom:20rpx;
+	border-bottom:1rpx solid #e1e1e1;
 }
 .comment-item .comment-right .reader-name{
 	color:#666666;
@@ -129,6 +128,11 @@
 	text-align: justify;
 	color:#333;
 	font-size:14px;
+}
+.comment-item .comment-right .comment-more{
+	background:#efefef;
+	font-size:20rpx;
+	padding:4rpx 10rpx;
 }
 .comment-item .comment-right .create-time{
 	font-size: 11px;
@@ -156,6 +160,9 @@
 	border:1rpx solid #dcdcdc;
 	border-radius: 10rpx;
 	box-sizing: border-box;
+}
+.commentInputP{
+	line-height: 60rpx;
 }
 .commnet-input-bar .cancle{
 	display: inline-block;

@@ -90,7 +90,7 @@ Page({
               //校验成功，开始注册
               var registeData = {
                 "nickName": self.data.nickName,
-                "avatar": self.data.userInfoFromApp.avatar,
+                "avatar": self.data.userInfoFromApp.avatar + '?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim', // 调用七牛的图片处理api
                 "myBooks": [],
                 "auth": "{\"type\": \"wechat\", \"wxOpenId\": \"" + self.data.userInfoFromApp.openid + "\"}",
                 "username": self.data.username,

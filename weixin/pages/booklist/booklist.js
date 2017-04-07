@@ -32,77 +32,143 @@ Page({
   },
   onLoad: function (e) {
     var self = this;
-    //获取我的书单
-    self.getMyBooks();
-  },
-  //获取我的书单
-  getMyBooks: function(){
-    var self = this;
     //显示加载中
     wx.showToast({
       title: '正在获取书单...',
       icon: 'loading',
       duration: 0
     });
+    //获取我的书单
     //读取缓存中的userid
     wx.getStorage({
       key: 'id',
       success: function (res) {
-        var id = JSON.parse(res.data);
-        if(id){
-          wx.request({
-            url: Api.getMyBooks(id.userid),
-            success: function (res) {
-              var books = res.data.data.books;
-              //更新视图books
-              self.setData({books: books});
-              //将书单数据缓存到本地
-              wx.setStorage({
-                key: 'booklist',
-                data: books,
-                success: function (res) {
-                  console.log('成功保存书籍列表到本地缓存');
-                }
-              });
-            },
-            fail: function () {
-              //显示网络错误提示页面
-              //先获取本地缓存中的书单数据，并提示网络错误，若本地没有缓存数据，显示app状态页
-              wx.getStorage({
-                key: 'booklist',
-                success: function (res) {
-                  console.log('使用本地缓存的书单数据');
-                  if(res.data && res.data[0].factionName){
-                    self.setData({books: res.data});
-                  }else{
-                    self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
-                  }
-                },
-                fail: function (err) {
-                  console.log('获取缓存失败'+err);
-                  self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
-                }
-              });
-              console.log("请求书籍列表失败");
-              self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png', text: '努力找不到网络>_<请检查后重试', buttonText: '重试', click: 'getMyBooks'}});
-            },
-            complete: function(){
-              //请求完成结束loading
-              wx.hideToast();
-            }
-          });
-        }else{
+        var id = res.data;
+        if (id && id.userid) {
+          self.getMyBooks(id.userid);
+          self.getUserinfo(id.userid);
+        } else {
           wx.hideToast();
           //显示还未登录提示页面
-          self.setData({err_page_data: {show: true, image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/nologin_err.png', text: '你还未登录呢，还能不能愉快的交朋友！', buttonText: '登录', click: 'doLogin'}});
+          self.setData({
+            err_page_data: {
+              show: true,
+              image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/nologin_err.png',
+              text: '你还未登录呢，还能不能愉快的交朋友！',
+              buttonText: '登录',
+              click: 'doLogin'
+            }
+          });
         }
       }
     });
   },
-  //执行登录操作
-  doLogin: function(){
+  //获取我的书单
+  getMyBooks: function (userid) {
     var self = this;
-    app.doLogin(function(){
+    wx.request({
+      url: Api.getMyBooks(userid),
+      success: function (res) {
+        var books = res.data.data.books;
+        //更新视图books
+        self.setData({books: books});
+        //将书单数据缓存到本地
+        wx.setStorage({
+          key: 'booklist',
+          data: books,
+          success: function (res) {
+            console.log('成功保存书籍列表到本地缓存');
+          }
+        });
+      },
+      fail: function () {
+        //显示网络错误提示页面
+        //先获取本地缓存中的书单数据，并提示网络错误，若本地没有缓存数据，显示app状态页
+        wx.getStorage({
+          key: 'booklist',
+          success: function (res) {
+            console.log('使用本地缓存的书单数据');
+            if (res.data && res.data[0].factionName) {
+              self.setData({books: res.data});
+            } else {
+              self.setData({
+                err_page_data: {
+                  show: true,
+                  image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+                  text: '努力找不到网络>_<请检查后重试',
+                  buttonText: '重试',
+                  click: 'getMyBooks'
+                }
+              });
+            }
+          },
+          fail: function (err) {
+            console.log('获取缓存失败' + err);
+            self.setData({
+              err_page_data: {
+                show: true,
+                image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+                text: '努力找不到网络>_<请检查后重试',
+                buttonText: '重试',
+                click: 'getMyBooks'
+              }
+            });
+          }
+        });
+        console.log("请求书籍列表失败");
+        self.setData({
+          err_page_data: {
+            show: true,
+            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            text: '努力找不到网络>_<请检查后重试',
+            buttonText: '重试',
+            click: 'getMyBooks'
+          }
+        });
+      },
+      complete: function () {
+        //请求完成结束loading
+        wx.hideToast();
+      }
+    });
+  },
+  getUserinfo: function (userid) {
+    wx.request({
+      url: Api.getUserInfo(userid),
+      success: function (res) {
+        var tmpData = res.data.data;
+        if (tmpData && tmpData.code == 0) {
+          //将书单数据缓存到本地
+          wx.setStorage({
+            key: 'userInfo',
+            data: tmpData.info,
+            success: function (res) {
+              console.log('成功保存用户信息到本地缓存');
+            }
+          });
+        } else {
+          console.log('请求书籍信息失败....');
+          Util.showErrMsg(self, '获取章节内容失败', 1000);
+        }
+      },
+      fail: function (err) {
+        console.log(err);
+        self.setData({
+          err_page_data: {
+            show: true,
+            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            text: '努力找不到网络>_<请检查后重试',
+            buttonText: '重试',
+            click: 'getUserinfo'
+          }
+        });
+      }
+    });
+  },
+  //执行登录操作
+  doLogin: function () {
+    var self = this;
+    app.doLogin(function () {
       self.setData({err_page_data: null});
       self.getMyBooks();
     });
@@ -231,7 +297,7 @@ Page({
     });
   },
   //选择月份
-  chooseMonth: function(event){
+  chooseMonth: function (event) {
     var self = this;
     var month = event.currentTarget.dataset.month;
     self.setData({monthIndex: month});

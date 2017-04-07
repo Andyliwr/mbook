@@ -21,6 +21,7 @@ const DELETE_MY_BOOKS = '/myappuser/addMyBooks';
 const ADD_COMMENT = '/xs_list/addComment';
 const DELETE_COMMENT = '/xs_list/deleteComment';
 const GET_COMMENTS = '/xs_list/listComments';
+const GET_USER_INFO = '/myappuser/getUserInfo';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
@@ -85,7 +86,7 @@ module.exports = {
   },
   // 获取我的书单
   getMyBooks: function (userid) {
-    return HOST_URL + GET_MY_BOOKS + '?userid=' + userid;
+    return HOST_URL + GET_MY_BOOKS + '?userid=' + userid
   },
   // 新增书单, post方法
   addMyBooks: function () {
@@ -106,5 +107,9 @@ module.exports = {
   // 获取评论
   listComments: function(bookid){
     return HOST_URL + GET_COMMENTS + '?bookid=' + bookid
+  },
+  // 获取用户详细信息
+  getUserInfo: function(userid){
+    return HOST_URL + GET_USER_INFO + '?userid=' + userid
   }
 }
