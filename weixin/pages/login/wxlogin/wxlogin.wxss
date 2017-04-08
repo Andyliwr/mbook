@@ -1,0 +1,85 @@
+.wxlogin-container{
+    background-color: #efeff4;
+}
+.wxlogin-container .notice{
+    background-color: #09BB07;
+    text-align: center;
+    padding-top: 30rpx;
+    padding-bottom: 40rpx;
+}
+.wxlogin-container .notice image{
+    width: 200rpx;
+    height: 200rpx;
+    display: block;
+    margin: 0 auto;
+}
+.wxlogin-container .notice .des{
+    color: #fff;
+    display: block;
+    font-size: 30rpx;
+    margin: 20rpx 80rpx;
+}
+.wxlogin-container .needInfo{
+    padding: 30rpx 20rpx;
+}
+.wxlogin-container .needInfo checkbox-group{
+    padding-bottom: 30rpx;
+}
+.wxlogin-container .needInfo .checkbox{
+    font-size: 26rpx;
+    color: #a6a6a6;
+}
+.wxlogin-container .needInfo .checkbox > checkbox{
+    vertical-align: middle;
+}
+.wxlogin-container .needInfo button{
+    margin-bottom: 30rpx;
+}
+.wxlogin-container .tips{
+    text-align: left;
+    font-size: 30rpx;
+    margin-bottom: 20rpx;
+}
+.wxlogin-container .avatar{
+    text-align: center;
+    position: relative
+}
+.wxlogin-container .avatar > image{
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 75rpx;
+    margin-left: 30rpx;
+}
+.wxlogin-container .avatar .upload-icon{
+    position: relative;
+    left: -54rpx;
+    top: -14rpx;
+    display: inline-block;
+    width: 56rpx;
+    height: 48rpx;
+    background-size: 300rpx 300rpx;
+    background-position: -58rpx -188rpx;
+}
+.wxlogin-container .section{
+    margin-bottom: 40rpx;
+    font-size: 28rpx;
+    padding: 0 40rpx;
+    box-sizing: border-box;
+}
+
+.wxlogin-container .section  input{
+    display: inline-block;
+    width: 80%;
+    height: 40rpx;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    float: right;
+    padding-left: 20rpx;
+    position: relative;
+    top: -10rpx;
+    border-radius: 6rpx;
+    /*margin-right: 100rpx;*/
+}
+.wxlogin-container .sex text{
+    margin-right: 46rpx;
+}

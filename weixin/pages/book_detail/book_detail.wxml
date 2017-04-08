@@ -1,0 +1,69 @@
+<view class="book-detail-container">
+	<view class="headBackgroundContainer">
+		<view class="headBackground" style="background:url('{{bookDetail.headImage}}') no-repeat center;background-size:200%;" >
+		</view>
+	</view>	
+	<view class="head">
+		<view class="bookInfo">
+			<image class="headImg" src="{{bookDetail.headImage}}" mode="aspectFill"></image>
+			<view class="left-text">
+				<view class="bookName">{{bookDetail.name}}</view>
+				<view class="author">作者：{{bookDetail.author}}</view>
+				<view class="wordsNum">字数：348.33万</view>
+				<view class="source">最新章节：{{bookDetail.newest}}</view>
+				<view class="updatetime">更新时间：{{bookDetail.updateTime}}</view>
+			</view>
+		</view>
+		<view class="clearfix"></view>
+		<view class="btn-group">
+			<view class="addToList" bindtap="addOrRemove">
+				<view class="true" hidden="{{isInList}}">
+					<icon class="addList-icon" />加入书架
+				</view>
+				<view class="false" hidden="{{!isInList}}">
+					<icon type="success_no_circle" color="#fd9941" size="20" />从书架中移除
+				</view>
+			</view>
+			<view class="read" bindtap="goToReader"><image src="../../image/read1.png"></image>立即阅读</view>
+		</view>
+	</view>
+	<view class="book-des">
+		<view class="des-content" bindtap="showAllDes">{{showAllDes || !bookDetail.shortDes ? bookDetail.des : bookDetail.shortDes}}<text class="read-more" hidden="{{showAllDes || !bookDetail.shortDes}}">阅读全部 ></text></view>
+	</view>
+	<view class="splitor"></view>
+	<view class="comments">
+		<view class="title">精彩评论<text class="add-comment" bindtap="toWriteComment">写评论</text>
+		</view>
+		<view class="comment-list">
+			<view class="comment-item" wx:for="{{comments}}" data-commentid="{{item.rootComment.commentid}}">
+				<image class="headImg" src="{{item.rootComment.avatar}}" mode="scaleToFill"></image>
+				<view class="comment-right">
+					<view class="reader-name" data-userid="{{item.rootComment.userid}}">{{item.rootComment.nickname}}</view>
+					<view class="create-time">{{item.rootComment.time}}</view>
+					<view class="comment">{{item.rootComment.content}}</view>
+					<view class="comment-more" wx:if="{{item.child.length > 0}}" bindtap="readMoreComments" data-commentid="{{item.rootComment.commentid}}">{{'查看' + item.child.length + '回复 >'}}</view>
+					<view class="childComments" wx:if="{{item.child.length > 0}}" hidden="{{!item.rootComment.isOpenMoreComment}}">
+						<view class="child-item" wx:for="{{item.child}}" wx:for-item="childItem" wx:key="{{childItem.commentid}}" data-commentid="{{childItem.commentid}}" data-nickname="{{childItem.nickname}}" data-userid="{{childItem.userid}}" bindtap="toWriteComment">{{childItem.nickname + ' 回复 ' + childItem.reply + ' ：' + childItem.content}}<text class="childItem-time">{{childItem.time}}</text></view>
+					</view>
+					<view class="toolbar"><icon class="{{item.rootComment.isLike ? 'like-selected-icon' : 'like-icon'}}" bindtap="addLikeNum" data-commentid="{{item.rootComment.commentid}}" /><text class="likeNum">{{item.rootComment.likenum || 0}}</text><icon class="comment-icon" data-commentid="{{item.rootComment.commentid}}" data-nickname="{{item.rootComment.nickname}}" data-userid="{{item.rootComment.userid}}" bindtap="toWriteComment" /></view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="commnet-input-bar" hidden="{{commentInputHide}}">
+	<input class="comment-input" value="{{currentCommentValue}}" placeholder="发表评论" placeholder-class="commentInputP" focus="{{!commentInputHide}}" maxlength="100" bindblur="hideCommentBar" bindconfirm="sendComment"  confirm-type="send" ></input>
+	<view class="cancle" bindtap="hideCommentBar">取消</view>
+	</view>
+
+	<!-- 出错打印 -->
+    <import src="../component/err_tips/err_tips.wxml" />
+    <template is="err_tips" data="{{err_tips_data}}" />
+
+    <!-- 成功的提示 -->
+    <import src="../component/toast/toast.wxml" />
+    <template is="toast" data="{{toast_data}}" />
+
+    <!-- app状态页 -->
+    <import src="../component/err_page/err_page.wxml" />
+    <template is="err_page" data="{{err_page_data}}" />
+</view>

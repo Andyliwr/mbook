@@ -12,22 +12,5 @@
     "name": "mongodb",
     "user": "lidikang",
     "connector": "mongodb"
-  },
-  "email": {
-    "name": "email",
-    "connector": "mail",
-    "transports": [{
-      	"type": "smtp",
-	    "host": "smtp.qq.com",
-	    "secure": true,
-	    "port": 465,
-	    "tls": {
-	      "rejectUnauthorized": false
-	    },
-	    "auth":{
-	      "user": "andyliwr@qq.com",
-	      "pass": "121960425qq2"
-	    }
-    }]
   }
 }

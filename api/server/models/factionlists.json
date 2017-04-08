@@ -32,14 +32,22 @@
       "default": [
         "[]"
       ]
+    },
+    "newest": {
+      "type": "number"
+    },
+    "comments": {
+      "type": [
+        "object"
+      ]
     }
   },
   "validations": [],
   "relations": {
-    "sectionArray": {
+    "contents": {
       "type": "hasMany",
       "model": "factioncontents",
-      "foreignKey": "id",
+      "foreignKey": "",
       "through": "factioncontents"
     }
   },

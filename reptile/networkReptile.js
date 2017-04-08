@@ -9,13 +9,15 @@ var fs = require('fs');
 var htmlToText = require('html-to-text');
 var chinese_parseInt = require('./tools/chinese-parseint');
 var connectDB = require('./connectDB/connectDB');
+connectDB.configLog('networkReptile');
+
 //日志相关
 var log4js = require('log4js');
 //config log
 log4js.configure({
   appenders: [
     {type: 'console'},
-    {type: 'file', filename: 'log/networkReptile.log', category: 'networkReptile'}
+    {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
   ]
 });
 var logger = log4js.getLogger('networkReptile');
@@ -37,11 +39,11 @@ fs.exists('log', function (ret) {
     logger.warn('日志目录不存在，正在为你创建....');
     fs.mkdir('log');
   }
-  fs.open('log/networkReptile.log', 'a', function (err, fd) {
+  fs.open('./log/networkReptile.log', 'a', function (err, fd) {
     if (err) {
       console.log('创建日志文件失败！');
     } else {
-      logger.info('\n\n\n\n\n');
+      logger.info('\n\n\n');
       init();
     }
   });

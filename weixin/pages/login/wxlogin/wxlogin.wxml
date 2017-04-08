@@ -1,0 +1,51 @@
+<view class="wxlogin-container">
+    <view class="notice">
+        <image src="https://olpkwt43d.qnssl.com/myapp/wxlogin/wechat_save.png" bindtap="uploadAvatar"></image>
+        <view class="des">该页面由FollowHeart开发，向其提供以下权限即可继续操作</view>
+    </view>
+    <view class="needInfo">
+        <checkbox-group bindchange="checkboxChange">
+            <label class="checkbox">
+                <checkbox value="" checked="true"/>将获得你的公开信息（昵称，头像等）
+            </label>
+        </checkbox-group>
+        <view class="tips">请设置完善个人信息</view>
+        <form bindsubmit="formSubmit" bindreset="formReset">
+            <view class="section avatar">
+                <image src="{{userInfoFromApp.avatar}}" bindtap="uploadAvatar"></image>
+                <icon class="upload-icon"></icon>
+            </view>
+            <view class="section">
+                <label for="username">用户名<input type="text" value="{{username}}" placeholder="username" bindinput="userInput" data-type="username" maxlength="16" /></label>
+            </view>
+            <view class="section">
+                <label for="username">邮箱<input type="text" value="{{email}}" placeholder="email" bindinput="userInput" data-type="email" /></label>
+            </view>
+            <view class="section">
+                <label for="passowrd">密码<input type="text" password="true" value="{{password}}" placeholder="password" bindinput="userInput" data-type="password" /></label>
+            </view>
+            <view class="section">
+                <label for="gender">昵称<input type="text" value="{{nickName}}" placeholder="nickname" value="{{userInfoFromApp.nickName}}" bindinput="userInput" data-type="nickname" /></label>
+            </view>
+            <view class="section sex">
+                <text>性别</text>
+                <radio checked="{{userInfoFromApp.gender == 1}}" bindtap="genderChange" data-gender="male"></radio>
+                <label class="label-2__text"><text>男</text></label>
+                <radio checked="{{userInfoFromApp.gender == 0}}" bindtap="genderChange" data-gender="female"></radio>
+                <label class="label-2__text"><text>女</text></label>
+            </view>
+            <view class="section">
+                <label for="city">城市<input type="text" value="{{city}}" placeholder="city" value="{{userInfoFromApp.city}}" bindinput="userInput" data-type="city" /></label>
+            </view>
+        </form>
+        <button type="primary" bindtap="confirmRegiste" loading="{{isShowLoading}}">确认注册</button>
+        <button type="default" bindtap="gotoRegiste">其他注册方式</button>
+    </view>
+    <!-- 出错打印 -->
+    <import src="../../component/err_tips/err_tips.wxml" />
+    <template is="err_tips" data="{{err_tips_data}}" />
+
+    <!-- 成功的提示 -->
+    <import src="../../component/toast/toast.wxml" />
+    <template is="toast" data="{{toast_data}}" />
+</view>

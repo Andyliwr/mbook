@@ -29,10 +29,10 @@
   },
   "validations": [],
   "relations": {
-    "sectionArray": {
+    "id": {
       "type": "belongsTo",
       "model": "factionlists",
-      "foreignKey": "id"
+      "foreignKey": ""
     }
   },
   "acls": [

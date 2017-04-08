@@ -31,5 +31,52 @@ function getQdTrueImgUrl(imgurl){
   return returnStr;
 }
 
+/**
+ * 格式化日期函数，给定一个日期对象，会被格式化成"2017/03/18 01:01:02"这种格式
+ * @param dateObj 日期对象
+ */
+function formatDate (dateObj) {
+  var year = dateObj.getFullYear();
+  var month = dateObj.getMonth() + 1;
+  month = month < 9 ? '0' + month : month;
+  var day = dateObj.getDate();
+  day = day < 9 ? '0' + day : day;
+  var hour = dateObj.getHours();
+  hour = hour < 9 ? '0' + hour : hour;
+  var minute = dateObj.getMinutes();
+  minute = minute < 9 ? '0' + minute : minute;
+  var second = dateObj.getSeconds();
+  second = second < 9 ? '0' + second : second;
+  return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+
+/**
+ * Array delete one element, and return the array
+ * @param arr
+ * @parma ele the element needding to be deleted
+ */
+function removeElement(arr, ele){
+  var result  = [];
+  if(arr instanceof Array){
+    if(ele instanceof Array){
+      result = arr.filter(function(item){
+        var isInEle = ele.some(function(eleItem){
+          return item === eleItem;
+        });
+        return !isInEle
+      })
+    }else{
+      result = arr.filter(function(item){
+        return item !== ele
+      })
+    }
+  }else{
+    console.log('parameter error of function removeElement');
+  }
+  return result;
+}
+
 exports.overflowDeal = overflowDeal;
 exports.getQdTrueImgUrl = getQdTrueImgUrl;
+exports.formatDate = formatDate;
+exports.removeElement = removeElement;

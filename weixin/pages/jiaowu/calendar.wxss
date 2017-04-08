@@ -1,0 +1,170 @@
+.og-calendar {
+  color: #FFF;
+  padding: 0; }
+
+.og-calendar .header {
+  position: relative;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  text-align: center;
+  background: #fff;
+  color: #fd9941; }
+
+.og-calendar .header .month-pre,
+.og-calendar .header .month-next {
+  position: absolute;
+  top: 0;
+  width: 80rpx;
+  height: 100rpx; }
+
+.og-calendar .header .btn:active {
+  background: #ccc; }
+
+.og-calendar .header .month-pre {
+  left: 0; }
+
+.og-calendar .header .month-next {
+  right: 0; }
+
+.og-calendar .header .month-pre icon,
+.og-calendar .header .month-next icon {
+  margin-top: 30rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block; }
+
+.og-calendar .header .month-pre .cleft-icon {
+  background-size: 210rpx 210rpx;
+  background-position: 0rpx 0rpx; }
+
+.og-calendar .header .month-next .cright-icon {
+  background-size: 210rpx 210rpx;
+  background-position: -40rpx 0rpx; }
+
+.og-calendar .signNote {
+  background-color: #fff;
+  font-size: 26rpx;
+  padding: 15rpx 0 15rpx 30rpx; }
+
+.og-calendar .signNote .yellow-circle, .og-calendar .signNote .gray-circle {
+  display: inline-block;
+  width: 16rpx;
+  height: 16rpx;
+  vertical-align: middle;
+  border: none;
+  border-radius: 8rpx;
+  margin-right: 10rpx;
+  margin-top: -6rpx; }
+
+.og-calendar .signNote .yellow-circle {
+  background-color: #fd9941; }
+
+.og-calendar .signNote .gray-circle {
+  background-color: #888888; }
+
+.og-calendar .signNote .yellow-text {
+  color: #fd9941;
+  margin-right: 30rpx; }
+
+.og-calendar .signNote .gray-text {
+  color: #888888;
+  margin-right: 30rpx; }
+
+.og-calendar .col {
+  width: 14.28571428571429%;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  padding: 4rpx 0; }
+
+.og-calendar .col text {
+  display: block;
+  width: 60rpx;
+  height: 60rpx;
+  font-size: 28rpx;
+  font-weight: normal;
+  line-height: 60rpx;
+  border: 2rpx solid transparent;
+  color: #888888; }
+
+.og-calendar .col text.black-text {
+  color: #000000;
+  font-weight: 400; }
+
+.og-calendar .body .col text {
+  /*border-radius: 50%;*/
+  border-radius: 10%;
+  color: #333333; }
+
+.og-calendar .body .col.active text {
+  border-color: transparent;
+  border: 1px solid #fd9941; }
+
+.og-calendar .body .col.old text {
+  color: #888888 !important; }
+
+.og-calendar .body .col.current text {
+  box-shadow: 1rpx 1rpx 1rpx #f88c2e;
+  background-color: #fd9941;
+  color: #FFF; }
+
+/*.og-picker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -300rpx;
+    margin-top: -320rpx;
+    width: 600rpx;
+    height: 620rpx;
+    background: #FFF;
+    border-radius: 10rpx;
+    overflow: hidden;
+    color: #555;
+}
+.og-picker .button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100rpx;
+    font-size: 32rpx;
+    line-height: 100rpx;
+    border-top: 2rpx solid #EEE;
+    text-align: center;
+    border-radius: 0 0 10rpx 10rpx;
+}
+.og-picker .button:active {
+    background: #FAFAFA;
+}
+.og-picker .content {
+    position: absolute;
+    top: 20rpx;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    overflow: hidden;
+}
+.og-picker .scroll-left,
+.og-picker .scroll-right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+}
+.og-picker .scroll-left {
+    left: 0;
+}
+.og-picker .scroll-right {
+    left: 50%;
+}
+
+.scroll-view-item  {
+    text-align: center;
+    line-height: 80rpx;
+    height: 80rpx;
+}
+.scroll-view-item:active,
+.scroll-view-item.current {
+    background: #EEE;
+}*/

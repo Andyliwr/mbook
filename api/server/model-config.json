@@ -15,7 +15,7 @@
   },
   "User": {
     "dataSource": "mongodb",
-    "public": false
+    "public": true
   },
   "AccessToken": {
     "dataSource": "mongodb",
@@ -62,10 +62,6 @@
   },
   "asToken": {
     "dataSource": "mongodb",
-    "public": true
-  },
-  "email": {
-    "dataSource": "email",
     "public": true
   }
 }

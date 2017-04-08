@@ -1,0 +1,49 @@
+<view class='login-container'>
+  <view class="headimg">
+    <image src="https://olpkwt43d.qnssl.com/myapp/user/personal.png" model="center" binderror="headimgError" />
+  </view>
+  <view class="welcome-text">
+    <text>{{welcome_text}}</text>
+  </view>
+  <form class="login-form" bindsubmit="doLogin" bindreset="formReset">
+    <view class="section section_username">
+      <view class="username-icon"></view>
+      <input type="text" name="umt" value="{{umt}}" placeholder="用户名/邮箱" bindinput="changeUmt" />
+      <icon class='clear' type="clear" bindtap="clearUmt" />
+    </view>
+    <view class="section section_password">
+      <view class="password-icon"></view>
+      <input type="{{password_input_type}}" value="{{password}}" name="password" placeholder="请输入密码" bindinput="changePwd" />
+      <view class="{{see_password_class}}" bindtap="seePassword"></view>
+    </view>
+    <view class="section btn-area">
+      <button class="submit" formType="submit">登录</button>
+    </view>
+    <view class="quick-link">
+      <text class="left">快速注册</text>
+      <text class="right">忘记密码?</text>
+    </view>
+  </form>
+  <view class="other-login">
+    <view class="title">
+      <text class="caption">
+        <text class="line line-l"></text>
+        <text>快速登录</text>
+        <text class="line line-r"></text>
+      </text>
+    </view>
+    <view class="iconset">
+      <view class="iconset-item wechat-gray-icon"></view>
+      <view class="iconset-item qq-gray-icon"></view>
+      <view class="iconset-item weibo-gray-icon"></view>
+    </view>
+  </view>
+
+  <!-- 出错打印 -->
+  <import src="../../component/err_tips/err_tips.wxml" />
+  <template is="err_tips" data="{{err_tips_data}}" />
+
+  <!-- 成功的提示 -->
+  <import src="../../component/toast/toast.wxml" />
+  <template is="toast" data="{{toast_data}}" />
+</view>

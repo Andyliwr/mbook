@@ -1,0 +1,105 @@
+<view class="reader-container">
+	<view class="content" style="width: {{maxPageNum*100+'%'}}; -webkit-column-count: {{maxPageNum}}; column-count: {{maxPageNum}};left: {{leftValue+'px'}}; background-color: {{isUseBrightModel== '0'?colorStyle.content_bg: 'transparent'}};font-family: {{currentFontFamily}};font-size:{{allSliderValue.font}}" bindtouchstart="handletouchtart" bindtouchmove="handletouchmove" bindtouchend="handletouchend">
+		<text style="color:{{colorStyle.styleNum == '4'? '#85898c': '#000800'}}">{{content}}</text>
+	</view>
+	<view class="cover" style="background-color: {{'rgba(0, 0, 0,'+(1-allSliderValue.bright/100)+')'}}"></view>
+	<view class="control" style="width:{{windows.windows_width+'px'}};display:{{(control.control_tab == '1' && control.all == '1')? 'flex': 'none'}};background-color:{{colorStyle.control_bg}}">
+		<view class="control-item" data-control="mulu" bindtap="openMulu">
+			<icon class="{{'mulu'+colorStyle.styleNum+'-icon'}}"></icon>
+		</view>
+		<view class="control-item" data-control="jingdu" bindtap="gotoControlDetail">
+			<icon class="{{control.target == 'jingdu'? 'jingdu'+colorStyle.styleNum+'-select-icon': 'jingdu'+colorStyle.styleNum+'-icon'}}"></icon>
+		</view>
+		<view class="control-item" data-control="color" bindtap="gotoControlDetail">
+			<icon class="{{control.target == 'color'? 'day'+colorStyle.styleNum+'-select-icon': 'day'+colorStyle.styleNum+'-icon'}}"></icon>
+		</view>
+		<view class="control-item" data-control="font" bindtap="gotoControlDetail">
+			<icon class="{{'font'+colorStyle.styleNum+'-icon'}}"></icon>
+		</view>
+	</view>
+	<view class="control-detail" style="display:{{(control.control_detail == '1' && control.all == '1')? 'block': 'none'}};background-color:{{colorStyle.control_bg}}">
+		<view class="jingdu-detail" style="display:{{control.target == 'jingdu'? 'block': 'none'}}">
+			<view class="jingdu">
+				<icon class="{{'rleft'+colorStyle.styleNum+'-icon'}}"></icon>
+				<view class="nameAndNum">
+					<text class="faction" style="color:{{colorStyle.styleNum == '4'? '#85898c': '#000800'}}">{{factionTitle}}\n</text>
+					<text class="jingdu-num">第{{allSliderValue.section}}章{{' 共'+newestSectionNum}}章</text>
+				</view>
+				<icon class="{{'rright'+colorStyle.styleNum+'-icon'}}"></icon>
+			</view>
+			<slider bindchange="sectionSliderChange" selected-color="{{colorStyle.slider_bg}}" min="0" max="{{newestSectionNum}}" value="{{allSliderValue.section}}" />
+		</view>
+		<view class="color-detail" style="display:{{control.target == 'color'? 'block': 'none'}}">
+			<view class="brightness">
+				<icon class="{{'day'+colorStyle.styleNum+'-icon'}}"></icon>
+				<slider class="bright-slider" bindchange="brightSliderChange" selected-color="{{colorStyle.slider_bg}}" min="0" max="100" value="{{allSliderValue.bright}}" />
+				<icon class="{{'day'+colorStyle.styleNum+'-icon'}}"></icon>
+			</view>
+			<view class="color-select">
+				<view class="color-item white-bg" style="border:{{colorStyle.styleNum == '1'? '1px solid #b0d5b4': 'none'}}" data-stylenum="1" bindtap="switchColorStyle"></view>
+				<view class="color-item pink-bg" style="border:{{colorStyle.styleNum == '2'? '1px solid #b0d5b4': 'none'}}" data-stylenum="2" bindtap="switchColorStyle"></view>
+				<view class="color-item green-bg" style="border:{{colorStyle.styleNum == '3'? '1px solid #b0d5b4': 'none'}}" data-stylenum="3" bindtap="switchColorStyle"></view>
+				<view class="color-item back-bg" data-stylenum="4" bindtap="switchColorStyle"><icon class="yueliang-icon"></icon></view>
+			</view>
+		</view>
+		<view class="font-detail" style="display:{{control.target == 'font'? 'block': 'none'}}">
+			<view class="fontSize">
+				<icon class="{{'font'+colorStyle.styleNum+'-icon'}} small"></icon>
+				<slider class="font-slider" bindchange="fontSliderChange" selected-color="{{colorStyle.slider_bg}}" min="12" max="24" step="2" value="{{allSliderValue.font}}" />
+				<icon class="{{'font'+colorStyle.styleNum+'-icon'}}"></icon>
+			</view>
+			<view class="fontSelector" bindtap="selectFontFamily">
+				<text>{{currentFontFamily}}</text>
+			</view>
+			<view class="fontDetail" style="background-color: {{colorStyle.control_bg}}" hidden="{{isShowFontSelector == '0'}}">
+				<view class="font-title">
+					<icon class="{{'leftFont'+colorStyle.styleNum+'-icon'}}" bindtap="closeFontSelector"></icon><text style="color:{{colorStyle.styleNum == '4'? '#63676a': '#655f4f'}}">选择字体</text>
+				</view>
+				<view class="allItem">
+					<view class="font-item" wx:for="{{allFontFamily}}" wx:key="fontname" data-fontname="{{item}}" bindtap="changeFontFamily">
+						<text class="fontName" style="color:{{currentFontFamily == item? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}">{{item}}</text>
+						<icon type="{{currentFontFamily == item? 'success_no_circle': ''}}" size="12" color="{{colorStyle.control_fontColor}}"></icon>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="mulu-detail {{isShowMulu == '1'? 'active': ''}}">
+		<view class="muluPanel" style="background-color: {{colorStyle.content_bg}}">
+			<swiper class="mulu-swipers" current="{{muluSwiperNum}}" bindchange="muluSwiper">
+			    <swiper-item class="mulu-swiper">
+			      	<view class="search">
+						<icon type="search" size="15" color="#ccc"/>
+						<input type="text" name="muluStr" placeholder="搜索全书内容" placeholder-class="muluPl" bindconfirm="{{doContentSearch}}" />
+					</view>
+					<view class="bookInfo" style="color:{{item.sectionNum == allSliderValue.section? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}">
+						<image src="{{headImg}}" mode="scaleToFill"></image>
+						<text class="book"><text class="factionName">武神血脉</text><text class="author">刚大木</text></text>
+						<text class="readerTime"><text class="num">25</text>时<text class="num">38</text>分<text class="timeDes">读书时长</text></text>
+					</view>
+					<scroll-view class="sections" scroll-x="false" scroll-y="true" upper-threshold="50" lower-threshold="50" scroll-top="{{}}" scroll-left="{{}}" scroll-into-view="{{}}" bindscrolltoupper="getPreMuluPage" bindscrolltolower="getNextMuluPage" >
+						<view class="section" style="color:{{item.sectionNum == allSliderValue.section? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}" wx:for="{{allSectionData}}" wx:key="sectionId" data-sectionid="{{item.sectionId}}" data-sectionnum="{{item.sectionNum}}" bindtap="showThisSection"><text class="factionNum">第{{item.sectionNum}}章</text><text class="factionName">{{item.sectionTitle}}</text></view>
+					</scroll-view>
+			    </swiper-item>
+			    <swiper-item class="shuqian-swiper">
+			      2
+			    </swiper-item>
+			    <swiper-item class="huaxian-swiper">
+			      3
+			    </swiper-item>
+			</swiper>
+			<view class="bottomCtr">
+				<text style="color:{{muluSwiperNum == 0? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}">目录</text>
+				<text style="color:{{muluSwiperNum == 1? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}">书签</text>
+				<text style="color:{{muluSwiperNum == 2? colorStyle.control_fontColor: (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}">划线</text>
+			</view>
+		</view>
+	</view>
+</view>
+<!-- 出错打印 -->
+<import src="../../component/err_tips/err_tips.wxml" />
+<template is="err_tips" data="{{err_tips_data}}" />
+
+<!-- 成功的提示 -->
+<import src="../../component/toast/toast.wxml" />
+<template is="toast" data="{{toast_data}}" />

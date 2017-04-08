@@ -1,0 +1,55 @@
+<view class="booklist-container">
+  <view class="search">
+    <view class="section">
+      <view class="form">
+        <view class="input-block">
+          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}"/>
+          <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
+        </view>
+        <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
+          <icon class="search-icon" color="#fff"></icon>
+          <text>请输入搜索内容</text>
+        </view>
+      </view>
+      <view class="toShop" bindtap="goToShop">
+        <icon class="shop-icon"></icon>
+      </view>
+    </view>
+  </view>
+  <view class="header">
+    <view class="headerLine"></view>
+    <text class="headerTime">{{headerText}}</text>
+    <view class="timeTab">
+      <block wx:for="{{showMonths}}" wx:key="month">
+        <view class="{{(index === monthIndex) ? 'active last everyTime' : 'everyTime'}}" bindtap="chooseMonth" data-month="{{item.monthIndex}}">
+          <text>{{item.monthCname}}</text>
+          <icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="list">
+    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10}}">
+      <view class="bookInfo" bindtap="goToBookDetail" data-bookid="{{item.bookid}}">
+        <text class="bookName">{{item.name}}</text>
+        <text class="author">
+          <text class="text-underline">作者：</text>{{item.author}}</text>
+        <text class="bookDes">{{item.des}}</text>
+        <icon class="{{item.hasRead === 0? 'read-icon isRead': 'read-icon notRead'}}"></icon>
+      </view>
+      <image src="{{item.headImage}}" mode="scaleToFill" />
+    </block>
+  </view>
+
+  <!-- 出错打印 -->
+  <import src="../component/err_tips/err_tips.wxml" />
+  <template is="err_tips" data="{{err_tips_data}}" />
+
+  <!-- 成功的提示 -->
+  <import src="../component/toast/toast.wxml" />
+  <template is="toast" data="{{toast_data}}" />
+
+  <!-- app状态页 -->
+  <import src="../component/err_page/err_page.wxml" />
+  <template is="err_page" data="{{err_page_data}}" />
+</view>

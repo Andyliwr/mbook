@@ -12,6 +12,8 @@ var fs = require('fs');
 var htmlToText = require('html-to-text');
 var chinese_parseInt = require('./tools/chinese-parseint');
 var connectDB = require('./connectDB/connectDB');
+connectDB.configLog('rankReptile');
+
 
 //日志相关
 var log4js = require('log4js');
@@ -19,10 +21,11 @@ var log4js = require('log4js');
 log4js.configure({
     appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
+        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
     ]
 });
-var logger = log4js.getLogger('networkReptile');
+var logger = log4js.getLogger('rankReptile');
+
 
 var app = express();
 var QI_DIAN_WEB = 'http://r.qidian.com/';
@@ -37,19 +40,17 @@ var ALL_TYPES = [
 ];
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
-//最终数据
-var finalData = [];
 
-fs.exists('log', function (ret) {
+fs.exists('./reptile/log', function (ret) {
     if (!ret) {
         logger.warn('日志目录不存在，正在为你创建....');
         fs.mkdir('log');
     }
-    fs.open('log/rankReptile.log', 'a', function (err, fd) {
+    fs.open('./reptile/log/rankReptile.log', 'a', function (err, fd) {
         if (err) {
             console.log('创建日志文件失败！');
         } else {
-            // logger.info('\n\n\n\n\n');
+            logger.info('\n\n\n');
             init();
         }
     });
