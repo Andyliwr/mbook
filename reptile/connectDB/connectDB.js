@@ -33,6 +33,14 @@ function configLog(reptileType) {
       ]
     });
     logger = log4js.getLogger('ixdzsReptile');
+  } else if (reptileType == "operation") {
+    log4js.configure({
+      appenders: [
+        {type: 'console'},
+        {type: 'file', filename: './log/operation.log', category: 'operation'}
+      ]
+    });
+    logger = log4js.getLogger('operation');
   }
 }
 
