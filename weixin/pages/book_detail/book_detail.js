@@ -45,7 +45,9 @@ Page({
           tmpData.detail.updateTime = Util.formatDate3(date);
           // devide des into shortDes and des;
           var shortDes = '';
+          // format des
           var des = tmpData.detail.des;
+          tmpData.detail.des = des.replace(/( ){2,}/, ' ');
           if (des.length > 95) {
             shortDes = des.substring(0, 76);
           }

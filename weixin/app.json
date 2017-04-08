@@ -29,7 +29,7 @@
       "selectedIconPath": "image/booklist.png",
       "text": "书架"
     },{
-      "pagePath": "pages/jiaowu/jiaowu",
+      "pagePath": "pages/shop/shop",
       "iconPath": "image/tuijian_gray.png",
       "selectedIconPath": "image/tuijian.png",
       "text": "推荐"

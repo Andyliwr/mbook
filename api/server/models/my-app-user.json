@@ -27,6 +27,22 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "hasReadTime": {
+      "type": "number"
+    },
+    "continueReadDay": {
+      "type": "number"
+    },
+    "myEmails": {
+      "type": [
+        "object"
+      ]
+    },
+    "settings": {
+      "type": [
+        "object"
+      ]
     }
   },
   "validations": [],

@@ -3,7 +3,7 @@
     <view class="section">
       <view class="form">
         <view class="input-block">
-          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}"/>
+          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindinput="finishedInput" value="{{searchValue}}"/>
           <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
         </view>
         <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
@@ -29,7 +29,7 @@
     </view>
   </view>
   <view class="list">
-    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10}}">
+    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10 && item.isShow}}">
       <view class="bookInfo" bindtap="goToBookDetail" data-bookid="{{item.bookid}}">
         <text class="bookName">{{item.name}}</text>
         <text class="author">
