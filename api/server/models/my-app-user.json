@@ -27,6 +27,28 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "hasReadTime": {
+      "type": "number"
+    },
+    "continueReadDay": {
+      "type": "number"
+    },
+    "myEmails": {
+      "type": [
+        "object"
+      ]
+    },
+    "settings": {
+      "type": [
+        "object"
+      ]
+    },
+    "address": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "number"
     }
   },
   "validations": [],
@@ -112,6 +134,27 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getUserInfo"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "countReadTime"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "continueReadDay"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "updateUserInfo"
     }
   ],
   "methods": {}

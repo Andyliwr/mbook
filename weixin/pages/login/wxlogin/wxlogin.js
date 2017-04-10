@@ -2,6 +2,7 @@
 var Api = require('../../../utils/api/api');
 var qiniuUploader = require('../../../utils/qiniuUpload');
 var Util = require('../../../utils/util');
+var wxMarkerData = [];
 
 // 初始化七牛相关参数
 function initQiniu(callback) {
@@ -26,7 +27,8 @@ Page({
     email: '',
     password: '',
     nickName: '',
-    city: ''
+    city: '',
+    address: ''
   },
   onLoad: function (options) {
     var self = this;
@@ -36,13 +38,36 @@ Page({
           openid: app.globalData.registerParam.openid,
           avatar: app.globalData.registerParam.avatar,
           nickName: app.globalData.registerParam.nickName,
-          city: app.globalData.registerParam.city,
           gender: app.globalData.registerParam.gender
-        }, nickName: app.globalData.registerParam.nickName, city: app.globalData.registerParam.city
+        }, nickName: app.globalData.registerParam.nickName
       });
       //获取完清除全局变量的缓存
       app.globalData.registerParam = null;
     }
+    // 获取当前地理位置
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {
+        var latitude = res.latitude;
+        var longitude = res.longitude;
+        // 向高德请求地址转换
+        console.log(Api.getPosition(latitude, longitude));
+        wx.request({
+          url: Api.getPosition(latitude, longitude),
+          method: 'GET',
+          success: function(res){
+            console.log(res);
+            self.setData({city: res.data.regeocode.addressComponent.city, address: res.data.regeocode.addressComponent.country + ' ' + res.data.regeocode.addressComponent.city + ' ' + res.data.regeocode.addressComponent.district});
+          },
+          fail: function(err){
+            console.log('地址转换失败');
+          }
+        })
+      },
+      fail: function(){
+        console.log('获取定位失败');
+      }
+    });
   },
   //监听用户输入
   userInput: function (event) {
@@ -70,7 +95,7 @@ Page({
   genderChange: function (event) {
     var self = this;
     var genderSelect = (event.target.dataset.gender == 'male' ? 1 : 0);
-    self.setData({ userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: self.data.userInfoFromApp.avatar, nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: genderSelect } })
+    self.setData({ userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: self.data.userInfoFromApp.avatar, nickName: self.data.userInfoFromApp.nickName, gender: genderSelect } })
   },
   confirmRegiste: function (event) {
     var self = this;
@@ -90,8 +115,16 @@ Page({
               //校验成功，开始注册
               var registeData = {
                 "nickName": self.data.nickName,
+                "realm": '',
+                "signatrue": '',
+                "age": -1,
                 "avatar": self.data.userInfoFromApp.avatar + '?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim', // 调用七牛的图片处理api
+                "gender": self.data.userInfoFromApp.gender,
                 "myBooks": [],
+                "setting": [],
+                "hasReadTime": 0,
+                "continueReadDay": 0,
+                "address": self.data.address,
                 "auth": "{\"type\": \"wechat\", \"wxOpenId\": \"" + self.data.userInfoFromApp.openid + "\"}",
                 "username": self.data.username,
                 "email": self.data.email,
@@ -145,13 +178,13 @@ Page({
         //七牛上传文件
         var filePath = res.tempFilePaths[0];
         self.setData({
-          userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: self.data.userInfoFromApp.gender }
+          userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
         });
         qiniuUploader.upload(filePath, (res) => {
           console.log(res);
           //更新图片地址
           self.setData({
-            userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, city: self.data.userInfoFromApp.city, gender: self.data.userInfoFromApp.gender }
+            userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
           });
           wx.hideToast();
           wx.showToast({ title: '上传成功', icon: 'success', duration: 2000 });

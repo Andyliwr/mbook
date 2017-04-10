@@ -1,5 +1,6 @@
 var connectDB = require('./connectDB');
 var myAppTools = require('../tools/myAppTools');
+var qiniuOperation = require('../qiniu/allOperation');
 
 connectDB.configLog('ixdzsReptile');
 
@@ -16,7 +17,7 @@ connectDB.configLog('ixdzsReptile');
 // connectDB.emptyFaction('天影', '爱下电子书');
 
 //测试整理更新小说的方法
-connectDB.updateSectionList('大主宰', '爱下电子书');
+// connectDB.updateSectionList('大主宰', '爱下电子书');
 
 //测试tool中的去重函数
 // var jsonArr = [
@@ -45,3 +46,4 @@ connectDB.updateSectionList('大主宰', '爱下电子书');
 // connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){
 //   console.log(idArr);
 // })
+qiniuOperation.compressAndUpload('http://avatar.csdn.net/E/2/7/1_u014374031.jpg', 'avatar', '../qiniu/tmp/', 'andyliwr.jpg');

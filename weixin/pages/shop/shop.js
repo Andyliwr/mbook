@@ -96,6 +96,14 @@ Page({
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 0
+    });
+    setTimeout(function(item){
+      wx.hideToast();
+    }, 2000);
   },
   onReady: function () {
     // 页面渲染完成
