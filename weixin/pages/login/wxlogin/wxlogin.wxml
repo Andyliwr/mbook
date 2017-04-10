@@ -35,7 +35,7 @@
                 <label class="label-2__text"><text>女</text></label>
             </view>
             <view class="section">
-                <label for="city">城市<input type="text" value="{{city}}" placeholder="city" value="{{userInfoFromApp.city}}" bindinput="userInput" data-type="city" /></label>
+                <label for="city">城市<input type="text" value="{{city}}" placeholder="city" value="{{city}}" bindinput="userInput" data-type="city" /></label>
             </view>
         </form>
         <button type="primary" bindtap="confirmRegiste" loading="{{isShowLoading}}">确认注册</button>

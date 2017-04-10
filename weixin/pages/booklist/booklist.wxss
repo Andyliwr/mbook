@@ -155,7 +155,24 @@
   background-color: #fff;
   flex: 1; }
 
-.booklist-container .list > image {
+.booklist-container .list .empty{
+  text-align: center; }
+
+.booklist-container .list .empty > image{
+  margin-top: 40rpx;
+  height: 300rpx;
+  width: 300rpx; }
+
+.booklist-container .list .empty > button{
+  margin-top: 30rpx;
+  width: 70%;
+  height: 70rpx;
+  line-height: 70rpx;
+  border-color: #fd9941;
+  color: #fd9941;
+  font-size: 30rpx; }
+
+.booklist-container .list .all > image {
   height: 180rpx;
   width: 140rpx;
   box-shadow: 4rpx 4rpx 2rpx #888;

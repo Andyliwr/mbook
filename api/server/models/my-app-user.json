@@ -43,6 +43,9 @@
       "type": [
         "object"
       ]
+    },
+    "address": {
+      "type": "string"
     }
   },
   "validations": [],

@@ -1,27 +1,27 @@
 <import src="../component/email_digest/email_digest.wxml" />
 <view class='today-container'>
   <view class="headimg">
-    <image src="../../image/personal.png" model="center" binderror="headimgError" />
+    <image src="{{avatar}}" model="center" binderror="headimgError" />
     <text class="username">andyliwr</text>
   </view>
   <view class="more-info">
     <view class="info-time">
       <text class="time">
-        <text class="num">2</text>
-        <text class="danwei">小时</text>
+        <text class="num">{{hasReadTime}}</text>
+        <text class="danwei">分钟</text>
       </text>
       <text class="des">有效阅读时长</text>
     </view>
     <view class="info-day">
       <text class="day">
-        <text class="num">12</text>
+        <text class="num">{{continueReadDay}}</text>
         <text class="danwei">天</text>
       </text>
       <text class="des">坚持阅读天数</text>
     </view>
     <view class="info-book" bindtap="goToBookList">
       <text class="book">
-        <text class="num">17</text>
+        <text class="num">{{hasBookNum}}</text>
         <text class="danwei">本</text>
       </text>
       <text class="des">已阅读的书籍</text>
