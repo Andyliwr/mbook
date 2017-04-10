@@ -21,7 +21,7 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/rankReptile.log', category: 'rankReptile'}
+        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
       ]
     });
     logger = log4js.getLogger('rankReptile');
@@ -29,7 +29,7 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
+        {type: 'file', filename: './reptile/log/ixdzsReptile.log', category: 'ixdzsReptile'}
       ]
     });
     logger = log4js.getLogger('ixdzsReptile');
@@ -61,7 +61,7 @@ var factionContentSchema = new mongoose.Schema({
   sectionContent: String,
   sectionResource: String,//小说来源
   recentUpdateTime: Date,  //最新的更新时间，用来比对最新文章
-  des: String //add some signature used to management
+  des: String //add some signature used to management,
 }, {safe: {j: 1, w: 1, wtimeout: 10000}});
 //创建model
 var factionContentModel = mongoose.model('factionContent', factionContentSchema);
@@ -79,7 +79,9 @@ var factionListSchema = new mongoose.Schema({
   headerImage: String, //小说首图链接
   author: String, //小说作者
   sectionArray: [{type: Schema.Types.ObjectId, ref: 'factionContent'}], //小说章节列表, 每个元素是包含章节数、标题、章节内容的JSON
-  updateTime: Date //更新时间
+  updateTime: Date, // time of update
+  newest: Number, // the newest section number
+  comments: [] // all comments of this book
 }, {safe: {j: 1, w: 1, wtimeout: 10000}}); //new Schema(config,options); j表示做1份日志，w表示做2个副本（尚不明确），超时时间10秒
 
 //创建model
@@ -148,7 +150,9 @@ var initDB = function () {
     headerImage: 'http://res.cloudinary.com/idwzx/image/upload/v1472746056/dazhuzai_y6428k.jpg',
     author: '天蚕土豆',
     sectionArray: [factionContentEntity._id],
-    updateTime: new Date()
+    updateTime: new Date(),
+    newest: 1,
+    comments: []
   });
 
   factionListEntity.save(function (err) {
@@ -303,45 +307,64 @@ var initDB = function () {
   });
 
 };
-// initDB();
 
 /**
  * before get new faction data, update lists with contents data (remove the same sectionNum contents, and update list)
  * @param factionName
  * @param source the source of faction
  */
-function updateSectionList (factionName, source) {
+function updateSectionList(factionName, source, isDone) {
   var reg = new RegExp(factionName, 'g');
   factionContentModel.find({des: reg, sectionResource: source})
+    .sort({sectionNum: -1})
     .exec(function (err, list) {
       if (err) {
         logger.warn('查询factionContent文档失败，' + err);
       } else {
         //when the factionContent is duplicate, just delete it
-        var whenDuplicate = function(itemId){
-          factionContentModel.remove({_id: itemId}, function(err){
-            if(err){
-              logger.warn('小说 |'+factionName+'| 中factionCentents的id为 '+itemId+' 的重复项删除失败，请手动删除...');
-            }else{
-              logger.info('小说 |'+factionName+'| 中factionCentents的id为 '+itemId+' 的重复项删除成功...');
+        var whenDuplicate = function (itemId) {
+          factionContentModel.remove({_id: itemId}, function (err) {
+            if (err) {
+              logger.warn('小说 |' + factionName + '| 中factionCentents的id为 ' + itemId + ' 的重复项删除失败，请手动删除...');
+            } else {
+              logger.info('小说 |' + factionName + '| 中factionCentents的id为 ' + itemId + ' 的重复项删除成功...');
             }
           });
         };
         list = myAppTools.removeDuplicate(list, 'sectionNum', whenDuplicate);
         var sectionArray = myAppTools.getElementArray(list, 'id')
-        factionListModel.update({factionName: reg}, {$set: {sectionArray: sectionArray, updateTime: myAppTools.formatDate(new Date())}}).exec(function (err) {
+        factionListModel.update({factionName: reg}, {
+          $set: {
+            sectionArray: sectionArray,
+            updateTime: myAppTools.formatDate(new Date()),
+            newest: sectionArray.length
+          }
+        }).exec(function (err) {
           if (err) {
-            logger.warn('存储前更新list失败，' + err);
+            if (isDone == 'done') {
+              logger.warn('存储后更新list失败，' + err);
+            } else {
+              logger.warn('存储前更新list失败，' + err);
+            }
           } else {
-            logger.info('存储前更新list成功！');
+            if (isDone == 'done') {
+              logger.info('存储后更新list成功！');
+            } else {
+              logger.info('存储前更新list成功！');
+            }
           }
         });
       }
-  })
+    })
 };
 
-//存储小说的方法
-function saveFaction (json) {
+/**
+ * 存储小说的方法
+ * @param json 需要存储的对象信息
+ * @param callback 存储成功的回调
+ */
+
+function saveFaction(json) {
   if (!(json.sectionNum && json.factionName)) {
     logger.warn('存储数据时，格式错误！！');
     return;
@@ -377,22 +400,31 @@ function saveFaction (json) {
               };
 
               //将小说内容存入数据库
-              factionContentModel.create(jsonTemp, function (err, doc) {
-                if(err){
-                  logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----失败！' + err);
-                }else{
-                  logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----成功！');
+              factionContentModel.create(jsonTemp, function (contentErr, contentDoc) {
+                if (contentErr) {
+                  typeof callback === 'fuction' && callback({contents: 1, list: 1});
+                  logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContent更新fail，无法执行factionList的更新! ' + contentErr);
+                } else {
+                  // logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新-----成功！');
                   //只有在小说内容存储成功之后才去更新小说章节列表
                   var sectionIdArray = myAppTools.getElementArray(list[0].sectionArray, '_id');
-                  sectionIdArray.push(doc.id);
+                  sectionIdArray.push(contentDoc.id);
 
                   var conditions = {factionName: json.factionName};
                   var update = {$set: {sectionArray: sectionIdArray, updateTime: myAppTools.formatDate(new Date())}};
-                  factionListModel.update(conditions, update, function(err, doc){
-                    if (err) {
-                      logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----失败！' + err);
+                  factionListModel.update(conditions, update, function (listErr) {
+                    if (listErr) {
+                      typeof callback === 'fuction' && callback({contents: 1, list: 0});
+                      logger.warn(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新success！\n' + json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新fail！' + listErr);
+                      //执行失败回滚
+                      factionContentModel.remove({id: contentDoc.id}, function (removeErr) {
+                        if (removeErr) {
+                          logger.warn('在执行List更新失败之后，执行content还原操作失败，id:' + contentDoc.id);
+                        }
+                      })
                     } else {
-                      logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新-----成功！');
+                      typeof callback === 'fuction' && callback({contents: 1, list: 1});
+                      logger.info(json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionContentModel 更新success \n' + json.factionName + ' 的第 ' + json.sectionNum + ' 章 ' + json.sectionTitle + ' factionListModel 更新success');
                     }
                   });
                 }
@@ -426,9 +458,9 @@ function getNewestSectionNum(factionName, resource, callback) {
               logger.fatal('数据库无数据，请释放initDB函数，初始化数据！！');
             } else {
               if (typeof callback == 'function') {
-                if(list[0].sectionArray[0]){
+                if (list[0].sectionArray[0]) {
                   callback(list[0].sectionArray[0].sectionNum || 0);
-                }else{
+                } else {
                   callback(0);
                 }
               }
@@ -496,7 +528,9 @@ function autoAddTestSection(bookItem, ranktype, isQdRankReady, isZhRankReady) {
         headerImage: bookItem.headImg,
         author: bookItem.author,
         sectionArray: [content._id],
-        updateTime: new Date()
+        updateTime: new Date(),
+        newest: 0, //最新章节
+        comments: []
       });
 
       list.save(function (err) {
@@ -631,6 +665,158 @@ function updateRank(jsonArr) {
  * @param factionName 小说名字
  * @param resource 小说源
  */
+function emptyFaction(factionName, resource) {
+  if (typeof factionName == 'string' && typeof resource == 'string') {
+    factionListModel.find({factionName: factionName})
+      .populate('sectionArray', {'sectionNum': 1, 'sectionTitle': 1}, null, {sort: {sectionNum: -1}})
+      .exec(function (err, list) {
+        if (err) {
+          logger.warn("查询mongo-----失败！" + err);
+        } else {
+          try {
+            if (list.length == 0) {
+              logger.fatal('小说 |' + factionName + ' |的数据库未正确初始化...');
+            } else {
+              //delete factionContent
+              list[0].sectionArray.forEach(function (item) {
+                factionContentModel.remove({_id: item._id}, function (err, doc) {
+                  if (err) {
+                    logger.warn('小说 |' + factionName + '| 第 ' + item.sectionNum + ' ' + item.sectionTitle + '删除 失败，请手动删除...');
+                  } else {
+                    logger.warn('小说 |' + factionName + '| 第 ' + item.sectionNum + ' ' + item.sectionTitle + '删除 成功...');
+                  }
+                })
+              });
+              //update factionList sectionArray
+              factionListModel.update({factionName: factionName}, {
+                $set: {
+                  sectionArray: [],
+                  updateTime: myAppTools.formatDate(new Date())
+                }
+              }, function (err, doc) {
+                if (err) {
+                  logger.warn('小说 |' + factionName + '| factionList sectionArray清除 失败...');
+                } else {
+                  logger.warn('小说 |' + factionName + '| factionList sectionArray清除 成功...');
+                }
+              });
+            }
+          } catch (error) {
+            logger.warn('小说 |' + factionName + '| 清除fail，请手动删除...' + error);
+          }
+        }
+      });
+  } else {
+    logger.warn("getNewestSectionNum传入参数错误!");
+  }
+}
+
+/**
+ * 检测章节断层（小说类容为“你到了没有知识的荒原“或着7调到9或者出现重复章节7887），比如1-10章，第8章没有，需要返回这步小说的章节断层的章节数
+ * @param factionName 小说名字
+ * @param resource 小说源
+ * @callback 完成检测的回调函数
+ */
+function getSlipSection(factionName, resource, callback) {
+  if (typeof factionName == 'string' && typeof resource == 'string') {
+    factionListModel.find({factionName: factionName})
+      .populate('sectionArray', {
+        'sectionNum': 1,
+        'sectionTitle': 1,
+        'sectionContent': 1
+      }, null, {sort: {sectionNum: 1}})
+      .exec(function (err, list) {
+        if (err) {
+          logger.warn("查询mongo-----失败！" + err);
+        } else {
+          try {
+            if (list.length == 0) {
+              logger.fatal('小说 |' + factionName + ' |的数据库未正确初始化...');
+            } else {
+              //detect factionContent slip case
+              var resultArr = [];
+              var sectionArr = [];
+              var detectSlipEp = new eventproxy();
+              var length = list[0].sectionArray.length;
+              detectSlipEp.after('hasFinishedDetect', length, function () {
+                typeof callback === 'function' && callback({
+                  idArr: resultArr,
+                  sections: sectionArr,
+                  newest: list[0].sectionArray[length - 1].sectionNum
+                });
+              });
+              list[0].sectionArray.forEach(function (item, index, array) {
+                if (item.sectionContent !== '你到了没有知识的荒野~' && item.sectionContent !== '你来到了没有知识的荒原...' && item.sectionTitle !== '测试章节') {
+                  //if this item above has slip case, create a new factionContent to replace it
+                  var createReplaceSection = function (sectionNum, createCallback) {
+                    factionContentModel.create({
+                      sectionNum: (sectionNum + 1),
+                      sectionTitle: '测试章节',
+                      sectionContent: '自动补齐，测试章节，仅供测试',
+                      sectionResource: resource,
+                      recentUpdateTime: myAppTools.formatDate(new Date()),
+                      des: factionName
+                    }, function (err, res) {
+                      if (err || !res) {
+                        logger.warn('检测断层章节过程中，发现第 ' + (sectionNum + 1) + ' 出现断层，新建测试章节补位fail，' + err);
+                      } else {
+                        resultArr.push(res.id);
+                        sectionArr.push(sectionNum + 1);
+                        logger.warn('检测断层章节过程中，发现第 ' + (sectionNum + 1) + ' 出现断层，新建测试章节补位success，id: ' + res.id);
+                      }
+                      typeof createCallback === 'function' && createCallback();
+                    });
+                  };
+                  if (index !== (array.length - 1)) {
+                    if (((item.sectionNum + 1) !== (array[index + 1].sectionNum))) {
+                      createReplaceSection(item.sectionNum + 1, function () {
+                        detectSlipEp.emit('hasFinishedDetect', '');
+                      });
+                    } else {
+                      detectSlipEp.emit('hasFinishedDetect', '');
+                    }
+                  } else {
+                    //this is the last section can be found
+                    //如果遍历到最后发现最大章节数比当前数组的长度还要大，则剩余的也需要补齐
+                    var distanceNum = array[length - 1].sectionNum - length;
+                    if (distanceNum > 0) {
+                      var lastEp = new eventproxy();
+                      lastEp.after('hasFinishedCreate', distanceNum, function (datas) {
+                        detectSlipEp.emit('hasFinishedDetect', '');
+                      });
+                      for (var i = 0; i < distanceNum; i++) {
+                        createReplaceSection((index + 1 + i), function () {
+                          lastEp.emit('hasFinishedCreate', '');
+                        });
+                      }
+                    } else {
+                      detectSlipEp.emit('hasFinishedDetect', '');
+                    }
+                  }
+                } else {
+                  // logger.warn('第 ' + item.sectionNum + '是测试章节');
+                  resultArr.push(item._id);
+                  sectionArr.push(item.sectionNum);
+                  detectSlipEp.emit('hasFinishedDetect', '');
+                }
+              });
+            }
+          } catch (error) {
+            logger.warn(error);
+            typeof callback === 'function' && callback({idArr: [], sections: [], newest: 0});
+          }
+        }
+      });
+  } else {
+    logger.warn("getNewestSectionNum传入参数错误!");
+  }
+}
+
+/**
+ * 清空整部小说，删除爬取到的所有小说章节
+ * @param factionName 小说名字
+ * @param resource 小说源
+ */
 function emptyFaction(factionName, resource){
   if (typeof factionName == 'string' && typeof resource == 'string') {
     factionListModel.find({factionName: factionName})
@@ -674,8 +860,10 @@ function emptyFaction(factionName, resource){
 
 //把存储方法暴露出来
 exports.configLog = configLog;
+exports.initDB = initDB;
 exports.saveFaction = saveFaction;
 exports.updateSectionList = updateSectionList;
 exports.getNewestSectionNum = getNewestSectionNum;
 exports.updateRank = updateRank;
 exports.emptyFaction = emptyFaction;
+exports.getSlipSection = getSlipSection;

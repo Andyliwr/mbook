@@ -21,7 +21,7 @@ var log4js = require('log4js');
 log4js.configure({
     appenders: [
         {type: 'console'},
-        {type: 'file', filename: 'log/rankReptile.log', category: 'rankReptile'}
+        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
     ]
 });
 var logger = log4js.getLogger('rankReptile');
@@ -41,7 +41,7 @@ var ALL_TYPES = [
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
 
-fs.exists('log', function (ret) {
+fs.exists('./reptile/log', function (ret) {
     if (!ret) {
         logger.warn('日志目录不存在，正在为你创建....');
         fs.mkdir('log');

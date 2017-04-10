@@ -6,15 +6,15 @@ App({
   onLaunch: function () {
     var self = this;
     //从缓存中读取sessionid
-    // wx.setStorageSync('sessionid', ''); //test
-    // var sessionId = wx.getStorageSync('sessionid');//sessionAndUuid由sessionId和userId组成
-    // if(sessionId){
-    //   self.checkSessionEffect(sessionId);
-    // }else{
-    //   //用户未登录，接下来判断用户是否注册
-    //   self.doLogin();
-    //   // wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
-    // }
+    // wx.clearStorageSync();
+    var sessionId = wx.getStorageSync('sessionid');//sessionAndUuid由sessionId和userId组成
+    if(sessionId){
+      self.checkSessionEffect(sessionId);
+    }else{
+      //用户未登录，接下来判断用户是否注册
+      self.doLogin();
+      // wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
+    }
   },
   /**
    * 获取微信用户的详细信息，包括头像，昵称，城市...
@@ -104,6 +104,7 @@ App({
                       }else{
                         //如果登录成功，将sessionid存储在本地缓存中
                         wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
+                        wx.setStorage({ key: "id", data: {userid: tmpdata.userid, openid: tmpdata.openid} });
                         self.globalData.sessionId = tmpdata.sessionid;
                         if(typeof callback == "function"){
                           callback();

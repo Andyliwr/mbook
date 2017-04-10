@@ -1,5 +1,10 @@
+@import "../component/err_page/err_page.wxss";
 .booklist-container {
-  background-color: #F2F2F2; }
+  background-color: #F2F2F2;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
 
 .booklist-container .search {
   background-color: #fd9941;
@@ -147,7 +152,8 @@
 .booklist-container .list {
   margin-top: 20rpx;
   padding: 30rpx 30rpx;
-  background-color: #fff; }
+  background-color: #fff;
+  flex: 1; }
 
 .booklist-container .list > image {
   height: 180rpx;
@@ -165,7 +171,9 @@
   font-size: 22rpx;
   box-sizing: border-box;
   position: relative;
-  margin-bottom: 20rpx; }
+  margin-bottom: 20rpx;
+  height:200rpx;
+  overflow:hidden; }
 
 .booklist-container .list .bookInfo::after {
   content: "";
@@ -185,12 +193,14 @@
   margin-top: 10rpx; }
 
 .booklist-container .bookInfo .bookDes {
-  overflow:hidden; /*超出的部分隐藏起来。*/ 
-  white-space:nowrap;/*不显示的地方用省略号...代替*/
-  text-overflow:ellipsis;/* 支持 IE */
   font-size: 22rpx;
   color: #888;
-  margin-top: 20rpx; }
+  margin-top: 20rpx;
+  overflow:hidden; 
+  text-overflow:ellipsis;
+  display:-webkit-box; 
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;  }
 
 .booklist-container .bookInfo .text-underline {
   border-bottom: 4rpx solid #fd9941;

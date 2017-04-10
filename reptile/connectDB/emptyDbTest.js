@@ -12,11 +12,13 @@ connectDB.configLog('ixdzsReptile');
 //   recentUpdateTime: myAppTools.formatDate(new Date())
 // })
 
+//测试清空某部小说
 // connectDB.emptyFaction('天影', '爱下电子书');
 
-connectDB.updateSectionList('天影', '爱下电子书');
+//测试整理更新小说的方法
+connectDB.updateSectionList('大主宰', '爱下电子书');
 
-
+//测试tool中的去重函数
 // var jsonArr = [
 //   {
 //     a: 1,
@@ -35,3 +37,11 @@ connectDB.updateSectionList('天影', '爱下电子书');
 //   }
 // ];
 // console.log(JSON.stringify(myAppTools.removeDuplicate(jsonArr, 'sectionNum')));
+
+//初始化数组库
+// connectDB.initDB();
+
+//获取断层章节
+// connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){
+//   console.log(idArr);
+// })

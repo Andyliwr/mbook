@@ -32,10 +32,25 @@
       "default": [
         "[]"
       ]
+    },
+    "newest": {
+      "type": "number"
+    },
+    "comments": {
+      "type": [
+        "object"
+      ]
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "contents": {
+      "type": "hasMany",
+      "model": "factioncontents",
+      "foreignKey": "",
+      "through": "factioncontents"
+    }
+  },
   "acls": [
     {
       "accessType": "*",

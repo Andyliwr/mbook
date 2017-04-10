@@ -162,3 +162,42 @@ db.getCollection('factioncontents').find({des: /天影/, sectionResource:'爱下
 //查询这部小说的详细信息
 db.getCollection('factionlists').find({factionName: '天影'})
 ```
+### mongoose查询链式语法
+```
+ Person
+      .find({ occupation: /host/ })
+      .where('name.last').equals('Ghost')
+      .where('age').gt(17).lt(66)
+      .where('likes').in(['vaporizing', 'talking'])
+      .limit(10)
+      .sort('-occupation')
+      .select('name occupation')
+      .exec(callback);
+```
+### 如何使用node promise
+```
+var promise = require('bluebrid');
+Myappuser.find({username: 'lidikang'})
+      .then(function(res){
+        console.log(res);
+        callback(null, 'hi');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+```
+### find
+```
+var docs = yield collection.find({})
+  .skip(1).limit(1).project({b:1}).toArray();
+    test.equal(1, docs.length);
+    test.equal(null, docs[0].a);
+    test.equal(2, docs[0].b);
+
+    // Close db
+    db.close();
+```
+
+### 剩余要做的
++ 前端在每次用户离开的时候存储一个时间，后端getMyBooks接口的时候返回updateTime这个字段，前端用这个字段做判断，已经阅读的不再提示
++ 后端直接对比最新章节数和以阅读章节数

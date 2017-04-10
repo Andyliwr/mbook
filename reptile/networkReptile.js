@@ -17,7 +17,7 @@ var log4js = require('log4js');
 log4js.configure({
   appenders: [
     {type: 'console'},
-    {type: 'file', filename: 'log/networkReptile.log', category: 'networkReptile'}
+    {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
   ]
 });
 var logger = log4js.getLogger('networkReptile');
@@ -39,7 +39,7 @@ fs.exists('log', function (ret) {
     logger.warn('日志目录不存在，正在为你创建....');
     fs.mkdir('log');
   }
-  fs.open('./reptile/log/networkReptile.log', 'a', function (err, fd) {
+  fs.open('./log/networkReptile.log', 'a', function (err, fd) {
     if (err) {
       console.log('创建日志文件失败！');
     } else {
