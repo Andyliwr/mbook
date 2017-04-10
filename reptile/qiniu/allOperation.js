@@ -71,6 +71,7 @@ function imageComparess (url, saveName, callback){
   }else{
     console.log('It is not a url');
     if(typeof callback === "function"){
+      console.log(url+' '+saveName)
       tinify.fromFile(url).toFile(saveName, callback);
     }else{
       tinify.fromFile(url).toFile(saveName);

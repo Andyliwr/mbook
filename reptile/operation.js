@@ -53,17 +53,15 @@ switch (action) {
   case 'compressImage':
     logger.info('开始压缩');
     var inpath = program.inpath;
-    console.log(typeof inpath);
-    var fileName = inpath.match(/[^\s/]+\.(jpg|png|jpeg|JPEG|PNG)$/g);
-    console.log(fileName);
+    var fileName = inpath.match(/[^\s/]+\.(jpg|png|jpeg|JPEG|PNG)/g)[0];
     if(inpath){
       var output = program.outpath;
       if(!output){
         output = './'+ 'c_' +fileName
       }
-      // qiniuOperation.imageComparess(inpath, output, function(){
-      //   logger.warn('图片已成功压缩至' + output);
-      // });
+      qiniuOperation.imageComparess('./qiniu/tmp/andyliwr.jpg', './c_andyliwr.jpg', function(){
+        logger.warn('图片已成功压缩至' + output);
+      });
     }else{
       logger.warn('请指定要压缩文件的相对地址')
     }

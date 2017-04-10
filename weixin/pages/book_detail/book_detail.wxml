@@ -35,7 +35,7 @@
 		<view class="title">精彩评论<text class="add-comment" bindtap="toWriteComment">写评论</text>
 		</view>
 		<view class="comment-list">
-			<view class="comment-item" wx:for="{{comments}}" data-commentid="{{item.rootComment.commentid}}">
+			<view class="comment-item" wx:for="{{comments}}" data-commentid="{{item.rootComment.commentid}}" wx:key="{{item.rootComment.commentid}}">
 				<image class="headImg" src="{{item.rootComment.avatar}}" mode="scaleToFill"></image>
 				<view class="comment-right">
 					<view class="reader-name" data-userid="{{item.rootComment.userid}}">{{item.rootComment.nickname}}</view>
