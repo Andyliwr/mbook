@@ -62,3 +62,6 @@
 	font-size: 26rpx;
 	color: #888888;
 }
+.btn-area > button{
+	margin-top: 40rpx;
+}

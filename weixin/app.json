@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/user/userInfo/userInfo",
     "pages/booklist/booklist",
     "pages/registe/registe",
     "pages/login/wxlogin/wxlogin",
     "pages/shop/shop",
     "pages/book_detail/reader/reader",
     "pages/jiaowu/jiaowu",
-    "pages/user/userInfo/userInfo",
     "pages/rank/rank",
     "pages/login/aslogin/aslogin",
     "pages/jiaowu_detail/jiaowu_detail",

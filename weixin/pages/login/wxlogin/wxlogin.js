@@ -2,7 +2,6 @@
 var Api = require('../../../utils/api/api');
 var qiniuUploader = require('../../../utils/qiniuUpload');
 var Util = require('../../../utils/util');
-var wxMarkerData = [];
 
 // 初始化七牛相关参数
 function initQiniu(callback) {
@@ -177,9 +176,9 @@ Page({
       success: function (res) {
         //七牛上传文件
         var filePath = res.tempFilePaths[0];
-        self.setData({
-          userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
-        });
+        // self.setData({
+        //   userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
+        // });
         qiniuUploader.upload(filePath, (res) => {
           console.log(res);
           //更新图片地址
