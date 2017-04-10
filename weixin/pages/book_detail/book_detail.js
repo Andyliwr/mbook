@@ -311,7 +311,7 @@ Page({
       content: content
     };
     // 不能给自己回复
-    if (1 && self.data.userInfo.userid === self.data.commentType.userid) {
+    if (1 && self.data.userInfo.userid !== self.data.commentType.userid) {
       // 调用增加评论的接口
       wx.request({
         url: Api.addComment(),
