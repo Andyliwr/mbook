@@ -119,6 +119,7 @@ Page({
                 "signatrue": '',
                 "age": -1,
                 "avatar": self.data.userInfoFromApp.avatar + '?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim', // 调用七牛的图片处理api
+                "gender": self.data.userInfoFromApp.gender,
                 "myBooks": [],
                 "setting": [],
                 "hasReadTime": 0,

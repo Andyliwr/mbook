@@ -1,7 +1,7 @@
 <import src="../component/email_digest/email_digest.wxml" />
 <view class='today-container'>
   <view class="headimg">
-    <image src="{{avatar}}" model="center" binderror="headimgError" />
+    <image src="{{avatar}}" model="center" binderror="headimgError" bindtap="gotoUserInfo" />
     <text class="username">andyliwr</text>
   </view>
   <view class="more-info">

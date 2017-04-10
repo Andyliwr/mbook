@@ -197,6 +197,11 @@ Page({
       url: '../booklist/booklist',
     });
   },
+  gotoUserInfo: function () {
+    wx.navigateTo({
+      url: './userInfo/userInfo',
+    });
+  },
   headimgError: function () {
     this.setData({avatar: 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim'});
   }

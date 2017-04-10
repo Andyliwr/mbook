@@ -46,6 +46,9 @@
     },
     "address": {
       "type": "string"
+    },
+    "gender": {
+      "type": "number"
     }
   },
   "validations": [],
