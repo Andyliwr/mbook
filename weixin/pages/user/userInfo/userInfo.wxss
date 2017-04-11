@@ -65,3 +65,10 @@
 .btn-area > button{
 	margin-top: 40rpx;
 }
+.display{
+	display: inline-block;
+	width: 70%;
+	height: 100%;
+	line-height: 80rpx;
+	vertical-align: middle;
+}

@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/user/userInfo/userInfo",
     "pages/booklist/booklist",
     "pages/registe/registe",
     "pages/login/wxlogin/wxlogin",
@@ -11,6 +10,7 @@
     "pages/login/aslogin/aslogin",
     "pages/jiaowu_detail/jiaowu_detail",
     "pages/user/user",
+    "pages/user/userInfo/userInfo",
     "pages/book_detail/book_detail"
   ],
   "window": {

@@ -55,7 +55,8 @@ Page({
       var passwordReg = /^[a-zA-Z\d_]{8,}$/; //最少8位
       var nickNameReg = /^[\u4e00-\u9fa5\w]{2,8}$/; //2-8位数字或者字母或者中文
       var realNameReg = /^[\u4e00-\u9fa5\w]{2,8}$/; //2-8位数字或者字母或者中文
-      var cityReg = /^[\u4e00-\u9fa5\w]{2,18}$/; //2-10位数字或者字母或者中文
+      var cityReg = /^[\u4e00-\u9fa5\w ]{2,18}$/; //2-10位数字或者字母或者中文
+      var numberReg = /\d+/;
       if (nickNameReg.test(self.data.nickname)) {
         if (emailReg.test(self.data.email)) {
           var updateData = {};
@@ -64,7 +65,7 @@ Page({
           if(self.data.realm && realNameReg.test(self.data.realm)){
             updateData.realm = self.data.realm;
           }
-          if(self.data.age && (typeof self.data.age === 'number')){
+          if(self.data.age && numberReg.test(self.data.age)){
             updateData.age = self.data.age;
           }
           if(self.data.birthday && (typeof self.data.birthday === 'string')){
@@ -82,29 +83,29 @@ Page({
           wx.request({
             url: Api.updateUserInfo(),
             method: 'POST',
-            data: updateData,
+            data: {userid: wx.getStorageSync('id').userid, info: updateData},
             success: function (res) {
-              var tmpData = res.data;
+              var tmpData = res.data.data;
               //注册成功，缓存userid和openid
-              if(tmpData.id){
-                var idStr = JSON.stringify({userid: tmpData.id, openid: self.data.userInfoFromApp.openid});
-                wx.setStorageSync("id", idStr);
-                //登录,  wx.navigateTo 和 wx.redirectTo 不允许跳转到 tabbar 页面，只能用 wx.switchTab 跳转到 tabbar 页面
-                app.doLogin(function(){wx.switchTab({ url: '../../booklist/booklist' })});
+              if(tmpData.code == 0){
+                console.log('更新个人信息成功');
+                self.setData({changeOrSubmit: true});
               }
             },
             fail: function (err) {
               console.log('注册失败， ' + err);
+              self.setData({errTips: '更新个人信息失败', changeOrSubmit: false});
             }
           });
         } else {
-          Util.showErrMsg(self, '请输入有效邮箱', 1500);
+         self.setData({errTips: '请输入有效邮箱', changeOrSubmit: false});
         }
       } else {
-        Util.showErrMsg(self, '请输入4-16字母或者数字组成的用户名', 1500);
+        self.setData({errTips: '请输入2-10字母或、数字或者中文组成的昵称', changeOrSubmit: false});
       }
+    }else{
+      self.setData({changeOrSubmit: !self.data.changeOrSubmit});
     }
-    self.setData({changeOrSubmit: !self.data.changeOrSubmit});
   },
   uploadAvatar: function () {
     wx.hideToast();
@@ -135,5 +136,33 @@ Page({
         console.log("选择图片失败, " + err);
       }
     })
+  },
+  // 生日输入框的输入事件
+  userInput: function(e){
+    var self = this;
+    var type = e.currentTarget.dataset.type;
+    switch(type){
+      case 'nickname':
+        self.setData({nickname: e.detail.value});
+        break;
+      case 'email':
+        self.setData({email: e.detail.value});
+        break;
+      case 'realm':
+        self.setData({realm: e.detail.value});
+        break;
+      case 'age':
+        self.setData({age: e.detail.value});
+        break;
+      case 'birthday':
+        self.setData({birthday: e.detail.value});
+        break;
+      case 'address':
+        self.setData({address: e.detail.value});
+        break;
+      case 'signature':
+        self.setData({signature: e.detail.value});
+        break;
+    }
   }
 })

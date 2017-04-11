@@ -704,7 +704,7 @@ module.exports = function (Myappuser) {
             "age": res.age || 0,
             "nickName": res.nickName || '',
             "birthday": res.birthday || '',
-            "signatrue": res.signatrue || '',
+            "signature": res.signature || '',
             "address": res.address || '',
             "books": res.myBooks.length || 0,
             "avatar": res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim',
@@ -754,13 +754,14 @@ module.exports = function (Myappuser) {
             var newAge = info.age || res.age || 0;
             var newNickName = info.nickName || res.nickName;
             var newGender = info.gender || res.gender;
-            var newBirthday = new Date(info.birthday) || res.birthday;
-            var newSignature = info.signatrue || res.signatrue;
+            var newBirthday = info.birthday || res.birthday;
+            var newSignature = info.signature || res.signature;
             var newAddress = info.address || res.address;
             var newAvatar = info.avatar || res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim';
             var newRealm = info.realm || res.realm;
-            Myappuser.update({id: userid}, {age: newAge, nickName: newNickName, birthday: newBirthday, signatrue: newSignature, address: newAddress, gender: newGender, avatar: newAvatar, realm: newRealm}, function (err, res) {
+            Myappuser.update({id: userid}, {age: newAge, nickName: newNickName, birthday: newBirthday, signature: newSignature, address: newAddress, gender: newGender, avatar: newAvatar, realm: newRealm}, function (err, res) {
               if (err || !res) {
+                console.log(err);
                 cb(null, {code: -1, errMsg: '个人信息更新失败'});
               } else {
                 cb(null, {code: 0, successMsg: '个人信息更新成功'});
