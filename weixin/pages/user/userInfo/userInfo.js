@@ -29,6 +29,7 @@ Page({
     changeOrSubmit: true, // 用户正在执行的操作，是修改（true）还是已经修改好了准备提交（false）
     errTips: '',
     err_tips_data: { err_tips_show: false, err_tips_text: '' },
+    err_page_data: null, //app状态页
     is_click_img: false // 是否点击了上传头像
   },
   onLoad: function () {
@@ -80,16 +81,19 @@ Page({
           if(self.data.avatar && self.data.is_click_img){
             updateData.avatar = self.data.avatar;
           }
+          var userid = wx.getStorageSync('id').userid;
           wx.request({
             url: Api.updateUserInfo(),
             method: 'POST',
-            data: {userid: wx.getStorageSync('id').userid, info: updateData},
+            data: {userid: userid, info: updateData},
             success: function (res) {
               var tmpData = res.data.data;
               //注册成功，缓存userid和openid
               if(tmpData.code == 0){
                 console.log('更新个人信息成功');
                 self.setData({changeOrSubmit: true});
+                //更新缓存中的userInfo
+                self.getUserInfo(userid);
               }
             },
             fail: function (err) {
@@ -106,6 +110,39 @@ Page({
     }else{
       self.setData({changeOrSubmit: !self.data.changeOrSubmit});
     }
+  },
+  getUserInfo: function (userid) {
+    wx.request({
+      url: Api.getUserInfo(userid),
+      success: function (res) {
+        var tmpData = res.data.data;
+        if (tmpData && tmpData.code == 0) {
+          //将书单数据缓存到本地
+          wx.setStorage({
+            key: 'userInfo',
+            data: tmpData.info,
+            success: function (res) {
+              console.log('成功更新本地缓存中用户信息');
+            }
+          });
+        } else {
+          console.log('请求用户信息失败....');
+          Util.showErrMsg(self, '获取个人信息失败', 1000);
+        }
+      },
+      fail: function (err) {
+        console.log(err);
+        self.setData({
+          err_page_data: {
+            show: true,
+            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            text: '努力找不到网络>_<请检查后重试',
+            buttonText: '重试',
+            click: 'getUserInfo'
+          }
+        });
+      }
+    });
   },
   uploadAvatar: function () {
     wx.hideToast();

@@ -150,8 +150,8 @@ Page({
             }
           });
         } else {
-          console.log('请求书籍信息失败....');
-          Util.showErrMsg(self, '获取章节内容失败', 1000);
+          console.log('请求用户信息失败....');
+          Util.showErrMsg(self, '获取个人信息失败', 1000);
         }
       },
       fail: function (err) {
