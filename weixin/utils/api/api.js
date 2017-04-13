@@ -23,6 +23,7 @@ const ADD_COMMENT = '/xs_list/addComment';
 const DELETE_COMMENT = '/xs_list/deleteComment';
 const GET_COMMENTS = '/xs_list/listComments';
 const GET_USER_INFO = '/myappuser/getUserInfo';
+const UPDATE_USER_INFO = '/myappuser/updateUserInfo';
 const ADD_LIKE_NUM = '/xs_list/addLikeNum';
 
 function obj2url(obj) {
@@ -122,6 +123,10 @@ module.exports = {
   // 获取用户详细信息
   getUserInfo: function(userid){
     return HOST_URL + GET_USER_INFO + '?userid=' + userid
+  },
+  // 更新用户信息, post
+  updateUserInfo: function(){
+    return HOST_URL + UPDATE_USER_INFO
   },
   // 点赞, post
   addLikeNum: function(){

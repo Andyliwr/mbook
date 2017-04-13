@@ -11,9 +11,9 @@
       "type": "string"
     },
     "birthday": {
-      "type": "date"
+      "type": "string"
     },
-    "signatrue": {
+    "signature": {
       "type": "string"
     },
     "myBooks": {
