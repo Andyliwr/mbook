@@ -40,10 +40,10 @@ connectDB.configLog('ixdzsReptile');
 // console.log(JSON.stringify(myAppTools.removeDuplicate(jsonArr, 'sectionNum')));
 
 //初始化数组库
-// connectDB.initDB();
+connectDB.initDB();
 
 //获取断层章节
 // connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){
 //   console.log(idArr);
 // })
-qiniuOperation.compressAndUpload('http://avatar.csdn.net/E/2/7/1_u014374031.jpg', 'avatar', '../qiniu/tmp/', 'andyliwr.jpg');
+// qiniuOperation.compressAndUpload('http://avatar.csdn.net/E/2/7/1_u014374031.jpg', 'avatar', '../qiniu/tmp/', 'andyliwr.jpg');

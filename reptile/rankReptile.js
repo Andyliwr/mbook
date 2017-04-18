@@ -41,12 +41,12 @@ var ALL_TYPES = [
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
 
-fs.exists('./reptile/log', function (ret) {
+fs.exists('./log', function (ret) {
     if (!ret) {
         logger.warn('日志目录不存在，正在为你创建....');
         fs.mkdir('log');
     }
-    fs.open('./reptile/log/rankReptile.log', 'a', function (err, fd) {
+    fs.open('./log/rankReptile.log', 'a', function (err, fd) {
         if (err) {
             console.log('创建日志文件失败！');
         } else {
@@ -59,16 +59,16 @@ fs.exists('./reptile/log', function (ret) {
 var init = function () {
     var rule = new schedule.RecurrenceRule();
     //每天0点执行就是rule.hour =0;rule.minute =0;rule.second =0;
-    // rule.second =[0, 10, 20, 30, 40, 50];
-    // rule.second = 0;
-    // rule.hour =18;rule.minute =0;rule.second =0;
-    // var j = schedule.scheduleJob(rule, function(){
-    //     logger.info('今天是 '+date+'，排行版每天18:00点更新.......');
-    //     //更新数据库factionList
-    //     getFactionRankList();
-    // });
-    logger.info('今天是 ' + myAppTools.getToDayStr() + '，排行版每天18:00点更新.......');
-    getQdFactionRankList();
+    rule.second =[0, 10, 20, 30, 40, 50];
+    rule.second = 0;
+    rule.hour =18;rule.minute =0;rule.second =0;
+    var j = schedule.scheduleJob(rule, function(){
+        logger.info('今天是 '+date+'，排行版每天18:00点更新.......');
+        //更新数据库factionList
+        getFactionRankList();
+    });
+    // logger.info('今天是 ' + myAppTools.getToDayStr() + '，排行版每天18:00点更新.......');
+    // getQdFactionRankList();
 };
 
 function getQdFactionRankList() {
