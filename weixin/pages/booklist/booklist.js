@@ -70,6 +70,8 @@ Page({
       url: Api.getMyBooks(userid),
       success: function (res) {
         var books = res.data.data.books;
+        console.log('书籍信息');
+        console.log(books);
         books.forEach(function(item){
           item.isShow = true;
         });
@@ -140,6 +142,8 @@ Page({
       url: Api.getUserInfo(userid),
       success: function (res) {
         var tmpData = res.data.data;
+        console.log('用户信息');
+        console.log(tmpData);
         if (tmpData && tmpData.code == 0) {
           //将书单数据缓存到本地
           wx.setStorage({
