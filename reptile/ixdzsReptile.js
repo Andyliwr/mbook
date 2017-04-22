@@ -91,18 +91,7 @@ function startReptile(factionNmme) {
 function doSearch(factionName) {
   if (typeof factionName == 'string') {
     superagent.get(AXDZS_SEARCH_URL)
-      .query({
-        s: '7466980319800320338',
-        loc: 'http://www.ixdzs.com/bsearch?q=' + encodeURI(factionName),
-        width: 580,
-        q: factionName,
-        wt: 1,
-        ht: 1,
-        pn: 10,
-        fpos: 2,
-        rmem: 0,
-        reg: ''
-      })
+      .query({s: '7466980319800320338', loc: 'http://www.ixdzs.com/bsearch?q=' + encodeURI(factionName), width: 580, q: factionName, wt: 1, ht: 1, pn: 10, fpos: 2, rmem: 0, reg: ''})
       .end(function (err, res) {
         if (err) {
           logger.warn('使用爱下电子书搜索 ' + factionName + ' 失败');

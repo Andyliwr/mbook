@@ -867,11 +867,11 @@ function emptyFaction(factionName, resource){
 }
 
 //把存储方法暴露出来
-exports.configLog = configLog;
-exports.initDB = initDB;
-exports.saveFaction = saveFaction;
-exports.updateSectionList = updateSectionList;
-exports.getNewestSectionNum = getNewestSectionNum;
-exports.updateRank = updateRank;
-exports.emptyFaction = emptyFaction;
-exports.getSlipSection = getSlipSection;
+exports.configLog = configLog; // 配置日志
+exports.initDB = initDB; // 初始化数据库
+exports.saveFaction = saveFaction; // 存储爬取到的章节内容
+exports.updateSectionList = updateSectionList; // 更新章节列表
+exports.getNewestSectionNum = getNewestSectionNum; // 获取最新章节
+exports.updateRank = updateRank; // 更新排行榜
+exports.emptyFaction = emptyFaction; // 清空某本小说
+exports.getSlipSection = getSlipSection; // 获取不连续的章节
