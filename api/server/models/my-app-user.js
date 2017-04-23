@@ -392,7 +392,7 @@ module.exports = function (Myappuser) {
             delete successItem.index;
             delete successItem.success;
             return successItem;
-          })
+          });
           cb(null, {code: 0, books: finalArr});
         } catch (err) {
           console.log(err);

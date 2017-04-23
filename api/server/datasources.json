@@ -4,9 +4,9 @@
     "connector": "memory"
   },
   "mongodb": {
-    "host": "127.0.0.1",
+    "host": "120.25.202.142",
     "port": 27017,
-    "url": "mongodb://lidikang:123456@localhost:27017/myapp",
+    "url": "mongodb://lidikang:123456@120.25.202.142:27017/myapp",
     "database": "myapp",
     "password": "123456",
     "name": "mongodb",

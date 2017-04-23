@@ -27,8 +27,8 @@ window.onload = function(){
 			password = $("input[name='password']").val();
 		}
 		$('.login.error-tip').css({'display':'none'});
-		if (username.length >=6 && password.length >= 6){
-			var loginUrl = API_URL+ '/Users/login';
+		if (username.length >=5 && password.length >= 6){
+			var loginUrl = API_URL+ '/adminUser/login';
 			var postData={"username":username , "password":password};
 			$.ajax({
 				type:'POST',
@@ -76,7 +76,7 @@ window.onload = function(){
 
 		var emailReg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
 		var usernameReg = /^[a-zA-z]\w{3,15}$/; // 4-16位
-		var passwordReg = /^[a-zA-Z\d_]{8,}$/; //最少8位
+		var passwordReg = /^[a-zA-Z\d_]{6,}$/; //最少8位
 
 		if(emailReg.test(email)){
 			if(usernameReg.test(username)){
@@ -122,6 +122,6 @@ window.onload = function(){
 			$('.r-errorTips').html('邮箱格式错误').show();
 			$('input[name="r-email"]').focus();
 		}
-		
+
 	});
 };
