@@ -58,8 +58,8 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-							<i class="icon-leaf"></i>
-							Ace Admin
+							<i class="icon-book"></i>
+							微书后台管理系统
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -431,7 +431,7 @@
 									<ul class="submenu">
 										<li>
 											<a href="#">
-												<i class="icon-leaf"></i>
+												<i class="icon-book"></i>
 												第一级
 											</a>
 										</li>
@@ -930,14 +930,14 @@
 
 		<script type="text/javascript">
 			jQuery(function($){
-	
+
 	function showErrorAlert (reason, detail) {
 		var msg='';
 		if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
 		else {
 			console.log("error uploading file", reason, detail);
 		}
-		$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
+		$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+
 		 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
 	}
 
@@ -981,7 +981,7 @@
 		}
 	}).prev().addClass('wysiwyg-style2');
 
-	
+
 
 	$('#editor2').css({'height':'200px'}).ace_wysiwyg({
 		toolbar_place: function(toolbar) {
@@ -990,7 +990,7 @@
 		toolbar:
 		[
 			'bold',
-			{name:'italic' , title:'Change Title!', icon: 'icon-leaf'},
+			{name:'italic' , title:'Change Title!', icon: 'icon-book'},
 			'strikethrough',
 			null,
 			'insertunorderedlist',
@@ -1016,14 +1016,14 @@
 	});
 
 
-	
+
 
 	//Add Image Resize Functionality to Chrome and Safari
 	//webkit browsers don't have image resize functionality when content is editable
 	//so let's add something using jQuery UI resizable
 	//another option would be opening a dialog for user to enter dimensions.
 	if ( typeof jQuery.ui !== 'undefined' && /applewebkit/.test(navigator.userAgent.toLowerCase()) ) {
-		
+
 		var lastResizableImg = null;
 		function destroyResizable() {
 			if(lastResizableImg == null) return;
@@ -1042,7 +1042,7 @@
 							aspectRatio: e.target.width / e.target.height,
 						});
 						target.data('resizable', true);
-						
+
 						if( lastResizableImg != null ) {//disable previous resizable image
 							lastResizableImg.resizable( "destroy" );
 							lastResizableImg.removeData('resizable');
@@ -1060,7 +1060,7 @@
 				destroyResizable();
 			});
 	    }
-		
+
 		enableImageResize();
 
 		/**

@@ -56,8 +56,8 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-							<i class="icon-leaf"></i>
-							Ace Admin
+							<i class="icon-book"></i>
+							微书后台管理系统
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -429,7 +429,7 @@
 									<ul class="submenu">
 										<li>
 											<a href="#">
-												<i class="icon-leaf"></i>
+												<i class="icon-book"></i>
 												第一级
 											</a>
 										</li>
@@ -1157,17 +1157,17 @@
 
 		<script type="text/javascript">
 			jQuery(function($) {
-			
+
 				$( "#datepicker" ).datepicker({
 					showOtherMonths: true,
 					selectOtherMonths: false,
 					//isRTL:true,
-			
-					
+
+
 					/*
 					changeMonth: true,
 					changeYear: true,
-					
+
 					showButtonPanel: true,
 					beforeShow: function() {
 						//change button colors
@@ -1182,8 +1182,8 @@
 					}
 			*/
 				});
-			
-			
+
+
 				//override dialog's title function to allow for HTML titles
 				$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
 					_title: function(title) {
@@ -1193,43 +1193,43 @@
 						else title.text($title);
 					}
 				}));
-			
+
 				$( "#id-btn-dialog1" ).on('click', function(e) {
 					e.preventDefault();
-			
+
 					var dialog = $( "#dialog-message" ).removeClass('hide').dialog({
 						modal: true,
 						title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i> jQuery UI Dialog</h4></div>",
 						title_html: true,
-						buttons: [ 
+						buttons: [
 							{
 								text: "Cancel",
 								"class" : "btn btn-xs",
 								click: function() {
-									$( this ).dialog( "close" ); 
-								} 
+									$( this ).dialog( "close" );
+								}
 							},
 							{
 								text: "OK",
 								"class" : "btn btn-primary btn-xs",
 								click: function() {
-									$( this ).dialog( "close" ); 
-								} 
+									$( this ).dialog( "close" );
+								}
 							}
 						]
 					});
-			
+
 					/**
 					dialog.data( "uiDialog" )._title = function(title) {
 						title.html( this.options.title );
 					};
 					**/
 				});
-			
-			
+
+
 				$( "#id-btn-dialog2" ).on('click', function(e) {
 					e.preventDefault();
-				
+
 					$( "#dialog-confirm" ).removeClass('hide').dialog({
 						resizable: false,
 						modal: true,
@@ -1254,9 +1254,9 @@
 						]
 					});
 				});
-			
-			
-				
+
+
+
 				//autocomplete
 				 var availableTags = [
 					"ActionScript",
@@ -1285,7 +1285,7 @@
 				$( "#tags" ).autocomplete({
 					source: availableTags
 				});
-			
+
 				//custom autocomplete (category selection)
 				$.widget( "custom.catcomplete", $.ui.autocomplete, {
 					_renderMenu: function( ul, items ) {
@@ -1300,7 +1300,7 @@
 						});
 					}
 				});
-				
+
 				 var data = [
 					{ label: "anders", category: "" },
 					{ label: "andreas", category: "" },
@@ -1316,8 +1316,8 @@
 					delay: 0,
 					source: data
 				});
-				
-				
+
+
 				//tooltips
 				$( "#show-option" ).tooltip({
 					show: {
@@ -1325,14 +1325,14 @@
 						delay: 250
 					}
 				});
-			
+
 				$( "#hide-option" ).tooltip({
 					hide: {
 						effect: "explode",
 						delay: 250
 					}
 				});
-			
+
 				$( "#open-event" ).tooltip({
 					show: null,
 					position: {
@@ -1343,12 +1343,12 @@
 						ui.tooltip.animate({ top: ui.tooltip.position().top + 10 }, "fast" );
 					}
 				});
-			
-			
+
+
 				//Menu
 				$( "#menu" ).menu();
-			
-			
+
+
 				//spinner
 				var spinner = $( "#spinner" ).spinner({
 					create: function( event, ui ) {
@@ -1356,12 +1356,12 @@
 						$(this)
 						.next().addClass('btn btn-success').html('<i class="icon-plus"></i>')
 						.next().addClass('btn btn-danger').html('<i class="icon-minus"></i>')
-						
+
 						//larger buttons on touch devices
 						if(ace.click_event == "tap") $(this).closest('.ui-spinner').addClass('ui-spinner-touch');
 					}
 				});
-			
+
 				//slider example
 				$( "#slider" ).slider({
 					range: true,
@@ -1369,9 +1369,9 @@
 					max: 500,
 					values: [ 75, 300 ]
 				});
-			
-			
-			
+
+
+
 				//jquery accordion
 				$( "#accordion" ).accordion({
 					collapsible: true ,
@@ -1389,8 +1389,8 @@
 				});
 				//jquery tabs
 				$( "#tabs" ).tabs();
-				
-				
+
+
 				//progressbar
 				$( "#progressbar" ).progressbar({
 					value: 37,
@@ -1399,7 +1399,7 @@
 							   .children(0).addClass('progress-bar progress-bar-success');
 					}
 				});
-					
+
 			});
 		</script>
 	<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>

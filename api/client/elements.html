@@ -44,7 +44,7 @@
 				text-align:center;
 				margin-top:60px;
 			}
-			
+
 			.dropdown-preview {
 				margin:0 5px;
 				display:inline-block;
@@ -78,8 +78,8 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-							<i class="icon-leaf"></i>
-							Ace Admin
+							<i class="icon-book"></i>
+							微书后台管理系统
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -451,7 +451,7 @@
 									<ul class="submenu">
 										<li>
 											<a href="#">
-												<i class="icon-leaf"></i>
+												<i class="icon-book"></i>
 												第一级
 											</a>
 										</li>
@@ -1633,16 +1633,16 @@
 				  console.log(e.target.getAttribute("href"));
 				})
 				*/
-			
-			
+
+
 				$('#accordion-style').on('click', function(ev){
 					var target = $('input', ev.target);
 					var which = parseInt(target.val());
 					if(which == 2) $('#accordion').addClass('accordion-style2');
 					 else $('#accordion').removeClass('accordion-style2');
 				});
-			
-			
+
+
 				var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
 				$('.easy-pie-chart.percentage').each(function(){
 					$(this).easyPieChart({
@@ -1655,11 +1655,11 @@
 						size:75
 					}).css('color', $(this).data('color'));
 				});
-			
+
 				$('[data-rel=tooltip]').tooltip();
 				$('[data-rel=popover]').popover({html:true});
-			
-			
+
+
 				$('#gritter-regular').on(ace.click_event, function(){
 					$.gritter.add({
 						title: 'This is a regular notice!',
@@ -1669,10 +1669,10 @@
 						time: '',
 						class_name: (!$('#gritter-light').get(0).checked ? 'gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-			
+
 				$('#gritter-sticky').on(ace.click_event, function(){
 					var unique_id = $.gritter.add({
 						title: 'This is a sticky notice!',
@@ -1682,11 +1682,11 @@
 						time: '',
 						class_name: 'gritter-info' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-			
-			
+
+
 				$('#gritter-without-image').on(ace.click_event, function(){
 					$.gritter.add({
 						// (string | mandatory) the heading of the notification
@@ -1695,11 +1695,11 @@
 						text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="orange">magnis dis parturient</a> montes, nascetur ridiculus mus.',
 						class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-			
-			
+
+
 				$('#gritter-max3').on(ace.click_event, function(){
 					$.gritter.add({
 						title: 'This is a notice with a max of 3 on screen at one time!',
@@ -1714,41 +1714,41 @@
 						},
 						class_name: 'gritter-warning' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-			
-			
+
+
 				$('#gritter-center').on(ace.click_event, function(){
 					$.gritter.add({
 						title: 'This is a centered notification',
 						text: 'Just add a "gritter-center" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
 						class_name: 'gritter-info gritter-center' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-				
+
 				$('#gritter-error').on(ace.click_event, function(){
 					$.gritter.add({
 						title: 'This is a warning notification',
 						text: 'Just add a "gritter-light" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
 						class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
 					});
-			
+
 					return false;
 				});
-					
-			
+
+
 				$("#gritter-remove").on(ace.click_event, function(){
 					$.gritter.removeAll();
 					return false;
 				});
-					
-			
+
+
 				///////
-			
-			
+
+
 				$("#bootbox-regular").on(ace.click_event, function() {
 					bootbox.prompt("What is your name?", function(result) {
 						if (result === null) {
@@ -1758,7 +1758,7 @@
 						}
 					});
 				});
-					
+
 				$("#bootbox-confirm").on(ace.click_event, function() {
 					bootbox.confirm("Are you sure?", function(result) {
 						if(result) {
@@ -1766,11 +1766,11 @@
 						}
 					});
 				});
-					
+
 				$("#bootbox-options").on(ace.click_event, function() {
 					bootbox.dialog({
 						message: "<span class='bigger-110'>I am a custom dialog with smaller buttons</span>",
-						buttons: 			
+						buttons:
 						{
 							"success" :
 							 {
@@ -1787,7 +1787,7 @@
 								"callback": function() {
 									//Example.show("uh oh, look out!");
 								}
-							}, 
+							},
 							"click" :
 							{
 								"label" : "Click ME!",
@@ -1795,7 +1795,7 @@
 								"callback": function() {
 									//Example.show("Primary button");
 								}
-							}, 
+							},
 							"button" :
 							{
 								"label" : "Just a button...",
@@ -1804,11 +1804,11 @@
 						}
 					});
 				});
-			
-			
-			
+
+
+
 				$('#spinner-opts small').css({display:'inline-block', width:'60px'})
-			
+
 				var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 				var ii = 0;
 				$("#spinner-opts input[type=text]").each(function() {
@@ -1829,16 +1829,16 @@
 						}
 					});
 				});
-			
-			
-			
-			
-			
+
+
+
+
+
 				$.fn.spin = function(opts) {
 					this.each(function() {
 					  var $this = $(this),
 						  data = $this.data();
-			
+
 					  if (data.spinner) {
 						data.spinner.stop();
 						delete data.spinner;
@@ -1849,7 +1849,7 @@
 					});
 					return this;
 				};
-			
+
 				function spinner_update() {
 					var opts = {};
 					$('#spinner-opts input[type=text]').each(function() {
@@ -1857,14 +1857,14 @@
 					});
 					$('#spinner-preview').spin(opts);
 				}
-			
-			
-			
+
+
+
 				$('#id-pills-stacked').removeAttr('checked').on('click', function(){
 					$('.nav-pills').toggleClass('nav-stacked');
 				});
-			
-			
+
+
 			});
 		</script>
 	<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>

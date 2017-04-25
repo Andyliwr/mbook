@@ -56,8 +56,8 @@
 				<div class="navbar-header pull-left">
 					<a href="#" class="navbar-brand">
 						<small>
-							<i class="icon-leaf"></i>
-							Ace Admin
+							<i class="icon-book"></i>
+							微书后台管理系统
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -428,7 +428,7 @@
 									<ul class="submenu">
 										<li>
 											<a href="#">
-												<i class="icon-leaf"></i>
+												<i class="icon-book"></i>
 												第一级
 											</a>
 										</li>
@@ -2989,8 +2989,8 @@
 			      null, null,null, null, null,
 				  { "bSortable": false }
 				] } );
-				
-				
+
+
 				$('table th input:checkbox').on('click' , function(){
 					var that = this;
 					$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -2998,20 +2998,20 @@
 						this.checked = that.checked;
 						$(this).closest('tr').toggleClass('selected');
 					});
-						
+
 				});
-			
-			
+
+
 				$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
 				function tooltip_placement(context, source) {
 					var $source = $(source);
 					var $parent = $source.closest('table')
 					var off1 = $parent.offset();
 					var w1 = $parent.width();
-			
+
 					var off2 = $source.offset();
 					var w2 = $source.width();
-			
+
 					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
 					return 'left';
 				}

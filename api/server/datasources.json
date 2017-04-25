@@ -6,7 +6,7 @@
   "mongodb": {
     "host": "120.25.202.142",
     "port": 27017,
-    "url": "mongodb://lidikang:123456@120.25.202.142:27017/myapp",
+    "url": "mongodb://lidikang:123456@127.0.0.1:27017/myapp",
     "database": "myapp",
     "password": "123456",
     "name": "mongodb",
