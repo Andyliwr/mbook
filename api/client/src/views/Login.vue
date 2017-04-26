@@ -17,15 +17,15 @@
 
 <script>
   import { requestLogin } from '../api/api';
-  import axios from 'axios';
+  import { cookie, Base64 } from '../common/js/util';
   //import NProgress from 'nprogress'
   export default {
     data() {
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          account: '',
+          checkPass: ''
         },
         rules2: {
           account: [
@@ -45,30 +45,43 @@
         this.$refs.ruleForm2.resetFields();
       },
       handleSubmit2(ev) {
-        var _this = this;
-        this.$refs.ruleForm2.validate((valid) => {
+        var self = this;
+        self.$refs.ruleForm2.validate((valid) => {
           if (valid) {
             //_this.$router.replace('/table');
-            this.logining = true;
+            self.logining = true;
             //NProgress.start();
-            var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            axios.get('/user/list')
-              .then(res => {console.log(res)})
-            // requestLogin(loginParams).then(data => {
-            //   this.logining = false;
-            //   //NProgress.done();
-            //   console.log(data);
-            //   let { msg, code, user } = data;
-            //   if (code !== 200) {
-            //     this.$message({
-            //       message: msg,
-            //       type: 'error'
-            //     });
-            //   } else {
-            //     sessionStorage.setItem('user', JSON.stringify(user));
-            //     this.$router.push({ path: '/table' });
-            //   }
-            // });
+            var loginParams = { username: self.ruleForm2.account, password: self.ruleForm2.checkPass };
+            requestLogin(loginParams).then(data => {
+              self.logining = false;
+              //NProgress.done();
+              let tokenid = data.id;
+              let userid = data.userId;
+              if (tokenid && userid) {
+                // judge isChecked
+                cookie.setCookie('tokenid', tokenid, 1);
+                cookie.setCookie('userid', userid, 1);
+                if(self.checked){
+                  let base64 = new Base64();
+                  let username = base64.encode(self.ruleForm2.account);
+                  let password = base64.encode(self.ruleForm2.checkPass);
+                  localStorage.setItem('loginInfo', JSON.stringify({name: username, pwd: password}));
+                }
+                // go to index
+                self.$router.push({ path: '/main' });
+              } else {
+                self.$message({
+                  message: '用户名或密码错误',
+                  type: 'error'
+                });
+              }
+            }).catch(err => {
+              console.log(err);
+              self.$message({
+                message: '登陆失败',
+                type: 'error'
+              })
+            });
           } else {
             console.log('error submit!!');
             return false;
@@ -92,6 +105,16 @@
       }else if(remenberPwd === 'false'){
         // use user last setting
         this.checked = false;
+      }else if(remenberPwd === 'true'){
+        // read user and pwd from localStorage
+        localStorage.setItem('remenberPwd', true);
+        let userInfo = localStorage.getItem('userInfo');
+        if(userInfo){
+          let {user, pwd} = JSON.parse(userInfo);
+          let base64 = new Base64();
+          console.log(base64.decode(user))
+          this.ruleForm2 = {account: base64.decode(user), checkPass: base64.decode(pwd)};
+        }
       }
     }
   }

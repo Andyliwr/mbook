@@ -11,8 +11,10 @@ import Vuex from 'vuex'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
 import Mock from './mock'
-Mock.bootstrap();
+// not use mock
+// Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+import { cookie } from './common/js/util'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -27,10 +29,13 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   //NProgress.start();
   if (to.path == '/login') {
-    sessionStorage.removeItem('user');
+    // delete tokenid in cookie
+    cookie.setCookie('tokenid', 0, -1);
+    cookie.setCookie('userid', 0, -1);
   }
-  let user = JSON.parse(sessionStorage.getItem('user'));
-  if (!user && to.path != '/login') {
+  let tokenid = cookie.getCookie('tokenid')
+  let userid = cookie.getCookie('userid')
+  if ((!userid || !tokenid) && to.path != '/login') {
     next({ path: '/login' })
   } else {
     next()

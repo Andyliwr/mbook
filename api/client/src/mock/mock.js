@@ -44,6 +44,17 @@ export default {
     });
 
     //获取用户列表
+    mock.onGet('/test').reply(config => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            users: 1
+          }]);
+        }, 1000);
+      });
+    });
+
+    //获取用户列表
     mock.onGet('/user/list').reply(config => {
       let {name} = config.params;
       let mockUsers = _Users.filter(user => {

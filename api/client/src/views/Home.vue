@@ -75,7 +75,7 @@
 	export default {
 		data() {
 			return {
-				sysName:'VUEADMIN',
+				sysName:'微书后台管理系统',
 				collapsed:false,
 				sysUserName: '',
 				sysUserAvatar: '',
