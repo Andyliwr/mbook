@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-let base = '';
+let base = 'https://api.andylistudio.com/api';
 
-export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
+export const requestLogin = params => { return axios.post(`${base}/adminUser/login`, params).then(res => res.data); };
 
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
 
