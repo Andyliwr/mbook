@@ -60,7 +60,7 @@
               if (tokenid && userid) {
                 // judge isChecked
                 cookie.setCookie('tokenid', tokenid, 1);
-                cookie.setCookie('userid', userid, 1);
+                localStorage.setItem('userid', userid);
                 if(self.checked){
                   let base64 = new Base64();
                   let username = base64.encode(self.ruleForm2.account);

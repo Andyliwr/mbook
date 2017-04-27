@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="getEmails">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
@@ -163,10 +163,10 @@
 			},
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsers();
+				this.getEmails();
 			},
 			//获取用户列表
-			getUsers() {
+			getEmails() {
 				let para = {
 					page: this.page,
 					name: this.filters.name
@@ -195,7 +195,7 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.getEmails();
 					});
 				}).catch(() => {
 
@@ -235,7 +235,7 @@
 								});
 								this.$refs['editForm'].resetFields();
 								this.editFormVisible = false;
-								this.getUsers();
+								this.getEmails();
 							});
 						});
 					}
@@ -259,7 +259,7 @@
 								});
 								this.$refs['addForm'].resetFields();
 								this.addFormVisible = false;
-								this.getUsers();
+								this.getEmails();
 							});
 						});
 					}
@@ -284,7 +284,7 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.getEmails();
 					});
 				}).catch(() => {
 
@@ -292,7 +292,7 @@
 			}
 		},
 		mounted() {
-			this.getUsers();
+			this.getEmails();
 		}
 	}
 

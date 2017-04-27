@@ -31,11 +31,9 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
     // delete tokenid in cookie
     cookie.setCookie('tokenid', 0, -1);
-    cookie.setCookie('userid', 0, -1);
   }
   let tokenid = cookie.getCookie('tokenid')
-  let userid = cookie.getCookie('userid')
-  if ((!userid || !tokenid) && to.path != '/login') {
+  if (!tokenid && to.path != '/login') {
     next({ path: '/login' })
   } else {
     next()
