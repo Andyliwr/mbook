@@ -25,23 +25,44 @@ export default {
       let {username, password} = JSON.parse(config.data);
       return new Promise((resolve, reject) => {
         let user = null;
+        console.log(username+password);
+        console.log(LoginUsers);
         setTimeout(() => {
           let hasUser = LoginUsers.some(u => {
             if (u.username === username && u.password === password) {
               user = JSON.parse(JSON.stringify(u));
+              // delete password of return data
               user.password = undefined;
               return true;
             }
           });
 
           if (hasUser) {
-            resolve([200, { code: 200, msg: '请求成功', user }]);
+            resolve([200, { code: 0, msg: '请求成功', id: user.id, userId: user.userId }]);
           } else {
-            resolve([200, { code: 500, msg: '账号或密码错误' }]);
+            resolve([200, { code: -1, msg: '账号或密码错误' }]);
           }
         }, 1000);
       });
     });
+
+    //get user's information
+    mock.onGet('/user/getUserInfo').reply(config => {
+      let {userid} = config.params;
+      console.log(Users);
+      //find user list
+      // let hasUser = LoginUsers.some(u => {
+      //   if (u.username === username && u.password === password) {
+      //     user = JSON.parse(JSON.stringify(u));
+      //     // delete password of return data
+      //     user.password = undefined;
+      //     return true;
+      //   }
+      // });
+      return new Promise((resolve, reject) => {
+        resolve([200, { code: 0, msg: '请求成功', userId: '123' }]);
+      });
+    })
 
     //获取用户列表
     mock.onGet('/test').reply(config => {

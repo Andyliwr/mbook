@@ -72,8 +72,8 @@
 </template>
 
 <script>
-  import { getUserInfo } from '../api/api'
-  import { cookie } from '../common/js/util'
+import { getUserInfo } from '../api/api';
+import { cookie } from '../common/js/util';
 	export default {
 		data() {
 			return {
@@ -125,8 +125,14 @@
 			},
 			showMenu(i,status){
 				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+			},
+			// getUserInfo
+			userInfo: function(){
+				getUserInfo({userid: cookie.getCookie('userid')}).then(res => {
+					console.log(res);
+				});
 			}
-		},
+		},		
 		mounted() {
 			var user = sessionStorage.getItem('user');
 			if (user) {

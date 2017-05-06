@@ -12,7 +12,7 @@ import Vuex from 'vuex'
 import routes from './routes'
 import Mock from './mock'
 // not use mock
-// Mock.bootstrap();
+Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
 import { cookie } from './common/js/util'
 

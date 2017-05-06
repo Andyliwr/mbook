@@ -108,9 +108,9 @@
       }else if(remenberPwd === 'true'){
         // read user and pwd from localStorage
         localStorage.setItem('remenberPwd', true);
-        let userInfo = localStorage.getItem('userInfo');
-        if(userInfo){
-          let {user, pwd} = JSON.parse(userInfo);
+        let loginInfo = localStorage.getItem('loginInfo');
+        if(loginInfo){
+          let {user, pwd} = JSON.parse(loginInfo);
           let base64 = new Base64();
           console.log(base64.decode(user))
           this.ruleForm2 = {account: base64.decode(user), checkPass: base64.decode(pwd)};
