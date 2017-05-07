@@ -11,7 +11,13 @@ If errorlevel 1 (
 )
 ECHO.
 echo 正在启动Mongo...
-mongod.exe --logpath=%mongoLogPath% --dbpath=%mongoDbPath% --journal --maxConns 20000
+If %username% == andyl (
+    cd D:/mongo/bin
+    D:
+    mongod.exe --logpath=%mongoLogPath% --dbpath=%mongoDbPath% --journal --maxConns 20000
+) Else (
+    mongod.exe --logpath=%mongoLogPath% --dbpath=%mongoDbPath% --journal --maxConns 20000
+)
 echo %errorlevel%
 If errorlevel 1 (
     echo Mongo已经启动，请打开新的窗口输入mongo开启你的管理吧...

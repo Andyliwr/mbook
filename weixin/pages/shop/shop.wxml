@@ -48,7 +48,7 @@
       <view class="header">
         <text class="text-underline">热门</text>推荐
         <view class="recommend-container">
-          <view class="recommend-item" wx:for="{{recommend}}" wx:key="bookId" data-bookid="{{item.bookId}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}">
+          <view class="recommend-item" wx:for="{{recommend}}" wx:key="bookId" data-bookid="{{item.bookId}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}" bindtap="gotoBookDetail">
             <image src="{{item.headImg}}" mode="scaleToFill"></image>
             <view class="bookName">{{item.name}}</view>
             <view class="author">{{item.author}}</view>

@@ -1,16 +1,17 @@
 {
   "pages": [
-    "pages/login/aslogin/aslogin",
     "pages/booklist/booklist",
-    "pages/registe/registe",
-    "pages/shop/shop",
     "pages/book_detail/reader/reader",
     "pages/jiaowu/jiaowu",
     "pages/rank/rank",
     "pages/jiaowu_detail/jiaowu_detail",
     "pages/user/user",
+    "pages/login/wxlogin/wxlogin",
+    "pages/login/aslogin/aslogin",
+    "pages/registe/registe",
     "pages/user/userInfo/userInfo",
-    "pages/book_detail/book_detail"
+    "pages/book_detail/book_detail",
+    "pages/shop/shop"
   ],
   "window": {
     "navigationBarTextStyle": "white",

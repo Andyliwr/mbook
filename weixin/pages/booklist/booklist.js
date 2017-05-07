@@ -38,6 +38,9 @@ Page({
       icon: 'loading',
       duration: 0
     });
+  },
+  onShow: function () {
+    var self = this;
     //获取我的书单
     //读取缓存中的userid
     wx.getStorage({
@@ -72,11 +75,11 @@ Page({
         var books = res.data.data.books;
         console.log('书籍信息');
         console.log(books);
-        books.forEach(function(item){
+        books.forEach(function (item) {
           item.isShow = true;
         });
         //更新视图books
-        self.setData({books: books});
+        self.setData({ books: books });
         //将书单数据缓存到本地
         wx.setStorage({
           key: 'booklist',
@@ -94,7 +97,7 @@ Page({
           success: function (res) {
             console.log('使用本地缓存的书单数据');
             if (res.data && res.data[0].factionName) {
-              self.setData({books: res.data});
+              self.setData({ books: res.data });
             } else {
               self.setData({
                 err_page_data: {
@@ -176,7 +179,7 @@ Page({
   doLogin: function () {
     var self = this;
     app.doLogin(function () {
-      self.setData({err_page_data: null});
+      self.setData({ err_page_data: null });
       self.getMyBooks();
     });
   },
@@ -203,14 +206,14 @@ Page({
     }
   },
   goToShop: function () {
-    wx.navigateTo({
+    wx.switchTab({
       url: '../shop/shop'
     });
   },
   goToBookDetail: function (e) {
     var currentBookId = e.currentTarget.dataset.bookid;
     wx.navigateTo({
-      url: '../book_detail/book_detail?bookid=' + currentBookId + '&isInList=1'
+      url: '../book_detail/book_detail?bookid=' + currentBookId
     });
   },
   setIsSearching: function () {
@@ -307,6 +310,6 @@ Page({
   chooseMonth: function (event) {
     var self = this;
     var month = event.currentTarget.dataset.month;
-    self.setData({monthIndex: month});
+    self.setData({ monthIndex: month });
   }
 });

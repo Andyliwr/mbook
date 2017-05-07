@@ -20,19 +20,19 @@ var log4js = require('log4js');
 log4js.configure({
   appenders: [
     {type: 'console'},
-    {type: 'file', filename: './reptile/log/ixdzsReptile.log', category: 'ixdzsReptile'}
+    {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
   ]
 });
 const logger = log4js.getLogger('ixdzsReptile');
 const AXDZS_SEARCH_URL = 'http://zhannei.baidu.com/cse/search';
 var everyTime = null; //初始化爬虫中使用的计时器
 
-fs.exists('./reptile/log', function (ret) {
+fs.exists('./log', function (ret) {
   if (!ret) {
     logger.warn('日志目录不存在，正在为你创建....');
     fs.mkdir('log');
   }
-  fs.open('./reptile/log/ixdzsReptile.log', 'a', function (err, fd) {
+  fs.open('./log/ixdzsReptile.log', 'a', function (err, fd) {
     if (err) {
       console.log('创建日志文件失败！');
     } else {
@@ -55,8 +55,8 @@ var init = function () {
   logger.info('今天是 ' + myAppTools.getToDayStr() + '，正在爬取小说章节.......');
   //before getting faction, update the factionList
   logger.info('正在更新List...');
-  connectDB.updateSectionList('大主宰', '爱下电子书', 'notdone');
-  startReptile('大主宰');
+  connectDB.updateSectionList('完美世界', '爱下电子书', 'notdone');
+  startReptile('完美世界');
 };
 /**
  * package to a export function that can be used by other javascript file
@@ -122,7 +122,7 @@ function doSearch(factionName) {
             var factionUrl = factionDisplayUrl.replace(/www/, 'read');
             factionUrl = factionUrl.replace(/\/d/, '');
             logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
-            getFactionList(factionName, factionUrl, 'regular');
+            getFactionList(factionName, factionUrl, 'init');
           });
           //遍历每个结果项去获取热度数据
           factionDisplayUrlArr.each(function (index, element) {
@@ -145,7 +145,7 @@ function doSearch(factionName) {
         var factionUrl = factionDisplayUrl.replace(/www/, 'read');
         factionUrl = factionUrl.replace(/\/d/, '');
         logger.info('|' + factionName + '| 在 |爱下电子书| 的地址是：' + factionUrl);
-        getFactionList(factionName, factionUrl, 'regular');
+        getFactionList(factionName, factionUrl, 'init');
       });
   } else {
     logger.warn('doSearch传入参数错误');

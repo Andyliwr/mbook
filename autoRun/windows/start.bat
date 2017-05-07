@@ -20,25 +20,34 @@ If %username% == Andyliwr (
      set redisConfAddr=E:\redis\redis.windows.conf
   )
 ) Else (
-  If %username% == Greenovia (
-     set projectAddr=G:\git项目\graduationDesign
-     set mongoDbPath=F:\mongo\data
-     set mongoLogPath=F:\mongo\log\mongo.log
-     set mongoConfAddr=F:\mongo\mongod.conf
-     set redisConfAddr=F:\redis\redis.windows.conf
+  IF %username% == andyl (
+    set projectAddr=E:\graduationDesign
+    set mongoDbPath=D:\mongo\data
+    set mongoLogPath=D:\mongo\logs\mongodb.log
+    set mongoConfAddr=D:\mongo\mongod.conf
+    set redisConfAddr=D:\redis\redis.windows.conf
   ) Else (
-     echo 请使用文本编辑器打开start.bar手动配置地址：
-     :: 请输入你当前的FollowHeart根目录地址:
-     set projectAddr=xxx
-     :: 请输入mongo数据存储地址(类似F:\mongo\data):
-     set mongoDbPath=xxx
-     :: 请输入mongo日志文件地址(类似F:\mongo\log\mongo.log):
-     set mongoLogPath=xxx
-     :: 请输入mongo配置文件的地址(类似F:\mongo\mongod.conf):
-     set mongoConfAddr=xxx
-     :: 请输入mongo配置文件的地址(类似F:\redis\redis.windows.conf):
-     set redisConfAddr=xxx
+    If %username% == Greenovia (
+        set projectAddr=G:\git项目\graduationDesign
+        set mongoDbPath=F:\mongo\data
+        set mongoLogPath=F:\mongo\log\mongo.log
+        set mongoConfAddr=F:\mongo\mongod.conf
+        set redisConfAddr=F:\redis\redis.windows.conf
+    ) Else (
+        echo 请使用文本编辑器打开start.bar手动配置地址：
+        :: 请输入你当前的FollowHeart根目录地址:
+        set projectAddr=xxx
+        :: 请输入mongo数据存储地址(类似F:\mongo\data):
+        set mongoDbPath=xxx
+        :: 请输入mongo日志文件地址(类似F:\mongo\log\mongo.log):
+        set mongoLogPath=xxx
+        :: 请输入mongo配置文件的地址(类似F:\mongo\mongod.conf):
+        set mongoConfAddr=xxx
+        :: 请输入mongo配置文件的地址(类似F:\redis\redis.windows.conf):
+        set redisConfAddr=xxx
+    )
   )
+  
 )
 :: 公共参数设置 end
 ::清屏操作

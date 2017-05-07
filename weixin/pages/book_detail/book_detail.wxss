@@ -235,3 +235,17 @@
 	float: right;
 	margin: 20rpx 0;
 }
+.no-comments{
+	padding-top:50rpx;
+	text-align:center;
+	height:100%;
+	background:#fff;
+	font-size:30rpx;
+}
+.no-comments > image{
+	width:100rpx;
+	height:100rpx;
+	display:block;
+	margin:0rpx auto;
+	margin-bottom:30rpx;
+}

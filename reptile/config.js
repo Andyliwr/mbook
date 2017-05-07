@@ -21,7 +21,7 @@ var localMongoJson = {
   url: '127.0.0.1',
   port: '27017',
   dbName: 'myapp',
-  username: 'lidikang',
+  username: 'admin',
   password: '123456'
 };
 var mongoConfig = {

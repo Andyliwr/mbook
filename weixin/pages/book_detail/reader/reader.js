@@ -1,6 +1,6 @@
 //login.js
 // import showErrMsg from '../../../utils/util';
-// import { getMulu, getContentById } from '../../../utils/api/api';
+import { getMulu, getContentById } from '../../../utils/api/api';
 var currentGesture  = 0; //控制当一个手势进行的时候屏蔽其他的手势
 var moveTime = null; //控制左滑右滑的动画
 var isMoving = 0;
@@ -50,7 +50,7 @@ function countPageNum(str, fontSize, lineHeight, windowW, windowH, pixelRatio){
  * @param fail 接口失败的回调
  * @param preOrNext 是向前翻页还是向后翻页
  */
-function getMulu(bookid, sectionnum, obj, success, fail, preOrNext){
+function getMuluFun(bookid, sectionnum, obj, success, fail, preOrNext){
   //发送ajax得到这本小说的所有章节
   var oldSectionData = obj.data.allSectionData;
   wx.request({
@@ -131,7 +131,7 @@ Page({
     onLoad: function(options) {
         var self = this;
         //动态设置标题
-        var factionName = options.factionName || "大主宰";
+        var factionName = options.factionName || "超品战兵";
         var bookid = options.bookid;
         self.setData({bookid: bookid, factionName: factionName});
         wx.setNavigationBarTitle({
@@ -387,7 +387,7 @@ Page({
       var fail = function(obj){
         showErrMsg(obj, '获取目录失败')
       };
-      getMulu(bookid, sectionNum, self, success, fail);
+      getMuluFun(bookid, sectionNum, self, success, fail);
     },
     //目录向上滑动到顶部
     getPreMuluPage: function(){
@@ -402,7 +402,7 @@ Page({
       var fail = function(obj){
         showErrMsg(obj, '获取目录失败')
       };
-      getMulu(bookid, sectionNum, self, success, fail, 'pre');
+      getMuluFun(bookid, sectionNum, self, success, fail, 'pre');
     },
     //目录向下滑动到底部
     getNextMuluPage: function(){
@@ -417,7 +417,7 @@ Page({
       var fail = function(obj){
         showErrMsg(obj, '获取目录失败')
       };
-      getMulu(bookid, sectionNum, self, success, fail, 'next');
+      getMuluFun(bookid, sectionNum, self, success, fail, 'next');
     },
     //滑动目录swiper
     muluSwiper: function(event){

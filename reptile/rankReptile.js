@@ -20,8 +20,8 @@ var log4js = require('log4js');
 //config log
 log4js.configure({
     appenders: [
-        {type: 'console'},
-        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
+        { type: 'console' },
+        { type: 'file', filename: './log/rankReptile.log', category: 'rankReptile' }
     ]
 });
 var logger = log4js.getLogger('rankReptile');
@@ -31,12 +31,12 @@ var app = express();
 var QI_DIAN_WEB = 'http://r.qidian.com/';
 var ZONG_HENG_WEB = 'http://book.zongheng.com/rank.html';
 var ALL_TYPES = [
-    {standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '百度小说月票榜'},
-    {standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻玄幻点击榜'},
-    {standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '言情小说点击榜'},
-    {standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠仙侠点击榜'},
-    {standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史军事点击榜'},
-    {standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻游戏点击榜'}
+    { standard: '汇总', engName: 'total', qidian: '全部分类', zongheng: '百度小说月票榜' },
+    { standard: '玄幻', engName: 'xuanhuan', qidian: '玄幻', zongheng: '奇幻玄幻点击榜' },
+    { standard: '言情', engName: 'yanqing', qidian: '都市', zongheng: '言情小说点击榜' },
+    { standard: '武侠', engName: 'wuxia', qidian: '武侠', zongheng: '武侠仙侠点击榜' },
+    { standard: '历史', engName: 'lishi', qidian: '历史', zongheng: '历史军事点击榜' },
+    { standard: '科幻', engName: 'kehuan', qidian: '科幻', zongheng: '科幻游戏点击榜' }
 ];
 var qdTimmer = null,//起点计时器
     zhTimmer = null;//纵横计时器
@@ -59,16 +59,16 @@ fs.exists('./log', function (ret) {
 var init = function () {
     var rule = new schedule.RecurrenceRule();
     //每天0点执行就是rule.hour =0;rule.minute =0;rule.second =0;
-    rule.second =[0, 10, 20, 30, 40, 50];
-    rule.second = 0;
-    rule.hour =18;rule.minute =0;rule.second =0;
-    var j = schedule.scheduleJob(rule, function(){
-        logger.info('今天是 '+date+'，排行版每天18:00点更新.......');
-        //更新数据库factionList
-        getFactionRankList();
-    });
-    // logger.info('今天是 ' + myAppTools.getToDayStr() + '，排行版每天18:00点更新.......');
-    // getQdFactionRankList();
+    // rule.second =[0, 10, 20, 30, 40, 50];
+    // rule.second = 0;
+    // rule.hour =18;rule.minute =0;rule.second =0;
+    // var j = schedule.scheduleJob(rule, function(){
+    //     logger.info('今天是 '+date+'，排行版每天18:00点更新.......');
+    //     //更新数据库factionList
+    //     getFactionRankList();
+    // });
+    logger.info('今天是 ' + myAppTools.getToDayStr() + '，排行版每天18:00点更新.......');
+    getQdFactionRankList();
 };
 
 function getQdFactionRankList() {
@@ -97,18 +97,23 @@ function getQdFactionRankList() {
             var QdEp = eventproxy();
             QdEp.after('getQdRank', ALL_TYPES.length, function (allQdRankData) {
                 //使用计时器来判断起点小说排行榜是否爬取完毕
+                var totalCount = 1;
                 qdTimmer = setInterval(function () {
+                    totalCount ++;
                     //更新进度条
-                    qdBar.tick({'percent': ++qdProgressValue, 'time': qdProgressValue / 10});
+                    qdBar.tick({ 'percent': ++qdProgressValue, 'time': qdProgressValue / 10 });
                     var isQdReady = ALL_TYPES.every(function (item, index, array) {
                         return item.qdRank.every(function (item2, index2, array2) {
+                            if ((item2.author && item2.headImg) == false) {
+                                logger.warn("爬取小说| " + item2.factionName + " |失败");
+                            }
                             return item2.author && item2.headImg;
                         });
                     });
-                    if (isQdReady) {
+                    if (isQdReady || totalCount > 300) {
                         //标志爬取完毕
                         qdBar.curr = 100;
-                        qdBar.tick({'percent': 100, 'time': qdProgressValue / 10});
+                        qdBar.tick({ 'percent': 100, 'time': qdProgressValue / 10 });
                         logger.info('起点小说排行榜爬取完毕.....');
                         clearInterval(qdTimmer);
                         QzEp.emit('hasFinishedQidian', 'qd');
@@ -123,17 +128,68 @@ function getQdFactionRankList() {
                         superagent.get(item.qd_url)
                             .end(function (err, res) {
                                 if (err) {
-                                    logger.warn('访问起点排行分类---'+item.qidian+'失败，将自动忽略这个分类排行榜的更新....');
+                                    logger.warn('访问起点排行分类---' + item.qidian + '失败，将自动忽略这个分类排行榜的更新....');
                                     QdEp.emit('getQdRank', 'qdFail');
                                     return;
                                 }
                                 var $ = cheerio.load(res.text);
                                 $('h3.wrap-title').each(function (index, element) {
                                     var $element = $(element);
-                                    if ($element.text().indexOf('推荐票') >= 0) {
+                                    // 只选取推荐票榜
+                                    if ($element.text().indexOf('推荐票榜') >= 0) {
                                         item.qdRank = [];
-                                        $element.parent().next().children('.book-list:first-child').children('ul').children('li').each(function (index, ele) {
+                                        // 此处依然需要异步控制，否则会在还没有爬去完毕的时候标记爬去结束
+                                        let rankElement = $element.parent().next().children('.book-list:first-child').children('ul').children('li');
+                                        let getFactionDetailEp = new eventproxy();
+                                        getFactionDetailEp.after('hasFinishedGetDetail', rankElement.length, function (allDetailData) {
+                                            var hasFinishedCheckEp = eventproxy();
+                                            QdEp.emit('getQdRank', 'qdSuccess');
+                                            hasFinishedCheckEp.after('hasFinishedCheck', allDetailData.length, function (allCheckResult) {
+                                                // 标志一个起点排行榜爬取结束
+                                                QdEp.emit('getQdRank', 'qdSuccess');
+                                            });
+                                            var isGetDetailSuccess = true;
+                                            allDetailData.forEach(function (detailItem) {
+                                                try {
+                                                    if (!detailItem.res) {
+                                                        isGetDetailSuccess = false;
+                                                        logger.warn("爬取小说| " + detailItem.factionName + " |失败, url是：" + detailItem.url + "，正在尝试重新爬取....");
+                                                        superagent.get(detailItem.url)
+                                                            .end(function (res, err) {
+                                                                if (!res || err) {
+                                                                    item.qdRank.forEach(function (filterItem, filterArray) {
+                                                                        if (filterItem.factionName === detailItem.factionName) {
+                                                                            filterArray.isNeedToUpdate = false;
+                                                                        }
+                                                                    });
+                                                                    logger.warn("+++ 再次爬取小说| " + detailItem.factionName + "失败, 小说标记不更新....");
+                                                                    hasFinishedCheckEp.emit('hasFinishedCheck', 'again');
+                                                                } else {
+                                                                    // 重新爬取成功
+                                                                    var $ = cheerio.load(res.text);
+                                                                    item.qdRank.forEach(function (filterItem, filterArray) {
+                                                                        if (filterItem.factionName === detailItem.factionName) {
+                                                                            filterArray.isNeedToUpdate = true;
+                                                                            filterArray.headImg = $('.book-information .book-img a img').attr('src');
+                                                                            filterArray.des = $('.book-content-wrap .book-intro p').text().trim();
+                                                                            filterArray.author = $('.book-information .book-info .writer').text();
+                                                                        }
+                                                                    });
+                                                                    hasFinishedCheckEp.emit('hasFinishedCheck', 'again');
+                                                                }
+                                                            })
+                                                    } else {
+                                                        hasFinishedCheckEp.emit('hasFinishedCheck', 'notAgain');
+                                                    }
+                                                } catch (error) {
+                                                    console.log(error);
+                                                    hasFinishedCheckEp.emit('hasFinishedCheck', 'error');
+                                                }
+                                            });
+                                        });
+                                        rankElement.each(function (index, ele) {
                                             var $ele = $(ele);
+                                            // 做初始化
                                             if (index == 0) {
                                                 item.qdRank.push({
                                                     num: index + 1,
@@ -141,7 +197,8 @@ function getQdFactionRankList() {
                                                     author: '',
                                                     headImg: '',
                                                     des: '',
-                                                    url: $ele.children('.book-wrap').children('.book-info').children('h4').children('a').attr('href')
+                                                    url: $ele.children('.book-wrap').children('.book-info').children('h4').children('a').attr('href'),
+                                                    isNeedToUpdate: true // 默认需要最后更新
                                                 });
                                             } else {
                                                 item.qdRank.push({
@@ -150,29 +207,30 @@ function getQdFactionRankList() {
                                                     author: '',
                                                     headImg: '', //nodejs根据图片链接将图片存储到本地，并且返回一个可访问链接
                                                     des: '',
-                                                    url: $ele.children('.name-box').children('a').attr('href')
+                                                    url: $ele.children('.name-box').children('a').attr('href'),
+                                                    isNeedToUpdate: true // 默认需要最后更新
                                                 });
                                             }
                                             //继续爬取作者名称、des和headImg
                                             superagent.get('http:' + item.qdRank[index].url)
                                                 .end(function (err, res) {
-                                                    if (err) {
+                                                    if (!res || err) {
                                                         logger.warn('爬取-起点-《' + item.qdRank[index].factionName + '》的封面图片和作者失败');
                                                         item.qdRank[index].headImg = 'http://chuantu.biz/t5/47/1487230810x1699162616.png';//默认图片
                                                         item.qdRank[index].des = '这是一本很长很长很长很长很长的书';
                                                         item.qdRank[index].author = '未知名作者';
-                                                        return;
+                                                        getFactionDetailEp.emit('hasFinishedGetDetail', { res: false, info: item.qdRank[index] });
+                                                    } else {
+                                                        var $ = cheerio.load(res.text);
+                                                        item.qdRank[index].headImg = $('.book-information .book-img a img').attr('src');
+                                                        item.qdRank[index].des = $('.book-content-wrap .book-intro p').text().trim();
+                                                        item.qdRank[index].author = $('.book-information .book-info .writer').text();
+                                                        getFactionDetailEp.emit('hasFinishedGetDetail', { res: true, info: item.qdRank[index] });
                                                     }
-                                                    var $ = cheerio.load(res.text);
-                                                    item.qdRank[index].headImg = $('.book-information .book-img a img').attr('src');
-                                                    item.qdRank[index].des = $('.book-content-wrap .book-intro p').text().trim();
-                                                    item.qdRank[index].author = $('.book-information .book-info .writer').text();
                                                 });
                                         });
                                     }
                                 });
-                                //此处使用emit并没有什么卵用，superagent是异步的
-                                QdEp.emit('getQdRank', 'qd');
                             });
                     }
                 });
@@ -207,7 +265,7 @@ function getZhFactionRankList() {
                 //使用计时器来判断纵横小说排行榜是否爬取完毕
                 zhTimmer = setInterval(function () {
                     //更新进度条
-                    zhBar.tick({'percent': ++zhProgressValue, 'time': zhProgressValue / 10});
+                    zhBar.tick({ 'percent': ++zhProgressValue, 'time': zhProgressValue / 10 });
                     var isZhReady = ALL_TYPES.every(function (item, index, array) {
                         return item.zhRank.every(function (item2, index2, array2) {
                             return item2.author && item2.headImg;
@@ -216,7 +274,7 @@ function getZhFactionRankList() {
                     if (isZhReady) {
                         //标志爬取完毕
                         zhBar.curr = 100;
-                        zhBar.tick({'percent': 100, 'time': zhProgressValue / 10});
+                        zhBar.tick({ 'percent': 100, 'time': zhProgressValue / 10 });
                         logger.info('纵横小说排行榜爬取完毕.....');
                         clearInterval(zhTimmer);
                         finalEp.emit('hasFinishedZongheng', 'zh');
@@ -233,7 +291,7 @@ function getZhFactionRankList() {
                     superagent
                         .get('http://book.zongheng.com/ajax/rank.getZongHengRankList.do')
                         .set('Accept', 'application/json')
-                        .query({rankType: 1, pageNum: 1, pageSize: 10, callback: 'jsonp' + nowDate.getTime()})
+                        .query({ rankType: 1, pageNum: 1, pageSize: 10, callback: 'jsonp' + nowDate.getTime() })
                         .use(sjsonapify) // json格式化插件
                         .end(function (res) {
                             if (!res.statusCode) {
@@ -302,7 +360,7 @@ function getZhFactionRankList() {
                             $ele.parent().next().next().children('ul').children('li').children('a').each(function (idx2, ele2) {
                                 var $everybook = $(ele2);
                                 zhItem.zhRank.push({
-                                    num: idx2+1,
+                                    num: idx2 + 1,
                                     factionName: $everybook.text(),
                                     author: '',
                                     headImg: '',
