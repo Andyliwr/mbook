@@ -16,7 +16,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="emails" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column type="index" width="60">
@@ -107,7 +107,7 @@
 <script>
 	import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
-	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+	import { getEmail, removeEmail, editEmail, addEmail } from '../../api/api';
 
 	export default {
 		data() {
@@ -115,6 +115,7 @@
 				filters: {
 					name: ''
 				},
+				userId: null,
 				users: [],
 				total: 0,
 				page: 1,
@@ -165,37 +166,36 @@
 				this.page = val;
 				this.getEmails();
 			},
-			//获取用户列表
-			getEmails() {
-				let para = {
-					page: this.page,
-					name: this.filters.name
-				};
-				this.listLoading = true;
+			//获取邮件列表
+			getEmails: function() {
+				let self = this;
+				self.listLoading = true;
 				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
+				getEmail(self.userId).then((res) => {
+					console.log(res);
+					this.total = res.length;
+					this.emails = res;
+					self.listLoading = false;
 					//NProgress.done();
 				});
 			},
 			//删除
 			handleDel: function (index, row) {
-				this.$confirm('确认删除该记录吗?', '提示', {
+				let self = this;
+				self.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
-					this.listLoading = true;
+					self.listLoading = true;
 					//NProgress.start();
-					let para = { id: row.id };
-					removeUser(para).then((res) => {
-						this.listLoading = false;
+					let para = { userId: self.userId ,emailId: row.id };
+					removeEmail(para).then((res) => {
+						self.listLoading = false;
 						//NProgress.done();
-						this.$message({
+						self.$message({
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getEmails();
+						self.getEmails();
 					});
 				}).catch(() => {
 
@@ -292,7 +292,10 @@
 			}
 		},
 		mounted() {
-			this.getEmails();
+			let self = this;
+			// 获取userid
+			self.userId = localStorage.getItem('userid');
+			self.getEmails();
 		}
 	}
 

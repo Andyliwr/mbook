@@ -59,7 +59,7 @@
               let userid = data.userId;
               if (tokenid && userid) {
                 // judge isChecked
-                cookie.setCookie('tokenid', tokenid, 1);
+                cookie.setCookie('access_token', tokenid, 1);
                 localStorage.setItem('userid', userid);
                 if(self.checked){
                   let base64 = new Base64();

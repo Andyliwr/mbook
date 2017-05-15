@@ -6,29 +6,42 @@
     "validateUpsert": true
   },
   "properties": {
-    "from": {
-      "type": "string",
-      "required": true
-    },
-    "to": {
-      "type": "string",
-      "required": true
-    },
     "title": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "content": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "time": {
-      "type": "date",
-      "required": true
+      "type": "date"
     }
   },
   "validations": [],
-  "relations": {},
-  "acls": [],
+  "relations": {
+    "adminUser": {
+      "type": "belongsTo",
+      "model": "adminUser",
+      "foreignKey": ""
+    },
+    "myAppUser": {
+      "type": "belongsTo",
+      "model": "myAppUser",
+      "foreignKey": ""
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
   "methods": {}
 }

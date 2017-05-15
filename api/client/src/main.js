@@ -12,7 +12,7 @@ import Vuex from 'vuex'
 import routes from './routes'
 import Mock from './mock'
 // not use mock
-Mock.bootstrap();
+// Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
 import { cookie } from './common/js/util'
 
@@ -29,10 +29,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   //NProgress.start();
   if (to.path == '/login') {
-    // delete tokenid in cookie
-    cookie.setCookie('tokenid', 0, -1);
+    // delete access_token in cookie
+    cookie.setCookie('access_token', 0, -1);
   }
-  let tokenid = cookie.getCookie('tokenid')
+  let tokenid = cookie.getCookie('access_token')
   if (!tokenid && to.path != '/login') {
     next({ path: '/login' })
   } else {

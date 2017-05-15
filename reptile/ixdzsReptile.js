@@ -20,19 +20,19 @@ var log4js = require('log4js');
 log4js.configure({
   appenders: [
     {type: 'console'},
-    {type: 'file', filename: './log/ixdzsReptile.log', category: 'ixdzsReptile'}
+    {type: 'file', filename: __dirname+'/log/ixdzsReptile.log', category: 'ixdzsReptile'}
   ]
 });
 const logger = log4js.getLogger('ixdzsReptile');
 const AXDZS_SEARCH_URL = 'http://zhannei.baidu.com/cse/search';
 var everyTime = null; //初始化爬虫中使用的计时器
 
-fs.exists('./log', function (ret) {
+fs.exists(__dirname+'/log', function (ret) {
   if (!ret) {
     logger.warn('日志目录不存在，正在为你创建....');
     fs.mkdir('log');
   }
-  fs.open('./log/ixdzsReptile.log', 'a', function (err, fd) {
+  fs.open(__dirname+'/log/ixdzsReptile.log', 'a', function (err, fd) {
     if (err) {
       console.log('创建日志文件失败！');
     } else {

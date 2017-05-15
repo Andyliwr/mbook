@@ -34,11 +34,6 @@
     "continueReadDay": {
       "type": "number"
     },
-    "myEmails": {
-      "type": [
-        "object"
-      ]
-    },
     "settings": {
       "type": [
         "object"
@@ -52,7 +47,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "emails": {
+      "type": "hasMany",
+      "model": "email",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "accessType": "*",

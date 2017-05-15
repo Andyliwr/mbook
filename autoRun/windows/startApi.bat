@@ -7,7 +7,7 @@ If exist node_modules (
 ) Else (
     cnpm install
 )
-node .
+node server/server.js
 If errorlevel 1 (
     echo 后端接口已经启动，请在浏览器中打开localhost:3000/explorer来查看吧...
 ) Else (

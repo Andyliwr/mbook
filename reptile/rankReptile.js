@@ -21,7 +21,7 @@ var log4js = require('log4js');
 log4js.configure({
     appenders: [
         { type: 'console' },
-        { type: 'file', filename: './log/rankReptile.log', category: 'rankReptile' }
+        { type: 'file', filename: __dirname + '/log/rankReptile.log', category: 'rankReptile' }
     ]
 });
 var logger = log4js.getLogger('rankReptile');
@@ -104,9 +104,6 @@ function getQdFactionRankList() {
                     qdBar.tick({ 'percent': ++qdProgressValue, 'time': qdProgressValue / 10 });
                     var isQdReady = ALL_TYPES.every(function (item, index, array) {
                         return item.qdRank.every(function (item2, index2, array2) {
-                            if ((item2.author && item2.headImg) == false) {
-                                logger.warn("爬取小说| " + item2.factionName + " |失败");
-                            }
                             return item2.author && item2.headImg;
                         });
                     });
@@ -143,7 +140,6 @@ function getQdFactionRankList() {
                                         let getFactionDetailEp = new eventproxy();
                                         getFactionDetailEp.after('hasFinishedGetDetail', rankElement.length, function (allDetailData) {
                                             var hasFinishedCheckEp = eventproxy();
-                                            QdEp.emit('getQdRank', 'qdSuccess');
                                             hasFinishedCheckEp.after('hasFinishedCheck', allDetailData.length, function (allCheckResult) {
                                                 // 标志一个起点排行榜爬取结束
                                                 QdEp.emit('getQdRank', 'qdSuccess');
@@ -225,7 +221,7 @@ function getQdFactionRankList() {
                                                         item.qdRank[index].headImg = $('.book-information .book-img a img').attr('src');
                                                         item.qdRank[index].des = $('.book-content-wrap .book-intro p').text().trim();
                                                         item.qdRank[index].author = $('.book-information .book-info .writer').text();
-                                                        getFactionDetailEp.emit('hasFinishedGetDetail', { res: true, info: item.qdRank[index] });
+                                                        getFactionDetailEp.emit('hasFinishedGetDetail', { res: (item.qdRank[index].headImg && item.qdRank[index].des && item.qdRank[index].author)? true: false, info: item.qdRank[index] });
                                                     }
                                                 });
                                         });
