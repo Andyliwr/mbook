@@ -1,53 +1,90 @@
 'use strict';
+var Tools = require('../tools/tool');
 
-module.exports = function(Email) {
+module.exports = function (Email) {
   Email.getEmails = function (userid, cb) {
     var app = Email.app;
-    var returnData = {};
+    var returnData = [];
     //查询用户角色
-    app.models.adminUser.findById(userid, { fields: {role: true} })
-      .then(function(res){
-        try{
-          if(res.role === "admin"){
-            Email.find({"include": ["adminUser", "myAppUser"]})
-              .then(function(res){
-                console.log(res);
+    app.models.adminUser.findById(userid, { fields: { role: true } })
+      .then(function (res) {
+        try {
+          if (res.role === "admin") {
+            Email.find({ "include": ["adminUser", "myAppUser"]})
+              .then(function (res) {
+                // 遍历res
+                res.forEach(function (item) {
+                  var tmpObj = {};
+                  tmpObj.time = Tools.formatDate(item.time);
+                  tmpObj.title = item.title;
+                  tmpObj.content = item.content.substring(0, 30);
+                  tmpObj.from = {
+                    avatar: item.adminUser().avatar,
+                    username: item.adminUser().username,
+                    role: item.adminUser().role
+                  };
+                  tmpObj.to = {
+                    avatar: item.myAppUser().avatar,
+                    username: item.myAppUser().username,
+                    nickname: item.myAppUser().nickName
+                  };
+                  returnData.push(tmpObj);
+                });
+                // returnData 排序
+                returnData.sort(function(email1, email2){
+                  let email1Date = new Date(email1.time);
+                  let email2Date = new Date(email2.time);
+                  let email1Time = email1Date.getTime();
+                  let email2Time = email2Date.getTime();
+                  return email2Time - email1Time;
+                });
+                cb(null, { code: 0, emails: returnData });
               })
-              .catch(function(err){
+              .catch(function (err) {
+                console.log(err);
+              });
+          } else if (res.role === "normal") {
+            Email.find({ "include": ["adminUser", "myAppUser"], "where": { "adminUserId": userid } })
+              .then(function (res) {
+                // 遍历res
+                res.forEach(function (item) {
+                  var tmpObj = {};
+                  tmpObj.time = Tools.formatDate(item.time);
+                  tmpObj.title = item.title;
+                  tmpObj.content = item.content.substring(0, 30);
+                  tmpObj.from = {
+                    avatar: item.adminUser().avatar,
+                    username: item.adminUser().username,
+                    role: item.adminUser().role
+                  };
+                  tmpObj.to = {
+                    avatar: item.myAppUser().avatar,
+                    username: item.myAppUser().username,
+                    nickname: item.myAppUser().nickName
+                  };
+                  returnData.push(tmpObj);
+                });
+                // returnData 排序
+                returnData.sort(function(email1, email2){
+                  let email1Time = email1.time.getTime();
+                  let email2Time = email2.time.getTime();
+                  return email2Time - email1Time;
+                });
+                cb(null, { code: 0, emails: returnData });
+              })
+              .catch(function (err) {
                 console.log(err);
               });
           }
-        }catch(err){
+        } catch (err) {
           console.log(err);
-          cb(null, {code: -1, msg: err.toString()});
+          cb(null, { code: -1, msg: err.toString() });
         }
-        
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, { code: -1, msg: 'userid不合法' });
       });
-    app.models.myAppUser.find({where: {email: email}}, function (err, res) {
-      if (err) {
-        console.log('找回密码接口查询出错，' + err);
-        returnData = {code: -1, msg: '邮箱不存在'};
-        return;
-      }
-      //这里做发送邮件的处理...
-      var emailOptions = {
-        from: "Fred Foo <andyliwr@outlook.com>", // sender address
-        to: "lidikang@myhexin.com", // list of receivers
-        subject: "Hello", // Subject line
-        text: "Hello world", // plaintext body
-        html: "<b>Hello world</b>" // html body
-      };
-      app.models.email.send(emailOptions, function (err, res) {
-        if (err) {
-          console.log('找回密码发送邮件失败，' + err);
-          returnData = {code: -1, msg: '发送重置密码邮件失败'};
-          return;
-        }
-        console.log('发送成功');
-        returnData = {code: 0, msg: '找回密码的邮件已经发送至您的邮箱，请注意查收'};
-        cb(null, returnData);
-      });
-    });
   };
 
   Email.remoteMethod(

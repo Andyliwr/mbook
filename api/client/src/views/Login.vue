@@ -110,10 +110,9 @@
         localStorage.setItem('remenberPwd', true);
         let loginInfo = localStorage.getItem('loginInfo');
         if(loginInfo){
-          let {user, pwd} = JSON.parse(loginInfo);
+          let {name, pwd} = JSON.parse(loginInfo);
           let base64 = new Base64();
-          console.log(base64.decode(user))
-          this.ruleForm2 = {account: base64.decode(user), checkPass: base64.decode(pwd)};
+          this.ruleForm2 = {account: base64.decode(name), checkPass: base64.decode(pwd)};
         }
       }
     }
