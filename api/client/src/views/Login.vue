@@ -45,13 +45,13 @@
         this.$refs.ruleForm2.resetFields();
       },
       handleSubmit2(ev) {
-        var self = this;
+        let self = this;
         self.$refs.ruleForm2.validate((valid) => {
           if (valid) {
             //_this.$router.replace('/table');
             self.logining = true;
             //NProgress.start();
-            var loginParams = { username: self.ruleForm2.account, password: self.ruleForm2.checkPass };
+            let loginParams = { username: self.ruleForm2.account, password: self.ruleForm2.checkPass };
             requestLogin(loginParams).then(data => {
               self.logining = false;
               //NProgress.done();
@@ -96,9 +96,9 @@
       }
     },
     created: function () {
-      var self = this;
+      let self = this;
       // set remenberPwd
-      var remenberPwd = localStorage.getItem('remenberPwd');
+      let remenberPwd = localStorage.getItem('remenberPwd');
       if(remenberPwd === null){
         // if remenberPwd is not existed, use is enter system the first time, set remenberPwd true
         localStorage.setItem('remenberPwd', true);

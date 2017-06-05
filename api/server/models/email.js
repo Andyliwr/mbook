@@ -1,24 +1,26 @@
 'use strict';
-var Tools = require('../tools/tool');
+const Tools = require('../tools/tool');
 
 module.exports = function (Email) {
-  Email.getEmails = function (userid, cb) {
-    var app = Email.app;
-    var returnData = [];
+  Email.getEmails = function (userid, filter, cb) {
+    let app = Email.app;
+    let returnData = [];
     //查询用户角色
     app.models.adminUser.findById(userid, { fields: { role: true } })
       .then(function (res) {
         try {
           if (res.role === "admin") {
-            Email.find({ "include": ["adminUser", "myAppUser"]})
+            Email.find({"include": ["adminUser", "myAppUser"], "limit": filter.limit, "skip": filter.skip})
               .then(function (res) {
                 // 遍历res
                 res.forEach(function (item) {
-                  var tmpObj = {};
-                  tmpObj.time = Tools.formatDate(item.time);
+                  let tmpObj = {};
+                  tmpObj.emailid = item.id;
+                  tmpObj.time = item.time;
                   tmpObj.title = item.title;
                   tmpObj.content = item.content.substring(0, 30);
                   tmpObj.from = {
+                    userid: item.adminUser().id,
                     avatar: item.adminUser().avatar,
                     username: item.adminUser().username,
                     role: item.adminUser().role
@@ -48,8 +50,8 @@ module.exports = function (Email) {
               .then(function (res) {
                 // 遍历res
                 res.forEach(function (item) {
-                  var tmpObj = {};
-                  tmpObj.time = Tools.formatDate(item.time);
+                  let tmpObj = {};
+                  tmpObj.time = item.time;
                   tmpObj.title = item.title;
                   tmpObj.content = item.content.substring(0, 30);
                   tmpObj.from = {
@@ -66,8 +68,10 @@ module.exports = function (Email) {
                 });
                 // returnData 排序
                 returnData.sort(function(email1, email2){
-                  let email1Time = email1.time.getTime();
-                  let email2Time = email2.time.getTime();
+                  let email1Date = new Date(email1.time);
+                  let email2Date = new Date(email2.time);
+                  let email1Time = email1Date.getTime();
+                  let email2Time = email2Date.getTime();
                   return email2Time - email1Time;
                 });
                 cb(null, { code: 0, emails: returnData });
@@ -89,10 +93,13 @@ module.exports = function (Email) {
 
   Email.remoteMethod(
     'getEmails', {
-      accepts: {
+      accepts: [{
         arg: 'userid',
         type: 'string'
-      },
+      },{
+        arg: 'filter',
+        type: 'object'
+      }],
       returns: {
         arg: 'data',
         type: 'object'

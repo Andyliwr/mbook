@@ -156,6 +156,13 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "updateUserInfo"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getAllUser"
     }
   ],
   "methods": {}

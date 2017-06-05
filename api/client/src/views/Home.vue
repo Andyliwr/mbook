@@ -132,9 +132,9 @@ import { cookie } from '../common/js/util';
 					console.log(res);
 				});
 			}
-		},		
+		},
 		mounted() {
-			var user = sessionStorage.getItem('user');
+			let user = sessionStorage.getItem('user');
 			if (user) {
 				user = JSON.parse(user);
 				this.sysUserName = user.name || '';

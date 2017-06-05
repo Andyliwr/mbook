@@ -1,5 +1,5 @@
 @echo off
-echo echo is starting redis...
+echo is starting redis...
 set redisConfAddr=%1
 set mongoLogPath=%2
 set mongoDbPath=%3

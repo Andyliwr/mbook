@@ -4,7 +4,8 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input v-model="searchStr" placeholder="输入要检索的字段"></el-input>
+					<el-input v-model="searchStr" placeholder="输入要检索的字段" @keyup.enter.native="findEmail"></el-input>
+					<input type="text" style="display:none;" />
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="findEmail">查询</el-button>
@@ -16,15 +17,36 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="emails" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" :row-class-name="isShowColumn">
-			<el-table-column type="selection" width="55">
+		<el-table :data="emails" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+			<el-table-column type="expand">
+				<template scope="props">
+					<el-form label-position="left" inline class="demo-table-expand">
+						<el-form-item label="发送人：">
+							<span>{{ props.row.from.username }}</span>
+						</el-form-item>
+						<el-form-item label="接受人：">
+							<span>{{ props.row.to.username }}</span>
+						</el-form-item>
+						<el-form-item label="标题：" class="full-width">
+							<span>{{ props.row.title }}</span>
+						</el-form-item>
+						<el-form-item label="内容：" class="full-width">
+							<span>{{ props.row.content }}</span>
+						</el-form-item>
+						<el-form-item label="时间：" class="full-width">
+							<span>{{ props.row.time }}</span>
+						</el-form-item>
+					</el-form>
+				</template>
 			</el-table-column>
-			<el-table-column type="index" width="40">
+			<el-table-column type="selection" width="35">
+			</el-table-column>
+			<el-table-column type="index" width="60" align="center">
 			</el-table-column>
 			<el-table-column prop="from.username" label="发送人" width="100" >
 				<template scope="scope">
 					<el-popover trigger="hover" placement="top">
-						<p><img class="avatar" v-bind:src="scope.row.from.avatar" alt="" /><span class="username" v-html="scope.row.from.username+ '（' + scope.row.from.username + '）'"></span></p>
+						<p><img class="avatar" v-bind:src="scope.row.from.avatar" alt="" /><span class="username" v-html="scope.row.from.username+ '(' + scope.row.from.username + ')'"></span></p>
 						<div slot="reference" class="name-wrapper">
 							<el-tag v-bind:class="[ scope.row.from.isSearch? 'nameActive': '' ]">{{ scope.row.from.username }}</el-tag>
 						</div>
@@ -34,7 +56,7 @@
 			<el-table-column prop="to.username" label="收件人" width="100" >
 				<template scope="scope">
 					<el-popover trigger="hover" placement="top">
-						<p><img class="avatar" v-bind:src="scope.row.to.avatar" alt="" /><span class="username" v-html="scope.row.to.username + '（'+scope.row.to.username+'）'"></span></p>
+						<p><img class="avatar" v-bind:src="scope.row.to.avatar" alt="" /><span class="username" v-html="scope.row.to.username + '('+scope.row.to.username+')'"></span></p>
 						<div slot="reference" class="name-wrapper">
 							<el-tag v-bind:class="[ scope.row.to.isSearch? 'nameActive': '' ]">{{ scope.row.to.username }}</el-tag>
 						</div>
@@ -54,7 +76,7 @@
 			<el-table-column label="发送时间" min-width="80" sortable>
 					<template scope="scope">
 						<el-icon name="time"></el-icon>
-						<span style="margin-left: 10px">{{ scope.row.time }}</span>
+						<span style="margin-left: 10px">{{ scope.row.formatTime }}</span>
 					</template>
 			</el-table-column>
 			<el-table-column label="操作" width="150">
@@ -74,52 +96,50 @@
 
 		<!--编辑界面-->
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="editForm.name" auto-complete="off"></el-input>
-				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="editForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="生日">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.birth"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="editFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
-			</div>
+      <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+        <el-form-item label="收件人" style="margin-bottom: 0px">
+          <el-autocomplete class="inline-input" v-model="editForm.inputValue" :fetch-suggestions="addAutoComplete" placeholder="请输入内容" @select="handleUserSelect" icon="circle-close" :on-icon-click="handleCloseClick" :trigger-on-focus="false"></el-autocomplete>
+          <br />
+          <div class="userTags">
+            <el-tag class="el-tag" v-for="tag in editForm.acceptTags" :key="tag.name" :closable="true" :type="tag.type" @close="handleTagClose(tag)">{{ tag.name }}</el-tag>
+          </div>
+        </el-form-item>
+        <el-form-item label="标题" prop="title">
+          <el-input class="titleInput" v-model="editForm.title" placeholder="请输入邮件标题"></el-input>
+        </el-form-item>
+        <el-form-item label="时间" prop="">
+          <el-date-picker v-model="editForm.time" type="datetime" placeholder="选择发送日期时间" align="left" :picker-options="pickerOptions">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <el-input class="titleInput" type="textarea" v-model="editForm.content" :autosize="{ minRows: 6, maxRows: 6}"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="editFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+      </div>
 		</el-dialog>
 
 		<!--新增界面-->
 		<el-dialog title="新增邮件" v-model="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="收件人" prop="to">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
+				<el-form-item label="收件人" style="margin-bottom: 0px">
+					<el-autocomplete class="inline-input" v-model="addForm.inputValue" :fetch-suggestions="addAutoComplete" placeholder="请输入内容" @select="handleUserSelect" icon="circle-close" :on-icon-click="handleCloseClick" :trigger-on-focus="false"></el-autocomplete>
+					<br />
+					<div class="userTags">
+						<el-tag class="el-tag" v-for="tag in addForm.acceptTags" :key="tag.name" :closable="true" :type="tag.type" @close="handleTagClose(tag)">{{ tag.name }}</el-tag>
+					</div>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+				<el-form-item label="标题" prop="title">
+          <el-input class="titleInput" v-model="addForm.title" placeholder="请输入邮件标题"></el-input>
 				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="生日">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birth"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
+        <el-form-item label="时间" prop="">
+          <el-date-picker v-model="addForm.time" type="datetime" placeholder="选择发送日期时间" align="left" :picker-options="pickerOptions">
+          </el-date-picker>
+        </el-form-item>
+				<el-form-item label="内容" prop="content">
+					<el-input class="titleInput" type="textarea" v-model="addForm.content" :autosize="{ minRows: 6, maxRows: 6}"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -133,7 +153,7 @@
 <script>
 	import { formatDate, formatDate3 } from '../../common/js/util'
 	//import NProgress from 'nprogress'
-	import { getEmail, removeEmail, editEmail, addEmail } from '../../api/api';
+	import { getEmail, removeEmail, editEmail, addEmail, getAllUser } from '../../api/api';
 
 	export default {
 		data() {
@@ -149,43 +169,75 @@
 				editFormVisible: false,//编辑界面是否显示
 				editLoading: false,
 				editFormRules: {
-					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					]
+          title: [
+            { required: true, message: '邮件标题不能为空', trigger: 'blur' }
+          ],
+          time: [
+            { required: true, message: '发送时间不能为空', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '请输入发送内容', trigger: 'blur' }
+          ]
 				},
 				//编辑界面数据
 				editForm: {
-					id: 0,
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
+          inputValue: '',
+          from: '',
+          title: '',
+          content: '',
+          time: '',
+          acceptTags:  []
 				},
-
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false,
 				addFormRules: {
-					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					]
+					title: [
+						{ required: true, message: '邮件标题不能为空', trigger: 'blur' }
+					],
+          time: [
+            { required: true, message: '发送时间不能为空', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '请输入发送内容', trigger: 'blur' }
+          ]
 				},
+        // 时间选择器的快捷键
+        pickerOptions: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
 				//新增界面数据
 				addForm: {
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
-				}
-
+          inputValue: '',
+          from: '',
+          title: '',
+          content: '',
+          time: '',
+          acceptTags:  []
+				},
+				allUsers: [],
+				state1: ''
 			}
 		},
 		methods: {
-			//性别显示转换
-			formatSex: function (row, column) {
-				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-			},
 			handleCurrentChange(val) {
 				this.page = val;
 				this.getEmails();
@@ -197,10 +249,11 @@
 				//NProgress.start();
 				getEmail(self.userId).then((res) => {
 					if(res.code === (-1)){
-							// 这里错误提示可以使用vue模板
-							alert(res.msg);
+						// 这里错误提示可以使用vue模板
+						self.$message({message: res.errMsg, type: 'error'});
 					}else{
 						this.total = res.length;
+						console.log(res);
 						this.emails = res.emails.map(function(item){
 							let resultStr = '';
 							let nowDate = new Date(item.time);
@@ -224,7 +277,7 @@
 									console.log('nowTime is behind on this time');
 							}
 							// 改变item.time
-							item.time = resultStr;
+							item.formatTime = resultStr;
 							return item;
 						});
 						self.listLoading = false;
@@ -235,66 +288,59 @@
 					}
 				});
 			},
-			findEmail: function(){
-				let self = this;
-				if(self.searchStr){
-					// 先获取所有邮件然后在前端做检索
-					let callback = function(){
-						self.emails.forEach(function (item, index, array) {
-							//标志位，用来标志是不是需要设置item.isShow = false，如果经历foreach循环没有被设置为false，就认为这不小说不是搜索的结果
-							var isNeedtoChage = true;
-							//查询邮件title
-							if (item.title.indexOf(self.searchStr) >= 0) {
-								item.title = self.findAndSigned(self.searchStr, item.title);
-								//设置这本小说在搜索之后会显示
-								item.isShow = true;
-								isNeedtoChage = false;
-							}
-							//查询邮件内容
-							if (item.content.indexOf(self.searchStr) >= 0) {
-								item.content = self.findAndSigned(self.searchStr, item.content);
-								item.isShow = true;
-								isNeedtoChage = false;
-							}
-							// 查询发布人名字
-							if (item.from.username.indexOf(self.searchStr) >= 0) {
-								item.from.isSearch = true;
-								item.isShow = true;
-								isNeedtoChage = false;
-							}
-							// 查询接受人名字
-							if (item.to.username.indexOf(self.searchStr) >= 0) {
-								item.to.isSearch = true;
-								item.isShow = true;
-								isNeedtoChage = false;
-							}
-							// 查询接受人昵称
-							if (item.to.nickname.indexOf(self.searchStr) >= 0) {
-								item.to.isSearch = true;
-								item.isShow = true;
-								isNeedtoChage = false;
-							}
-							if (isNeedtoChage) {
-								item.isShow = false;
-							}
-						});
-					};
-					self.getEmails(callback);
-				}else{
-					self.getEmails();
-				}
-			},
+      findEmail: function () {
+        let self = this;
+        if (self.searchStr) {
+          // 先获取所有邮件然后在前端做检索
+          let callback = function () {
+            let currentEmails = self.emails.filter(function (item, index, array) {
+              //标志位，用来标志是不是需要设置item.isShow = false，如果经历foreach循环没有被设置为false，就认为这不小说不是搜索的结果
+              let isNeedtoChage = true;
+              //查询邮件title
+              if (item.title.indexOf(self.searchStr) >= 0) {
+                item.title = self.findAndSigned(self.searchStr, item.title);
+                //设置这本小说在搜索之后会显示
+                return true
+              }
+              //查询邮件内容
+              if (item.content.indexOf(self.searchStr) >= 0) {
+                item.content = self.findAndSigned(self.searchStr, item.content);
+                return true
+              }
+              // 查询发布人名字
+              if (item.from.username.indexOf(self.searchStr) >= 0) {
+                item.from.isSearch = true;
+                return true
+              }
+              // 查询接受人名字
+              if (item.to.username.indexOf(self.searchStr) >= 0) {
+                item.to.isSearch = true;
+                return true
+              }
+              // 查询接受人昵称
+              if (item.to.nickname.indexOf(self.searchStr) >= 0) {
+                item.to.isSearch = true;
+                return true
+              }
+              return false;
+            });
+            self.emails = currentEmails;
+          };
+          self.getEmails(callback);
+        } else {
+          self.getEmails();
+        }
+      },
 			findAndSigned: function (searchString, readyToBeSearch) {
-				if (typeof searchString == 'string') {
-					var regExp = new RegExp(searchString, 'igm');
-					var leftStr = ''; //记录关键词左边的字符串
-					var rightStr = ''; //记录关键词右边的字符串
-					var count = 0; //计数器
-					var tempStr = readyToBeSearch; //用于正则匹配的字符串
-					var notChageStr = readyToBeSearch; //用于截取字符串，和上面一样的值是因为不能把一个值既用于正则运算又用于记录加入<code></code>的新的字符串,这样会使得循环变成无限循环
-					var lastIndex = 0; //记录关键词的位置
-					while (regExp.exec(tempStr) != null) {
-						console.log(++count);
+				if (typeof searchString === 'string') {
+					let regExp = new RegExp(searchString, 'igm');
+					let leftStr = ''; //记录关键词左边的字符串
+					let rightStr = ''; //记录关键词右边的字符串
+					let count = 0; //计数器
+					let tempStr = readyToBeSearch; //用于正则匹配的字符串
+					let notChageStr = readyToBeSearch; //用于截取字符串，和上面一样的值是因为不能把一个值既用于正则运算又用于记录加入<code></code>的新的字符串,这样会使得循环变成无限循环
+					let lastIndex = 0; //记录关键词的位置
+					while (regExp.exec(tempStr) !== null) {
 						lastIndex = regExp.lastIndex + 48 * (count - 1); //每次循环notChageStr并非不变，而是多了<code></code>共计13个字符，所以为了保证后续循环中lastindex的正确性应该将lastindex自增13
 						leftStr = notChageStr.substring(0, lastIndex - searchString.length);
 						rightStr = notChageStr.substring(lastIndex);
@@ -302,71 +348,85 @@
 					}
 					return notChageStr;
 				} else {
-					console.log('The param of findAndSigned is error!....')
+					console.log('The param of findAndSigned is error!....');
 					return '';
 				}
 			},
-			isShowColumn(row, index) {
-        console.log(row);
-				console.log(index);
-      },
 			//删除
 			handleDel: function (index, row) {
 				let self = this;
-				self.$confirm('确认删除该记录吗?', '提示', {
+				self.$confirm('确认删除该邮件吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
 					self.listLoading = true;
 					//NProgress.start();
-					let para = { userId: self.userId ,emailId: row.id };
+					let para = { userid: row.from.userid ,emailid: row.emailid };
 					removeEmail(para).then((res) => {
 						self.listLoading = false;
 						//NProgress.done();
-						self.$message({
-							message: '删除成功',
-							type: 'success'
-						});
+						self.$message({message: '删除成功', type: 'success'});
 						self.getEmails();
-					});
-				}).catch(() => {
-
+					}).catch(err => {
+            self.$message({message: '删除失败'+err, type: 'error'});
+          });
+				}).catch(function(err){
+					console.log(err);
 				});
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
-			},
+        let self = this;
+        self.editFormVisible = true;
+        self.editForm = {
+          inputValue: '',
+          from: '',
+          title: row.title,
+          content: row.content,
+          time: row.time,
+          acceptTags: []
+				};
+        // 更新acceptTags
+        let oneTag = {};
+        oneTag.userid = row.to.userid;
+        oneTag.type = 'primary';
+        oneTag.name = row.to.username+'('+row.to.nickname+')';
+        self.editForm.acceptTags.push(oneTag);
+        self.editForm.emailid = row.emailid;
+        self.editForm.adminUserId = row.from.userid;
+      },
 			//显示新增界面
 			handleAdd: function () {
-				this.addFormVisible = true;
-				this.addForm = {
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
+				let self = this;
+				self.addFormVisible = true;
+				self.addForm = {
+					inputValue: '',
+					from: '',
+          title: '',
+          content: '',
+          time: '',
+					acceptTags:  [],
 				};
 			},
 			//编辑
 			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
+        let self = this;
+        self.$refs.editForm.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.editLoading = true;
+            self.$confirm('确认提交吗？', '提示', {}).then(() => {
+              self.editLoading = true;
 							//NProgress.start();
-							let para = Object.assign({}, this.editForm);
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							editUser(para).then((res) => {
-								this.editLoading = false;
+              let para = {};
+              let adminUserId =
+              para.title = self.editForm.title || '';
+              para.content = self.editForm.content || '';
+              para.time = (!self.editForm.time || self.editForm.time === '') ? formatDate.format(new Date(), 'yyyy-MM-dd') : self.editForm.time;
+							editEmail(self.editForm.adminUserId, self.editForm.emailid, para).then((res) => {
+                self.editLoading = false;
 								//NProgress.done();
-								this.$message({
-									message: '提交成功',
-									type: 'success'
-								});
-								this.$refs['editForm'].resetFields();
-								this.editFormVisible = false;
-								this.getEmails();
+                self.$message({message: '修改成功', type: 'success'});
+                self.$refs['editForm'].resetFields();
+                self.editFormVisible = false;
+                self.getEmails();
 							});
 						});
 					}
@@ -374,24 +434,37 @@
 			},
 			//新增
 			addSubmit: function () {
-				this.$refs.addForm.validate((valid) => {
+        let self = this;
+        self.$refs.addForm.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.addLoading = true;
-							//NProgress.start();
-							let para = Object.assign({}, this.addForm);
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							addUser(para).then((res) => {
-								this.addLoading = false;
-								//NProgress.done();
-								this.$message({
-									message: '提交成功',
-									type: 'success'
-								});
-								this.$refs['addForm'].resetFields();
-								this.addFormVisible = false;
-								this.getEmails();
-							});
+            self.$confirm('确认提交吗？', '提示', {}).then(() => {
+              if (self.addForm.acceptTags.length > 0){
+                let adminUserId = localStorage.getItem('userid');
+                if(adminUserId){
+                  self.addForm.acceptTags.forEach(item => {
+                    self.addLoading = true;
+                    //NProgress.start();
+                    let para = {};
+                    para.title = self.addForm.title || '';
+                    para.content = self.addForm.content || '';
+                    para.time = (!self.addForm.time || self.addForm.time === '') ? formatDate.format(new Date(), 'yyyy-MM-dd') : self.addForm.time;
+                    addEmail(item.userid, adminUserId, para).then((res) => {
+                      self.addLoading = false;
+                      //NProgress.done();
+                      self.$message({message: '邮件新增成功', type: 'success'});
+                      self.$refs['addForm'].resetFields();
+                      self.addFormVisible = false;
+                      self.getEmails();
+                    });
+                  });
+                }else{
+                  self.$message({message: '您尚未登陆，请先登录...', type: 'error'});
+                  self.$router.push({ path: '/login' });
+                }
+              } else {
+                self.$message({message: '邮件接收人为空', type: 'error'});
+                return false;
+              }
 						});
 					}
 				});
@@ -401,35 +474,133 @@
 			},
 			//批量删除
 			batchRemove: function () {
-				var ids = this.sels.map(item => item.id).toString();
-				this.$confirm('确认删除选中记录吗？', '提示', {
+        let self = this;
+        self.$confirm('确认删除选中邮件吗？', '提示', {
+          type: 'warning'
+        }).then(() => {
+          self.listLoading = true;
+          //NProgress.start();
+          self.sels.forEach(item => {
+            let para = { userid: item.from.userid ,emailid: item.emailid };
+            removeEmail(para).then((res) => {
+              self.listLoading = false;
+              //NProgress.done();
+              self.$message({message: '删除成功', type: 'success'});
+              self.getEmails();
+            });
+          });
+        });
+        self.sels.forEach(item => {
+            let emailId = item.from.userid;
+
+        });
+				let ids = self.sels.map(item => item.emailid).toString();
+				alert(this.sels);
+        self.$confirm('确认删除选中邮件吗？', '提示', {
 					type: 'warning'
 				}).then(() => {
-					this.listLoading = true;
+          self.listLoading = true;
 					//NProgress.start();
 					let para = { ids: ids };
 					batchRemoveUser(para).then((res) => {
-						this.listLoading = false;
+            self.listLoading = false;
 						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
-						});
-						this.getEmails();
+            self.$message({message: '删除成功', type: 'success'});
+            self.getEmails();
 					});
-				}).catch(() => {
-
+				}).catch(err => {
+          console.log(err);
+          self.$message({message: '删除失败', type: 'success'});
 				});
-			}
+			},
+			getAllUsers: function(){
+				let self = this;
+				getAllUser().then(function(res){
+					if(res.code === 0){
+						self.allUsers = res.data;
+					}else{
+						self.$message({message: res.errMsg, type: 'error'});
+					}
+				}).catch(function(err){
+					self.$message({message: '获取可选用户列表错误', type: 'error'});
+				})
+			},
+			handleUserSelect: function(item){
+				// 增加acceptTags
+				let self = this;
+				let isEditOrAdd = null;
+				if(self.editFormVisible){
+          isEditOrAdd = 'editForm';
+        }else if(self.addFormVisible){
+          isEditOrAdd = 'addForm';
+        }
+				let hasBeenAdd = self[isEditOrAdd].acceptTags.some(acceptTagsItem => {
+					return item.userid === acceptTagsItem.userid;
+				});
+				if(!hasBeenAdd){
+					self[isEditOrAdd].acceptTags.push({ name: item.username + ' (' + item.nickname + ')', type: 'primary', userid: item.userid });
+				}
+			},
+			// 处理新增页面点击删除按钮的事件
+			handleCloseClick: function(item){
+				let self = this;
+        let isEditOrAdd = null;
+        if(self.editFormVisible){
+          isEditOrAdd = 'editForm';
+        }else if(self.addFormVisible){
+          isEditOrAdd = 'addForm';
+        }
+				if(self[isEditOrAdd].inputValue){
+					self[isEditOrAdd].inputValue = '';
+				}
+			},
+			// 处理新增页面标签的点击事件
+			handleTagClose: function(tag){
+				let self = this;
+				let currentIndex = -1;
+        let isEditOrAdd = null;
+        if(self.editFormVisible){
+          isEditOrAdd = 'editForm';
+        }else if(self.addFormVisible){
+          isEditOrAdd = 'addForm';
+        }
+				self[isEditOrAdd].acceptTags.forEach((item, index) => {
+					if(item.userid === tag.userid){
+						currentIndex = index;
+					}
+				});
+				if(currentIndex >= 0){
+					self[isEditOrAdd].acceptTags.splice(currentIndex, 1);
+				}
+			},
+			addAutoComplete: function(queryString, cb){
+				let allUsers = this.allUsers;
+        let results = queryString ? allUsers.filter(this.createFilter(queryString)) : allUsers;
+				// 调整result的格式
+				results.forEach(item => {
+						item.value = item.username+' ('+item.nickname+')';
+				});
+				results.push({value: 'allUser (所有人)', userid: 'all', username: 'allUser', nickname: '所有人'});
+        // 调用 callback 返回建议列表的数据
+				if(typeof cb === 'function'){
+        	cb(results);
+				}
+			},
+			createFilter(queryString) {
+        return (allUsers) => {
+          return (allUsers.username.indexOf(queryString) === 0 || allUsers.nickname.indexOf(queryString) === 0);
+        };
+      }
 		},
 		mounted() {
 			let self = this;
 			// 获取userid
 			self.userId = localStorage.getItem('userid');
 			self.getEmails();
+      // 获取所有的用户
+      self.getAllUsers();
 		}
 	}
-
 </script>
 
 <style scoped>
@@ -445,4 +616,28 @@
 	.nameActive{
 		background: #20A0FF !important;
 	}
+	.demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+	.demo-table-expand .full-width{
+		width: 100%;
+	}
+	.el-tag{
+		margin-right: 10px;
+	}
+	.userTags{
+		min-height: 36px;
+	}
+  .titleInput{
+    width: 80%;
+  }
 </style>

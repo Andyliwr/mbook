@@ -894,6 +894,47 @@ module.exports = function (Myappuser) {
     }
   );
 
+  Myappuser.getAllUser = function (cb) {
+    Myappuser.find({ fields: { id: true, username: true, nickName: true }})
+      .then(function (res) {
+        if (res) {
+          if(res instanceof Array){
+            let resultData = [];
+            res.forEach(function(item){
+              let tmpData = {
+                userid: item.id,
+                username: item.username,
+                nickname: item.nickName
+              };
+              resultData.push(tmpData);
+            });
+            cb(null, {code: 0, data: resultData});
+          }else{
+            cb(null, {code: -1, errMsg: '获取到的用户列表失败'});
+          }
+        } else {
+          cb(null, {code: -1, errMsg: '获取到的用户列表失败'});
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取到的用户列表失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'getAllUser',
+    {
+      'returns': [
+        {'arg': 'data', 'type': 'string'}
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/getAllUser'
+      }
+    }
+  );
+
   // Myappuser.afterRemote('create', function (context, userInstance, next) {
   //   console.log('> user.afterRemote triggered');
 

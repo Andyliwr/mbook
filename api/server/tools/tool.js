@@ -36,16 +36,16 @@ function getQdTrueImgUrl(imgurl){
  * @param dateObj 日期对象
  */
 function formatDate (dateObj) {
-  var year = dateObj.getFullYear();
-  var month = dateObj.getMonth() + 1;
+  let year = dateObj.getFullYear();
+  let month = dateObj.getMonth() + 1;
   month = month < 9 ? '0' + month : month;
-  var day = dateObj.getDate();
+  let day = dateObj.getDate();
   day = day < 9 ? '0' + day : day;
-  var hour = dateObj.getHours();
+  let hour = dateObj.getHours();
   hour = hour < 9 ? '0' + hour : hour;
-  var minute = dateObj.getMinutes();
+  let minute = dateObj.getMinutes();
   minute = minute < 9 ? '0' + minute : minute;
-  var second = dateObj.getSeconds();
+  let second = dateObj.getSeconds();
   second = second < 9 ? '0' + second : second;
   return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
 }
@@ -56,11 +56,11 @@ function formatDate (dateObj) {
  * @parma ele the element needding to be deleted
  */
 function removeElement(arr, ele){
-  var result  = [];
+  let result  = [];
   if(arr instanceof Array){
     if(ele instanceof Array){
       result = arr.filter(function(item){
-        var isInEle = ele.some(function(eleItem){
+        let isInEle = ele.some(function(eleItem){
           return item === eleItem;
         });
         return !isInEle
