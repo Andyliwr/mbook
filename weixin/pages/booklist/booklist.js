@@ -278,7 +278,7 @@ Page({
       var regExp = new RegExp(searchString, 'igm');
       var leftStr = ''; //记录关键词左边的字符串
       var rightStr = ''; //记录关键词右边的字符串
-      var count = 0; //计数器
+      var count = 1; //计数器
       var tempStr = readyToBeSearch; //用于正则匹配的字符串
       var notChageStr = readyToBeSearch; //用于截取字符串，和上面一样的值是因为不能把一个值既用于正则运算又用于记录加入<code></code>的新的字符串,这样会使得循环变成无限循环
       var lastIndex = 0; //记录关键词的位置
