@@ -178,12 +178,12 @@
 }
 .comment-right .toolbar icon{
 	display: inline-block;
-	height: 32rpx;
-	width: 32rpx;
+	height: 36rpx;
+	width: 36rpx;
 	background-size: 180rpx 180rpx;
 }
 .like-icon{
-	background-position: -112rpx 0rpx;
+	background-position: -107rpx 0rpx;
 	margin-right: 10rpx;
 }
 .like-selected-icon{
@@ -234,4 +234,18 @@
 	text-align:center;
 	float: right;
 	margin: 20rpx 0;
+}
+.no-comments{
+	padding-top:50rpx;
+	text-align:center;
+	height:100%;
+	background:#fff;
+	font-size:30rpx;
+}
+.no-comments > image{
+	width:100rpx;
+	height:100rpx;
+	display:block;
+	margin:0rpx auto;
+	margin-bottom:30rpx;
 }

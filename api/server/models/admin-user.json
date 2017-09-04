@@ -6,14 +6,33 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "avatar": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    }
+  },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "emails": {
+      "type": "hasMany",
+      "model": "email",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "lidikang",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
       "permission": "ALLOW"
     }
   ],

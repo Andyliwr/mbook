@@ -1,0 +1,48 @@
+<view class="userInfo-container">
+	<view class="err-tips" hidden="{{!errTips}}">{{errTips}}</view>
+	<form bindsubmit="formSubmit">
+	  <image class="headImg" src="{{avatar}}" binderror="headimgError" bindtap="uploadAvatar" ></image>
+	  <view class="split-text">基本信息</view>
+	  <view class="section">
+	    <view class="section-title">昵称</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{nickname ? '#000' : '#666'}}">{{nickname || '给自己起个响亮的名字吧'}}</view>
+	    <input name="input" placeholder="请输入昵称" data-type="nickname" bindchange="userInput" value="{{nickname}}" wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="section">
+	    <view class="section-title">邮箱</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{email ? '#000' : '#666'}}">{{email || '未设置邮箱'}}</view>
+	    <input name="input" placeholder="请输入常用邮箱" data-type="email" bindchange="userInput" value="{{email}}" wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="split-text">可选信息</view>
+	  <view class="section">
+	    <view class="section-title">姓名</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{realm ? '#000' : '#666'}}">{{realm || '未设置姓名'}}</view>
+	    <input name="input" placeholder="请输入自己的姓名" data-type="realm" bindchange="userInput" value="{{realm}}" wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="section">
+	    <view class="section-title">年龄</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{(age > 0) ? '#000' : '#666'}}">{{(age > 0) ? age : '未设置年龄'}}</view>
+	    <input name="input" placeholder="请输入年龄" data-type="age" bindchange="userInput" value="{{age}}" wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="section">
+	    <view class="section-title">生日</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{birthday ? '#000' : '#666'}}">{{birthday || '未设置出生日期'}}</view>
+	    <picker mode="date" value="" start="1990-09-01" end="2017-09-01" data-type="birthday" bindchange="userInput" value="{{birthday}}" wx:if="{{!changeOrSubmit}}" bindchange="userInput">
+	    	<view class="picker" style="color: {{birthday ? '#000' : '#888'}};">{{birthday || '请输入出生日期'}}</view>
+	    </picker>
+	  </view>
+	  <view class="section">
+	    <view class="section-title">所在地</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{address ? '#000' : '#666'}}">{{address || '未设置所在地'}}</view>
+	    <input name="input" placeholder="请输入当前所在位置" data-type="address" bindchange="userInput" value="{{address}}"  wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="section">
+	    <view class="section-title">个人签名</view>
+	    <view class="display" wx:if="{{changeOrSubmit}}" style="color: {{signature ? '#000' : '#666'}}">{{signature || '未设置签名'}}</view>
+	    <input name="input" placeholder="请输入个人签名" data-type="signature" bindchange="userInput" value="{{signature}}" wx:if="{{!changeOrSubmit}}" />
+	  </view>
+	  <view class="btn-area">
+	    <button formType="submit" type="primary">{{changeOrSubmit ? '修改' : '提交'}}</button>
+	  </view>
+	</form>
+</view>

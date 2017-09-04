@@ -3,7 +3,7 @@
     <view class="section">
       <view class="form">
         <view class="input-block">
-          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}"/>
+          <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindinput="finishedInput" value="{{searchValue}}"/>
           <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
         </view>
         <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
@@ -29,16 +29,22 @@
     </view>
   </view>
   <view class="list">
-    <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10}}">
-      <view class="bookInfo" bindtap="goToBookDetail" data-bookid="{{item.bookid}}">
-        <text class="bookName">{{item.name}}</text>
-        <text class="author">
-          <text class="text-underline">作者：</text>{{item.author}}</text>
-        <text class="bookDes">{{item.des}}</text>
-        <icon class="{{item.hasRead === 0? 'read-icon isRead': 'read-icon notRead'}}"></icon>
-      </view>
-      <image src="{{item.headImage}}" mode="scaleToFill" />
-    </block>
+    <view class="all" wx:if="{{books.length > 0}}">
+      <block class="bookitem" wx:for="{{books}}" wx:key="bookId" wx-if="{{index<10 &&item.isShow}}">
+        <view class="bookInfo" bindtap="goToBookDetail" data-bookid="{{item.bookid}}">
+          <text class="bookName">{{item.name}}</text>
+          <text class="author">
+            <text class="text-underline">作者：</text>{{item.author}}</text>
+          <text class="bookDes">{{item.des}}</text>
+          <icon class="{{item.hasRead === 0? 'read-icon isRead': 'read-icon notRead'}}"></icon>
+        </view>
+        <image src="{{item.headImage}}" mode="scaleToFill" />
+      </block>
+    </view>
+    <view class="empty" wx:if="{{books.length === 0}}">
+      <image src="https://olpkwt43d.qnssl.com/myapp/err_tips/empty_err.png"></image>
+      <button bindtap="goToShop" plain="true" type="default">您还未添加书籍，快去书城看看</button>
+    </view>
   </view>
 
   <!-- 出错打印 -->

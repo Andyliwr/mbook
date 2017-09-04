@@ -1,0 +1,47 @@
+{
+  "name": "email",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "time": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "adminUser": {
+      "type": "belongsTo",
+      "model": "adminUser",
+      "foreignKey": ""
+    },
+    "myAppUser": {
+      "type": "belongsTo",
+      "model": "myAppUser",
+      "foreignKey": ""
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

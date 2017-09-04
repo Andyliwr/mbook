@@ -17,10 +17,10 @@
 		<view class="clearfix"></view>
 		<view class="btn-group">
 			<view class="addToList" bindtap="addOrRemove">
-				<view class="true" hidden="{{isInList}}">
+				<view class="true" hidden="{{isInList == 1}}">
 					<icon class="addList-icon" />加入书架
 				</view>
-				<view class="false" hidden="{{!isInList}}">
+				<view class="false" hidden="{{isInList == 0}}">
 					<icon type="success_no_circle" color="#fd9941" size="20" />从书架中移除
 				</view>
 			</view>
@@ -35,7 +35,7 @@
 		<view class="title">精彩评论<text class="add-comment" bindtap="toWriteComment">写评论</text>
 		</view>
 		<view class="comment-list">
-			<view class="comment-item" wx:for="{{comments}}" data-commentid="{{item.rootComment.commentid}}">
+			<view wx:if="{{comments.length > 0}}" class="comment-item" wx:for="{{comments}}" data-commentid="{{item.rootComment.commentid}}" wx:key="{{item.rootComment.commentid}}">
 				<image class="headImg" src="{{item.rootComment.avatar}}" mode="scaleToFill"></image>
 				<view class="comment-right">
 					<view class="reader-name" data-userid="{{item.rootComment.userid}}">{{item.rootComment.nickname}}</view>
@@ -47,6 +47,10 @@
 					</view>
 					<view class="toolbar"><icon class="{{item.rootComment.isLike ? 'like-selected-icon' : 'like-icon'}}" bindtap="addLikeNum" data-commentid="{{item.rootComment.commentid}}" /><text class="likeNum">{{item.rootComment.likenum || 0}}</text><icon class="comment-icon" data-commentid="{{item.rootComment.commentid}}" data-nickname="{{item.rootComment.nickname}}" data-userid="{{item.rootComment.userid}}" bindtap="toWriteComment" /></view>
 				</view>
+			</view>
+			<view class="no-comments" wx:if="{{comments.length == 0}}">
+				<image src="https://olpkwt43d.qnssl.com/myapp/softPlace.png"></image>
+				暂无评论，快去抢沙发...
 			</view>
 		</view>
 	</view>

@@ -1,15 +1,15 @@
 @echo off
 set projectAddr=%1
-echo 正在启动后端接口，请确保在启动接口之前已经执行过1了...
+echo is starting api...
 cd %projectAddr%/api
 If exist node_modules (
-   echo "node包已安装..."
+   echo "node modules has been installed..."
 ) Else (
     cnpm install
 )
-node .
+node server/server.js
 If errorlevel 1 (
-    echo 后端接口已经启动，请在浏览器中打开localhost:3000/explorer来查看吧...
+    echo api has been started, please open httt://localhost:3000/explorer in Chrome...
 ) Else (
-    echo 后端接口启动失败...
+    echo api started failed...
 )

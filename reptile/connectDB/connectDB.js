@@ -1,19 +1,19 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var config = require('../config');
-var myAppTools = require('../tools/myAppTools');
-var eventproxy = require('eventproxy');
-//日志相关
-var log4js = require('log4js');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const config = require('../config');
+const myAppTools = require('../tools/myAppTools');
+const eventproxy = require('eventproxy');
+//日志相关v
+const log4js = require('log4js');
+const path = require('path');
 var logger = null;
 //config log
-
 function configLog(reptileType) {
   if (reptileType == "networkReptile") {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './log/networkReptile.log', category: 'networkReptile'}
+        {type: 'file', filename: path.dirname(__dirname)+'/log/networkReptile.log', category: 'networkReptile'}
       ]
     });
     logger = log4js.getLogger('networkReptile');
@@ -21,7 +21,7 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './reptile/log/rankReptile.log', category: 'rankReptile'}
+        {type: 'file', filename: path.dirname(__dirname)+'/log/rankReptile.log', category: 'rankReptile'}
       ]
     });
     logger = log4js.getLogger('rankReptile');
@@ -29,10 +29,18 @@ function configLog(reptileType) {
     log4js.configure({
       appenders: [
         {type: 'console'},
-        {type: 'file', filename: './reptile/log/ixdzsReptile.log', category: 'ixdzsReptile'}
+        {type: 'file', filename: path.dirname(__dirname)+'/log/ixdzsReptile.log', category: 'ixdzsReptile'}
       ]
     });
     logger = log4js.getLogger('ixdzsReptile');
+  } else if (reptileType == "operation") {
+    log4js.configure({
+      appenders: [
+        {type: 'console'},
+        {type: 'file', filename: path.dirname(__dirname)+'/log/operation.log', category: 'operation'}
+      ]
+    });
+    logger = log4js.getLogger('operation');
   }
 }
 
@@ -812,12 +820,58 @@ function getSlipSection(factionName, resource, callback) {
   }
 }
 
+/**
+ * 清空整部小说，删除爬取到的所有小说章节
+ * @param factionName 小说名字
+ * @param resource 小说源
+ */
+function emptyFaction(factionName, resource){
+  if (typeof factionName == 'string' && typeof resource == 'string') {
+    factionListModel.find({factionName: factionName})
+      .populate('sectionArray', {'sectionNum': 1, 'sectionTitle': 1}, null, {sort: {sectionNum: -1}})
+      .exec(function (err, list) {
+        if (err) {
+          logger.warn("查询mongo-----失败！" + err);
+        } else {
+          try{
+            if (list.length == 0) {
+              logger.fatal('小说 |'+factionName+' |的数据库未正确初始化...');
+            } else {
+              //delete factionContent
+              list[0].sectionArray.forEach(function (item) {
+                factionContentModel.remove({_id: item._id}, function (err, doc) {
+                  if(err){
+                    logger.warn('小说 |'+factionName+'| 第 '+item.sectionNum+' '+item.sectionTitle+'删除 失败，请手动删除...');
+                  }else{
+                    logger.warn('小说 |'+factionName+'| 第 '+item.sectionNum+' '+item.sectionTitle+'删除 成功...');
+                  }
+                })
+              });
+              //update factionList sectionArray
+              factionListModel.update({factionName: factionName}, {$set : {sectionArray: [], updateTime: myAppTools.formatDate(new Date())}}, function (err, doc) {
+                if(err){
+                  logger.warn('小说 |'+factionName+'| factionList sectionArray清除 失败...');
+                }else{
+                  logger.warn('小说 |'+factionName+'| factionList sectionArray清除 成功...');
+                }
+              });
+            }
+          } catch (error) {
+
+          }
+        }
+      });
+  } else {
+    logger.warn("getNewestSectionNum传入参数错误!");
+  }
+}
+
 //把存储方法暴露出来
-exports.configLog = configLog;
-exports.initDB = initDB;
-exports.saveFaction = saveFaction;
-exports.updateSectionList = updateSectionList;
-exports.getNewestSectionNum = getNewestSectionNum;
-exports.updateRank = updateRank;
-exports.emptyFaction = emptyFaction;
-exports.getSlipSection = getSlipSection;
+exports.configLog = configLog; // 配置日志
+exports.initDB = initDB; // 初始化数据库
+exports.saveFaction = saveFaction; // 存储爬取到的章节内容
+exports.updateSectionList = updateSectionList; // 更新章节列表
+exports.getNewestSectionNum = getNewestSectionNum; // 获取最新章节
+exports.updateRank = updateRank; // 更新排行榜
+exports.emptyFaction = emptyFaction; // 清空某本小说
+exports.getSlipSection = getSlipSection; // 获取不连续的章节

@@ -11,9 +11,9 @@
       "type": "string"
     },
     "birthday": {
-      "type": "date"
+      "type": "string"
     },
-    "signatrue": {
+    "signature": {
       "type": "string"
     },
     "myBooks": {
@@ -27,10 +27,33 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "hasReadTime": {
+      "type": "number"
+    },
+    "continueReadDay": {
+      "type": "number"
+    },
+    "settings": {
+      "type": [
+        "object"
+      ]
+    },
+    "address": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "number"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "emails": {
+      "type": "hasMany",
+      "model": "email",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "accessType": "*",
@@ -112,6 +135,34 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getUserInfo"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "countReadTime"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "continueReadDay"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "updateUserInfo"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getAllUser"
     }
   ],
   "methods": {}

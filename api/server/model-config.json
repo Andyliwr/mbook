@@ -15,11 +15,11 @@
   },
   "User": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "AccessToken": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "ACL": {
     "dataSource": "mongodb",
@@ -60,7 +60,7 @@
       "emailVerificationRequired": true
     }
   },
-  "asToken": {
+  "email": {
     "dataSource": "mongodb",
     "public": true
   }

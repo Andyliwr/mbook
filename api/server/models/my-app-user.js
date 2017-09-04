@@ -392,7 +392,7 @@ module.exports = function (Myappuser) {
             delete successItem.index;
             delete successItem.success;
             return successItem;
-          })
+          });
           cb(null, {code: 0, books: finalArr});
         } catch (err) {
           console.log(err);
@@ -659,9 +659,9 @@ module.exports = function (Myappuser) {
         } else {
           Myappuser.update({id: userid}, {myBooks: finalMyBooks}, function (err, res) {
             if (err || !res) {
-              cb(null, {code: -1, errMsg: '用户已阅读章节更新失败'});
+              cb(null, {code: -1, errMsg: '已阅读章节更新失败'});
             } else {
-              cb(null, {code: 0, successMsg: '用户已阅读章节更新成功'});
+              cb(null, {code: 0, successMsg: '已阅读章节更新成功'});
             }
           });
         }
@@ -704,12 +704,16 @@ module.exports = function (Myappuser) {
             "age": res.age || 0,
             "nickName": res.nickName || '',
             "birthday": res.birthday || '',
-            "signatrue": res.signatrue || '',
+            "signature": res.signature || '',
+            "address": res.address || '',
             "books": res.myBooks.length || 0,
             "avatar": res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim',
+            "gender": res.gender,
             "realm": res.realm || '',
             "username": res.username,
-            "email": res.email || ''
+            "email": res.email || '',
+            "hasReadTime": res.hasReadTime,
+            "continueReadDay": res.continueReadDay
           }
           cb(null, {code: 0, info: returnData});
         } else {
@@ -741,6 +745,195 @@ module.exports = function (Myappuser) {
     }
   );
 
+  // 更新个人信息
+  Myappuser.updateUserInfo = function (userid, info, cb) {
+    Myappuser.findById(userid)
+      .then(function (res) {
+        if (res) {
+          if(info){
+            var newAge = info.age || res.age || 0;
+            var newNickName = info.nickName || res.nickName;
+            var newGender = info.gender || res.gender;
+            var newBirthday = info.birthday || res.birthday;
+            var newSignature = info.signature || res.signature;
+            var newAddress = info.address || res.address;
+            var newAvatar = info.avatar || res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim';
+            var newRealm = info.realm || res.realm;
+            Myappuser.update({id: userid}, {age: newAge, nickName: newNickName, birthday: newBirthday, signature: newSignature, address: newAddress, gender: newGender, avatar: newAvatar, realm: newRealm}, function (err, res) {
+              if (err || !res) {
+                console.log(err);
+                cb(null, {code: -1, errMsg: '个人信息更新失败'});
+              } else {
+                cb(null, {code: 0, successMsg: '个人信息更新成功'});
+              }
+            });
+          }else{
+            cb(null, {code: -1, errMsg: '用户信息参数为空'});
+          }
+        } else {
+          cb(null, {code: -1, errMsg: '获取到的用户信息为空'});
+        }
+
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取用户信息失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'updateUserInfo',
+    {
+      'accepts': [{
+        arg: 'userid',
+        type: 'string',
+        description: '用户id'
+      },{
+        arg: 'info',
+        type: 'object',
+        description: '用户信息obj'
+      }],
+      'returns': [
+        {'arg': 'data', 'type': 'string'}
+      ],
+      'http': {
+        'verb': 'post',
+        'path': '/updateUserInfo'
+      }
+    }
+  );
+
+  // 统计阅读时长
+  Myappuser.countReadTime = function (userid, addtime, cb) {
+    Myappuser.findById(userid)
+      .then(function (res) {
+        if (res) {
+          if (typeof addtime === 'number') {
+            var newtime = (res.hasReadTime ? res.hasReadTime : 0) + addtime;
+            Myappuser.update({id: userid}, {hasReadTime: newtime}, function (err, res) {
+              if (err || !res) {
+                cb(null, {code: -1, errMsg: '阅读时长更新失败'});
+              } else {
+                cb(null, {code: 0, successMsg: '阅读时长更新成功'});
+              }
+            });
+          } else {
+            cb(null, {code: -1, errMsg: '时间参数格式错误'});
+          }
+        } else {
+          cb(null, {code: -1, errMsg: '获取到的用户信息为空'});
+        }
+
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取用户信息失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'countReadTime',
+    {
+      'accepts': [{
+        arg: 'userid',
+        type: 'string',
+        description: '用户id'
+      }, {
+        arg: 'addtime',
+        type: 'number',
+        description: '新增的阅读时间，以分钟为单位'
+      }],
+      'returns': [
+        {'arg': 'data', 'type': 'string'}
+      ],
+      'http': {
+        'verb': 'post',
+        'path': '/countReadTime'
+      }
+    }
+  );
+
+  // 统计累计阅读天数
+  Myappuser.continueReadDay = function (userid, cb) {
+    Myappuser.findById(userid)
+      .then(function (res) {
+        if (res) {
+          var newDays = (res.continueReadDay ? (res.continueReadDay + 1) : 1);
+          Myappuser.update({id: userid}, {continueReadDay: newDays}, function (err, res) {
+            if (err || !res) {
+              cb(null, {code: -1, errMsg: '累计阅读天数更新失败'});
+            } else {
+              cb(null, {code: 0, successMsg: '累计阅读天数更新成功'});
+            }
+          });
+        } else {
+          cb(null, {code: -1, errMsg: '获取到的用户信息为空'});
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取用户信息失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'continueReadDay',
+    {
+      'accepts': {
+        arg: 'userid',
+        type: 'string',
+        description: '用户id'
+      },
+      'returns': [
+        {'arg': 'data', 'type': 'string'}
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/continueReadDay'
+      }
+    }
+  );
+
+  Myappuser.getAllUser = function (cb) {
+    Myappuser.find({ fields: { id: true, username: true, nickName: true }})
+      .then(function (res) {
+        if (res) {
+          if(res instanceof Array){
+            let resultData = [];
+            res.forEach(function(item){
+              let tmpData = {
+                userid: item.id,
+                username: item.username,
+                nickname: item.nickName
+              };
+              resultData.push(tmpData);
+            });
+            cb(null, {code: 0, data: resultData});
+          }else{
+            cb(null, {code: -1, errMsg: '获取到的用户列表失败'});
+          }
+        } else {
+          cb(null, {code: -1, errMsg: '获取到的用户列表失败'});
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        cb(null, {code: -1, errMsg: 'userid不合法，获取到的用户列表失败'});
+      })
+  };
+
+  Myappuser.remoteMethod(
+    'getAllUser',
+    {
+      'returns': [
+        {'arg': 'data', 'type': 'string'}
+      ],
+      'http': {
+        'verb': 'get',
+        'path': '/getAllUser'
+      }
+    }
+  );
 
   // Myappuser.afterRemote('create', function (context, userInstance, next) {
   //   console.log('> user.afterRemote triggered');

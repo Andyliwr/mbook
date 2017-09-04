@@ -1,0 +1,74 @@
+.userInfo-container{
+	background-color: #efeff4;
+	padding-top: 80rpx;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 30rpx;
+	box-sizing: border-box;
+}
+.err-tips{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 70rpx;
+	line-height: 70rpx;
+	background-color: #e64340;
+	color: #fff;
+}
+.section{
+	background-color: #fff;
+	width: 100%;
+	text-align: left;
+	height: 80rpx;
+	margin-bottom: 0;
+}
+.section .section-title{
+	display: inline-block;
+	width: 30%;
+	height: 100%;
+	line-height: 100%;
+	font-weight: bold;
+	position: relative;
+	top: 4rpx;
+	padding-left: 20rpx;
+	box-sizing: border-box;
+}
+.section > input, .section > picker{
+	display: inline-block;
+	width: 70%;
+	height: 100%;
+	line-height: 100%;
+	vertical-align: middle;
+}
+.picker{
+	height: 80rpx;
+	line-height: 80rpx;
+}
+.headImg{
+	width: 150rpx;
+	height: 150rpx;
+	border-radius: 75rpx;
+	margin-bottom: 10rpx;
+}
+.split-text{
+	text-align: left;
+	background: transparent;
+	height: 80rpx;
+	line-height: 80rpx;
+	padding-left: 20rpx;
+	font-size: 26rpx;
+	color: #888888;
+}
+.btn-area > button{
+	margin-top: 40rpx;
+}
+.display{
+	display: inline-block;
+	width: 70%;
+	height: 100%;
+	line-height: 80rpx;
+	vertical-align: middle;
+}

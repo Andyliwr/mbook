@@ -19,7 +19,7 @@ app.start = function() {
 
 //To use cookies for authentication, add the following to server.js (before boot):
 app.use(loopback.token({
-    model: app.models.asToken
+    model: app.models.accessToken
 }));
 
 // -- Add your pre-processing middleware here --

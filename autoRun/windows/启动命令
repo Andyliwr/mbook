@@ -1,0 +1,3 @@
+mongod.exe --logpath=D:\mongo\logs\mongodb.log --dbpath=D:\mongo\data --journal --maxConns 20000
+
+redis-server.exe D:/redis/redis.windows.conf --loglevel verbose

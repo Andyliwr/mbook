@@ -25,3 +25,6 @@ log/
 reptile/log/
 
 *.log
+
+# vue项目下的node_modules
+api/client/node_modules
