@@ -26,7 +26,8 @@ for item in nowplaying_movie_list:
 # print(nowplaying_list)
 
 # 获取影评
-requrl = 'https://movie.douban.com/subject/'+nowplaying_list[0]['id']+'/comments?start=0&limit=20'
+requrl = 'https://movie.douban.com/subject/' + \
+    nowplaying_list[0]['id'] + '/comments?start=0&limit=20'
 resp = request.urlopen(requrl)
 comment_data = resp.read().decode('utf-8')
 comment_soup = bs(comment_data, 'html.parser')
@@ -52,6 +53,9 @@ cleaned_comments = ''.join(filter_data)
 segment = jieba.lcut(cleaned_comments)
 words_df = pd.DataFrame({'segment': segment})
 # quoting=3全不引用
-stopwords = pd.read_csv("E:\\project\\graduationDesign\\py_reptile\\stopwords.txt", index_col=False, quoting=3, sep="\t", names=['stopword'], encoding='utf-8')
+# stopword_url = "E:\\project\\graduationDesign\\py_reptile\\stopwords.txt"
+stopword_url = "D:\\PROJECT\\graduationDesign\\py_reptile\\stopwords.txt"
+stopwords = pd.read_csv(stopword_url, index_col=False,
+                        quoting=3, sep="\t", names=['stopword'], encoding='utf-8')
 words_df = words_df[~words_df.segment.isin(stopwords.stopword)]
 print(words_df.head())
