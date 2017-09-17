@@ -25,8 +25,6 @@ def getGupiaoList():
     return result
 
 # 获取百度的价格
-
-
 def getGupiaoPrise(code, url):
     gu_piao_prise_res = request.urlopen(url)
     gu_piao_prise_html = gu_piao_prise_res.read().decode('utf-8')
