@@ -2,7 +2,7 @@ var connectDB = require('./connectDB');
 var myAppTools = require('../tools/myAppTools');
 var qiniuOperation = require('../qiniu/allOperation');
 
-connectDB.configLog('ixdzsReptile');
+// connectDB.configLog('ixdzsReptile');
 
 // connectDB.saveFaction({
 //   factionName: '天影',
