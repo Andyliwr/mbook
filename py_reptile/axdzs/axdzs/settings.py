@@ -13,78 +13,17 @@ BOT_NAME = 'axdzs'
 
 SPIDER_MODULES = ['axdzs.spiders']
 NEWSPIDER_MODULE = 'axdzs.spiders'
-
-
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'axdzs (+http://www.yourdomain.com)'
-
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
-
-# Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
-
-# Configure a delay for requests for the same website (default: 0)
-# See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
-# See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
-# The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
-#CONCURRENT_REQUESTS_PER_IP = 16
-
-# Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
-
-# Disable Telnet Console (enabled by default)
-#TELNETCONSOLE_ENABLED = False
-
-# Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#}
-
-# Enable or disable spider middlewares
-# See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'axdzs.middlewares.AxdzsSpiderMiddleware': 543,
-#}
-
-# Enable or disable downloader middlewares
-# See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'axdzs.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
-
-# Enable or disable extensions
-# See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
-#    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
-
-# Configure item pipelines
-# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'axdzs.pipelines.AxdzsPipeline': 300,
-#}
-
-# Enable and configure the AutoThrottle extension (disabled by default)
-# See http://doc.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
-# The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
-# The maximum download delay to be set in case of high latencies
-#AUTOTHROTTLE_MAX_DELAY = 60
-# The average number of requests Scrapy should be sending in parallel to
-# each remote server
-#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
-# Enable showing throttling stats for every response received:
-#AUTOTHROTTLE_DEBUG = False
-
-# Enable and configure HTTP caching (disabled by default)
-# See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-#HTTPCACHE_ENABLED = True
-#HTTPCACHE_EXPIRATION_SECS = 0
-#HTTPCACHE_DIR = 'httpcache'
-#HTTPCACHE_IGNORE_HTTP_CODES = []
-#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# 使用robot协议的站点，只需要我们的爬虫不遵守该协议，就可以了，但是对于防止爬虫爬取，站点还有检查请求头、检查ip等等手段，还需要其他的相应处理。
+ROBOTSTXT_OBEY = False
+# 站点根目录
+ROOT_URL = 'http://www.ixdzs.com'
+# 使用的用户代理
+USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
+# 为了减少CPU使用率(及记录log存储的要求), 在生产环境中进行通用爬取时您不应该使用 DEBUG log级别。
+LOG_LEVEL = 'DEBUG'
+# 禁止cookies能减少CPU使用率及Scrapy爬虫在内存中记录的踪迹，提高性能。
+COOKIES_ENABLED = False
+#  当进行通用爬取时，一般的做法是保存重定向的地址，并在之后的爬取进行解析。 这保证了每批爬取的request数目在一定的数量， 否则重定向循环可能会导致爬虫在某个站点耗费过多资源。
+REDIRECT_ENABLED = False
+# 如果网站提供了原本只有ajax获取到的数据的纯HTML版本，AjaxCrawlMiddleware能帮助您正确地爬取
+# AJAXCRAWL_ENABLED = True

@@ -201,3 +201,7 @@ var docs = yield collection.find({})
 ### 剩余要做的
 + 前端在每次用户离开的时候存储一个时间，后端getMyBooks接口的时候返回updateTime这个字段，前端用这个字段做判断，已经阅读的不再提示
 + 后端直接对比最新章节数和以阅读章节数
+
+### py_spider
+搜索地址：
+1. http://zhannei.baidu.com/cse/search?s=7466980319800320338&loc=http%3A%2F%2Fwww.ixdzs.com%2Fbsearch%3Fq%3D%25E5%25A4%25A7%25E4%25B8%25BB%25E5%25AE%25B0&width=580&q=%E5%A4%A7%E4%B8%BB%E5%AE%B0&wt=1&ht=1&pn=10&fpos=2&rmem=0&reg=
