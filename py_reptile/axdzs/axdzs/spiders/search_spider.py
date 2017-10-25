@@ -1,21 +1,7 @@
 import scrapy
-import logging
-import datetime
 from axdzs.items import SearchItem
 import re
-from scrapy.utils.log import configure_logging
-
-# 格式化日志
-now = datetime.datetime.now()
-configure_logging(install_root_handler=False)
-logging.basicConfig(
-    filename='axdzs/logs/search/' + now.strftime('%Y-%m-%d#%H-%M-%S') + '.log',
-    format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-    level=logging.INFO
-)
-
-
-AREA = re.compile(r"制片国家/地区:</span> (.+?)<br>")
+import logging
 
 
 class SearchSpider(scrapy.Spider):
@@ -28,8 +14,7 @@ class SearchSpider(scrapy.Spider):
         self.final = None  # 爬虫搜索得到的最终结果
 
     def start_requests(self):
-        url = 'http://zhannei.baidu.com/cse/search?s=7466980319800320338&loc={}/bsearch?q={}&width=580&q={}&wt=1&ht=1&pn=10&fpos=2&rmem=0&reg='.format(self.settings['ROOT_URL'], self.search_name,
-                                                            self.search_name)
+        url = 'http://zhannei.baidu.com/cse/search?s=7466980319800320338&loc={}/bsearch?q={}&width=580&q={}&wt=1&ht=1&pn=10&fpos=2&rmem=0&reg='.format(self.settings['ROOT_URL'], self.search_name, self.search_name)
         logging.info('搜索地址: ' + url)
         yield scrapy.Request(url=url, callback=self.parse)
 
@@ -67,17 +52,19 @@ class SearchSpider(scrapy.Spider):
 
             item['des'] = response.css('.result-item .result-game-item-detail>p').extract()
             for i in range(0, len(item['des'])):
-                item['des'][i] = item['des'][i].strip().replace('\n', '').replace('<p class="result-game-item-desc">','').replace('</p>', '').replace('<em>', '').replace('</em>', '').replace(' ', '')
+                item['des'][i] = item['des'][i].strip().replace('\n', '').replace('<p class="result-game-item-desc">', '').replace('</p>', '').replace('<em>', '').replace('</em>', '').replace(' ', '')
 
             item['total_words'] = []
             item['update_time'] = []
             item['download_url'] = []
             item['hot_value'] = []
+            item['is_detail_page_ready'] = []
             for i in range(0, len(item['link_url'])):
                 item['total_words'].append('')
                 item['update_time'].append('')
                 item['download_url'].append('')
                 item['hot_value'].append(0)
+                item['is_detail_page_ready'].append(False)
 
             # 爬去书籍详情页
             for i in range(0, len(item['link_url'])):
@@ -110,9 +97,14 @@ class SearchSpider(scrapy.Spider):
 
             else:
                 logging.info('获取 ' + item['name'][index] + ' 详情成功!')
-                self.item = item
         else:
             logging.info('获取 ' + item['name'][index] + ' 详情错误，得到的页面为空...')
+
+        # 即使不是所有的详情页均返回成功，也将爬取完成标记置为True
+        item['is_detail_page_ready'][index] = True
+        self.item = item
+        # 只有yield执行了，这个数据才到达pipeline，然后由pipeline整理后存入数据库
+        yield self.item
         pass
 
     # 爬虫关闭的回调
@@ -147,9 +139,3 @@ class SearchSpider(scrapy.Spider):
         logging.info('最终搜索结果:')
         logging.info(self.final)
         pass
-
-
-
-
-
-

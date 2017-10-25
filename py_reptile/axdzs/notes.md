@@ -39,3 +39,20 @@ print(config)
 
 ```
 
+## 格式化日志
+```
+import logging
+import datetime
+import os
+from scrapy.utils.log import configure_logging
+
+# 格式化日志
+now = datetime.datetime.now()
+configure_logging(install_root_handler=False)
+logging.info(os.getcwd())
+logging.basicConfig(
+    filename= ,
+    format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+    level=logging.INFO
+)
+```
