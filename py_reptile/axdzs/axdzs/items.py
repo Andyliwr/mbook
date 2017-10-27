@@ -29,4 +29,5 @@ class SearchItem(scrapy.Item):
     update_time = scrapy.Field()  # 最近更新时间
     download_url = scrapy.Field()  # txt下载地址
     hot_value = scrapy.Field()  # 热度值，用来排序搜索结果
+    is_detail_page_ready = scrapy.Field() # 标志位，用来标记书籍详情是否爬取完毕
     pass
