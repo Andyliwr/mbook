@@ -10,7 +10,7 @@ import os
 def start_search_spider(search_name):
     setting = get_project_settings()
     now = datetime.datetime.now()
-    setting.set('LOG_FILE', os.path.join(os.getcwd(), '../logs/search/') + now.strftime('%Y-%m-%d#%H-%M-%S') + '.log', priority='cmdline')
+    # setting.set('LOG_FILE', os.path.join(os.getcwd(), '../logs/search/') + now.strftime('%Y-%m-%d#%H-%M-%S') + '.log', priority='cmdline')
     process = CrawlerProcess(setting)
     process.crawl('search', name=search_name)
     process.start()
