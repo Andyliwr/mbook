@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pymongo
 import logging
+import datetime
 
 class AxdzsPipeline(object):
     def process_item(self, item, spider):
@@ -51,9 +52,46 @@ class SearchPipeline(object):
                     'hot_value': item['hot_value'][i],
                     'is_content_in_db': False  # 是否爬取过章节信息
                 })
-            self.db[self.collection_name].insert(tmpList)
+
+            logging.info('所有搜索结果:')
+            logging.info(tmpList)
+            max_hot_value = 0
+            max_hot_index = 0
+            for i in range(0, len(tmpList)):
+                current_hot_value = int(tmpList[i]['hot_value'])
+                if current_hot_value > max_hot_value:
+                    max_hot_index = i
+                    max_hot_value = current_hot_value
+
+            final = {
+                'name': tmpList[max_hot_index]['name'],
+                'link_url': tmpList[max_hot_index]['link_url'],
+                'all_chapter_url': tmpList[max_hot_index]['all_chapter_url'],
+                'img_url': tmpList[max_hot_index]['img_url'],
+                'author': tmpList[max_hot_index]['author'],
+                'des': tmpList[max_hot_index]['des'],
+                'classification': tmpList[max_hot_index]['classification'],
+                'update_status': tmpList[max_hot_index]['update_status'],
+                'newest_chapter': tmpList[max_hot_index]['newest_chapter'],
+                'total_words': tmpList[max_hot_index]['total_words'],
+                'update_time': tmpList[max_hot_index]['update_time'],
+                'download_url': tmpList[max_hot_index]['download_url'],
+                'hot_value': tmpList[max_hot_index]['hot_value']
+            }
+            logging.info('最终搜索结果:')
+            logging.info(final)
+
+            result = {
+                'search_str': spider.search_name,
+                'search_results': tmpList,
+                'final_result': final,
+                'search_time': datetime.datetime.now()
+            }
+            self.db[self.collection_name].insert(result)
+            # 将最佳匹配结果写入数据库
+            self.db['faction_list'].insert(final)
             logging.info('搜索结果已经存入数据库...')
-            return tmpList
+            return result
 
     # 判断每个is_detail_page_ready是否都为True
     def every(self, list_obj):

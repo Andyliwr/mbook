@@ -80,7 +80,7 @@ READ_ROOT_URL = 'http://read.ixdzs.com'
 MONGO_URI = 'mongodb://localhost:27017'
 MONGO_DATABASE = 'myapp'
 
-# 注册处理器
+# 注册处理器并设置优先级
 ITEM_PIPELINES = {
     'axdzs.pipelines.AxdzsPipeline': 300,
     'axdzs.pipelines.SearchPipeline': 800,

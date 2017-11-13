@@ -110,32 +110,4 @@ class SearchSpider(scrapy.Spider):
     # 爬虫关闭的回调
     def close(self, reason):
         logging.info(reason)
-        logging.info('所有搜索结果:')
-        logging.info(self.item)
-        max_hot_value = 0
-        max_hot_index = 0
-        for i in range(0, len(self.item['hot_value'])):
-            current_hot_value = int(self.item['hot_value'][i])
-            if current_hot_value > max_hot_value:
-                max_hot_index = i
-                max_hot_value = current_hot_value
-
-        self.final = {
-            'name': self.item['name'][max_hot_index],
-            'index': self.item['index'][max_hot_index],
-            'link_url': self.item['link_url'][max_hot_index],
-            'all_chapter_url': self.item['all_chapter_url'][max_hot_index],
-            'img_url': self.item['img_url'][max_hot_index],
-            'author': self.item['author'][max_hot_index],
-            'des': self.item['des'][max_hot_index],
-            'classification': self.item['classification'][max_hot_index],
-            'update_status': self.item['update_status'][max_hot_index],
-            'newest_chapter': self.item['newest_chapter'][max_hot_index],
-            'total_words': self.item['total_words'][max_hot_index],
-            'update_time': self.item['update_time'][max_hot_index],
-            'download_url': self.item['download_url'][max_hot_index],
-            'hot_value': self.item['hot_value'][max_hot_index]
-        }
-        logging.info('最终搜索结果:')
-        logging.info(self.final)
         pass
