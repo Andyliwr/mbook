@@ -76,7 +76,8 @@ class SearchPipeline(object):
                 'total_words': tmpList[max_hot_index]['total_words'],
                 'update_time': tmpList[max_hot_index]['update_time'],
                 'download_url': tmpList[max_hot_index]['download_url'],
-                'hot_value': tmpList[max_hot_index]['hot_value']
+                'hot_value': tmpList[max_hot_index]['hot_value'],
+                'create_time': datetime.datetime.now()
             }
             logging.info('最终搜索结果:')
             logging.info(final)
