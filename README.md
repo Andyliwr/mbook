@@ -53,6 +53,7 @@ weixin --- 微信小程序目录
   |- app.js --- 微信小程序入口文件
 ```
 ### **项目截图**
+<div>
 <img src="https://fs.andylistudio.com/1521214550813.png" alt="" style="width: 250px; height: auto">
 <img src="https://fs.andylistudio.com/1521214553929.png" alt="" style="width: 250px; height: auto">
 <img src="https://fs.andylistudio.com/1521214558128.png" alt="" style="width: 250px; height: auto">
@@ -65,3 +66,4 @@ weixin --- 微信小程序目录
 <img src="https://fs.andylistudio.com/1521214580699.png" alt="" style="width: 250px; height: auto">
 <img src="https://fs.andylistudio.com/1521214583072.png" alt="" style="width: 250px; height: auto">
 <img src="https://fs.andylistudio.com/1521214585790.png" alt="" style="width: 250px; height: auto">
+</div>
