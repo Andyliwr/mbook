@@ -4,11 +4,11 @@
 ### 体验一下
 微信扫码，立即进入小程序
 
-![小程序二维码](https://fs.andylistudio.com/1547434703456.jpeg?imageView2/1/w/200/h/200/q/75%7Cimageslim)
+![小程序二维码](https://file.lantingshucheng.com/1547434703456.jpeg?imageView2/1/w/200/h/200/q/75%7Cimageslim)
 
 或者可以搜索小程序---美景阅读
 
-![微信搜一搜](https://fs.andylistudio.com/1547435360766.jpeg)
+![微信搜一搜](https://file.lantingshucheng.com/1547435360766.jpeg)
 
 ### **运行**
 #### 使用`wept`启动小程序
@@ -63,16 +63,16 @@ weixin --- 微信小程序目录
 ```
 ### **项目截图**
 <div>
-<img src="https://fs.andylistudio.com/1521214550813.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214553929.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214558128.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214565101.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214567465.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214571074.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214572862.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214576135.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214578084.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214580699.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214583072.png" alt="" style="width: 250px; height: auto">
-<img src="https://fs.andylistudio.com/1521214585790.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214550813.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214553929.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214558128.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214565101.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214567465.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214571074.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214572862.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214576135.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214578084.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214580699.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214583072.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214585790.png" alt="" style="width: 250px; height: auto">
 </div>
