@@ -22,28 +22,19 @@ Page({
       icon: 'loading',
       duration: 0
     });
-
     // 只有url中带了是否在书架的参数才去更新isInList的值
     if (options.isInList === '0' || options.isInList === '1') {
-      self.setData({isInList: parseInt(options.isInList)});
-    }else{
-      var booklist = wx.getStorageSync('booklist');
-      var isInMyBook = booklist.some(function(item){
-        return item.bookid === options.bookid;
-      });
-      self.setData({isInList: isInMyBook? 1: 0});
+      self.setData({isInList: options.isInList});
     }
-
     // 获取userid和用户信息
     var userInfo = wx.getStorageSync('userInfo');
     userInfo.userid = wx.getStorageSync('id').userid;
     self.setData({userInfo: userInfo, showAllDes: false, bookid: options.bookid});
-    self.getBookDetail();
+    self.getBookDetail(options.bookid);
     self.getComments(options.bookid);
   },
-  getBookDetail: function () {
+  getBookDetail: function (bookid) {
     var self = this;
-    var bookid = self.data.bookid;
     wx.request({
       url: Api.getBookDetail(bookid),
       success: function (res) {
@@ -61,7 +52,7 @@ Page({
             shortDes = des.substring(0, 76);
           }
           tmpData.detail.shortDes = shortDes;
-          self.setData({bookDetail: tmpData.detail, err_page_data: null});
+          self.setData({bookDetail: tmpData.detail});
         } else {
           console.log('请求书籍信息失败....');
           self.setData({
@@ -139,7 +130,7 @@ Page({
             show: true,
             image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
             text: '努力找不到网络>_<请检查后重试',
-            buttonText: '重试',
+            buttonText: '登录',
             click: 'getBookDetail'
           }
         });
@@ -204,7 +195,7 @@ Page({
   addOrRemove: function () {
     var self = this;
     // 已在书架的先提示确认是否移除，然后调用deleteMyBook， 不在驾的调用addMyBook
-    if (self.data.isInList === 1) {
+    if (self.data.isInList) {
       var deleteData = {
         userid: self.data.userInfo.userid,
         bookids: self.data.bookid
@@ -320,7 +311,7 @@ Page({
       content: content
     };
     // 不能给自己回复
-    if (1 || self.data.userInfo.userid !== self.data.commentType.userid) {
+    if (1 && self.data.userInfo.userid !== self.data.commentType.userid) {
       // 调用增加评论的接口
       wx.request({
         url: Api.addComment(),

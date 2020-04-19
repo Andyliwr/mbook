@@ -142,14 +142,6 @@ Page({
                     wx.setStorageSync("id", idStr);
                     //登录,  wx.navigateTo 和 wx.redirectTo 不允许跳转到 tabbar 页面，只能用 wx.switchTab 跳转到 tabbar 页面
                     app.doLogin(function(){wx.switchTab({ url: '../../booklist/booklist' })});
-                  }else{
-                    // 提示错误
-                    var msg = tmpData.error.details.messages;
-                    var msgArr = [];
-                    for(var i in msg){
-                      msgArr.push(msg[i][0]);
-                    }
-                    Util.showErrMsg(self, msgArr.join(' ,'), 1500);
                   }
                 },
                 fail: function (err) {

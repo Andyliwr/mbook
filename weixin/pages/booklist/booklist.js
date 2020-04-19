@@ -38,9 +38,6 @@ Page({
       icon: 'loading',
       duration: 0
     });
-  },
-  onShow: function () {
-    var self = this;
     //获取我的书单
     //读取缓存中的userid
     wx.getStorage({
@@ -73,13 +70,11 @@ Page({
       url: Api.getMyBooks(userid),
       success: function (res) {
         var books = res.data.data.books;
-        console.log('书籍信息');
-        console.log(books);
-        books.forEach(function (item) {
+        books.forEach(function(item){
           item.isShow = true;
         });
         //更新视图books
-        self.setData({ books: books });
+        self.setData({books: books});
         //将书单数据缓存到本地
         wx.setStorage({
           key: 'booklist',
@@ -97,7 +92,7 @@ Page({
           success: function (res) {
             console.log('使用本地缓存的书单数据');
             if (res.data && res.data[0].factionName) {
-              self.setData({ books: res.data });
+              self.setData({books: res.data});
             } else {
               self.setData({
                 err_page_data: {
@@ -145,8 +140,6 @@ Page({
       url: Api.getUserInfo(userid),
       success: function (res) {
         var tmpData = res.data.data;
-        console.log('用户信息');
-        console.log(tmpData);
         if (tmpData && tmpData.code == 0) {
           //将书单数据缓存到本地
           wx.setStorage({
@@ -179,7 +172,7 @@ Page({
   doLogin: function () {
     var self = this;
     app.doLogin(function () {
-      self.setData({ err_page_data: null });
+      self.setData({err_page_data: null});
       self.getMyBooks();
     });
   },
@@ -206,14 +199,14 @@ Page({
     }
   },
   goToShop: function () {
-    wx.switchTab({
+    wx.navigateTo({
       url: '../shop/shop'
     });
   },
   goToBookDetail: function (e) {
     var currentBookId = e.currentTarget.dataset.bookid;
     wx.navigateTo({
-      url: '../book_detail/book_detail?bookid=' + currentBookId
+      url: '../book_detail/book_detail?bookid=' + currentBookId + '&isInList=1'
     });
   },
   setIsSearching: function () {
@@ -278,7 +271,7 @@ Page({
       var regExp = new RegExp(searchString, 'igm');
       var leftStr = ''; //记录关键词左边的字符串
       var rightStr = ''; //记录关键词右边的字符串
-      var count = 1; //计数器
+      var count = 0; //计数器
       var tempStr = readyToBeSearch; //用于正则匹配的字符串
       var notChageStr = readyToBeSearch; //用于截取字符串，和上面一样的值是因为不能把一个值既用于正则运算又用于记录加入<code></code>的新的字符串,这样会使得循环变成无限循环
       var lastIndex = 0; //记录关键词的位置
@@ -310,6 +303,6 @@ Page({
   chooseMonth: function (event) {
     var self = this;
     var month = event.currentTarget.dataset.month;
-    self.setData({ monthIndex: month });
+    self.setData({monthIndex: month});
   }
 });

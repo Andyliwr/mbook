@@ -9,6 +9,7 @@ api/node_modules/
 
 # ignore config.js
 config.js
+!weixin/datas/Config.js
 
 # ignore reptile/log/
 reptile/log/

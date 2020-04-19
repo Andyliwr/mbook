@@ -1,7 +1,4 @@
 // page/shop/shop.js
-var Api = require('../../utils/api/api');
-var Util = require('../../utils/util');
-
 Page({
   data: {
     topic: [
@@ -20,13 +17,13 @@ Page({
     ],
     recommend: [
       {
-        bookId: '590efa449003c56177e63646',
+        bookId: '01',
         headImg: 'http://static.zongheng.com/upload/cover/10/1e/101ecef1545403f69722d665c41c7122.jpeg',
         name: '超品站兵',
         author: '梁不凡'
       },
       {
-        bookId: '590efaeb9003c56177e63647',
+        bookId: '02',
         headImg: 'http://static.zongheng.com/upload/cover/2016/12/1482972103534.jpg',
         name: '医品宗师 ',
         author: '缘分0'
@@ -136,13 +133,6 @@ Page({
   // 跳转到详情页
   goRecommendDetai: function (event) {
 
-  },
-  gotoBookDetail: function(event){
-    var bookid = event.currentTarget.dataset.bookid;
-    // 判断当前书籍在不在我的书单中
-    wx.navigateTo({
-      url: '../book_detail/book_detail?bookid=' + bookid
-    });
   },
   gotoRank: function(event){
     var rankType = event.target.dataset.ranktype;

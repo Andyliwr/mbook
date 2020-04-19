@@ -91,14 +91,6 @@ Page({
               //注册成功，缓存userid和openid
               if(tmpData.code == 0){
                 console.log('更新个人信息成功');
-                wx.showToast({
-                  title: '修改成功',
-                  icon: 'success',
-                  duration: 0
-                });
-                setTimeout(function(){
-                  wx.hideToast()
-                }, 2000)
                 self.setData({changeOrSubmit: true});
                 //更新缓存中的userInfo
                 self.getUserInfo(userid);
