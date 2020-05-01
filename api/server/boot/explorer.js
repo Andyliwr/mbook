@@ -1,5 +1,5 @@
 /**
- * Created by Andyliwr on 2017/4/4.
+ * server接口
  */
 module.exports = function mountLoopBackExplorer(server) {
   var explorer;
@@ -20,8 +20,8 @@ module.exports = function mountLoopBackExplorer(server) {
 
   server.use('/explorer', explorer.routes(server, { basePath: server.get('restApiRoot') }));
 
-  // server.once('started', function() {
-  //   var baseUrl = server.get('url').replace(/\/$/, '');
-  //   console.log('查看你的 REST API  %s%s', baseUrl, '/explorer');
-  // });
+  server.once('started', function() {
+    var baseUrl = server.get('url').replace(/\/$/, '');
+    console.log('查看你的 REST API  %s%s', baseUrl, '/explorer');
+  });
 };

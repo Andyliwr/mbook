@@ -6,7 +6,7 @@ const LoginUsers = [
     username: 'admin',
     password: '123456',
     avatar: './assets/personal.png',
-    name: '李迪康'
+    name: '宋世雄'
   }
 ];
 

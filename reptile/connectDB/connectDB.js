@@ -6,7 +6,9 @@ const eventproxy = require('eventproxy');
 //日志相关v
 const log4js = require('log4js');
 const path = require('path');
-var logger = null;
+var logger = log4js.getLogger('operation');
+
+
 //config log
 function configLog(reptileType) {
   if (reptileType == "networkReptile") {
@@ -132,6 +134,7 @@ factionRankSchema.methods.returnData = function () {
 var factionRankModel = mongoose.model('factionRank', factionRankSchema);
 
 //初始化函数
+
 var initDB = function () {
   //创建实例
   var factionContentEntity = new factionContentModel({

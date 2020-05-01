@@ -76,67 +76,68 @@ App({
         var code = res.code;
         console.log('获取用户登录凭证：' + code);
         if (code) {
-          //拿到用户详细信息
-          wx.getUserInfo({
-            success: function(res) {
-              console.log(res);
-              if(res.userInfo && res.rawData && res.signature && res.encryptedData && res.iv){
-                var loginData = {
-                  wxcode: code,
-                  userInfo: JSON.stringify(res.userInfo),
-                  rawData: res.rawData,
-                  signature: res.signature,
-                  encryptedData: res.encryptedData,
-                  iv: res.iv
-                };
-                // --------- 发送凭证 ------------------
-                wx.request({
-                  url: getSessionId(code),
-                  method: 'POST',
-                  data: loginData,
-                  success: function (res) {
-                    var tmpdata = res.data.data;
-                    if (tmpdata.code == 0) {
-                      //如果用户未绑定myappuser
-                      if(tmpdata.redirectParam){
-                        self.globalData.registerParam = tmpdata.redirectParam;
-                        wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
-                      }else{
-                        //如果登录成功，将sessionid存储在本地缓存中
-                        wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
-                        wx.setStorage({ key: "id", data: {userid: tmpdata.userid, openid: tmpdata.openid} });
-                        self.globalData.sessionId = tmpdata.sessionid;
-                        if(typeof callback == "function"){
-                          callback();
-                        }
-                        wx.showToast({ title: '登录成功', icon: 'success', duration: 100 });
-                        //2s后隐藏提示
-                        setTimeout(function () { wx.hideToast() }, 2000);
-                      }
-                    } else {
-                      console.log("登录失败, " + tmpdata.errMsg);
-                      //todo 失败的处理
-                      self.loginFail();
-                    }
-                  },
-                  fail: function (err) {
-                    console.log("登录失败, " + err);
-                    //todo 失败的处理
-                    self.loginFail();
+          // --------- 发送凭证 ------------------
+          wx.request({
+            url: getSessionId(code),
+            method: 'POST',
+            data: loginData,
+            success: function (res) {
+              var tmpdata = res.data.data;
+              if (tmpdata.code == 0) {
+                //如果用户未绑定myappuser
+                if(tmpdata.redirectParam){
+                  self.globalData.registerParam = tmpdata.redirectParam;
+                  wx.redirectTo({url: '/pages/login/wxlogin/wxlogin'});
+                }else{
+                  //如果登录成功，将sessionid存储在本地缓存中
+                  wx.setStorage({ key: "sessionid", data: tmpdata.sessionid });
+                  wx.setStorage({ key: "id", data: {userid: tmpdata.userid, openid: tmpdata.openid} });
+                  self.globalData.sessionId = tmpdata.sessionid;
+                  if(typeof callback == "function"){
+                    callback();
                   }
-                })
-                // ------------------------------------
-              }else{
-                console.log('getUserInfo返回数据错误');
+                  wx.showToast({ title: '登录成功', icon: 'success', duration: 100 });
+                  //2s后隐藏提示
+                  setTimeout(function () { wx.hideToast() }, 2000);
+                }
+              } else {
+                console.log("登录失败, " + tmpdata.errMsg);
+                //todo 失败的处理
                 self.loginFail();
               }
             },
-            fail: function(err){
+            fail: function (err) {
               console.log("登录失败, " + err);
               //todo 失败的处理
               self.loginFail();
             }
-          });
+          })
+          //拿到用户详细信息
+          // wx.getUserInfo({
+          //   success: function(res) {
+          //     console.log(res);
+          //     if(res.userInfo && res.rawData && res.signature && res.encryptedData && res.iv){
+          //       var loginData = {
+          //         wxcode: code,
+          //         userInfo: JSON.stringify(res.userInfo),
+          //         rawData: res.rawData,
+          //         signature: res.signature,
+          //         encryptedData: res.encryptedData,
+          //         iv: res.iv
+          //       };
+                
+          //       // ------------------------------------
+          //     }else{
+          //       console.log('getUserInfo返回数据错误');
+          //       self.loginFail();
+          //     }
+          //   },
+          //   fail: function(err){
+          //     console.log("登录失败, " + err);
+          //     //todo 失败的处理
+          //     self.loginFail();
+          //   }
+          // });
         } else {
           console.log('获取用户登录态失败：' + res.errMsg);
           self.loginFail();

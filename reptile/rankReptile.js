@@ -84,7 +84,7 @@ function getQdFactionRankList() {
     var QzEp = new eventproxy();
     QzEp.all('hasFinishedQidian', function (qiDianData) {
         // logger.info('即将开始爬取纵横网的排行榜....')
-        getZhFactionRankList();
+        // getZhFactionRankList();
     });
     superagent.get(QI_DIAN_WEB)
         .end(function (err, res) {

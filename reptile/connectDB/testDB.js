@@ -24,7 +24,7 @@ var Comment = mongoose.model('Comment', CommentSchema);
 
 
 // 连接数据库
-mongoose.connect('mongodb://localhost/population-test', function (err){
+mongoose.connect('mongodb://admin:196925@192.168.1.5:27017/myapp', function (err){
     if (err) throw err;
     createData();
     //填充所有 users 的 posts

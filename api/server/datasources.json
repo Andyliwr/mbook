@@ -4,11 +4,11 @@
     "connector": "memory"
   },
   "mongodb": {
-    "host": "127.0.0.1",
+    "host": "192.168.1.5",
     "port": 27017,
-    "url": "mongodb://admin:123456@127.0.0.1:27017/myapp",
+    "url": "mongodb://admin:196925@192.168.1.5:27017/myapp",
     "database": "myapp",
-    "password": "123456",
+    "password": "196925",
     "name": "mongodb",
     "user": "admin",
     "connector": "mongodb"

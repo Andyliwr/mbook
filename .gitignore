@@ -12,7 +12,7 @@ config.js
 !weixin/datas/Config.js
 
 # ignore reptile/log/
-reptile/log/
+reptile/log/*.log
 
 #api/server/datasources.json
 api/server/datasources.json

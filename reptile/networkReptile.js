@@ -104,7 +104,7 @@ function getFactionListByUrl(factionName, factionInfo) {
   var dealedData = [];
   var readyToBroswerUrls = [];
   var getNewestFactionList = function (newestFactionNum) {
-    //test, 爬去所有小说
+    //test, 爬取所有小说
     newestFactionNum = 1410;
     var totalNewestNum = 0;
     superagent.get(factionInfo.url)
