@@ -26,6 +26,8 @@ const GET_COMMENTS = '/xs_list/listComments';
 const GET_USER_INFO = '/myappuser/getUserInfo';
 const UPDATE_USER_INFO = '/myappuser/updateUserInfo';
 const ADD_LIKE_NUM = '/xs_list/addLikeNum';
+const GET_ALL_BOOKS = '/xs_list';
+const INIT_DATABASE = '/xs_list/initDataBase';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
@@ -132,5 +134,12 @@ module.exports = {
   // 点赞, post
   addLikeNum: function(){
     return HOST_URL + ADD_LIKE_NUM
+  },
+  // 点赞, post
+  getAllBooks: function(){
+    return HOST_URL + GET_ALL_BOOKS
+  },
+  initDataBase: function(){
+    return HOST_URL + INIT_DATABASE
   }
 }

@@ -126,6 +126,7 @@
 	padding:20rpx;
 	box-sizing:border-box;
 	overflow:auto;
+	width: 100%;
 }
 .comment-item .headImg{
 	float: left;

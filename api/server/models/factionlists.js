@@ -6,6 +6,112 @@ var promise = require('bluebird');
 var Eventproxy = require('eventproxy');
 
 module.exports = function (Factionlists) {
+  Factionlists.initDataBase = function(bookid, cb) {
+    var app = Factionlists.app;
+    const BOOKS = [
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/10/1e/101ecef1545403f69722d665c41c7122.jpeg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "梁不凡",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "超品站兵",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/2016/12/1482972103534.jpg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "缘分0",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "医品宗师",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/2015/12/1449926451589.jpg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "步行天下",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "原血神座",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/2016/12/1482972103534.jpg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "龙七二十一",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "诸天谣",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/2015/06/1434416579785.jpg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "烈焰滔滔",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "最强狂兵",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+      {
+        "headerImage": "http://static.zongheng.com/upload/cover/2016/07/1467708575259.jpg",
+        "updateTime": "2020-05-03T13:27:19.283Z",
+        "author": "风起夏天",
+        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "factionName": "轮回剑主",
+        "sectionArray": [
+          "[]"
+        ],
+        "newest": 0,
+        "comments": [
+          {}
+        ],
+      },
+    ];
+    BOOKS.forEach(book => {
+      Factionlists.create(book);
+    });
+    cb(null, { code: 0, msg: '初始化成功' });
+  };
+
+  //register getBookById
+  Factionlists.remoteMethod(
+    'initDataBase', {
+      accepts: {
+        arg: 'bookid',
+        type: 'string',
+        description: 'the id of a book'
+      },
+      returns: {},
+      http: { path: '/initDataBase', verb: 'get' }
+    });
+
   Factionlists.getBookById = function (bookid, cb) {
     var returnData = {};
     var app = Factionlists.app;
