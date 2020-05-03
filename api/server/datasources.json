@@ -6,7 +6,7 @@
   "mongodb": {
     "host": "192.168.1.5",
     "port": 27017,
-    "url": "mongodb://admin:196925@192.168.1.5:27017/myapp",
+    "url": "mongodb://admin@192.168.1.5:27017/?authSource=myapp",
     "database": "myapp",
     "password": "196925",
     "name": "mongodb",

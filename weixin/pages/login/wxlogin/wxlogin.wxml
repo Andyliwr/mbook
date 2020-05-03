@@ -1,7 +1,7 @@
 <view class="wxlogin-container">
     <view class="notice">
         <image src="https://olpkwt43d.qnssl.com/myapp/wxlogin/wechat_save.png" bindtap="uploadAvatar"></image>
-        <view class="des">该页面由FollowHeart开发，向其提供以下权限即可继续操作</view>
+        <view class="des">还差一点就能完成注册啦~</view>
     </view>
     <view class="needInfo">
         <checkbox-group bindchange="checkboxChange">

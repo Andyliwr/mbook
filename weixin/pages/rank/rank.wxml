@@ -5,7 +5,7 @@
     		<view wx:if="{{currentIndex == tabIndex}}" class="tabLine"></view>
     	</view>
     </view>
-    <scroll-view class="tab-content" scroll-y="true" scroll-top="{{scrollTop.scrollTop_value}}" bindscroll="scrollFun">
+    <scroll-view class="tab-content" scroll-y="true" scroll-top="{{scrollTop.scrollTop_value}}"bindscroll="scrollFun">
     	<view class="content-item" wx:for="{{rankData}}" wx:for-index="contentIndex" wx:for-item="contentItem" wx:key="engName" data-type="{{item.engName}}" hidden="{{currentIndex != contentIndex}}">
     		<view class="book-item" wx:for="{{contentItem.qdRank || contentItem.zhRank}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="bookId" data-bookId="{{bookItem.bookId}}" bindtap="gotoBookDetail">
                 <view class="bookInfo">

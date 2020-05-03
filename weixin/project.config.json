@@ -26,8 +26,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.10.3",
-	"appid": "wx63a7802e602c1a56",
-	"projectname": "%E5%BE%AE%E4%B9%A6",
+	"appid": "wx39635e80215f2e13",
+	"projectname": "weixin",
 	"cloudfunctionTemplateRoot": "",
 	"watchOptions": {
 		"ignore": []
@@ -36,6 +36,8 @@
 		"hidedInDevtools": []
 	},
 	"scripts": {},
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -60,8 +62,15 @@
 			"current": -1,
 			"list": [
 				{
+					"id": 0,
+					"name": "注册",
+					"pathName": "pages/registe/registe",
+					"query": "",
+					"scene": null
+				},
+				{
 					"id": -1,
-					"name": "pages/login/wxlogin/wxlogin",
+					"name": "登录页面",
 					"pathName": "pages/login/wxlogin/wxlogin",
 					"query": "",
 					"scene": null

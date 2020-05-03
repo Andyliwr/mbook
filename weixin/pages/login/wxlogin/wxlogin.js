@@ -6,9 +6,9 @@ var Util = require('../../../utils/util');
 // 初始化七牛相关参数
 function initQiniu(callback) {
   var options = {
-    region: 'SCN', // 华东区，生产环境应换成自己七牛帐户bucket的区域
+    region: 'z1', // 华北区，生产环境应换成自己七牛帐户bucket的区域
     uptokenURL: Api.getUploadToken(), // 生产环境该地址应换成自己七牛帐户的token地址，具体配置请见server端
-    domain: 'https://olpkwt43d.qnssl.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
+    domain: 'http://q8l0t5qvz.bkt.clouddn.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
   };
   qiniuUploader.init(options);
 }
