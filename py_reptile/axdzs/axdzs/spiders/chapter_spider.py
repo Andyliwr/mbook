@@ -4,6 +4,10 @@ import scrapy
 class ChapterSpider(scrapy.Spider):
     name = "chapter"
 
+    def __init__(self, faction_id=None, *args, **kwargs):
+        super(ChapterSpider, self).__init__(*args, **kwargs)
+        self.faction_id = faction_id  # 需要爬取章节的小说名
+
     def start_requests(self):
         urls = [
             'http://quotes.toscrape.com/page/1/',

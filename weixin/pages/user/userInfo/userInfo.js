@@ -8,7 +8,7 @@ function initQiniu(callback) {
   var options = {
     region: 'SCN', // 华东区，生产环境应换成自己七牛帐户bucket的区域
     uptokenURL: Api.getUploadToken(), // 生产环境该地址应换成自己七牛帐户的token地址，具体配置请见server端
-    domain: 'https://olpkwt43d.qnssl.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
+    domain: 'https://file.lantingshucheng.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
   };
   qiniuUploader.init(options);
 }
@@ -44,7 +44,7 @@ Page({
     });
   },
   headimgError: function () {
-    this.setData({avatar: 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim'});
+    this.setData({avatar: 'https://file.lantingshucheng.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim'});
   },
   // 表单提交事件
   formSubmit: function () {
@@ -135,7 +135,7 @@ Page({
         self.setData({
           err_page_data: {
             show: true,
-            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            image_url: 'https://file.lantingshucheng.com/myapp/err_tips/network_err.png',
             text: '努力找不到网络>_<请检查后重试',
             buttonText: '重试',
             click: 'getUserInfo'

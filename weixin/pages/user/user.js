@@ -9,9 +9,9 @@ Page({
     emails: [
       {
         id: '12312312311231',
-        bgImgUrl: 'https://olpkwt43d.qnssl.com/myapp/email_bg01.jpg',
+        bgImgUrl: 'https://file.lantingshucheng.com/myapp/email_bg01.jpg',
         digest: {
-          author_img: 'https://olpkwt43d.qnssl.com/myapp/user/personal.png',
+          author_img: 'https://file.lantingshucheng.com/myapp/user/personal.png',
           author_name: '熊猫老师',
           author_des: '宣传部',
           title: "“阅读推行赠书计划”已经开始",
@@ -28,9 +28,9 @@ Page({
       },
       {
         id: '1231221331231',
-        bgImgUrl: 'https://olpkwt43d.qnssl.com/myapp/email_bg01.jpg',
+        bgImgUrl: 'https://file.lantingshucheng.com/myapp/email_bg01.jpg',
         digest: {
-          author_img: 'https://olpkwt43d.qnssl.com/myapp/user/personal.png',
+          author_img: 'https://file.lantingshucheng.com/myapp/user/personal.png',
           author_name: '熊猫老师',
           author_des: '宣传部',
           title: "“阅读推行赠书计划”已经开始",
@@ -46,9 +46,9 @@ Page({
       },
       {
         id: '12312312123131',
-        bgImgUrl: 'https://olpkwt43d.qnssl.com/myapp/email_bg01.jpg',
+        bgImgUrl: 'https://file.lantingshucheng.com/myapp/email_bg01.jpg',
         digest: {
-          author_img: 'https://olpkwt43d.qnssl.com/myapp/user/personal.png',
+          author_img: 'https://file.lantingshucheng.com/myapp/user/personal.png',
           author_name: '熊猫老师',
           author_des: '宣传部',
           title: "“阅读推行赠书计划”已经开始",
@@ -64,9 +64,9 @@ Page({
       },
       {
         id: '12312312123131',
-        bgImgUrl: 'https://olpkwt43d.qnssl.com/myapp/email_bg01.jpg',
+        bgImgUrl: 'https://file.lantingshucheng.com/myapp/email_bg01.jpg',
         digest: {
-          author_img: 'https://olpkwt43d.qnssl.com/myapp/user/personal.png',
+          author_img: 'https://file.lantingshucheng.com/myapp/user/personal.png',
           author_name: '熊猫老师',
           author_des: '宣传部',
           title: "“阅读推行赠书计划”已经开始",
@@ -82,9 +82,9 @@ Page({
       },
       {
         id: '12312312123131',
-        bgImgUrl: 'https://olpkwt43d.qnssl.com/myapp/email_bg01.jpg',
+        bgImgUrl: 'https://file.lantingshucheng.com/myapp/email_bg01.jpg',
         digest: {
-          author_img: 'https://olpkwt43d.qnssl.com/myapp/user/personal.png',
+          author_img: 'https://file.lantingshucheng.com/myapp/user/personal.png',
           author_name: '熊猫老师',
           author_des: '宣传部',
           title: "“阅读推行赠书计划”已经开始",
@@ -104,7 +104,7 @@ Page({
       allTasks: [
         {
           bookId: '123123121231231',
-          img: 'https://olpkwt43d.qnssl.com/myapp/dazhuzai.jpg',
+          img: 'https://file.lantingshucheng.com/myapp/dazhuzai.jpg',
           bookName: '大主宰',
           bookDes: '大千世界,位面交汇,万族林立,群雄荟萃,一位位来自下位面的天之至尊,在这无尽世界,演绎着令人向往的传奇,追求着那主宰之',
           bookHot: 4,
@@ -112,7 +112,7 @@ Page({
         },
         {
           bookId: '1231231231',
-          img: 'https://olpkwt43d.qnssl.com/myapp/chenyuan.jpg',
+          img: 'https://file.lantingshucheng.com/myapp/chenyuan.jpg',
           bookName: '尘缘',
           bookDes: '那一天，我摇动所有的经桶，不为超度，只为触摸你的指尖；那一年，在山路匍匐，不为觐见',
           bookHot: 2,
@@ -203,6 +203,6 @@ Page({
     });
   },
   headimgError: function () {
-    this.setData({avatar: 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim'});
+    this.setData({avatar: 'https://file.lantingshucheng.com/myApp/unknown_headimg.png?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim'});
   }
 })

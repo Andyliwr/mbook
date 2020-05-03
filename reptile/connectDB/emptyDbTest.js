@@ -48,5 +48,5 @@ connectDB.initDB();
 // })
 // qiniuOperation.compressAndUpload('http://avatar.csdn.net/E/2/7/1_u014374031.jpg', 'avatar', '../qiniu/tmp/', 'andyliwr.jpg');
 // for(var i=0; i<5; i++){
-//   qiniuOperation.compressAndUpload('https://olpkwt43d.qnssl.com/myapp/email/emailBg0'+(i+1)+'.jpg', 'email', '../qiniu/tmp', 'emailBg0'+(i+1)+'.png');
+//   qiniuOperation.compressAndUpload('https://file.lantingshucheng.com/myapp/email/emailBg0'+(i+1)+'.jpg', 'email', '../qiniu/tmp', 'emailBg0'+(i+1)+'.png');
 // }

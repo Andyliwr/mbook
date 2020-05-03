@@ -1,9 +1,9 @@
 {
-  "name": "graduationDesign",
+  "name": "mbook",
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "start": "node .",
+    "start": "npx nodemon --watch ./ --exec node .",
     "pretest": "eslint .",
     "posttest": "nsp check"
   },
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "eslint": "^2.5.3",
+    "nodemon": "^2.0.3",
     "nsp": "^2.1.0"
   },
   "repository": {

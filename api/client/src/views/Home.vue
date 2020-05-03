@@ -147,7 +147,7 @@ import { cookie } from '../common/js/util';
       // get user info
       getUserInfo(localStorage.getItem('userid')).then(data => {
         self.sysUserName = data.realm || data.username;
-        self.sysUserAvatar = data.avatar || 'https://olpkwt43d.qnssl.com/avatar/andyliwr.jpg';
+        self.sysUserAvatar = data.avatar || 'https://file.lantingshucheng.com/avatar/andyliwr.jpg';
         localStorage.setItem('userInfo', JSON.stringify(data));
       });
     }

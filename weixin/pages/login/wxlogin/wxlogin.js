@@ -44,29 +44,29 @@ Page({
       app.globalData.registerParam = null;
     }
     // 获取当前地理位置
-    wx.getLocation({
-      type: 'wgs84',
-      success: function(res) {
-        var latitude = res.latitude;
-        var longitude = res.longitude;
-        // 向高德请求地址转换
-        console.log(Api.getPosition(latitude, longitude));
-        wx.request({
-          url: Api.getPosition(latitude, longitude),
-          method: 'GET',
-          success: function(res){
-            console.log(res);
-            self.setData({city: res.data.regeocode.addressComponent.city, address: res.data.regeocode.addressComponent.country + ' ' + res.data.regeocode.addressComponent.city + ' ' + res.data.regeocode.addressComponent.district});
-          },
-          fail: function(err){
-            console.log('地址转换失败');
-          }
-        })
-      },
-      fail: function(){
-        console.log('获取定位失败');
-      }
-    });
+    // wx.getLocation({
+    //   type: 'wgs84',
+    //   success: function(res) {
+    //     var latitude = res.latitude;
+    //     var longitude = res.longitude;
+    //     // 向高德请求地址转换
+    //     console.log(Api.getPosition(latitude, longitude));
+    //     wx.request({
+    //       url: Api.getPosition(latitude, longitude),
+    //       method: 'GET',
+    //       success: function(res){
+    //         console.log(res);
+    //         self.setData({city: res.data.regeocode.addressComponent.city, address: res.data.regeocode.addressComponent.country + ' ' + res.data.regeocode.addressComponent.city + ' ' + res.data.regeocode.addressComponent.district});
+    //       },
+    //       fail: function(err){
+    //         console.log('地址转换失败');
+    //       }
+    //     })
+    //   },
+    //   fail: function(){
+    //     console.log('获取定位失败');
+    //   }
+    // });
   },
   //监听用户输入
   userInput: function (event) {
@@ -142,6 +142,14 @@ Page({
                     wx.setStorageSync("id", idStr);
                     //登录,  wx.navigateTo 和 wx.redirectTo 不允许跳转到 tabbar 页面，只能用 wx.switchTab 跳转到 tabbar 页面
                     app.doLogin(function(){wx.switchTab({ url: '../../booklist/booklist' })});
+                  }else{
+                    // 提示错误
+                    var msg = tmpData.error.details.messages;
+                    var msgArr = [];
+                    for(var i in msg){
+                      msgArr.push(msg[i][0]);
+                    }
+                    Util.showErrMsg(self, msgArr.join(' ,'), 1500);
                   }
                 },
                 fail: function (err) {

@@ -5,7 +5,6 @@
     "pages/login/wxlogin/wxlogin",
     "pages/shop/shop",
     "pages/book_detail/reader/reader",
-    "pages/jiaowu/jiaowu",
     "pages/rank/rank",
     "pages/login/aslogin/aslogin",
     "pages/jiaowu_detail/jiaowu_detail",
@@ -52,5 +51,5 @@
     "downloadFile": 10000
   },
   "debug": true,
-  "sitemapLocation": "sitemap6.json"
+  "sitemapLocation": "sitemap.json"
 }

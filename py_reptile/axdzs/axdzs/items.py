@@ -31,3 +31,7 @@ class SearchItem(scrapy.Item):
     hot_value = scrapy.Field()  # 热度值，用来排序搜索结果
     is_detail_page_ready = scrapy.Field() # 标志位，用来标记书籍详情是否爬取完毕
     pass
+
+
+class ChapterItem(scrapy.Item):
+    name = 1

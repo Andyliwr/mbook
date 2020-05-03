@@ -1,6 +1,6 @@
 <view class='login-container'>
   <view class="headimg">
-    <image src="https://olpkwt43d.qnssl.com/myapp/user/personal.png" model="center" binderror="headimgError" />
+    <image src="https://file.lantingshucheng.com/myapp/user/personal.png" model="center" binderror="headimgError" />
   </view>
   <view class="welcome-text">
     <text>{{welcome_text}}</text>
