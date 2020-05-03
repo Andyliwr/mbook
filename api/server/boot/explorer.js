@@ -16,7 +16,7 @@ module.exports = function mountLoopBackExplorer(server) {
     return;
   }
   //用户名 test 密码 123456
-  server.use('/explorer', require('node-basicauth')({'admin': '123456' }));
+  // server.use('/explorer', require('node-basicauth')({'admin': '123456' }));
 
   server.use('/explorer', explorer.routes(server, { basePath: server.get('restApiRoot') }));
 

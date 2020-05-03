@@ -6,20 +6,22 @@
 		"postcss": true,
 		"minified": true
 	},
-	"compileType": "weapp",
+	"compileType": "miniprogram",
 	"libVersion": "1.5.4",
-	"appid": "wx98fdadcaaeac5160",
+	"appid": "wx9325b6a2100b7c0f",
 	"projectname": "%E5%BE%AE%E4%B9%A6",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
-		"weapp": {
-			"current": -1,
-			"list": []
-		},
 		"search": {
 			"current": -1,
 			"list": []
 		},
 		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
 			"current": -1,
 			"list": []
 		}
