@@ -8,7 +8,7 @@ function initQiniu(callback) {
   var options = {
     region: 'SCN', // 华东区，生产环境应换成自己七牛帐户bucket的区域
     uptokenURL: Api.getUploadToken(), // 生产环境该地址应换成自己七牛帐户的token地址，具体配置请见server端
-    domain: 'https://olpkwt43d.qnssl.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
+    domain: 'https://file.lantingshucheng.com/' // 生产环境该地址应换成自己七牛帐户对象存储的域名
   };
   qiniuUploader.init(options);
 }
@@ -44,29 +44,29 @@ Page({
       app.globalData.registerParam = null;
     }
     // 获取当前地理位置
-    wx.getLocation({
-      type: 'wgs84',
-      success: function(res) {
-        var latitude = res.latitude;
-        var longitude = res.longitude;
-        // 向高德请求地址转换
-        console.log(Api.getPosition(latitude, longitude));
-        wx.request({
-          url: Api.getPosition(latitude, longitude),
-          method: 'GET',
-          success: function(res){
-            console.log(res);
-            self.setData({city: res.data.regeocode.addressComponent.city, address: res.data.regeocode.addressComponent.country + ' ' + res.data.regeocode.addressComponent.city + ' ' + res.data.regeocode.addressComponent.district});
-          },
-          fail: function(err){
-            console.log('地址转换失败');
-          }
-        })
-      },
-      fail: function(){
-        console.log('获取定位失败');
-      }
-    });
+    // wx.getLocation({
+    //   type: 'wgs84',
+    //   success: function(res) {
+    //     var latitude = res.latitude;
+    //     var longitude = res.longitude;
+    //     // 向高德请求地址转换
+    //     console.log(Api.getPosition(latitude, longitude));
+    //     wx.request({
+    //       url: Api.getPosition(latitude, longitude),
+    //       method: 'GET',
+    //       success: function(res){
+    //         console.log(res);
+    //         self.setData({city: res.data.regeocode.addressComponent.city, address: res.data.regeocode.addressComponent.country + ' ' + res.data.regeocode.addressComponent.city + ' ' + res.data.regeocode.addressComponent.district});
+    //       },
+    //       fail: function(err){
+    //         console.log('地址转换失败');
+    //       }
+    //     })
+    //   },
+    //   fail: function(){
+    //     console.log('获取定位失败');
+    //   }
+    // });
   },
   //监听用户输入
   userInput: function (event) {

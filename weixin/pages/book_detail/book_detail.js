@@ -67,7 +67,7 @@ Page({
           self.setData({
             err_page_data: {
               show: true,
-              image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+              image_url: 'https://file.lantingshucheng.com/myapp/err_tips/network_err.png',
               text: '努力找不到网络>_<请检查后重试',
               buttonText: '重试',
               click: 'getBookDetail'
@@ -80,7 +80,7 @@ Page({
         self.setData({
           err_page_data: {
             show: true,
-            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            image_url: 'https://file.lantingshucheng.com/myapp/err_tips/network_err.png',
             text: '努力找不到网络>_<请检查后重试',
             buttonText: '登录',
             click: 'getBookDetail'
@@ -124,7 +124,7 @@ Page({
           self.setData({
             err_page_data: {
               show: true,
-              image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+              image_url: 'https://file.lantingshucheng.com/myapp/err_tips/network_err.png',
               text: '努力找不到网络>_<请检查后重试',
               buttonText: '重试',
               click: 'getBookDetail'
@@ -137,7 +137,7 @@ Page({
         self.setData({
           err_page_data: {
             show: true,
-            image_url: 'https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png',
+            image_url: 'https://file.lantingshucheng.com/myapp/err_tips/network_err.png',
             text: '努力找不到网络>_<请检查后重试',
             buttonText: '重试',
             click: 'getBookDetail'

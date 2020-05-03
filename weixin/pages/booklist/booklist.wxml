@@ -42,7 +42,7 @@
       </block>
     </view>
     <view class="empty" wx:if="{{books.length === 0}}">
-      <image src="https://olpkwt43d.qnssl.com/myapp/err_tips/empty_err.png"></image>
+      <image src="https://file.lantingshucheng.com/myapp/err_tips/empty_err.png"></image>
       <button bindtap="goToShop" plain="true" type="default">您还未添加书籍，快去书城看看</button>
     </view>
   </view>

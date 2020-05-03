@@ -49,7 +49,7 @@
 				</view>
 			</view>
 			<view class="no-comments" wx:if="{{comments.length == 0}}">
-				<image src="https://olpkwt43d.qnssl.com/myapp/softPlace.png"></image>
+				<image src="https://file.lantingshucheng.com/myapp/softPlace.png"></image>
 				暂无评论，快去抢沙发...
 			</view>
 		</view>

@@ -87,7 +87,7 @@ function compressAndUpload(url, type, tmpPath, saveName, success, fail){
     console.log('完成压缩'+data);
     if(typeof success !== 'function' && typeof fail !== 'function'){
       var success = function (ret) {
-        console.log(url+ '  ===>  ' + 'https://olpkwt43d.qnssl.com/' + ret.key);
+        console.log(url+ '  ===>  ' + 'https://file.lantingshucheng.com/' + ret.key);
       };
       var fail = function (err) {
         console.log(url + '压缩失败....');

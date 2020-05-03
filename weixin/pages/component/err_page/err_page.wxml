@@ -1,10 +1,10 @@
 <!--
 错误提示图片地址：
-数据为空错误： https://olpkwt43d.qnssl.com/myapp/err_tips/empty_err.png
-网络错误：https://olpkwt43d.qnssl.com/myapp/err_tips/network_err.png
-未登录错误：https://olpkwt43d.qnssl.com/myapp/err_tips/nologin_err.png
-邮件为空错误：https://olpkwt43d.qnssl.com/myapp/err_tips/mail_err.png
-开发中错误：https://olpkwt43d.qnssl.com/myapp/err_tips/developing_err.png
+数据为空错误： https://file.lantingshucheng.com/myapp/err_tips/empty_err.png
+网络错误：https://file.lantingshucheng.com/myapp/err_tips/network_err.png
+未登录错误：https://file.lantingshucheng.com/myapp/err_tips/nologin_err.png
+邮件为空错误：https://file.lantingshucheng.com/myapp/err_tips/mail_err.png
+开发中错误：https://file.lantingshucheng.com/myapp/err_tips/developing_err.png
  -->
 <template name="err_page">
   <view hidden="{{!err_page_data.show}}" class="err_page">

@@ -43,6 +43,9 @@ npm run start
 
 ## 运行小程序
 去[微信小程序官网](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)下载一个开发者工具，然后打开项目下的 `weixin` 目录即可
+>ps 为了方便运行登录接口都是使用的mock数据，如果你有自己的小程序ID，可以到 `api/server/models/my-app-user.js` 自行修改
+
+![2020-05-03-21-08-44](https://file.lantingshucheng.com/2020-05-03-21-08-44.png)
 
 
 ## 爬虫
@@ -74,17 +77,22 @@ weixin --- 微信小程序目录
   |- app.js --- 微信小程序入口文件
 ```
 ## 项目截图
+### 小程序
 <div>
-<img src="https://file.lantingshucheng.com/1521214550813.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214553929.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214558128.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214565101.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214567465.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214571074.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214572862.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214576135.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214578084.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214580699.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214583072.png" alt="" style="width: 250px; height: auto">
-<img src="https://file.lantingshucheng.com/1521214585790.png" alt="" style="width: 250px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214550813.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214553929.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214558128.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214565101.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214567465.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214571074.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214572862.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214576135.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214578084.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214580699.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214583072.png" alt="" style="width: 180px; height: auto">
+<img src="https://file.lantingshucheng.com/1521214585790.png" alt="" style="width: 180px; height: auto">
 </div>
+
+### 后台
+
+![2020-05-03-20-56-31](https://file.lantingshucheng.com/2020-05-03-20-56-31.png)

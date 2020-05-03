@@ -6,15 +6,15 @@ Page({
   data: {
     topic: [
       {
-        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend01.jpg',
+        headImg: 'https://file.lantingshucheng.com/myapp/shop/recommend01.jpg',
         id: '01',
       },
       {
-        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend02.jpg',
+        headImg: 'https://file.lantingshucheng.com/myapp/shop/recommend02.jpg',
         id: '02',
       },
       {
-        headImg: 'https://olpkwt43d.qnssl.com/myapp/shop/recommend02.jpg',
+        headImg: 'https://file.lantingshucheng.com/myapp/shop/recommend02.jpg',
         id: '03',
       }
     ],

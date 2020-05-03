@@ -181,7 +181,7 @@ module.exports = function (Factionlists) {
     app.models.myAppUser.findById(userid)
       .then(function (res) {
         const nickName = res.nickName || 'unkown';
-        const avatar = res.avatar || 'https://olpkwt43d.qnssl.com/myApp/unknown_headimg.png';
+        const avatar = res.avatar || 'https://file.lantingshucheng.com/myApp/unknown_headimg.png';
         // query the comments all existed
         Factionlists.findById(bookid)
           .then(function (listRes) {
