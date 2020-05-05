@@ -50,7 +50,7 @@
         <view class="recommend-container">
           <view class="recommend-item" wx:for="{{recommend}}" wx:key="id" data-bookid="{{item.id}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}" bindtap="gotoBookDetail">
             <image src="{{item.headerImage}}" mode="scaleToFill"></image>
-            <view class="bookName">{{item.name}}</view>
+            <view class="bookName">{{item.factionName}}</view>
             <view class="author">{{item.author}}</view>
           </view>
         </view>
@@ -92,9 +92,9 @@
         <text class="text-underline">新书</text>推荐
       </view>
       <view class="new-container">
-        <view class="new-item" wx:for="{{recommend}}" wx:key="id" data-bookid="{{item.id}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}">
+        <view class="new-item" wx:for="{{recommend}}" wx:key="id" data-bookid="{{item.id}}" style="margin-right: {{((index+1)%4 == 0)? '0': '5.3%'}}" bindtap="gotoBookDetail">
           <image src="{{item.headerImage}}" mode="scaleToFill"></image>
-          <view class="bookName">{{item.name}}</view>
+          <view class="bookName">{{item.factionName}}</view>
           <view class="author">{{item.author}}</view>
         </view>
       </view>

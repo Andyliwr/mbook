@@ -1,0 +1,28 @@
+.err_page{
+	position: absolute;
+	z-index: 10000;
+	background: #fff;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	text-align: center;
+	color: #9c9c9c;
+	font-size: 30rpx;
+}
+.err_page > image{
+	width: 330rpx;
+	height: 330rpx;
+	margin-top: 40%;
+	margin-bottom: 30rpx;
+}
+.err_page > button{
+	margin-top: 40rpx;
+	width: 180rpx;
+	line-height: 60rpx;
+	height: 60rpx;
+	font-size: 32rpx;
+	color: #fd9941;
+	border: 2rpx solid #fd9941;
+	border-radius: 8rpx;
+}

@@ -98,8 +98,6 @@ Page({
   },
   confirmRegiste: function (event) {
     var self = this;
-    //设置button的loading显示
-    self.setData({ isShowLoading: true });
     //校验
     var usernameReg = /^[0-9a-zA-Z]{4,16}$/; // 4-16位
     var emailReg = /^[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?$/;
@@ -130,6 +128,8 @@ Page({
                 "password": self.data.password,
                 "emailVerified": true
               };
+              //设置button的loading显示
+              self.setData({ isShowLoading: true });
               wx.request({
                 url: Api.registe(),
                 method: 'POST',
@@ -137,16 +137,16 @@ Page({
                 success: function (res) {
                   var tmpData = res.data;
                   //注册成功，缓存userid和openid
-                  if(tmpData.id){
-                    var idStr = JSON.stringify({userid: tmpData.id, openid: self.data.userInfoFromApp.openid});
+                  if (tmpData.id) {
+                    var idStr = JSON.stringify({ userid: tmpData.id, openid: self.data.userInfoFromApp.openid });
                     wx.setStorageSync("id", idStr);
                     //登录,  wx.navigateTo 和 wx.redirectTo 不允许跳转到 tabbar 页面，只能用 wx.switchTab 跳转到 tabbar 页面
-                    app.doLogin(function(){wx.switchTab({ url: '../../booklist/booklist' })});
-                  }else{
+                    app.doLogin(function () { wx.switchTab({ url: '../../booklist/booklist' }) });
+                  } else {
                     // 提示错误
                     var msg = tmpData.error.details.messages;
                     var msgArr = [];
-                    for(var i in msg){
+                    for (var i in msg) {
                       msgArr.push(msg[i][0]);
                     }
                     Util.showErrMsg(self, msgArr.join(' ,'), 1500);
@@ -154,6 +154,10 @@ Page({
                 },
                 fail: function (err) {
                   console.log('注册失败， ' + err);
+                },
+                complete:function(){
+                  //关掉提示
+                  elf.setData({ isShowLoading: false });
                 }
               });
             } else {

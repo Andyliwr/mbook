@@ -198,7 +198,8 @@ Page({
     for (var i = 0; i <= 6; i++) {
       resultArray.push({
         monthCname: Util.eNumToCNum(Math.abs(month - i < 0 ? month + 12 - i : month - i)) + '月',
-        hasRecord: ((Math.random() > 0.5) ? true : false),
+        // hasRecord: ((Math.random() > 0.5) ? true : false),
+        hasRecord: i == 0,
         monthIndex: i
       });
     }

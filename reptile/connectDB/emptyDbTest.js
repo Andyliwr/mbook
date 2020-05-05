@@ -40,7 +40,7 @@ connectDB.configLog('ixdzsReptile');
 // console.log(JSON.stringify(myAppTools.removeDuplicate(jsonArr, 'sectionNum')));
 
 //初始化数组库
-connectDB.initDB();
+// connectDB.initDB();
 
 //获取断层章节
 // connectDB.getSlipSection('大主宰', '爱下电子书', function(idArr){

@@ -1,1 +1,5 @@
-<button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">微信授权登录</button>
+<view class="err_page">
+	<image src="https://file.lantingshucheng.com/myapp/err_tips/nologin_err.png"></image>
+	<view class="page_des">还未登录哦,点击一键授权登录,畅享阅读</view>
+	<button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="page_button">一键授权登录</button>
+</view>
