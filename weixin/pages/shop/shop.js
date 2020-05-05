@@ -74,10 +74,12 @@ Page({
       method: 'GET',
       success(res) {
         if (!res.data || res.data.length === 0) {
+          console.log(res)
           wx.request({
             url: Api.initDataBase(),
             method: 'GET',
             success(res) {
+              console.log(res)
               self.getData();
             },
             fail(e) {

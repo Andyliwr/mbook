@@ -7,7 +7,7 @@ var querystring = require("querystring");
 var uuid = require("uuid"); //用于生成sessionid
 var redis = require("redis"),
   redis_port = 6379,
-  redis_host = "192.168.1.5",
+  redis_host = "server.vmware.local",
   redis_pwd = "196925",
   redis_opts = { auth_pass: redis_pwd };
 

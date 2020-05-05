@@ -18,14 +18,14 @@ var websiteConfig = [
   }
 ];
 var localMongoJson = {
-  url: '192.168.1.5',
+  url: 'server.vmware.local',
   port: '27017',
   dbName: 'myapp',
   username: 'admin',
   password: '196925'
 };
 var mongoConfig = {
-  url: '192.168.1.5',
+  url: 'server.vmware.local',
   port: '27017',
   dbName: 'myapp',
   username: 'admin',

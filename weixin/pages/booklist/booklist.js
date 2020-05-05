@@ -12,7 +12,7 @@ Page({
     searchValue: '',
     userInfo: {},
     err_page_data: null, //app状态页
-    monthIndex: 6
+    monthIndex: 0
   },
   onReady: function () {
     var self = this;
@@ -21,6 +21,7 @@ Page({
       showMonths: timeResult.showMonths,
       headerText: timeResult.headerText
     });
+    // console.log(timeResult)
     //先获取本地缓存中的书单数据，等接口返回之后再更新
     // wx.getStorage({
     //   key: 'booklist',
@@ -38,12 +39,16 @@ Page({
       icon: 'loading',
       duration: 0
     });
+  },
+  onShow: function () {
+    var self = this;
     //获取我的书单
     //读取缓存中的userid
     wx.getStorage({
       key: 'id',
       success: function (res) {
         var id = res.data;
+        console.log(id)
         if (id && id.userid) {
           self.getMyBooks(id.userid);
           self.getUserinfo(id.userid);
@@ -70,11 +75,13 @@ Page({
       url: Api.getMyBooks(userid),
       success: function (res) {
         var books = res.data.data.books;
-        books.forEach(function(item){
+        console.log('书籍信息');
+        console.log(books);
+        books.forEach(function (item) {
           item.isShow = true;
         });
         //更新视图books
-        self.setData({books: books});
+        self.setData({ books: books });
         //将书单数据缓存到本地
         wx.setStorage({
           key: 'booklist',
@@ -92,7 +99,7 @@ Page({
           success: function (res) {
             console.log('使用本地缓存的书单数据');
             if (res.data && res.data[0].factionName) {
-              self.setData({books: res.data});
+              self.setData({ books: res.data });
             } else {
               self.setData({
                 err_page_data: {
@@ -140,6 +147,8 @@ Page({
       url: Api.getUserInfo(userid),
       success: function (res) {
         var tmpData = res.data.data;
+        console.log('用户信息');
+        console.log(tmpData);
         if (tmpData && tmpData.code == 0) {
           //将书单数据缓存到本地
           wx.setStorage({
@@ -172,7 +181,7 @@ Page({
   doLogin: function () {
     var self = this;
     app.doLogin(function () {
-      self.setData({err_page_data: null});
+      self.setData({ err_page_data: null });
       self.getMyBooks();
     });
   },
@@ -182,11 +191,11 @@ Page({
     var today = new Date();
     var month = today.getMonth();
     // todo给出是否有记录的判断
-    resultArray.push({
-      monthCname: Util.eNumToCNum(Math.abs(month)) + '月',
-      hasRecord: false
-    });
-    for (var i = 1; i <= 6; i++) {
+    // resultArray.push({
+    //   monthCname: Util.eNumToCNum(Math.abs(month)) + '月',
+    //   hasRecord: false
+    // });
+    for (var i = 0; i <= 6; i++) {
       resultArray.push({
         monthCname: Util.eNumToCNum(Math.abs(month - i < 0 ? month + 12 - i : month - i)) + '月',
         hasRecord: ((Math.random() > 0.5) ? true : false),
@@ -199,14 +208,14 @@ Page({
     }
   },
   goToShop: function () {
-    wx.navigateTo({
+    wx.switchTab({
       url: '../shop/shop'
     });
   },
   goToBookDetail: function (e) {
     var currentBookId = e.currentTarget.dataset.bookid;
     wx.navigateTo({
-      url: '../book_detail/book_detail?bookid=' + currentBookId + '&isInList=1'
+      url: '../book_detail/book_detail?bookid=' + currentBookId
     });
   },
   setIsSearching: function () {
@@ -271,7 +280,7 @@ Page({
       var regExp = new RegExp(searchString, 'igm');
       var leftStr = ''; //记录关键词左边的字符串
       var rightStr = ''; //记录关键词右边的字符串
-      var count = 0; //计数器
+      var count = 1; //计数器
       var tempStr = readyToBeSearch; //用于正则匹配的字符串
       var notChageStr = readyToBeSearch; //用于截取字符串，和上面一样的值是因为不能把一个值既用于正则运算又用于记录加入<code></code>的新的字符串,这样会使得循环变成无限循环
       var lastIndex = 0; //记录关键词的位置
@@ -303,6 +312,7 @@ Page({
   chooseMonth: function (event) {
     var self = this;
     var month = event.currentTarget.dataset.month;
-    self.setData({monthIndex: month});
+    // console.log(event)
+    self.setData({ monthIndex: month });
   }
 });

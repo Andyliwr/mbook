@@ -2,7 +2,8 @@
 <view class='today-container'>
   <view class="headimg">
     <image src="{{avatar}}" model="center" binderror="headimgError" bindtap="gotoUserInfo" />
-    <text class="username">andyliwr</text>
+    <!-- <text class="username">andyliwr</text> -->
+    <open-data type="userNickName" class="username"></open-data>
   </view>
   <view class="more-info">
     <view class="info-time">

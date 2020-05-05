@@ -11,6 +11,9 @@ var chinese_parseInt = require('./tools/chinese-parseint');
 var connectDB = require('./connectDB/connectDB');
 connectDB.configLog('networkReptile');
 
+// 初始化数据库
+connectDB.initDB();
+
 //日志相关
 var log4js = require('log4js');
 //config log
@@ -73,8 +76,8 @@ var init = function () {
   finalDataPart = [];
   finalData = [];
   //更新数据库factionList
-  connectDB.updateSectionList();
-  getFactionSectionList();
+  // connectDB.updateSectionList();
+  // getFactionSectionList();
 };
 
 var getFactionSectionList = function () {

@@ -21,7 +21,7 @@
     <text class="headerTime">{{headerText}}</text>
     <view class="timeTab">
       <block wx:for="{{showMonths}}" wx:key="month">
-        <view class="{{(index === monthIndex) ? 'active last everyTime' : 'everyTime'}}" bindtap="chooseMonth" data-month="{{item.monthIndex}}">
+        <view class="{{(item.monthIndex === monthIndex) ? 'active last everyTime' : 'everyTime'}}" bindtap="chooseMonth" data-month="{{item.monthIndex}}">
           <text>{{item.monthCname}}</text>
           <icon class="{{item.hasRecord? 'hasRecord': ''}}"></icon>
         </view>
