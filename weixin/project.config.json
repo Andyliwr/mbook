@@ -25,7 +25,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.10.3",
+	"libVersion": "2.10.4",
 	"appid": "wx39635e80215f2e13",
 	"projectname": "weixin",
 	"cloudfunctionTemplateRoot": "",

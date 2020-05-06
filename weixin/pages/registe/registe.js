@@ -8,6 +8,10 @@ Page({
         currentIndex: 0
     },
     onLoad: function () {
+        let currentPage = getCurrentPages();
+        let currentPageName = currentPage[currentPage.length - 1].route;
+        console.log("当前页面为注册页面: ", currentPageName == "pages/registe/registe")
+        wx.hideHomeButton();
         var self = this;
         //options rankType
         // console.log(options.bookId);
@@ -35,17 +39,18 @@ Page({
         console.log(e);
         if (typeof e.detail.userInfo == "undefined") {
             console.log("用户拒绝授权");
-            return false;
+            wx.showToast({ title: '授权登录失败!请允许授权', icon: 'none', duration: 2000 });
+        }else{
+            wx.showLoading({
+                title: '授权登录中',
+            })
+            app.doLogin(function () {
+                wx.hideLoading();
+                wx.switchTab({
+                    url: '/pages/booklist/booklist'
+                })
+            });
         }
-        wx.showLoading({
-            title: '授权登录中',
-          })
-        app.doLogin(function(){
-            wx.hideLoading();
-            wx.switchTab({
-                url: '/pages/booklist/booklist'
-              })
-        });
     },
     showRank: function (event) {
         this.setData({

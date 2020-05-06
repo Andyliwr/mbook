@@ -16,7 +16,7 @@
   <view class="search-content {{isSearching? 'pt-page-moveToLeft': ''}}" style="display: {{isSearching? 'block': 'none'}}">
     <view class="search-tips">
       <view class="tips-item">猜你喜欢</view>
-    </view>
+    </view> 
     <view class="history">
       <view class="history-item">
         <icon type="search" color="#99a0aa" size="13"></icon>
@@ -36,7 +36,7 @@
       </view>
       <view class="topic-container">
         <view class="topic-item" wx:for="{{topic}}" wx:key="id">
-          <image src="{{item.headerImage}}" mode="scaleToFill" bindtap="goRecommendDetai"></image>
+          <image src="{{item.headImg}}" mode="scaleToFill" bindtap="goRecommendDetai"></image>
         </view>
       </view>
     </view>

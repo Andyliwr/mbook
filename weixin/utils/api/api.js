@@ -1,7 +1,7 @@
 // 处理数据的请求
 'use strict';
 
-const HOST_URL = 'http://localhost:3000/api';
+const HOST_URL = 'http://192.168.199.207:3000/api';
 const LOGIN = '/as_users/login';
 const GET_CONTENT_BY_ID = '/xs_content/getContentById';
 const GET_EMAILS_PAGEID = '/emails';

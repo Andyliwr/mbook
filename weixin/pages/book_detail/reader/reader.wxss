@@ -13,6 +13,7 @@
   column-gap: 40rpx;
   padding: 20rpx 30rpx 0 40rpx;
   position: relative;
+  transition: all 0.5s ease-in-out!important;
   left: -320rpx; }
 
 .reader-container .control {

@@ -174,7 +174,7 @@ Page({
       };
       wx.setStorage('reader_setting', JSON.stringify(userSetting));
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   },
   handletouchmove: function (event) {
@@ -187,7 +187,7 @@ Page({
     var currentY = event.touches[0].pageY;
     // 判断用没有滑动而是点击屏幕的动作
     hasRunTouchMove = true;
-    console.log('正在执行touchmove, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
+    // console.log('正在执行touchmove, isMoving为：' + isMoving + '------event: {x: ' + event.touches[0].pageX + ' ,y: ' + event.touches[0].pageY + '}');
     var direction = 0;
     if (currentX - self.data.touches.lastX < 0) {
       direction = 0;
@@ -219,7 +219,7 @@ Page({
     }
   },
   handletouchend: function () {
-    console.log('正在执行touchend, isMoving为：' + isMoving);
+    // console.log('正在执行touchend, isMoving为：' + isMoving);
     var self = this;
     // 判断用户的点击事件，决定是否显示控制栏
     if (hasRunTouchMove == false) {
@@ -241,59 +241,59 @@ Page({
       if (self.data.move_direction == 0) {
         if (currentIndex < self.data.maxPageNum) {
           targetLeftValue = -1 * self.data.windows.windows_width * currentIndex;
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4; //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
-          isMoving = 1; //开始计时的时候将标志置1
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4; //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
+          // isMoving = 1; //开始计时的时候将标志置1
           //使用计时器实现动画效果
           // console.log('开始向 左 滑动的计时器，isMoving为1');
-          moveTime = setInterval(function () {
-            ++leftTimmerCount;
-            var currentLeftValue = self.data.leftValue;
-            //如果达到了目标值，立即停止计时器
-            //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
-            if (leftTimmerCount == 4) {
-              clearInterval(moveTime);
-              isMoving = 0;
-              leftTimmerCount = 0;
+          // moveTime = setInterval(function () {
+          //   ++leftTimmerCount;
+          //   var currentLeftValue = self.data.leftValue;
+          //   //如果达到了目标值，立即停止计时器
+          //   //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
+          //   if (leftTimmerCount == 4) {
+          //     clearInterval(moveTime);
+          //     isMoving = 0;
+          //     leftTimmerCount = 0;
               self.setData({ leftValue: targetLeftValue });
-              return;
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(moveTime);
-              isMoving = 0;
-              leftTimmerCount = 0;
-              // console.log('向 左 滑动的计时器结束了，isMoving为0');
-              return;
-            }
-            self.setData({ leftValue: currentLeftValue - pingjunValue });
-          }, 75);
+          //     return;
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(moveTime);
+          //     isMoving = 0;
+          //     leftTimmerCount = 0;
+          //     // console.log('向 左 滑动的计时器结束了，isMoving为0');
+          //     return;
+          //   }
+          //   self.setData({ leftValue: currentLeftValue - pingjunValue });
+          // }, 75);
           self.setData({ pageIndex: ++currentIndex });
         }
       } else {
         //前一页和后一页相差其实是2个-320px
         if (currentIndex > 1) {
           targetLeftValue = -1 * self.data.windows.windows_width * (currentIndex - 2);
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4;
-          isMoving = 1;
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4;
+          // isMoving = 1;
           // console.log('开始向 左 滑动的计时器，isMoving为1');
-          moveTime = setInterval(function () {
-            ++rightTimmerCount;
-            var currentLeftValue = self.data.leftValue;
-            if (rightTimmerCount == 4) {
-              clearInterval(moveTime);
-              isMoving = 0;
-              rightTimmerCount = 0;
+          // moveTime = setInterval(function () {
+          //   ++rightTimmerCount;
+          //   var currentLeftValue = self.data.leftValue;
+          //   if (rightTimmerCount == 4) {
+          //     clearInterval(moveTime);
+          //     isMoving = 0;
+          //     rightTimmerCount = 0;
               self.setData({ leftValue: targetLeftValue });
-              return;
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(moveTime);
-              isMoving = 0;
-              rightTimmerCount = 0;
-              // console.log('向 右 滑动的计时器结束了，isMoving为0');
-              return;
-            }
-            self.setData({ leftValue: currentLeftValue + pingjunValue });
-          }, 75);
+          //     return;
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(moveTime);
+          //     isMoving = 0;
+          //     rightTimmerCount = 0;
+          //     // console.log('向 右 滑动的计时器结束了，isMoving为0');
+          //     return;
+          //   }
+          //   self.setData({ leftValue: currentLeftValue + pingjunValue });
+          // }, 75);
           self.setData({ pageIndex: --currentIndex });
         }
       }
@@ -425,6 +425,10 @@ Page({
     var currentIndex = event.detail.current;
     self.setData({ muluSwiperNum: currentIndex });
   },
+  closeMulu:function(e){
+    console.log(e);
+    // this.setData({"isShowMulu":"false"});
+  },
   //点击目录某一章
   showThisSection: function (event) {
     //显示loading
@@ -450,7 +454,7 @@ Page({
           self.setData({ content: newContent, maxPageNum: maxPageNum, allSliderValue: { section: sectionNum, bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font } });
           wx.hideToast();
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           wx.hideToast();
           showErrMsg(self, '获取章节内容失败');
         }

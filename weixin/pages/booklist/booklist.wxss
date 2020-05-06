@@ -3,6 +3,7 @@
   background-color: #F2F2F2;
   position: relative;
   height: 100%;
+  top:-1rpx;
   display: flex;
   flex-direction: column; }
 
