@@ -24,19 +24,15 @@
       "required": true,
       "default": "未知小说"
     },
-    "sectionArray": {
-      "type": [
-        "string"
-      ],
-      "required": true,
-      "default": [
-        "[]"
-      ]
-    },
     "newest": {
       "type": "number"
     },
     "comments": {
+      "type": [
+        "object"
+      ]
+    },
+    "source": {
       "type": [
         "object"
       ]

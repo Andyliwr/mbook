@@ -4,13 +4,11 @@
     "connector": "memory"
   },
   "mongodb": {
-    "host": "server.vmware.local",
+    "host": "127.0.0.1",
     "port": 27017,
-    "url": "mongodb://myapp:196925@server.vmware.local:27017/myapp",
+    "url": "mongodb://127.0.0.1:27017/myapp",
     "database": "myapp",
-    "password": "196925",
     "name": "mongodb",
-    "user": "myapp",
     "connector": "mongodb"
   }
 }

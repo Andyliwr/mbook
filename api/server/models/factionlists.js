@@ -10,18 +10,16 @@ module.exports = function (Factionlists) {
     var app = Factionlists.app;
     const BOOKS = [
       {
-        "headerImage": "http://static.zongheng.com/upload/cover/10/1e/101ecef1545403f69722d665c41c7122.jpeg",
+        "headerImage": "https://www.rzlib.net/files/article/image/52/52352/52352s.jpg",
         "updateTime": "2020-05-03T13:27:19.283Z",
         "author": "梁不凡",
-        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
-        "factionName": "超品站兵",
-        "sectionArray": [
-          "[]"
-        ],
+        "des": "九千年前，仙武帝尊率领百万神将打入太古洪荒，却无一人归来，只有一缕真火遗留世间。 九千年后，门派废徒叶辰，被赶出宗门，无以为家，机缘巧合之下偶得真火，再踏仙武之路。 这是一个神魔仙佛并立的世界，这是一个诸天万域混乱的年代，叶辰的逆天征途，由此开始。 …",
+        "factionName": "武道神帝",
         "newest": 0,
         "comments": [
           {}
         ],
+        "source": ['https://www.rzlib.net/b/52/52352/']
       },
       {
         "headerImage": "http://static.zongheng.com/upload/cover/2016/12/1482972103534.jpg",
@@ -29,62 +27,53 @@ module.exports = function (Factionlists) {
         "author": "缘分0",
         "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
         "factionName": "医品宗师",
-        "sectionArray": [
-          "[]"
-        ],
         "newest": 0,
         "comments": [
           {}
         ],
       },
       {
-        "headerImage": "http://static.zongheng.com/upload/cover/2015/12/1449926451589.jpg",
+        "headerImage": "https://www.rzlib.net/files/article/image/0/2/2s.jpg",
         "updateTime": "2020-05-03T13:27:19.283Z",
-        "author": "步行天下",
-        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
+        "author": "盘龙",
+        "des": "大陆上传说中的四大终极战士之一的‘龙血战士’已经千年没有再出现过了，而唯一有着龙血战士血脉的家族也渐渐衰败了下来，成为了一个小镇的普通贵族。而这个衰败家族中的继承人，年仅八岁的小林雷在踏入已经布满灰尘的祖屋当中的时候，却无意当中得到一枚看似极为普通的戒指——盘龙戒指！ …",
         "factionName": "原血神座",
-        "sectionArray": [
-          "[]"
-        ],
         "newest": 0,
         "comments": [
           {}
         ],
+        "source": ["https://www.rzlib.net/b/0/2/"]
       },
       {
-        "headerImage": "http://static.zongheng.com/upload/cover/2016/12/1482972103534.jpg",
+        "headerImage": "https://www.rzlib.net/files/article/image/63/63870/63870s.jpg",
         "updateTime": "2020-05-03T13:27:19.283Z",
         "author": "龙七二十一",
-        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
-        "factionName": "诸天谣",
-        "sectionArray": [
-          "[]"
-        ],
+        "des": "人死的时候会有意识吗？会，因为我经历过。 这个世界上真的有鬼吗？有，因为，我就是。 借体重生后，发现他有一个美到窒息的老婆，睡，还是不睡？ …",
+        "factionName": "林羽江颜",
         "newest": 0,
         "comments": [
           {}
         ],
+        "source": ['https://www.rzlib.net/b/63/63870/']
       },
       {
-        "headerImage": "http://static.zongheng.com/upload/cover/2015/06/1434416579785.jpg",
+        "headerImage": "https://www.rzlib.net/files/article/image/47/47446/47446s.jpg",
         "updateTime": "2020-05-03T13:27:19.283Z",
         "author": "烈焰滔滔",
-        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
-        "factionName": "最强狂兵",
-        "sectionArray": [
-          "[]"
-        ],
+        "des": "老赵是一名48岁的驾校教练，而他的班上，有一堆年轻貌美的女大学生…… …",
+        "factionName": "驾校情缘",
         "newest": 0,
         "comments": [
           {}
         ],
+        "source": ['https://www.rzlib.net/b/47/47446/']
       },
       {
-        "headerImage": "http://static.zongheng.com/upload/cover/2016/07/1467708575259.jpg",
+        "headerImage": "https://www.rzlib.net/files/article/image/3/3244/3244s.jpg",
         "updateTime": "2020-05-03T13:27:19.283Z",
         "author": "风起夏天",
-        "des": "这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说，这是一部很好好很好很好看的小说",
-        "factionName": "轮回剑主",
+        "des": "凌云渡劫失败，降临地球末法时代，从都市中修真，一步步逆天崛起。同修佛魔道！丹田蕴真龙！拥有太古龙神血脉，获得上古三皇传承！凌云战天斗地，斩妖除魔，一路逆天修行！他从修真世界而来，他将武碎虚空而去！他是龙皇武神！",
+        "factionName": "龙皇武神",
         "sectionArray": [
           "[]"
         ],
@@ -92,6 +81,7 @@ module.exports = function (Factionlists) {
         "comments": [
           {}
         ],
+        "source": ['https://www.rzlib.net/b/3/3244/']
       },
     ];
     BOOKS.forEach(book => {
