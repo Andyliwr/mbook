@@ -102,7 +102,7 @@ module.exports = function (Book) {
     app.models.book.findById(bookId, {}, {}, function (err, res) {
       if (err) {
         console.log("查询小说列表失败...." + err);
-        cb(null, { code: -1, errMsg: "查询小说列表失败" });
+        cb(null, { code: -1, errMsg: "查询书籍信息失败" });
       } else {
         returnData.code = 0; //标志位
         returnData.author = res.author;
@@ -113,53 +113,22 @@ module.exports = function (Book) {
         }
         returnData.des = Tools.overflowDeal(res.des);
         /*只取这本小说的所有的章节的章节数和章节名，当具体点某章节的时候再去根据章节id获取它的内容*/
-        var sectionEp = new Eventproxy();
-        sectionEp.after("hasGotContent", res.sectionArray.length, function (
-          allSections
+        app.models.chapter.find({ bookid: bookId }, { content: 0 }, function (
+          err2,
+          res2
         ) {
-          returnData.sectionArray = [];
-          //刷选sectionNum前后20章
-          allSections.forEach(function (item, index) {
-            if (
-              item.sectionNum >= sectionNum - 10 &&
-              item.sectionNum <= sectionNum + 10
-            ) {
-              returnData.sectionArray.push(item);
-            }
-          });
-          //排序
-          returnData.sectionArray.sort(function (faction1, faction2) {
-            return faction1.sectionNum - faction2.sectionNum;
-          });
-          //调用callback把数据传出去
-          cb(null, returnData);
-        });
-        res.sectionArray.forEach(function (sectionItem) {
-          app.models.chapter.findById(sectionItem, {}, function (
-            err,
-            sectionRes
-          ) {
-            var returnData = {
-              sectionId: null,
-              sectionNum: null,
-              sectionTitle: null,
-            };
-            if (err) {
-              console.log("查询小说内容失败...." + err);
-              sectionEp.emit("hasGotContent", returnData);
-            } else {
-              returnData.sectionId = sectionRes.id;
-              returnData.sectionNum = sectionRes.sectionNum;
-              returnData.sectionTitle = sectionRes.sectionTitle;
-              /**
-               * 这里暂时没有考虑多个不同的来源的问题，按照以前设定的想法，小说应该允许多个来源同时存在，并且会对不同来源
-               * 的小说做层次分析，选取最优的来源，当然这是后期的工作。同时这里不同来源的小说共同存储在一个factionContent
-               * 表中，所以很有可能同一章节会存在不同来源的，所以需要设定一个默认来源，同时应该设定一个来源的优先级，当前一
-               * 个来源没有数据的时候，采用后一个来源的数据，依次类推
-               */
-              sectionEp.emit("hasGotContent", returnData);
-            }
-          });
+          if (err2) {
+            cb(null, { code: -1, errMsg: "查询书籍章节失败" });
+          } else {
+            returnData.sectionArray = res2 ? res2.map((item) => {
+              return {
+                sectionId: item.id,
+                sectionNum: item.num,
+                sectionTitle: item.name,
+              };
+            }) : [];
+            cb(null, returnData);
+          }
         });
       }
     });
@@ -501,16 +470,6 @@ module.exports = function (Book) {
         result.updateTime = res.updateTime.getTime();
         result.newest = res.newest;
         cb(null, { code: 0, detail: result });
-        // get newest section infomation
-        // var factionNameReg = new RegExp(res.factionName, 'ig');
-        // app.models.Factioncontents.find({des: factionNameReg, sectionNum: res.newest}, {_id: 0, sectionNum: 0, sectionContent: 0, sectionTitle: 1}, function(contentErr, contentRes){
-        //   if(contentErr || !contentRes){
-        //     console.log('查询最新章节章节名失败，'+contentErr);
-        //   }else{
-        //     result.newest = {num: res.newest, title: contentRes.sectionTitle}
-        //   }
-        //   cb(null, {code: 0, detail: result});
-        // });
       })
       .catch(function (err) {
         console.log(err);

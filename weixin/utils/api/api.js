@@ -1,9 +1,10 @@
 // 处理数据的请求
 'use strict';
 
-const HOST_URL = 'http://192.168.199.207:3000/api';
+const HOST_URL = 'http://127.0.0.1:3000/api';
 const LOGIN = '/as_users/login';
 const GET_CONTENT_BY_ID = '/chapter/getContentById';
+const GET_CONTENT_BY_HISTORY = '/chapter/getContentByHistory';
 const GET_EMAILS_PAGEID = '/emails';
 const GET_BOOKS_SORTBY_TIME = '/xxxx';
 const GET_RANK = '/xs_rank/getRank';
@@ -45,6 +46,9 @@ module.exports = {
   },
   getContentById: function (sectionId) {
     return HOST_URL + GET_CONTENT_BY_ID + '?sectionId=' + sectionId;
+  },
+  getContentByHistory: function (userid, bookid) {
+    return HOST_URL + GET_CONTENT_BY_HISTORY + '?bookid=' + bookid + '&userid=' + userid;
   },
   // 登录
   login: function (umt, password) {

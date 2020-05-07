@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const ChapterSchema = new mongoose.Schema(
   {
-    bookid: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, 
+    bookid: String, 
     name: String, // 章节名
     num: { type: Number }, // 章节数
     content: String, // 内容

@@ -7,8 +7,8 @@ var querystring = require("querystring");
 var uuid = require("uuid"); //用于生成sessionid
 var redis = require("redis"),
   redis_port = 6379,
-  redis_host = "server.vmware.local",
-  redis_pwd = "196925",
+  redis_host = "127.0.0.1",
+  redis_pwd = "",
   redis_opts = { auth_pass: redis_pwd };
 
 var crypto = require("crypto"); //加密解密
@@ -71,40 +71,6 @@ module.exports = function (user) {
     },
   });
 
-  user.sayHi = function (callback) {
-    //定义一个http接口方法
-    user
-      .find({ username: "user" })
-      .then(function (res) {
-        console.log(res);
-        callback(null, "hi");
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    // var app = user.app;
-    // app.models.chapter.find({res: '大主宰'})
-    //   .limit(1).project({sectionNum: 1})
-    //   .then(function(res){
-    //     console.log(res);
-    //     callback(null, 'hi');
-    //   })
-    //   .catch(function (err) {
-    //     console.log(err);
-    //   });
-  };
-  user.remoteMethod(
-    //把方法暴露给http接口
-    "sayHi",
-    {
-      accepts: [],
-      returns: [{ arg: "result", type: "string" }],
-      http: {
-        verb: "get",
-        path: "/say-hi",
-      },
-    }
-  );
   //处理微信登录
   user.getSessionId = function (
     wxcode,
@@ -158,7 +124,6 @@ module.exports = function (user) {
         //检查这个openid是否已经绑定了user的用户
         var checkRegisteEp = new eventproxy();
         checkRegisteEp.all("hasFinishedCheck", function (checkData) {
-          console.log("Debug: user.getSessionId -> checkData", checkData);
           if (checkData) {
             if (checkData.code == -1) {
               cb(null, { code: -1, errmsg: checkData.errMsg });
@@ -372,9 +337,9 @@ module.exports = function (user) {
   //检查sessionid是否过期
   user.checkSessionId = function (sessionid, cb) {
     var redisClient = redis.createClient(redis_port, redis_host, redis_opts); //连接redis
-    redisClient.auth(redis_pwd, function () {
-      console.log("redis通过认证");
-    });
+    // redisClient.auth(redis_pwd, function () {
+    //   console.log("redis通过认证");
+    // });
     //连接redis
     redisClient.on("connect", function () {
       //获取sessionid

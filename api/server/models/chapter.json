@@ -7,23 +7,16 @@
     "validateUpsert": true
   },
   "properties": {
-    "sectionNum": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "sectionTitle": {
-      "type": "string",
-      "required": true,
-      "default": "未知张章节"
-    },
-    "sectionContent": {
+    "bookid": {
       "type": "string"
     },
-    "sectionResource": {
+    "num": {
+      "type": "number"
+    },
+    "content": {
       "type": "string"
     },
-    "recentUpdateTime": {
+    "create_time": {
       "type": "date"
     }
   },

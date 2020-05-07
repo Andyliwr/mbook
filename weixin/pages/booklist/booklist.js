@@ -74,7 +74,7 @@ Page({
     wx.request({
       url: Api.getMyBooks(userid),
       success: function (res) {
-        var books = res.data.data.books;
+        var books = res.data.data.books || [];
         console.log('书籍信息');
         console.log(books);
         books.forEach(function (item) {
