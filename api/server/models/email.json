@@ -23,9 +23,9 @@
       "model": "adminUser",
       "foreignKey": ""
     },
-    "myAppUser": {
+    "user": {
       "type": "belongsTo",
-      "model": "myAppUser",
+      "model": "user",
       "foreignKey": ""
     }
   },

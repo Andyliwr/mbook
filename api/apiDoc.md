@@ -2,7 +2,7 @@
 + 获取所有的小说列表
 ```
   + REST: get
-  + addr: http://localhost:3000/api/xs_list
+  + addr: http://localhost:3000/api/book
   + return:
     [{
         "headerImage": "http://res.cloudinary.com/idwzx/image/upload/v1472746056/dazhuzai_y6428k.jpg",
@@ -21,7 +21,7 @@
 + 获取所有的小说内容
 ```
   + REST: get
-  + addr: http://localhost:3000/api/xs_content
+  + addr: http://localhost:3000/api/chapter
   + return:
     [
       {
@@ -39,7 +39,7 @@
 
 ```
 + REST: post
-+ addr: http://localhost:3000/api/myappuser/login
++ addr: http://localhost:3000/api/user/login
 + param: {"username":"lidikang", "password":"123456"},或者使用邮箱登录{"email":"andyliwr@outlook.com", "password":"123456"}
 + return:
     {
@@ -53,7 +53,7 @@
 + ### 注册
 ```
 + REST: post
-+ addr: http://localhost:3000/api/myappuser
++ addr: http://localhost:3000/api/user
 + param: {
             "realm": "李迪康",
             "username": "lidikang",
@@ -96,7 +96,7 @@
 + ### 获取我的书单
 ```
 + REST: get
-+ addr: http://localhost:3000/api/myappuser/getMyBooks?userid=58d9c09b8262150de8b3c2e6
++ addr: http://localhost:3000/api/user/getMyBooks?userid=58d9c09b8262150de8b3c2e6
 + param: userid为已经注册的用户id
 + return:
       "data": {
@@ -115,7 +115,7 @@
   + ### 新增加书单
   ```
   + REST: post
-  + addr: http://localhost:3000/api/myappuser/addMyBooks?userid=58d9c09b8262150de8b3c2e6
+  + addr: http://localhost:3000/api/user/addMyBooks?userid=58d9c09b8262150de8b3c2e6
   + data: 单个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookids":"58cbc7e8753ae423a4aaaf8dc"}
           多个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookids":"58cbc7e8753ae423a4aaaf8dc,58cbc7e8753ae423a4aaf8d6,58cbc7e8753ae423a4aaf8d8"}，使用逗号隔开，中间不要带空格
   + param: userid为已经注册的用户id， bookids为书单id数组
@@ -139,7 +139,7 @@
   + ### 删除书单
   ```
   + REST: post
-  + addr: http://localhost:3000/api/myappuser/deleteMyBooks?userid=58d9c09b8262150de8b3c2e6
+  + addr: http://localhost:3000/api/user/deleteMyBooks?userid=58d9c09b8262150de8b3c2e6
   + data: 单个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookids":"58cbc7e8753ae423a4aaaf8dc"}
           多个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookids":"58cbc7e8753ae423a4aaaf8dc,58cbc7e8753ae423a4aaf8d6,58cbc7e8753ae423a4aaf8d8"}，使用逗号隔开，中间不要带空格
   + param: userid为已经注册的用户id， bookids为书单id数组
@@ -163,7 +163,7 @@
   + ### 更新用户已经阅读的章节
   ```
   + REST: post
-  + addr: http://localhost:3000/api/myappuser/updateHasRead
+  + addr: http://localhost:3000/api/user/updateHasRead
   + data: 单个书单：{"userid":"58d9c09b8262150de8b3c2e6","bookid":"58cbc7e8753ae423a4aaaf8dc","hasRead":4}
   + param: userid为已经注册的用户id， bookid为要更新的书籍id，hasRead为用户已阅读章节
   + return:

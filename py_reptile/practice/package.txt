@@ -1,6 +1,0 @@
-pip install beautifulsoup4
-pip install jieba
-pip install pandas
-
-pip install matplotlib
-pip install wordcloud

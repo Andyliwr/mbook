@@ -37,23 +37,19 @@
     "dataSource": "mongodb",
     "public": true
   },
-  "factioncontents": {
+  "chapter": {
     "dataSource": "mongodb",
     "public": true
   },
-  "factionlists": {
+  "book": {
     "dataSource": "mongodb",
     "public": true
   },
-  "factionranks": {
+  "rank": {
     "dataSource": "mongodb",
     "public": true
   },
-  "adminUser": {
-    "dataSource": "mongodb",
-    "public": true
-  },
-  "myAppUser": {
+  "user": {
     "dataSource": "mongodb",
     "public": true,
     "options": {

@@ -28,8 +28,8 @@ export const editEmail = (adminUserId, emailId, putData) => {
   let access_token = cookie.getCookie('access_token');
   return axios.put(`${base}/adminUser/`+ adminUserId +'/emails/'+emailId+'?access_token='+access_token, putData);
 };
-export const addEmail = (myAppUserId, adminUserId, postData) => {
-  postData.myAppUserId = myAppUserId;
+export const addEmail = (userId, adminUserId, postData) => {
+  postData.userId = userId;
   postData.adminUserId = adminUserId;
   let access_token = cookie.getCookie('access_token');
   return axios.post(`${base}/adminUser/`+ adminUserId +'/emails?access_token='+access_token, postData);
@@ -37,5 +37,5 @@ export const addEmail = (myAppUserId, adminUserId, postData) => {
 export const getAllUser = function(){
   let query = {};
   query.access_token = cookie.getCookie('access_token');
-  return axios.get(`${base}/myAppUser/getAllUser`, {params: query}).then(res=> res.data.data);
+  return axios.get(`${base}/user/getAllUser`, {params: query}).then(res=> res.data.data);
 };

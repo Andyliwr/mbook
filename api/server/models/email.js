@@ -10,7 +10,7 @@ module.exports = function (Email) {
       .then(function (res) {
         try {
           if (res.role === "admin") {
-            Email.find({"include": ["adminUser", "myAppUser"], "limit": filter.limit, "skip": filter.skip})
+            Email.find({"include": ["adminUser", "user"], "limit": filter.limit, "skip": filter.skip})
               .then(function (res) {
                 // 遍历res
                 res.forEach(function (item) {
@@ -26,9 +26,9 @@ module.exports = function (Email) {
                     role: item.adminUser().role
                   };
                   tmpObj.to = {
-                    avatar: item.myAppUser().avatar,
-                    username: item.myAppUser().username,
-                    nickname: item.myAppUser().nickName
+                    avatar: item.user().avatar,
+                    username: item.user().username,
+                    nickname: item.user().nickName
                   };
                   returnData.push(tmpObj);
                 });
@@ -46,7 +46,7 @@ module.exports = function (Email) {
                 console.log(err);
               });
           } else if (res.role === "normal") {
-            Email.find({ "include": ["adminUser", "myAppUser"], "where": { "adminUserId": userid } })
+            Email.find({ "include": ["adminUser", "user"], "where": { "adminUserId": userid } })
               .then(function (res) {
                 // 遍历res
                 res.forEach(function (item) {
@@ -60,9 +60,9 @@ module.exports = function (Email) {
                     role: item.adminUser().role
                   };
                   tmpObj.to = {
-                    avatar: item.myAppUser().avatar,
-                    username: item.myAppUser().username,
-                    nickname: item.myAppUser().nickName
+                    avatar: item.user().avatar,
+                    username: item.user().username,
+                    nickname: item.user().nickName
                   };
                   returnData.push(tmpObj);
                 });

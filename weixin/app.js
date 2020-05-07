@@ -106,7 +106,7 @@ App({
                       success: function (res) {
                         var tmpdata = res.data.data;
                         if (tmpdata.code == 0) {
-                          //如果用户未绑定myappuser
+                          //如果用户未绑定user
                           if (tmpdata.redirectParam) {
                             self.globalData.registerParam = tmpdata.redirectParam;
                             wx.redirectTo({ url: '/pages/login/wxlogin/wxlogin' });

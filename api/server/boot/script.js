@@ -1,5 +1,5 @@
 // myapp用户
-// myAppUser.create([
+// user.create([
 //     {username: 'John', email: 'john@doe.com', password: 'opensesame'},
 //     {username: 'Jane', email: 'jane@doe.com', password: 'opensesame'},
 //     {username: 'Bob', email: 'bob@projects.com', password: 'opensesame'}

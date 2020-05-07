@@ -54,28 +54,31 @@ npm run start
 ### **目录说明**
 
 ```
-api --- 提供后台接口
-  |-common --- loopback的公共模型
-  |-server --- loopback的服务器模型
-    |- boot --- 初始化执行脚本
-    |- modle --- 所有定义的模型目录
-    |- datasources.json --- 数据源定义文件
-      |- middleware.json --- 中间件配置文件
-      |- modle-config.json --- 模型定义文件
-      |- server.js --- 主程序
 reptile --- 所有的爬虫目录
-  |- connectDB --- 连接数据库，操作数据库方法类
-  |- tools --- 实用方法类
-  |- networkReptile.js --- 爬虫主程序
-  |- config.js --- 爬虫配置js
-weixin --- 微信小程序目录
-  |- assets --- 静态资源文件
-  |- datas --- 静态数据
-  |- images --- 图片资源文件
-  |- page --- 所有微信小程序的页面
-  |- util --- 工具类
-  |- app.js --- 微信小程序入口文件
+  |- config.js --- 配置文件
+  |- index.js --- 主程序
+  |- init-database.js --- 初始化数据库，主要是往数据库写入一些书籍数据
+  |- utils
+    |- chineseToNum.js --- 解析数字，比如一千二百会变成1200
+    |- fakeUserAgent.js --- 随机userAgent，反爬虫
+    |- log.js --- 打日志到本地
+    |- proxy.js --- ip代理
+    |- redis.js --- redis方法
+  |- models
+    |- book.js --- 书籍表定义
+    |- chapter.js --- 章节表定义
+  |- package.json --- npm
 ```
+
+### 其他
+爬虫的原理是扫描数据库中所有的书籍，然后根据书籍的最新章节字段-newest，以及配置在source字段里的书籍来源去分析需要更新哪些章节。
+这个爬虫可以用来初始化整本书，newest默认为0
+
+### 运行
+第一次下载项目可以运行 `npm run init`，这会往书籍表中写入测试书籍
+执行爬虫可以运行 `npm run start`
+
+
 ## 项目截图
 ### 小程序
 <div>

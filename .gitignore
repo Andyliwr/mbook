@@ -33,8 +33,3 @@ api/client/node_modules
 
 # koa项目的node_modules
 koa/node_modules
-
-# py_spider
-py_reptile/axdzs/axdzs/spiders/__pycache__/
-py_reptile/axdzs/axdzs/__pycache__/
-py_reptile/axdzs/axdzs/download/

@@ -1,0 +1,46 @@
+{
+  "name": "chapter",
+  "plural": "chapter",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "sectionNum": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "sectionTitle": {
+      "type": "string",
+      "required": true,
+      "default": "未知张章节"
+    },
+    "sectionContent": {
+      "type": "string"
+    },
+    "sectionResource": {
+      "type": "string"
+    },
+    "recentUpdateTime": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "lidikang",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

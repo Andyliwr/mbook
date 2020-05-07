@@ -1,0 +1,57 @@
+{
+  "name": "book",
+  "plural": "book",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "headerImage": {
+      "type": "string"
+    },
+    "updateTime": {
+      "type": "date"
+    },
+    "author": {
+      "type": "string"
+    },
+    "des": {
+      "type": "string"
+    },
+    "factionName": {
+      "type": "string",
+      "required": true,
+      "default": "未知小说"
+    },
+    "newest": {
+      "type": "number"
+    },
+    "comments": {
+      "type": [
+        "object"
+      ]
+    },
+    "source": {
+      "type": [
+        "string"
+      ]
+    }
+  },
+  "validations": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "lidikang",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}
