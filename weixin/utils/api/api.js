@@ -14,7 +14,7 @@ const CHECK_SESSION_ID = '/user/checkSessionId';
 const IS_REGISTED_BY_WX = '/user/isRegistedByWx';
 const GET_UPLOAD_TOKEN = '/user/getUploadToken';
 const REGISTE = '/user';
-const GET_POSITION = 'https://restapi.amap.com/v3/geocode/regeo'
+const GET_POSITION = 'https://restapi.amap.com/v3/geocode/regeo';
 const GET_BOOK_BY_ID = '/book/getBookById';
 const GET_BOOK_DETAIL = '/book/getBookDetail';
 const GET_MY_BOOKS = '/user/getMyBooks';
@@ -28,14 +28,17 @@ const UPDATE_USER_INFO = '/user/updateUserInfo';
 const ADD_LIKE_NUM = '/book/addLikeNum';
 const GET_ALL_BOOKS = '/book';
 const INIT_DATABASE = '/book/initDataBase';
+const GET_CLASSIFY = '/book/getClassify';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
-    return Object.keys(obj).map(function (k) {
-      return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
-    }).join('&');
+    return Object.keys(obj)
+      .map(function (k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
+      })
+      .join('&');
   } else {
-    console.err(obj + "，不是一个对象!");
+    console.err(obj + '，不是一个对象!');
     return '';
   }
 }
@@ -99,50 +102,53 @@ module.exports = {
     return HOST_URL + REGISTE;
   },
   // 高德地图地址转换
-  getPosition: function(latitude, longitude){
-    return GET_POSITION + '?key=74e7240976cc962d65ee8cbe45930979&location='+longitude+','+latitude+'&poitype=&radius=200&extensions=base&batch=false&roadlevel=1'
+  getPosition: function (latitude, longitude) {
+    return GET_POSITION + '?key=74e7240976cc962d65ee8cbe45930979&location=' + longitude + ',' + latitude + '&poitype=&radius=200&extensions=base&batch=false&roadlevel=1';
   },
   // 获取我的书单
   getMyBooks: function (userid) {
-    return HOST_URL + GET_MY_BOOKS + '?userid=' + userid
+    return HOST_URL + GET_MY_BOOKS + '?userid=' + userid;
   },
   // 新增书单, post方法
   addMyBooks: function () {
-    return HOST_URL + ADD_MY_BOOKS
+    return HOST_URL + ADD_MY_BOOKS;
   },
   // 删除书单，post方法
   deleteMyBooks: function () {
-    return HOST_URL + DELETE_MY_BOOKS
+    return HOST_URL + DELETE_MY_BOOKS;
   },
   // 增加评论, post方法
-  addComment: function(){
-    return HOST_URL + ADD_COMMENT
+  addComment: function () {
+    return HOST_URL + ADD_COMMENT;
   },
   // 删除评论，post方法
-  deleteComment: function(){
-    return HOST_URL + DELETE_COMMENT
+  deleteComment: function () {
+    return HOST_URL + DELETE_COMMENT;
   },
   // 获取评论
-  listComments: function(bookid){
-    return HOST_URL + GET_COMMENTS + '?bookid=' + bookid
+  listComments: function (bookid) {
+    return HOST_URL + GET_COMMENTS + '?bookid=' + bookid;
   },
   // 获取用户详细信息
-  getUserInfo: function(userid){
-    return HOST_URL + GET_USER_INFO + '?userid=' + userid
+  getUserInfo: function (userid) {
+    return HOST_URL + GET_USER_INFO + '?userid=' + userid;
   },
   // 更新用户信息, post
-  updateUserInfo: function(){
-    return HOST_URL + UPDATE_USER_INFO
+  updateUserInfo: function () {
+    return HOST_URL + UPDATE_USER_INFO;
   },
   // 点赞, post
-  addLikeNum: function(){
-    return HOST_URL + ADD_LIKE_NUM
+  addLikeNum: function () {
+    return HOST_URL + ADD_LIKE_NUM;
   },
   // 点赞, post
-  getAllBooks: function(){
-    return HOST_URL + GET_ALL_BOOKS
+  getAllBooks: function () {
+    return HOST_URL + GET_ALL_BOOKS;
   },
-  initDataBase: function(){
-    return HOST_URL + INIT_DATABASE
+  initDataBase: function () {
+    return HOST_URL + INIT_DATABASE;
+  },
+  getClassify: function (index = 0, page = 1) {
+    return HOST_URL + GET_CLASSIFY + '?index=' + index + '&page=' + page;
   }
-}
+};

@@ -9,7 +9,8 @@
     "pages/login/aslogin/aslogin",
     "pages/user/user",
     "pages/user/userInfo/userInfo",
-    "pages/book_detail/book_detail"
+    "pages/book_detail/book_detail",
+    "pages/classify/classify"
   ],
   "window": {
     "navigationBarTextStyle": "white",

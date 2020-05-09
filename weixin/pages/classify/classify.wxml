@@ -1,0 +1,26 @@
+<view class="classify-container">
+  <view class="tab">
+    <view class="tab-item {{currentIndex == tabIndex? 'active': ''}}" wx:for="{{classifyTypes}}" wx:for-index="tabIndex" wx:for-item="tabItem" wx:key="engName" data-index="{{tabIndex}}" bindtap="showClassify">
+      <text>{{tabItem}}</text>
+      <view wx:if="{{currentIndex == tabIndex}}" class="tabLine"></view>
+    </view>
+  </view>
+  <scroll-view class="tab-content" enable-back-to-top="true" scroll-y="true" bindscrolltolower="loadMoreData" style="padding-top: {{classifyData.length == 0 ? '60rpx' : '30rpx'}}">
+    <!-- 暂无数据 -->
+    <no-data wx:if="{{classifyData.length == 0 ? true : false}}" text="暂无数据" btn-text="重新获取" show-btn="true" bindbtnclick="reloadData"></no-data>
+    <navigator url="{{'/pages/book_detail/book_detail?id=' + bookItem.id + '&name=' + bookItem.factionName }}" wx:if="classifyData.length > 0"  wx:for="{{classifyData}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="_id">
+      <view class="book-item" data-bookid="{{bookItem._id}}">
+        <view class="bookInfo">
+          <text class="bookName"><text class="des">书名:</text>{{bookItem.factionName}}\n</text>
+          <text class="author"><text class="des">作者:</text>{{bookItem.author}}\n</text>
+          <text class="bookDes"><text class="des">描述:</text>{{bookItem.des}}</text>
+          <icon hidden="{{bookIndex == 0}}" class="first-icon"></icon>
+        </view>
+        <image src="{{bookItem.headerImage}}" mode="scaleToFill" />
+      </view>
+    </navigator>
+  </scroll-view>
+  <view class="backTop" bindtap="backToTop" hidden="{{!scrollTop.backTop_show}}">
+    <icon class="backTop-icon"></icon>
+  </view>
+</view>

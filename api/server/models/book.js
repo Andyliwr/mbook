@@ -21,8 +21,7 @@ module.exports = function (Book) {
         source: ["https://www.rzlib.net/b/52/52352/"],
       },
       {
-        headerImage:
-          "https://www.rzlib.net/files/article/image/0/9/9s.jpg",
+        headerImage: "https://www.rzlib.net/files/article/image/0/9/9s.jpg",
         updateTime: "2020-05-03T13:27:19.283Z",
         author: "缘分0",
         des:
@@ -81,10 +80,10 @@ module.exports = function (Book) {
       },
     ];
 
-    BOOKS.forEach(item => {
-      Book.create(item)
+    BOOKS.forEach((item) => {
+      Book.create(item);
     });
-    cb(null, '书籍初始化成功');
+    cb(null, "书籍初始化成功");
   };
 
   //register getBookById
@@ -209,23 +208,26 @@ module.exports = function (Book) {
         }
         returnData.des = Tools.overflowDeal(res.des);
         /*只取这本小说的所有的章节的章节数和章节名，当具体点某章节的时候再去根据章节id获取它的内容*/
-        app.models.chapter.find({ where: { bookid: bookId } }, { content: 0 }, function (
-          err2,
-          res2
-        ) {
-          if (err2) {
-            cb(null, { code: -1, errMsg: "查询书籍章节失败" });
-          } else {
-            returnData.sectionArray = res2 ? res2.map((item) => {
-              return {
-                sectionId: item.id,
-                sectionNum: item.num,
-                sectionTitle: item.name,
-              };
-            }) : [];
-            cb(null, returnData);
+        app.models.chapter.find(
+          { where: { bookid: bookId } },
+          { content: 0 },
+          function (err2, res2) {
+            if (err2) {
+              cb(null, { code: -1, errMsg: "查询书籍章节失败" });
+            } else {
+              returnData.sectionArray = res2
+                ? res2.map((item) => {
+                    return {
+                      sectionId: item.id,
+                      sectionNum: item.num,
+                      sectionTitle: item.name,
+                    };
+                  })
+                : [];
+              cb(null, returnData);
+            }
           }
-        });
+        );
       }
     });
   };
@@ -249,6 +251,50 @@ module.exports = function (Book) {
       description: "返回的结果对象",
     },
     http: { path: "/getMulu", verb: "get" },
+  });
+
+  /**
+   * 根据书籍id和当前阅读章节获取章节目录
+   * @param bookId 书籍id
+   * @param sectionNum 当前正在阅读的章节数
+   * @method 直接根据sectionNum大于小于查询
+   */
+  Book.getClassify = function (index, page, cb) {
+    var app = Book.app;
+    app.models.book.find({ limit: 10, skip: (page - 1) * 10 }, {}, function (
+      err,
+      res
+    ) {
+      if (err) {
+        console.log("查询小说列表失败...." + err);
+        cb(null, { code: -1, errMsg: "查询书籍信息失败" });
+      } else {
+        app.models.book.count().then((total) => {
+          cb(null, { list: res, total });
+        });
+      }
+    });
+  };
+  //register getBookById
+  Book.remoteMethod("getClassify", {
+    accepts: [
+      {
+        arg: "index",
+        type: "number",
+        description: "顺序值",
+      },
+      {
+        arg: "page",
+        type: "number",
+        description: "当前页数",
+      },
+    ],
+    returns: {
+      arg: "data",
+      type: "object",
+      description: "返回的结果对象",
+    },
+    http: { path: "/getClassify", verb: "get" },
   });
 
   /**

@@ -40,9 +40,36 @@
         </view>
       </view>
     </view>
-    <view class="rank">
-      <view class="qdRank" data-rankType="qd" bindtap="gotoRank">起点小说榜</view>
-      <view class="zhRank" data-rankType="zh" bindtap="gotoRank">纵横小说榜</view>
+    <view class="sort">
+      <view class="header">
+        <text class="text-underline">分类</text>
+      </view>
+      <view class="sort-container">
+        <navigator url="/pages/classify/classify?index=0" class="sort-item" data-engName="total">
+          <icon class="all-icon"></icon>
+          <view>全部</view>
+        </navigator>
+        <navigator url="/pages/classify/classify?index=1" class="sort-item" data-engName="xuanhuan">
+          <icon class="xuanhuan-icon"></icon>
+          <view>玄幻</view>
+        </navigator>
+        <navigator url="/pages/classify/classify?index=2" class="sort-item" data-engName="yanqing">
+          <icon class="yanqing-icon"></icon>
+          <view>言情</view>
+        </navigator>
+        <navigator url="/pages/classify/classify?index=3" class="sort-item" data-engName="wuxia">
+          <icon class="wuxia-icon"></icon>
+          <view>武侠</view>
+        </navigator>
+        <navigator url="/pages/classify/classify?index=4" class="sort-item" data-engName="lishi">
+          <icon class="lishi-icon"></icon>
+          <view>历史</view>
+        </navigator>
+        <navigator url="/pages/classify/classify?index=5" class="sort-item" data-engName="kehuan">
+          <icon class="kehuan-icon"></icon>
+          <view>科幻</view>
+        </navigator>
+      </view>
     </view>
     <view class="recommend">
       <view class="header">
@@ -56,36 +83,9 @@
         </view>
       </view>
     </view>
-    <view class="sort">
-      <view class="header">
-        <text class="text-underline">分类</text>
-      </view>
-      <view class="sort-container">
-        <view class="sort-item" data-engName="total">
-          <icon class="all-icon"></icon>
-          <view>全部</view>
-        </view>
-        <view class="sort-item" data-engName="xuanhuan">
-          <icon class="xuanhuan-icon"></icon>
-          <view>玄幻</view>
-        </view>
-        <view class="sort-item" data-engName="yanqing">
-          <icon class="yanqing-icon"></icon>
-          <view>言情</view>
-        </view>
-        <view class="sort-item" data-engName="wuxia">
-          <icon class="wuxia-icon"></icon>
-          <view>武侠</view>
-        </view>
-        <view class="sort-item" data-engName="lishi">
-          <icon class="lishi-icon"></icon>
-          <view>历史</view>
-        </view>
-        <view class="sort-item" data-engName="kehuan">
-          <icon class="kehuan-icon"></icon>
-          <view>科幻</view>
-        </view>
-      </view>
+    <view class="rank">
+      <view class="qdRank" data-rankType="qd" bindtap="gotoRank">起点小说榜</view>
+      <view class="zhRank" data-rankType="zh" bindtap="gotoRank">纵横小说榜</view>
     </view>
     <view class="new">
       <view class="header">
