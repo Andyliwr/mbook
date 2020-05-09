@@ -209,7 +209,7 @@ module.exports = function (Book) {
         }
         returnData.des = Tools.overflowDeal(res.des);
         /*只取这本小说的所有的章节的章节数和章节名，当具体点某章节的时候再去根据章节id获取它的内容*/
-        app.models.chapter.find({ bookid: bookId }, { content: 0 }, function (
+        app.models.chapter.find({ where: { bookid: bookId } }, { content: 0 }, function (
           err2,
           res2
         ) {
