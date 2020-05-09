@@ -8,7 +8,7 @@
   <scroll-view class="tab-content" enable-back-to-top="true" scroll-y="true" bindscrolltolower="loadMoreData" style="padding-top: {{classifyData.length == 0 ? '60rpx' : '30rpx'}}">
     <!-- 暂无数据 -->
     <no-data wx:if="{{classifyData.length == 0 ? true : false}}" text="暂无数据" btn-text="重新获取" show-btn="true" bindbtnclick="reloadData"></no-data>
-    <navigator url="{{'/pages/book_detail/book_detail?id=' + bookItem.id + '&name=' + bookItem.factionName }}" wx:if="classifyData.length > 0"  wx:for="{{classifyData}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="_id">
+    <navigator url="{{'/pages/book_detail/book_detail?bookid=' + bookItem.id + '&name=' + bookItem.factionName }}" wx:if="classifyData.length > 0"  wx:for="{{classifyData}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="_id">
       <view class="book-item" data-bookid="{{bookItem._id}}">
         <view class="bookInfo">
           <text class="bookName"><text class="des">书名:</text>{{bookItem.factionName}}\n</text>

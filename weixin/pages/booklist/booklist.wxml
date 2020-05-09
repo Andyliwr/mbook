@@ -4,7 +4,6 @@
       <view class="form">
         <view class="input-block">
           <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindinput="finishedInput" value="{{searchValue}}"/>
-          <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
         </view>
         <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
           <icon class="search-icon" color="#fff"></icon>

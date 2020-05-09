@@ -4,7 +4,6 @@
       <view class="form">
         <view class="input-block">
           <input placeholder="" bindfocus="setIsSearching" bindblur="judgeIsNull" bindchange="finishedInput" value="{{searchValue}}" />
-          <icon type="clear" style="display:{{isSearching? 'inline-block': 'none'}}" color="#F76260" size="16" bindtap="clearSearchContent"></icon>
         </view>
         <view class="search-block" style="display:{{isSearching? 'none': 'inline-block'}}">
           <icon class="search-icon" color="#fff"></icon>
@@ -14,20 +13,20 @@
     </view>
   </view>
   <view class="search-content {{isSearching? 'pt-page-moveToLeft': ''}}" style="display: {{isSearching? 'block': 'none'}}">
-    <view class="search-tips">
-      <view class="tips-item">猜你喜欢</view>
-    </view> 
-    <view class="history">
-      <view class="history-item">
-        <icon type="search" color="#99a0aa" size="13"></icon>
-        <view><text>烟雨江南</text></view>
-      </view>
-      <view class="history-item">
-        <icon type="search" color="#99a0aa" size="13"></icon>
-        <view><text>大主宰</text></view>
-      </view>
+     <!-- 搜索结果 -->
+    <view class="books" wx:if="{{ searchData.length > 0 }}">
+      <navigator url="/pages/book_detail/book_detail?bookid={{item.id}}&name={{item.factionName}}" wx:for="{{searchData}}" wx:key="item._id">
+        <view class="book-item">
+          <image class="book-img fade-in" src="{{item.headerImage}}"></image>
+          <view class="book-info">
+            <text class="book-name">{{item.factionName}}</text>
+            <text class="book-des">{{item.des}}</text>
+            <view class="book-author">{{item.author}}</view>
+          </view>
+        </view>
+      </navigator>
     </view>
-    <view class="clearBtn"><text>清除历史记录</text></view>
+    <view class="no-data" wx:else>暂无搜索到相关书籍</view>
   </view>
   <view class="shop-content">
     <view class="" topic>

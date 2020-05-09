@@ -21,7 +21,8 @@ Page({
     recommend: [],
     new: [],
     isSearching: false,
-    searchValue: ''
+    searchValue: '',
+    searchData: []
   },
   onLoad: function (options) {
     this.getData();
@@ -33,9 +34,31 @@ Page({
     var self = this;
     var searchStr = event.detail.value;
     if (searchStr) {
+      wx.request({
+        url: Api.searchBook(searchStr),
+        header: { 'content-type': 'application/json' },
+        success: function (res) {
+        console.log('Debug: res', res);
+          const data = res.data.data;
+          //隐藏加载信息  
+          setTimeout(function () {
+            wx.hideToast();
+          }, 300);
+          if (data.list) {
+            self.setData({ searchData: data.list });
+          } else {
+            wx.showToast({ title: '搜索书籍失败' + data.msg ? '，' + data.msg : '', icon: 'none' });
+          }
+        },
+        error: function (err) {
+          setTimeout(function () {
+            wx.hideToast();
+            wx.showToast({ title: '搜索书籍失败~', icon: 'none' });
+          }, 500);
+        }
+      });
     } else {
       self.setData({ isSearching: false });
-      console.log('查询数据为空，不做任何操作');
     }
   },
   judgeIsNull: function (event) {

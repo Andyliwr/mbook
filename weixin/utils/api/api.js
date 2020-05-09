@@ -29,6 +29,7 @@ const ADD_LIKE_NUM = '/book/addLikeNum';
 const GET_ALL_BOOKS = '/book';
 const INIT_DATABASE = '/book/initDataBase';
 const GET_CLASSIFY = '/book/getClassify';
+const SEARCH_BOOK = '/book/searchBook';
 
 function obj2url(obj) {
   if (obj instanceof Object) {
@@ -150,5 +151,8 @@ module.exports = {
   },
   getClassify: function (index = 0, page = 1) {
     return HOST_URL + GET_CLASSIFY + '?index=' + index + '&page=' + page;
+  },
+  searchBook(keyword) {
+    return HOST_URL + SEARCH_BOOK + '?keyword=' + keyword;
   }
 };

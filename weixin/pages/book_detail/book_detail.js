@@ -62,6 +62,9 @@ Page({
           }
           tmpData.detail.shortDes = shortDes;
           self.setData({bookDetail: tmpData.detail, err_page_data: null});
+          wx.setNavigationBarTitle({
+            title: tmpData.detail.name
+          });
         } else {
           console.log('请求书籍信息失败....');
           self.setData({
@@ -270,7 +273,7 @@ Page({
   },
   goToReader: function () {
     wx.navigateTo({
-      url: 'reader/reader?bookid=' + this.data.bookid
+      url: 'reader/reader?bookid=' + this.data.bookid + '&name=' + this.data.bookDetail.name
     });
   },
   //评论相关

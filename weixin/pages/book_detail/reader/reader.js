@@ -130,14 +130,11 @@ Page({
   onLoad: function (options) {
     var self = this;
     //动态设置标题
-    var factionName = options.factionName || '超品战兵';
+    var factionName = options.name || '超品战兵';
     var bookid = options.bookid;
     self.setData({ bookid: bookid, factionName: factionName });
     wx.setNavigationBarTitle({
-      title: factionName,
-      fail: function () {
-        //todo 显示错误页面
-      }
+      title: factionName
     });
     self.loadChapter(bookid);
   },

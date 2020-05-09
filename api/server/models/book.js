@@ -298,6 +298,46 @@ module.exports = function (Book) {
   });
 
   /**
+   * 根据书籍id和当前阅读章节获取章节目录
+   * @param bookId 书籍id
+   * @param sectionNum 当前正在阅读的章节数
+   * @method 直接根据sectionNum大于小于查询
+   */
+  Book.searchBook = function (keyword, cb) {
+    var app = Book.app;
+    app.models.book.find({ where: { factionName: { like: keyword } } }, {}, function (
+      err,
+      res
+    ) {
+      if (err) {
+        console.log("查询小说列表失败...." + err);
+        cb(null, { code: -1, errMsg: "查询书籍信息失败" });
+      } else {
+        app.models.book.count().then((total) => {
+          cb(null, { list: res });
+        });
+      }
+    });
+  };
+  //register getBookById
+  Book.remoteMethod("searchBook", {
+    accepts: [
+      {
+        arg: "keyword",
+        type: "string",
+        description: "关键字",
+      },
+    ],
+    returns: {
+      arg: "data",
+      type: "object",
+      description: "返回的结果对象",
+    },
+    http: { path: "/searchBook", verb: "get" },
+  });
+
+
+  /**
    * add commnets
    * @param userid
    * @param bookid

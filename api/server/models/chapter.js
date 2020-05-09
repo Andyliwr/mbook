@@ -49,7 +49,7 @@ module.exports = function (Chapter) {
         const readHistory = res.myBooks.filter(item => item.bookid === bookid)[0];
         if (readHistory) currentNum = Math.max(1, +readHistory.hasRead);
         // 加载对应的章节
-        app.models.chapter.findOne({ num: currentNum, bookid }, function(err, res2) {
+        app.models.chapter.findOne({ where: { num: currentNum, bookid } }, function(err, res2) {
           if (err) {
             cb(null, {
               code: -2,
