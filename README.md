@@ -12,6 +12,10 @@
 
 ![微信搜一搜](https://file.lantingshucheng.com/1547435360766.jpeg)
 
+## 源码探讨
+小程序开发、网站开发、咨询源码，可以加我微信
+![dreamldk](https://img.vim-cn.com/ec/4d0369b5e7e836aa130fd4f47a1fc166447441.jpg)
+
 ## 运行
 ## 安装mongodb
 windows系统可以参考我写的[教程](https://blog.csdn.net/u014374031/article/details/80268582)，mac自己捣鼓，总之你需要创建一个名为myapp的数据库，本地可以不开启认证，后端运行起来后可以正常连接mongo就行。
