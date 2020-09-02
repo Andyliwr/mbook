@@ -19,7 +19,7 @@
     "loopback": "^3.0.0-alpha.1",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.7.0",
-    "loopback-connector-mongodb": "^1.15.2",
+    "loopback-connector-mongodb": "^5.3.0",
     "loopback-connector-mysql": "^2.3.0",
     "loopback-context": "^1.0.0",
     "loopback-swagger": "^4.0.0",
