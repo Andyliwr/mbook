@@ -29,7 +29,7 @@ module.exports = function (user) {
   user.fundBackPwd = function (email, cb) {
     var app = user.app;
     var returnData = {};
-    app.models.user.find({ where: { email: email } }, function (err, res) {
+    app.models.user.find({ email: email }, function (err, res) {
       if (err) {
         console.log("找回密码接口查询出错，" + err);
         returnData = { code: -1, msg: "邮箱不存在" };
@@ -397,31 +397,33 @@ module.exports = function (user) {
       var app = user.app;
       var getBookDetailEp = new eventproxy();
       var allMyBooks = res.myBooks;
-      getBookDetailEp.after("hasFinishedDetail", allMyBooks.length, function (
-        booksResult
-      ) {
-        try {
-          var successBooks = booksResult.filter(function (bookDetailItem) {
-            return (
-              bookDetailItem.success === 1 &&
-              bookDetailItem.name &&
-              bookDetailItem.headImage
-            );
-          });
-          //整理即将返回的数据
-          var finalArr = successBooks.map(function (successItem) {
-            successItem.bookid = allMyBooks[successItem.index].bookid;
-            successItem.hasRead = allMyBooks[successItem.index].hasRead;
-            delete successItem.index;
-            delete successItem.success;
-            return successItem;
-          });
-          cb(null, { code: 0, books: finalArr });
-        } catch (err) {
-          console.log(err);
-          cb(null, { code: -1, data: "查询个人书单失败，try-catch报错" });
+      getBookDetailEp.after(
+        "hasFinishedDetail",
+        allMyBooks.length,
+        function (booksResult) {
+          try {
+            var successBooks = booksResult.filter(function (bookDetailItem) {
+              return (
+                bookDetailItem.success === 1 &&
+                bookDetailItem.name &&
+                bookDetailItem.headImage
+              );
+            });
+            //整理即将返回的数据
+            var finalArr = successBooks.map(function (successItem) {
+              successItem.bookid = allMyBooks[successItem.index].bookid;
+              successItem.hasRead = allMyBooks[successItem.index].hasRead;
+              delete successItem.index;
+              delete successItem.success;
+              return successItem;
+            });
+            cb(null, { code: 0, books: finalArr });
+          } catch (err) {
+            console.log(err);
+            cb(null, { code: -1, data: "查询个人书单失败，try-catch报错" });
+          }
         }
-      });
+      );
       allMyBooks.forEach(function (item, index) {
         app.models.book.findById(
           item.bookid,
@@ -498,53 +500,60 @@ module.exports = function (user) {
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = user.app;
       var getBookDetailEp = new eventproxy();
-      getBookDetailEp.after("hasFinishedDetail", bookidArr.length, function (
-        booksResult
-      ) {
-        var trueBookidArr = booksResult.filter(function (item) {
-          return item.success === 1;
-        });
+      getBookDetailEp.after(
+        "hasFinishedDetail",
+        bookidArr.length,
+        function (booksResult) {
+          var trueBookidArr = booksResult.filter(function (item) {
+            return item.success === 1;
+          });
 
-        //更新user的书单数组，先获取后更新
-        user.findById(userid, { id: 0, sectionArray: 0 }, function (err, res) {
-          if (err || !res) {
-            cb(null, { code: -1, errMsg: "更新前查询我的书单失败" });
-          } else {
-            //整理数据，准备存入
-            var beforeConcatArr = trueBookidArr.map(function (bookItem) {
-              return { hasRead: 0, bookid: bookItem.bookid };
-            });
-            var afterConcatArr = beforeConcatArr.concat(res.myBooks);
-            //final去重
-            var finalArr = [];
-            afterConcatArr.forEach(function (finalItem) {
-              //判断是否在finalArray中
-              if (finalArr.length > 0) {
-                var isInFinalArray = finalArr.some(function (testItem) {
-                  return testItem.bookid === finalItem.bookid;
+          //更新user的书单数组，先获取后更新
+          user.findById(
+            userid,
+            { id: 0, sectionArray: 0 },
+            function (err, res) {
+              if (err || !res) {
+                cb(null, { code: -1, errMsg: "更新前查询我的书单失败" });
+              } else {
+                //整理数据，准备存入
+                var beforeConcatArr = trueBookidArr.map(function (bookItem) {
+                  return { hasRead: 0, bookid: bookItem.bookid };
                 });
-                if (!isInFinalArray) {
-                  finalArr.push(finalItem);
-                } else {
-                  console.log("更新书单重复项: " + finalItem.bookid);
-                }
-              } else {
-                finalArr.push(finalItem);
+                var afterConcatArr = beforeConcatArr.concat(res.myBooks);
+                //final去重
+                var finalArr = [];
+                afterConcatArr.forEach(function (finalItem) {
+                  //判断是否在finalArray中
+                  if (finalArr.length > 0) {
+                    var isInFinalArray = finalArr.some(function (testItem) {
+                      return testItem.bookid === finalItem.bookid;
+                    });
+                    if (!isInFinalArray) {
+                      finalArr.push(finalItem);
+                    } else {
+                      console.log("更新书单重复项: " + finalItem.bookid);
+                    }
+                  } else {
+                    finalArr.push(finalItem);
+                  }
+                });
+                user.update(
+                  { id: userid },
+                  { myBooks: finalArr },
+                  function (err, res) {
+                    if (err) {
+                      cb(null, { code: -1, errMsg: "更新我的书单失败" });
+                    } else {
+                      cb(null, { code: 0, successMsg: "书单添加成功" });
+                    }
+                  }
+                );
               }
-            });
-            user.update({ id: userid }, { myBooks: finalArr }, function (
-              err,
-              res
-            ) {
-              if (err) {
-                cb(null, { code: -1, errMsg: "更新我的书单失败" });
-              } else {
-                cb(null, { code: 0, successMsg: "书单添加成功" });
-              }
-            });
-          }
-        });
-      });
+            }
+          );
+        }
+      );
       bookidArr.forEach(function (item) {
         app.models.book.findById(
           item,
@@ -598,51 +607,58 @@ module.exports = function (user) {
       //对传入的数据做验证，只有booklist中存在的id才是被加进来
       var app = user.app;
       var getBookDetailEp = new eventproxy();
-      getBookDetailEp.after("hasFinishedDetail", bookidArr.length, function (
-        booksResult
-      ) {
-        var trueBookidArr = booksResult.filter(function (item) {
-          return item.success === 1;
-        });
+      getBookDetailEp.after(
+        "hasFinishedDetail",
+        bookidArr.length,
+        function (booksResult) {
+          var trueBookidArr = booksResult.filter(function (item) {
+            return item.success === 1;
+          });
 
-        //更新user的书单数组，先获取后更新
-        user.findById(userid, { id: 0, sectionArray: 0 }, function (err, res) {
-          if (err || !res) {
-            cb(null, { code: -1, errMsg: "更新前查询我的书单失败" });
-          } else {
-            //去除要删除的项
-            var finalArr = res.myBooks;
-            res.myBooks.forEach(function (everyBook, index) {
-              //判断是否在finalArray中
-              var isInFinalArray = trueBookidArr.some(function (testItem) {
-                return testItem.bookid === everyBook.bookid;
-              });
-              if (isInFinalArray) {
-                finalArr[index].needdingDelete = true;
-                console.log("需删除书单项: " + finalArr[index].bookid);
-              }
-            });
-            //去掉那些带needdingDelete标记的finalArr
-            var lastArray = finalArr.filter(function (item) {
-              return !item.needdingDelete;
-            });
-            if (lastArray.length !== res.myBooks.length) {
-              user.update({ id: userid }, { myBooks: lastArray }, function (
-                err,
-                res
-              ) {
-                if (err) {
-                  cb(null, { code: -1, errMsg: "删除我的书单失败" });
+          //更新user的书单数组，先获取后更新
+          user.findById(
+            userid,
+            { id: 0, sectionArray: 0 },
+            function (err, res) {
+              if (err || !res) {
+                cb(null, { code: -1, errMsg: "更新前查询我的书单失败" });
+              } else {
+                //去除要删除的项
+                var finalArr = res.myBooks;
+                res.myBooks.forEach(function (everyBook, index) {
+                  //判断是否在finalArray中
+                  var isInFinalArray = trueBookidArr.some(function (testItem) {
+                    return testItem.bookid === everyBook.bookid;
+                  });
+                  if (isInFinalArray) {
+                    finalArr[index].needdingDelete = true;
+                    console.log("需删除书单项: " + finalArr[index].bookid);
+                  }
+                });
+                //去掉那些带needdingDelete标记的finalArr
+                var lastArray = finalArr.filter(function (item) {
+                  return !item.needdingDelete;
+                });
+                if (lastArray.length !== res.myBooks.length) {
+                  user.update(
+                    { id: userid },
+                    { myBooks: lastArray },
+                    function (err, res) {
+                      if (err) {
+                        cb(null, { code: -1, errMsg: "删除我的书单失败" });
+                      } else {
+                        cb(null, { code: 0, successMsg: "书单删除成功" });
+                      }
+                    }
+                  );
                 } else {
-                  cb(null, { code: 0, successMsg: "书单删除成功" });
+                  cb(null, { code: -1, errMsg: "原书单找不到该书籍" });
                 }
-              });
-            } else {
-              cb(null, { code: -1, errMsg: "原书单找不到该书籍" });
+              }
             }
-          }
-        });
-      });
+          );
+        }
+      );
       bookidArr.forEach(function (item) {
         app.models.book.findById(
           item,
@@ -708,16 +724,17 @@ module.exports = function (user) {
         if (hasThisBook === false) {
           cb(null, { code: -1, errMsg: "未找到该书单id" });
         } else {
-          user.update({ id: userid }, { myBooks: finalMyBooks }, function (
-            err,
-            res
-          ) {
-            if (err || !res) {
-              cb(null, { code: -1, errMsg: "已阅读章节更新失败" });
-            } else {
-              cb(null, { code: 0, successMsg: "已阅读章节更新成功" });
+          user.update(
+            { id: userid },
+            { myBooks: finalMyBooks },
+            function (err, res) {
+              if (err || !res) {
+                cb(null, { code: -1, errMsg: "已阅读章节更新失败" });
+              } else {
+                cb(null, { code: 0, successMsg: "已阅读章节更新成功" });
+              }
             }
-          });
+          );
         }
       }
     });
@@ -877,16 +894,17 @@ module.exports = function (user) {
         if (res) {
           if (typeof addtime === "number") {
             var newtime = (res.hasReadTime ? res.hasReadTime : 0) + addtime;
-            user.update({ id: userid }, { hasReadTime: newtime }, function (
-              err,
-              res
-            ) {
-              if (err || !res) {
-                cb(null, { code: -1, errMsg: "阅读时长更新失败" });
-              } else {
-                cb(null, { code: 0, successMsg: "阅读时长更新成功" });
+            user.update(
+              { id: userid },
+              { hasReadTime: newtime },
+              function (err, res) {
+                if (err || !res) {
+                  cb(null, { code: -1, errMsg: "阅读时长更新失败" });
+                } else {
+                  cb(null, { code: 0, successMsg: "阅读时长更新成功" });
+                }
               }
-            });
+            );
           } else {
             cb(null, { code: -1, errMsg: "时间参数格式错误" });
           }
@@ -927,16 +945,17 @@ module.exports = function (user) {
       .then(function (res) {
         if (res) {
           var newDays = res.continueReadDay ? res.continueReadDay + 1 : 1;
-          user.update({ id: userid }, { continueReadDay: newDays }, function (
-            err,
-            res
-          ) {
-            if (err || !res) {
-              cb(null, { code: -1, errMsg: "累计阅读天数更新失败" });
-            } else {
-              cb(null, { code: 0, successMsg: "累计阅读天数更新成功" });
+          user.update(
+            { id: userid },
+            { continueReadDay: newDays },
+            function (err, res) {
+              if (err || !res) {
+                cb(null, { code: -1, errMsg: "累计阅读天数更新失败" });
+              } else {
+                cb(null, { code: 0, successMsg: "累计阅读天数更新成功" });
+              }
             }
-          });
+          );
         } else {
           cb(null, { code: -1, errMsg: "获取到的用户信息为空" });
         }

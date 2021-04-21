@@ -1,6 +1,5 @@
 {
-    "backgroundTextStyle":"light",
-    "backgroundColor":"white",
-    "navigationBarTitleText": "",
-    "navigationBarTextStyle":"white"
+  "backgroundTextStyle": "light",
+  "navigationBarTitleText": "",
+  "navigationBarTextStyle": "white"
 }

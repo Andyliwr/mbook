@@ -46,23 +46,28 @@ module.exports = function (Chapter) {
       } else {
         // 阅读进度
         let currentNum = 1;
-        const readHistory = res.myBooks.filter(item => item.bookid === bookid)[0];
+        const readHistory = res.myBooks.filter(
+          (item) => item.bookid === bookid
+        )[0];
         if (readHistory) currentNum = Math.max(1, +readHistory.hasRead);
         // 加载对应的章节
-        app.models.chapter.findOne({ where: { num: currentNum, bookid } }, function(err, res2) {
-          if (err) {
+        app.models.chapter
+          .findOne({ num: currentNum, bookid })
+          .then((res) => {
+            console.log("====> 获取章节信息成功", res);
+            cb(null, {
+              code: 0,
+              num: currentNum,
+              content: res.content,
+            });
+          })
+          .catch((err) => {
+            console.log("====> 获取章节信息失败", err);
             cb(null, {
               code: -2,
               errMsg: "获取章节信息失败",
             });
-          } else {
-            cb(null, {
-              code: 0,
-              num: currentNum,
-              content: res2.content,
-            });
-          }
-        })
+          });
       }
     });
   };

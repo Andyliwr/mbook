@@ -38,7 +38,8 @@ Page({
           avatar: app.globalData.registerParam.avatar,
           nickName: app.globalData.registerParam.nickName,
           gender: app.globalData.registerParam.gender
-        }, nickName: app.globalData.registerParam.nickName
+        },
+        nickName: app.globalData.registerParam.nickName
       });
       //获取完清除全局变量的缓存
       app.globalData.registerParam = null;
@@ -93,8 +94,8 @@ Page({
   //用户改变性别
   genderChange: function (event) {
     var self = this;
-    var genderSelect = (event.target.dataset.gender == 'male' ? 1 : 0);
-    self.setData({ userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: self.data.userInfoFromApp.avatar, nickName: self.data.userInfoFromApp.nickName, gender: genderSelect } })
+    var genderSelect = event.target.dataset.gender == 'male' ? 1 : 0;
+    self.setData({ userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: self.data.userInfoFromApp.avatar, nickName: self.data.userInfoFromApp.nickName, gender: genderSelect } });
   },
   confirmRegiste: function (event) {
     var self = this;
@@ -111,22 +112,22 @@ Page({
             if (cityReg.test(self.data.city)) {
               //校验成功，开始注册
               var registeData = {
-                "nickName": self.data.nickName,
-                "realm": '',
-                "signature": '',
-                "age": -1,
-                "avatar": self.data.userInfoFromApp.avatar + '?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim', // 调用七牛的图片处理api
-                "gender": self.data.userInfoFromApp.gender,
-                "myBooks": [],
-                "setting": [],
-                "hasReadTime": 0,
-                "continueReadDay": 0,
-                "address": self.data.address,
-                "auth": "{\"type\": \"wechat\", \"wxOpenId\": \"" + self.data.userInfoFromApp.openid + "\"}",
-                "username": self.data.username,
-                "email": self.data.email,
-                "password": self.data.password,
-                "emailVerified": true
+                nickName: self.data.nickName,
+                realm: '',
+                signature: '',
+                age: -1,
+                avatar: self.data.userInfoFromApp.avatar + '?imageView2/1/w/60/h/60/format/jpg/interlace/1/q/75|imageslim', // 调用七牛的图片处理api
+                gender: self.data.userInfoFromApp.gender,
+                myBooks: [],
+                setting: [],
+                hasReadTime: 0,
+                continueReadDay: 0,
+                address: self.data.address,
+                auth: '{"type": "wechat", "wxOpenId": "' + self.data.userInfoFromApp.openid + '"}',
+                username: self.data.username,
+                email: self.data.email,
+                password: self.data.password,
+                emailVerified: true
               };
               //设置button的loading显示
               self.setData({ isShowLoading: true });
@@ -139,9 +140,11 @@ Page({
                   //注册成功，缓存userid和openid
                   if (tmpData.id) {
                     var idStr = JSON.stringify({ userid: tmpData.id, openid: self.data.userInfoFromApp.openid });
-                    wx.setStorageSync("id", idStr);
+                    wx.setStorageSync('id', idStr);
                     //登录,  wx.navigateTo 和 wx.redirectTo 不允许跳转到 tabbar 页面，只能用 wx.switchTab 跳转到 tabbar 页面
-                    app.doLogin(function () { wx.switchTab({ url: '../../booklist/booklist' }) });
+                    app.doLogin(function () {
+                      wx.switchTab({ url: '../../booklist/booklist' });
+                    });
                   } else {
                     // 提示错误
                     var msg = tmpData.error.details.messages;
@@ -155,9 +158,9 @@ Page({
                 fail: function (err) {
                   console.log('注册失败， ' + err);
                 },
-                complete:function(){
+                complete: function () {
                   //关掉提示
-                  elf.setData({ isShowLoading: false });
+                  self.setData({ isShowLoading: false });
                 }
               });
             } else {
@@ -178,7 +181,7 @@ Page({
   },
   uploadAvatar: function () {
     wx.hideToast();
-    wx.showToast({ title: '上传中', icon: 'loading', duration: 300 })
+    wx.showToast({ title: '上传中', icon: 'loading', duration: 300 });
     initQiniu();
     var self = this;
     wx.chooseImage({
@@ -191,27 +194,34 @@ Page({
         // self.setData({
         //   userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.tempFilePaths[0], nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
         // });
-        qiniuUploader.upload(filePath, (res) => {
-          console.log(res);
-          //更新图片地址
-          self.setData({
-            userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
-          });
-          wx.hideToast();
-          wx.showToast({ title: '上传成功', icon: 'success', duration: 2000 });
-          setTimeout(function () { wx.hideToast() }, 2000)
-        }, (error) => {
-          console.error('error: ' + JSON.stringify(error));
-        }, self.data.userInfoFromApp.openid);
+        qiniuUploader.upload(
+          filePath,
+          res => {
+            console.log(res);
+            //更新图片地址
+            self.setData({
+              userInfoFromApp: { openid: self.data.userInfoFromApp.openid, avatar: res.imageURL, nickName: self.data.userInfoFromApp.nickName, gender: self.data.userInfoFromApp.gender }
+            });
+            wx.hideToast();
+            wx.showToast({ title: '上传成功', icon: 'success', duration: 2000 });
+            setTimeout(function () {
+              wx.hideToast();
+            }, 2000);
+          },
+          error => {
+            console.error('error: ' + JSON.stringify(error));
+          },
+          self.data.userInfoFromApp.openid
+        );
       },
       fail: function (err) {
-        console.log("选择图片失败, " + err);
+        console.log('选择图片失败, ' + err);
       }
-    })
+    });
   },
   gotoRegiste: function () {
     wx.navigateTo({
       url: '../../registe/registe'
-    })
+    });
   }
 });

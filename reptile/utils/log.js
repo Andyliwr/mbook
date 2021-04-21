@@ -1,8 +1,8 @@
 /**
  * 爬虫日志配置函数
  */
-import path from 'path'
-import log4js from 'log4js'
+import path from 'path';
+import log4js from 'log4js';
 
 log4js.configure({
   appenders: {
@@ -11,15 +11,15 @@ log4js.configure({
       type: 'dateFile',
       filename: path.join(__dirname, '../logs/spider.log'),
       pattern: '-yyyy-MM-dd.log',
-      alwaysIncludePattern: true,
+      alwaysIncludePattern: true
     }
   },
   categories: {
     default: { appenders: ['console'], level: 'DEBUG' },
     spider: { appenders: ['spider', 'console'], level: 'DEBUG' }
   }
-})
+});
 
-const logger = log4js.getLogger('spider')
+const logger = log4js.getLogger('spider');
 
-export { logger }
+export { logger };

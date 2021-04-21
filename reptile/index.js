@@ -215,7 +215,7 @@ function updateEveryBook(index, book, total) {
           const sub2Queue = new Queue({ concurrency: 1, autoStart: false });
           // 最多爬取10章
           logger.debug(`为了节省时间，这里最多爬虫10章就会跳到下一本书`);
-          chapters = chapters.slice(0, 10)
+          chapters = chapters.slice(0, 10);
           chapters.forEach((chapter, index) => {
             sub2Queue.add(async () => {
               // 暂停5s

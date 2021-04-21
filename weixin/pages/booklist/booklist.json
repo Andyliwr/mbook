@@ -1,7 +1,6 @@
 {
-    "backgroundTextStyle":"light",
-    "backgroundColor":"white",
-    "navigationBarBackgroundColor": "#FD9941",
-    "navigationBarTitleText": "我的书单",
-    "navigationBarTextStyle":"white"
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#FD9941",
+  "navigationBarTitleText": "我的书单",
+  "navigationBarTextStyle": "white"
 }
