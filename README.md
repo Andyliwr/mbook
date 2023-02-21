@@ -6,27 +6,12 @@
 
 ## 体验一下
 
-微信扫码，立即进入小程序
-
-![小程序二维码](https://file.lantingshucheng.com/1547434703456.jpeg?imageView2/1/w/200/h/200/q/75%7Cimageslim)
-
-或者可以搜索小程序---美景阅读
-
-![微信搜一搜](https://file.lantingshucheng.com/1547435360766.jpeg)
+可以搜索小程序---美景阅读
 
 ## 源码探讨
 
-小程序开发、网站开发、咨询源码，可以加我微信
+如有疑问欢迎在issue里留言，作者看到了会第一时间回复
 
-<div style="width: 180px; height: auto">
- <img src="https://file.lantingshucheng.com/2021-04-22-00-49-27.png" alt="" style="width: 180px; height: auto">
-</div>
-
-如果觉得项目帮到了您，可以请作者喝杯咖啡
-
-<div style="width: 150px; height: auto">
- <img src="https://file.lantingshucheng.com/2021-04-22-00-48-03.png" alt="" style="width: 150px; height: auto">
-</div>
 ## 运行
 
 考虑到很多新手同学都是使用的 windows 开发的，这里专门做了一个 windows 的教程，详情请查看 https://www.yuque.com/docs/share/43ad4ef6-dbd4-4fa7-89d9-488804dc0f6f
